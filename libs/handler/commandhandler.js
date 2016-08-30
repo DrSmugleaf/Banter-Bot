@@ -1,7 +1,6 @@
 "use strict"
 const Discord = require("discord.js");
 const discord = new Discord.Client();
-const token = process.env.DISCORD_TOKEN;
 
 class CommandHandler {
   constructor() {};
@@ -18,18 +17,18 @@ Palabras entre **[corchetes]** son opcionales
   switch(commandtext[0]) {
     case "!ayuda":
     case "!help":
-      return helptext;
+      discord.sendMessage(msg, helptext);
       break;
     case "!josde":
-      return "wew";
+      discord.sendMessage(msg, "wew");
       break;
     case "wew":
       if(msg.author.username == "Josde") {
-        return "wew";
+        discord.sendMessage(msg, "wew");
       };
       break;
     case "default":
-      return "Ese comando no existe";
+      discord.sendMessage(msg, "Ese comando no existe");
       break;
   };
 };

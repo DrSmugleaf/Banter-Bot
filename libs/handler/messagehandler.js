@@ -3,7 +3,6 @@ const CommandHandler = require("./commandhandler");
 const commandhandler = new CommandHandler();
 const Discord = require("discord.js");
 const discord = new Discord.Client();
-const token = process.env.DISCORD_TOKEN;
 const TranslatorHandler = require("./translatorhandler");
 const translatorhandler = new TranslatorHandler();
 
@@ -19,14 +18,10 @@ MessageHandler.prototype.handleMessage = function(msg) {
     case "!":
     case "+":
     case "-":
-      return commandhandler.getCommand(msg);
+      commandhandler.getCommand(msg);
       break;
     default:
-      if(msg.channel === "development") {
-        return discord.sendMessage("serbia", translatorhandler.translate(msg, "Spanish", "English"));
-      } else if(msg.channel === "serbia") {
-        return discord.sendMessage("development", translatorhandler.translate(msg, "English", "Spanish"));
-      }
+      translatorhandler.translate(msg);
       break;
   };
 };
