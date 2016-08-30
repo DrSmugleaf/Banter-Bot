@@ -4,7 +4,7 @@
   "description": "A Discord bot",
   "main": "banterbot.js",
   "scripts": {
-    "start": "banterbot.js",
+    "start": "heroku local",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
