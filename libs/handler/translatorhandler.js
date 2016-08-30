@@ -2,6 +2,7 @@
 const Discord = require ("discord.js");
 const discord = new Discord.Client();
 const translate = require("yandex-translate")(process.env.YANDEX_KEY);
+const token = process.env.DISCORD_TOKEN;
 
 class TranslatorHandler {
   constructor() {
@@ -27,5 +28,7 @@ TranslatorHandler.prototype.translate = function(msg) {
     discord.sendMessage(this.channel, res);
   });
 };
+
+discord.loginWithToken(token);
 
 module.exports = TranslatorHandler;

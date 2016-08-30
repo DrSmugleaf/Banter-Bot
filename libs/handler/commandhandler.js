@@ -1,6 +1,7 @@
 "use strict"
 const Discord = require("discord.js");
 const discord = new Discord.Client();
+const token = process.env.DISCORD_TOKEN;
 
 class CommandHandler {
   constructor() {};
@@ -32,5 +33,7 @@ Palabras entre **[corchetes]** son opcionales
       break;
   };
 };
+
+discord.loginWithToken(token);
 
 module.exports = CommandHandler;
