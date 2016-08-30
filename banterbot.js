@@ -8,9 +8,8 @@ const token = process.env.DISCORD_TOKEN;
 console.log("Running banterbot.js");
 
 discord.on("message", function(msg) {
-  // console.log("banterbot.js");
-  // messagehandler.handleMessage(msg);
-  discord.sendMessage(msg, "fuck heroku to be quite honest family")
+  console.log("banterbot.js");
+  messagehandler.handleMessage(msg);
 });
 
 discord.loginWithToken(token);

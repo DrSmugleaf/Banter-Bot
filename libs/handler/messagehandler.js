@@ -18,10 +18,11 @@ MessageHandler.prototype.handleMessage = function(msg) {
     case "!":
     case "+":
     case "-":
+      console.log("messagehandler.js 1")
       commandhandler.getCommand(msg);
       break;
     default:
-      console.log("messagehandler.js")
+      console.log("messagehandler.js 2")
       translatorhandler.translate(msg);
       break;
   };
