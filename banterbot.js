@@ -1,4 +1,5 @@
 "use strict"
+require("dotenv").config();
 const MessageHandler = require("./libs/handler/messagehandler");
 const messagehandler = new MessageHandler();
 const Discord = require("discord.js");
