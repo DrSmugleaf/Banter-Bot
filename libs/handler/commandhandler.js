@@ -1,13 +1,10 @@
 "use strict"
-const Discord = require("discord.js");
-const discord = new Discord.Client();
-const token = process.env.DISCORD_TOKEN;
 
 class CommandHandler {
   constructor() {};
 };
 
-CommandHandler.prototype.getCommand = function(msg) {
+CommandHandler.prototype.getCommand = function(msg, discord) {
   var commandtext = msg.content.toLowerCase().split(" ");
   var helptext = `Palabras entre **<flechas>** son obligatorias
 Palabras entre **[corchetes]** son opcionales
@@ -33,7 +30,5 @@ Palabras entre **[corchetes]** son opcionales
       break;
   };
 };
-
-discord.loginWithToken(token);
 
 module.exports = CommandHandler;
