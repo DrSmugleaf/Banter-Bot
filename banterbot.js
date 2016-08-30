@@ -8,6 +8,10 @@ const token = process.env.DISCORD_TOKEN;
 
 console.log("Running banterbot.js");
 
+discord.on("ready", function() {
+  discord.setUsername("Banter Bot");
+});
+
 discord.on("message", function(msg) {
   if(msg.author.bot) { return; };
   messagehandler.handleMessage(msg, discord);
