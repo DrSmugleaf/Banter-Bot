@@ -21,6 +21,7 @@ MessageHandler.prototype.handleMessage = function(msg) {
       commandhandler.getCommand(msg);
       break;
     default:
+      console.log("messagehandler.js")
       translatorhandler.translate(msg);
       break;
   };
