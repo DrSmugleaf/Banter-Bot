@@ -5,10 +5,7 @@ const translate = require("yandex-translate")(process.env.YANDEX_KEY);
 const key = process.env.YANDEX_KEY;
 
 class TranslatorHandler {
-  constructor(discord, opts) {
-    this.discord = discord;
-    this.opts = opts;
-  };
+  constructor(discord, opts) {};
 };
 
 TranslatorHandler.prototype.translate = function(discord, msg, opts) {
@@ -18,7 +15,7 @@ TranslatorHandler.prototype.translate = function(discord, msg, opts) {
       if(opts[channel] == opts[msg.channel.name]) { continue; };
       translate.translate(msg.content, {from: language, to: opts[channel]}, function(err, res) {
         if(err) { console.log(err); };
-        discord.sendMessage(discord.channels.get("name", channel), res.text[0]);
+        discord.sendMessage(discord.channels.get("name", channel), "**" + msg.author.username + "**" + ": " + res.text[0]);
       });
     };
   };

@@ -10,6 +10,9 @@ console.log("Running banterbot.js");
 
 discord.on("ready", function() {
   discord.setUsername("Banter Bot");
+  discord.setAvatar(fs.readFileSync("./public/assets/images/LUL.png"), function(e) {
+    if(e) { console.log(e); };
+  });
 });
 
 discord.on("message", function(msg) {

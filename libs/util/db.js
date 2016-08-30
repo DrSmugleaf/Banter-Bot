@@ -41,7 +41,7 @@ UPDATE ${table} SET id = nextval("temp_seq");
 ALTER TABLE ${table} ADD primary key (id);
 DROP sequence temp_seq;
 SELECT setval("${table}_id_seq", (SELECT MAX(id) FROM ${table}));`
-  this.query(query, cb)
-}
+  this.query(query, cb);
+};
 
 module.exports = DB;
