@@ -15,7 +15,6 @@
   "license": "MIT",
   "dependencies": {
     "discord.js": "^8.1.0",
-    "dotenv": "^2.0.0",
     "yandex-translate": "^2.1.0"
   }
 }

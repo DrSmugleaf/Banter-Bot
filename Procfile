@@ -1,1 +1,1 @@
-worker: node banterbot.js
+web: node banterbot.js
