@@ -1,7 +1,6 @@
 "use strict"
 const pg = require("pg");
-const Pool = require("pg-pool");
-const pool = new Pool(config);
+const pool = pg.Pool(config);
 const url = require("url");
 
 const params = url.parse(process.env.DATABASE_URL);
