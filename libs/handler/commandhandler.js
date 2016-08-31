@@ -1,8 +1,11 @@
 "use strict"
-const fs = require("fs");
+const token = process.env.DISCORD_TOKEN;
 
 class CommandHandler {
-  constructor() {};
+  constructor() {
+    this.admin = ["DrSmugleaf"];
+    this.muted = [];
+  };
 };
 
 CommandHandler.prototype.getCommand = function(msg, discord) {
@@ -11,7 +14,9 @@ CommandHandler.prototype.getCommand = function(msg, discord) {
 Palabras entre **[corchetes]** son opcionales
 
 **!help / !ayuda**: Muestra la lista de comandos
-**!josde**: wew`
+**!josde**: wew
+**!logoff**: Desactiva el bot
+**!relog**: Reinicia el bot`
 
   switch(commandtext[0]) {
     case "!ayuda":
@@ -20,6 +25,27 @@ Palabras entre **[corchetes]** son opcionales
       break;
     case "!josde":
       discord.sendMessage(msg, "wew");
+      break;
+    case "!logoff":
+      if(this.admin.contains(msg.author.username)) {
+        console.log("!logoff called by " + msg.author.username);
+        discord.destroy();
+      };
+      break;
+    case "!quote":
+      break;
+    case "+quote":
+      break;
+    case "-quote":
+      break;
+    case "!relog":
+      if(this.admin.contains(msg.author.username)) {
+        console.log("!relog called by " + msg.author.username);
+        discord.logout();
+        setTimeout(function() {
+          discord.loginWithToken(token);
+        }, 5000);
+      };
       break;
     case "wew":
       if(msg.author.username == "Josde") {
