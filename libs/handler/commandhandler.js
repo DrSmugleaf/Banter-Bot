@@ -1,4 +1,6 @@
 "use strict"
+const Quote = require("../commands/quote")
+const quote = new Quote();
 const token = process.env.DISCORD_TOKEN;
 
 class CommandHandler {
@@ -8,7 +10,7 @@ class CommandHandler {
   };
 };
 
-CommandHandler.prototype.getCommand = function(msg, discord) {
+CommandHandler.prototype.getCommand = function(discord, msg) {
   var commandtext = msg.content.toLowerCase().split(" ");
   var helptext = `Palabras entre **<flechas>** son obligatorias
 Palabras entre **[corchetes]** son opcionales
@@ -33,10 +35,13 @@ Palabras entre **[corchetes]** son opcionales
       };
       break;
     case "!quote":
+      quote.getQuote(discord, msg);
       break;
     case "+quote":
+      quote.addQuote(discord, msg);
       break;
     case "-quote":
+      quote.delQuote(discord, msg);
       break;
     case "!relog":
       if(this.admin.contains(msg.author.username)) {
@@ -52,7 +57,7 @@ Palabras entre **[corchetes]** son opcionales
         discord.sendMessage(msg, "wew");
       };
       break;
-    case "default":
+    default:
       discord.sendMessage(msg, "Ese comando no existe");
       break;
   };

@@ -10,13 +10,13 @@ class MessageHandler {
   };
 };
 
-MessageHandler.prototype.handleMessage = function(msg, discord) {
+MessageHandler.prototype.handleMessage = function(discord, msg) {
   if(msg.author.bot || this.muted.indexOf(msg.author.username) > -1) { return; };
   switch(msg.content.charAt(0)) {
     case "!":
     case "+":
     case "-":
-      commandhandler.getCommand(msg, discord);
+      commandhandler.getCommand(discord, msg);
       break;
     default:
       translatorhandler.translate(discord, msg, {"general": "Spanish", "serbia": "English"});

@@ -1,6 +1,5 @@
 "use strict"
 const pg = require("pg");
-const pool = pg.Pool(config);
 const url = require("url");
 
 const params = url.parse(process.env.DATABASE_URL);
@@ -15,6 +14,7 @@ const config = {
   max: 10,
   idleTimeoutMillis: 1000,
 };
+const pool = new pg.Pool(config);
 
 pool.on("error", function(e, client) {
   console.log("db.js: " + e)

@@ -17,7 +17,7 @@ discord.on("ready", function() {
 
 discord.on("message", function(msg) {
   if(msg.author.bot) { return; };
-  messagehandler.handleMessage(msg, discord);
+  messagehandler.handleMessage(discord, msg);
 });
 
 discord.loginWithToken(token);
