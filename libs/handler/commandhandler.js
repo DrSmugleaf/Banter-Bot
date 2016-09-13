@@ -19,6 +19,7 @@ class CommandHandler {
 Palabras entre **[corchetes]** son opcionales
 
 **!help / !ayuda**: Muestra la lista de comandos
+**!coult**
 **!erika / !franrosave**
 **!josde**
 **!logoff**: Desactiva el bot
@@ -32,6 +33,7 @@ Palabras entre **[corchetes]** son opcionales
 Words between **[brackets]** are optional
 
 **!help / !ayuda**: Show the list of commands
+**!coult**
 **!erika / !franrosave**
 **!josde**
 **!logoff**: Shutdown the bot
@@ -53,6 +55,9 @@ CommandHandler.prototype.getCommand = function(discord, msg) {
     case "!colour":
       color.change(discord, msg)
       break
+    case "!coult":
+      coult.trapCard(msg)
+      break
     case "!erika":
     case "!franrosave":
       msg.channel.sendMessage("I am dropping the bomb")
@@ -73,14 +78,10 @@ CommandHandler.prototype.getCommand = function(discord, msg) {
     case "!logoffvoice":
       if(this.admin.contains(msg.author.username)) {
         console.log("!logoffvoice called by " + msg.author.username)
-        if(discord.voiceConnection) {
-          discord.voiceConnection.stopPlaying()
-          discord.leaveVoiceChannel(discord.user.voiceChannel)
+        if(msg.member.voiceChannel) {
+          msg.member.voiceChannel.leave()
         }
       }
-      break
-    case "!test":
-      console.log(msg.client.voiceConnections.random())
       break
     case "!magic8ball":
     case "!8":
@@ -89,7 +90,7 @@ CommandHandler.prototype.getCommand = function(discord, msg) {
       magic8ball.answer(discord, msg, language)
       break
     case "!podemos":
-      msg.channel.sendMessage("Ese partido no existe")
+      msg.reply("Ese partido no existe")
       break
     case "!quote":
       quote.getQuote(discord, msg)
