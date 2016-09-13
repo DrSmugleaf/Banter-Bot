@@ -1,90 +1,109 @@
 "use strict"
-const Coult = require("../commands/coult");
-const coult = new Coult();
-const Magic8Ball = require("../commands/magic8ball");
-const magic8ball = new Magic8Ball();
-const Quote = require("../commands/quote");
-const quote = new Quote();
-const token = process.env.DISCORD_TOKEN;
+const Color = require("../commands/color")
+const color = new Color()
+const Coult = require("../commands/coult")
+const coult = new Coult()
+const Magic8Ball = require("../commands/magic8ball")
+const magic8ball = new Magic8Ball()
+const Quote = require("../commands/quote")
+const quote = new Quote()
+const token = process.env.DISCORD_TOKEN
 
 class CommandHandler {
   constructor() {
-    this.admin = ["DrSmugleaf"];
-    this.muted = [];
-    this.english = ["Coult909"];
-  };
-};
-
-CommandHandler.prototype.getCommand = function(discord, msg) {
-  var commandtext = msg.content.toLowerCase().split(" ");
-  var helptext = `Palabras entre **<flechas>** son obligatorias
+    this.admin = ["DrSmugleaf"]
+    this.muted = []
+    this.english = ["Coult909"]
+    this.helptext = []
+    this.helptext.spanish = `Palabras entre **<flechas>** son obligatorias
 Palabras entre **[corchetes]** son opcionales
 
 **!help / !ayuda**: Muestra la lista de comandos
-**!josde**: wew
+**!erika / !franrosave**
+**!josde**
 **!logoff**: Desactiva el bot
 **!logoffvoice**: Saca el bot del canal de voz
 **!magic8ball / !8 / !8ball / !magic8 [pregunta] [-ENGLISH]**: Respuesta de la Bola 8 Mágica
+**!podemos**
 **!quote [número]**: Selecciona un quote al azar o por número
 **+quote <texto>**: Añade un quote
-**-quote [número]**: Elimina un quote
-**!relog**: Reinicia el bot`
-  var language = msg.content.includes("-ENGLISH") ? "english" : this.english.contains(msg.author.username) ? "english" : "spanish";
+**-quote <número>**: Elimina un quote`
+    this.helptext.english = `Words between **<arrows>** are required
+Words between **[brackets]** are optional
+
+**!help / !ayuda**: Show the list of commands
+**!erika / !franrosave**
+**!josde**
+**!logoff**: Shutdown the bot
+**!logoffvoice**: Remove the bot from voice channels
+**!magic8ball / !8 / !8ball / !magic8 [question] [-ENGLISH]**: An answer from the Magic 8 Ball
+**!podemos**
+**!quote [number]**: Select a quote at random or by number
+**+quote <text>**: Add a quote
+**-quote <number>**: Remove a quote`
+  }
+}
+
+CommandHandler.prototype.getCommand = function(discord, msg) {
+  let commandtext = msg.content.toLowerCase().split(" ")
+  let language = msg.content.includes("-ENGLISH") ? "english" : this.english.contains(msg.author.username) ? "english" : "spanish"
 
   switch(commandtext[0]) {
-    case "!test":
-      coult.trapCard(discord, msg);
-      break;
+    case "!color":
+    case "!colour":
+      color.change(discord, msg)
+      break
+    case "!erika":
+    case "!franrosave":
+      msg.channel.sendMessage("I am dropping the bomb")
+      break
     case "!ayuda":
     case "!help":
-      discord.sendMessage(msg, helptext);
-      break;
+      msg.channel.sendMessage(this.helptext[language])
+      break
     case "!josde":
-      discord.sendMessage(msg, "wew");
-      break;
+      msg.channel.sendMessage("wew")
+      break
     case "!logoff":
       if(this.admin.contains(msg.author.username)) {
-        console.log("!logoff called by " + msg.author.username);
-        discord.destroy();
-      };
-      break;
+        console.log("!logoff called by " + msg.author.username)
+        discord.destroy()
+      }
+      break
     case "!logoffvoice":
       if(this.admin.contains(msg.author.username)) {
-        console.log("!logoffvoice called by " + msg.author.username);
+        console.log("!logoffvoice called by " + msg.author.username)
         if(discord.voiceConnection) {
-          discord.voiceConnection.stopPlaying();
-          discord.leaveVoiceChannel(discord.user.voiceChannel);
-        };
-      };
-      break;
+          discord.voiceConnection.stopPlaying()
+          discord.leaveVoiceChannel(discord.user.voiceChannel)
+        }
+      }
+      break
+    case "!test":
+      console.log(msg.client.voiceConnections.random())
+      break
     case "!magic8ball":
     case "!8":
     case "!8ball":
     case "!magic8":
-      magic8ball.answer(discord, msg, language);
-      break;
+      magic8ball.answer(discord, msg, language)
+      break
+    case "!podemos":
+      msg.channel.sendMessage("Ese partido no existe")
+      break
     case "!quote":
-      quote.getQuote(discord, msg);
-      break;
+      quote.getQuote(discord, msg)
+      break
     case "+quote":
-      quote.addQuote(discord, msg);
-      break;
+      quote.addQuote(discord, msg)
+      break
     case "-quote":
-      quote.delQuote(discord, msg);
-      break;
-    case "!relog":
-      if(this.admin.contains(msg.author.username)) {
-        console.log("!relog called by " + msg.author.username);
-        discord.logout();
-        setTimeout(function() {
-          discord.loginWithToken(token);
-        }, 5000);
-      };
-      break;
+      quote.delQuote(discord, msg)
+      break
     default:
-      discord.sendMessage(msg, "Ese comando no existe");
-      break;
-  };
-};
+      msg.reply("Ese comando no existe")
+      break
+  }
+}
 
-module.exports = CommandHandler;
+module.exports = CommandHandler
