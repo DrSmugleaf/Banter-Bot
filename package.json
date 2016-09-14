@@ -2,9 +2,12 @@
   "name": "banterbot",
   "version": "1.0.0",
   "description": "A Discord bot",
+  "engines": {
+    "node": "6.4.0"
+  },
   "main": "banterbot.js",
   "scripts": {
-    "start": "node banterbot.js",
+    "start": "node --use_strict banterbot.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
