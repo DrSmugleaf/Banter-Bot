@@ -1,5 +1,5 @@
 "use strict"
-const LOADDIR = "../../sounds/"
+const LOADDIR = "./sounds/"
 const winston = require("winston")
 
 class Coult {
@@ -13,7 +13,7 @@ Coult.prototype.trapCard = function(msg) {
   }
   msg.member.voiceChannel.join()
     .then(voiceconnection => voiceconnection.playFile(LOADDIR + "trapcard.mp3", {volume: 0.25}))
-    .catch(wiston.error)
+    .catch(winston.error)
 }
 
 module.exports = Coult
