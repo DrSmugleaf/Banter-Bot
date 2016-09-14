@@ -8,7 +8,7 @@ class Magic8Ball {
   }
 }
 
-Magic8Ball.prototype.answer = function(discord, msg, language) {
+Magic8Ball.prototype.answer = function(msg, language) {
   msg.channel.sendMessage(this.answers[language][Math.floor(Math.random() * this.answers[language].length)])
 }
 

@@ -7,7 +7,10 @@ const Magic8Ball = require("../commands/magic8ball")
 const magic8ball = new Magic8Ball()
 const Quote = require("../commands/quote")
 const quote = new Quote()
+const Seifer = require("../commands/seifer")
+const seifer = new Seifer()
 const token = process.env.DISCORD_TOKEN
+const winston = require("winston")
 
 class CommandHandler {
   constructor() {
@@ -19,7 +22,9 @@ class CommandHandler {
 Palabras entre **[corchetes]** son opcionales
 
 **!help / !ayuda**: Muestra la lista de comandos
+**!ciudadanos**
 **!coult**
+**!diavolo / !seifer / !seif**
 **!erika / !franrosave**
 **!josde**
 **!logoff**: Desactiva el bot
@@ -33,7 +38,9 @@ Palabras entre **[corchetes]** son opcionales
 Words between **[brackets]** are optional
 
 **!help / !ayuda**: Show the list of commands
+**!ciudadanos**
 **!coult**
+**!diavolo / !seifer / !seif**
 **!erika / !franrosave**
 **!josde**
 **!logoff**: Shutdown the bot
@@ -46,21 +53,25 @@ Words between **[brackets]** are optional
   }
 }
 
-CommandHandler.prototype.getCommand = function(discord, msg) {
+CommandHandler.prototype.getCommand = function(msg) {
   let commandtext = msg.content.toLowerCase().split(" ")
   let language = msg.content.includes("-ENGLISH") ? "english" : this.english.contains(msg.author.username) ? "english" : "spanish"
 
   switch(commandtext[0]) {
     case "!color":
     case "!colour":
-      color.change(discord, msg)
+      color.change(msg)
       break
     case "!coult":
       coult.trapCard(msg)
       break
     case "!erika":
     case "!franrosave":
-      msg.channel.sendMessage("I am dropping the bomb")
+      msg.channel.sendMessage("I am dropping the bomb :bomb:")
+        .then(sentmsg => setTimeout(function() {
+          sentmsg.edit("I am dropping the bomb :boom:")
+        }, 1500))
+        .catch(winston.log)
       break
     case "!ayuda":
     case "!help":
@@ -71,13 +82,11 @@ CommandHandler.prototype.getCommand = function(discord, msg) {
       break
     case "!logoff":
       if(this.admin.contains(msg.author.username)) {
-        console.log("!logoff called by " + msg.author.username)
-        discord.destroy()
+        msg.client.destroy()
       }
       break
     case "!logoffvoice":
       if(this.admin.contains(msg.author.username)) {
-        console.log("!logoffvoice called by " + msg.author.username)
         if(msg.member.voiceChannel) {
           msg.member.voiceChannel.leave()
         }
@@ -87,19 +96,25 @@ CommandHandler.prototype.getCommand = function(discord, msg) {
     case "!8":
     case "!8ball":
     case "!magic8":
-      magic8ball.answer(discord, msg, language)
+      magic8ball.answer(msg, language)
       break
     case "!podemos":
+    case "!ciudadanos":
       msg.reply("Ese partido no existe")
       break
     case "!quote":
-      quote.getQuote(discord, msg)
+      quote.getQuote(msg)
       break
     case "+quote":
-      quote.addQuote(discord, msg)
+      quote.addQuote(msg)
       break
     case "-quote":
-      quote.delQuote(discord, msg)
+      quote.delQuote(msg)
+      break
+    case "!seifer":
+    case "!seif":
+    case "!diavolo":
+      seifer.pepe(msg)
       break
     default:
       msg.reply("Ese comando no existe")

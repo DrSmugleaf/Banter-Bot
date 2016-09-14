@@ -9,6 +9,10 @@ const winston = require("winston")
 
 winston.info("Running banterbot.js")
 
+discord.on("error", (e) => {
+  winston.error(e)
+})
+
 discord.on("ready", () => {
   discord.user.setUsername("Banter Bot")
   discord.user.setAvatar(fs.readFileSync("./images/LUL.png"))
@@ -17,7 +21,7 @@ discord.on("ready", () => {
 
 discord.on("message", (msg) => {
   if(msg.author.bot) { return }
-  messagehandler.handleMessage(discord, msg)
+  messagehandler.handleMessage(msg)
 })
 
 discord.login(token)

@@ -8,7 +8,7 @@ class Color {
   constructor() {}
 }
 
-Color.prototype.change = function(discord, msg) {
+Color.prototype.change = function(msg) {
   //let hex = msg.content.substr(msg.content.indexOf(" ") + 1)
   let hex = msg.content.replace("!color", "")
   console.log(hex)

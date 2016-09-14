@@ -1,6 +1,7 @@
 "use strict"
 const pg = require("pg")
 const url = require("url")
+const winston = require("winston")
 
 const params = url.parse(process.env.DATABASE_URL)
 const auth = params.auth.split(":")
@@ -17,7 +18,7 @@ const config = {
 const pool = new pg.Pool(config)
 
 pool.on("error", function(e, client) {
-  console.log("db.js: " + e)
+  winston.error("db.js: " + e)
 })
 
 class DB {
@@ -34,12 +35,12 @@ DB.prototype.query = function(text, values, cb) {
 }
 
 DB.prototype.cleanTable = function(table, cb) {
-  let query = `ALTER TABLE quotes DROP CONSTRAINT quotes_pkey
-CREATE temporary sequence temp_seq
-UPDATE quotes SET id = nextval('temp_seq')
-ALTER TABLE quotes ADD primary key (id)
-DROP sequence temp_seq
-SELECT setval('quotes_id_seq', (SELECT MAX(id) FROM quotes))`
+  let query = `ALTER TABLE quotes DROP CONSTRAINT quotes_pkey;
+CREATE temporary sequence temp_seq;
+UPDATE quotes SET id = nextval('temp_seq');
+ALTER TABLE quotes ADD primary key (id);
+DROP sequence temp_seq;
+SELECT setval('quotes_id_seq', (SELECT MAX(id) FROM quotes));`
   this.query(query, cb)
 }
 

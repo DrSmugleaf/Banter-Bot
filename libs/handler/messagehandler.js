@@ -8,15 +8,15 @@ class MessageHandler {
   constructor() {}
 }
 
-MessageHandler.prototype.handleMessage = function(discord, msg) {
+MessageHandler.prototype.handleMessage = function(msg) {
   switch(msg.content.charAt(0)) {
     case "!":
     case "+":
     case "-":
-      commandhandler.getCommand(discord, msg)
+      commandhandler.getCommand(msg)
       break
     default:
-      translatorhandler.translate(discord, msg, {"general": "spanish", "serbia": "english"})
+      translatorhandler.translate(msg, {"general": "spanish", "serbia": "english"})
       break
   }
 }
