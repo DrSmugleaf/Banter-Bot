@@ -1,1 +1,1 @@
-worker: node --use_strict banterbot.js
+worker: node banterbot.js

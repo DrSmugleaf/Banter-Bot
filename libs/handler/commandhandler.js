@@ -71,7 +71,7 @@ CommandHandler.prototype.getCommand = function(msg) {
         .then(sentmsg => setTimeout(function() {
           sentmsg.edit("I am dropping the bomb :boom:")
         }, 1500))
-        .catch(winston.log)
+        .catch(winston.error)
       break
     case "!ayuda":
     case "!help":
