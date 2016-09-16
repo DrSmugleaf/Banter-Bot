@@ -3,14 +3,18 @@ const DB = require("../util/db.js")
 const db = new DB()
 const winston = require("winston")
 
+function _boldNames(quote) {
+  return quote.replace(/(...\w* - \w*\b.*)/g, "**$1**")
+}
+
 class Quote {
   constructor() {}
 }
 
 Quote.prototype.addQuote = function(msg) {
-  let quote = msg.content.substr(msg.content.indexOf(" ") + 1)
-  if(!!quote) {
-    msg.channel.sendMessage("Quote vacío, a\u00f1ade texto despues del comando")
+  let quote = _boldNames(msg.content.replace("+quote", ""))
+  if(!quote) {
+    msg.channel.sendMessage("Quote vacío, a\u00f1ade texto después del comando")
     return
   }
   db.query("INSERT INTO quotes (text, submitter) VALUES ($1::text, $2::text) RETURNING id", [quote, msg.author.username], "one")
