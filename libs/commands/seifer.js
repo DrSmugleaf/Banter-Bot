@@ -10,7 +10,6 @@ class Seifer {
 
 Seifer.prototype.pepe = function(msg) {
   msg.channel.sendFile(fs.readFileSync("./images/pepe.png"))
-    .then(sentmsg => winston.log(sentmsg.attachments))
     .catch(winston.error)
 }
 

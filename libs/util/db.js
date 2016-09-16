@@ -1,47 +1,38 @@
 "use strict"
-const pg = require("pg")
-const url = require("url")
 const winston = require("winston")
-
-const params = url.parse(process.env.DATABASE_URL)
-const auth = params.auth.split(":")
-const config = {
-  user: auth[0],
-  password: auth[1],
-  host: params.hostname,
-  port: params.port,
-  database: params.pathname.split("/")[1],
-  ssl: true,
-  max: 10,
-  idleTimeoutMillis: 1000,
-}
-const pool = new pg.Pool(config)
-
-pool.on("error", function(e, client) {
-  winston.error("db.js: " + e)
+const PGP = require("pg-promise")({
+  error: (err, e) => {
+    if(err.name === "QueryResultError") { return }
+    winston.error(err)
+  }
+})
+const pgp = new PGP({
+  connectionString: process.env.DATABASE_URL + "?ssl=true"
 })
 
 class DB {
-  constructor() {}
+  constructor() {
+    this.qrm = {
+      one: 1,
+      many: 2,
+      none: 4,
+      any: 6,
+    }
+  }
 }
 
-DB.prototype.query = function(text, values, cb) {
-  pool.connect(function(e, client, done) {
-    client.query(text, values, function(e, result) {
-      done()
-      if(typeof cb === "function") { cb(e, result) }
-    })
-  })
+DB.prototype.query = function(text, values = undefined, mode = "any") {
+  return pgp.query(text, values, this.qrm[mode])
 }
 
-DB.prototype.cleanTable = function(table, cb) {
-  let query = `ALTER TABLE quotes DROP CONSTRAINT quotes_pkey;
-CREATE temporary sequence temp_seq;
-UPDATE quotes SET id = nextval('temp_seq');
-ALTER TABLE quotes ADD primary key (id);
-DROP sequence temp_seq;
-SELECT setval('quotes_id_seq', (SELECT MAX(id) FROM quotes));`
-  this.query(query, cb)
+DB.prototype.cleanTable = function(table) {
+  let query = `ALTER TABLE ${table} DROP CONSTRAINT ${table}_pkey;
+CREATE TEMPORARY SEQUENCE temp_seq;
+UPDATE ${table} SET id = nextval('temp_seq');
+ALTER TABLE ${table} ADD PRIMARY KEY(id);
+DROP SEQUENCE temp_seq;
+SELECT setval('${table}_id_seq', (SELECT MAX(id) FROM ${table}));`
+  pgp.query(query)
 }
 
-module.exports = DB
+module.exports = DB;
