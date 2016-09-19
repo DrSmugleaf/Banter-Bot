@@ -35,4 +35,4 @@ SELECT setval('${table}_id_seq', (SELECT MAX(id) FROM ${table}));`
   pgp.query(query)
 }
 
-module.exports = DB;
+module.exports = DB
