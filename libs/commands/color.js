@@ -49,7 +49,7 @@ class Color {
       americanrose: "#FF033E",
       amethyst: "#9966CC",
       androidgreen: "#A4C639",
-      anti-flashwhite: "#F2F3F4",
+      antiflashwhite: "#F2F3F4",
       antiquebrass: "#CD9575",
       antiquefuchsia: "#915C83",
       antiquewhite: "#FAEBD7",
@@ -68,7 +68,7 @@ class Color {
       aurometalsaurus: "#6E7F80",
       awesome: "#FF2052",
       azure: "#007FFF",
-      azuremist/web: "#F0FFFF",
+      azuremistweb: "#F0FFFF",
       babyblue: "#89CFF0",
       babyblueeyes: "#A1CAF1",
       babypink: "#F4C2C2",
@@ -497,7 +497,7 @@ class Color {
       neoncarrot: "#FFA343",
       neonfuchsia: "#FE59C2",
       neongreen: "#39FF14",
-      non-photoblue: "#A4DDED",
+      nonphotoblue: "#A4DDED",
       northtexasgreen: "#059033",
       oceanboatblue: "#0077BE",
       ochre: "#CC7722",
@@ -599,7 +599,7 @@ class Color {
       pumpkin: "#FF7518",
       purple: "#800080",
       purpleheart: "#69359C",
-      purplemountain'smajesty: "#9D81BA",
+      purplemountainsmajesty: "#9D81BA",
       purplemountainmajesty: "#9678B6",
       purplepizzazz: "#FE4EDA",
       purpletaupe: "#50404D",
@@ -622,7 +622,7 @@ class Color {
       richlilac: "#B666D2",
       richmaroon: "#B03060",
       riflegreen: "#414833",
-      robin'seggblue: "#1FCECB",
+      robinseggblue: "#1FCECB",
       rose: "#FF007F",
       rosebonbon: "#F9429E",
       roseebony: "#674846",
@@ -803,7 +803,7 @@ Color.prototype.change = function(msg) {
 
   var hex = msg.content.toHex()
   if(!hex) {
-    let word = msg.content.replace("!color ", "").replace(/ /g, "").toLowerCase()
+    let word = msg.content.replace("!color ", "").replace(/ |-|'|\/|/g, "").toLowerCase()
     if(objectutil.hasKey(this.colors, word)) {
       _addColor(msg, this.colors[word])
       return
