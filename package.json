@@ -7,7 +7,7 @@
   },
   "main": "banterbot.js",
   "scripts": {
-    "start": "node --use_strict banterbot.js",
+    "start": "nodemon banterbot.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
