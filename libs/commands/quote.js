@@ -5,6 +5,7 @@
 "use strict"
 const DB = require("../util/db.js")
 const db = new DB()
+const winston = require("winston")
 
 function _boldNames(quote) {
   return quote.replace(/(...\w* - \w*\b.*)/g, "**$1**")
@@ -30,11 +31,14 @@ Quote.prototype.delQuote = function(msg) {
       db.cleanTable("quotes")
       msg.channel.sendMessage(`Quote #${data.id} eliminado`)
     })
-    .catch(msg.channel.sendMessage("Número de quote inválido"))
+    .catch(e => {
+      winston.error(e)
+      msg.channel.sendMessage("Número de quote inválido")
+    })
 }
 
 Quote.prototype.getQuote = function(msg) {
-  let id = +msg.content.match(/\d+/g) ? +msg.content.match(/\d+/g) : null
+  let id = +msg.content.match(/\d+/g) ? +msg.content.match(/\d+/g) : undefined
   var query
   var values
   if (isNaN(id)) {
@@ -47,7 +51,10 @@ Quote.prototype.getQuote = function(msg) {
 
   db.query(query, values, "one")
     .then(data => msg.channel.sendMessage(`Quote #${data.id}: ${data.text}`))
-    .catch(msg.channel.sendMessage("Ese quote no existe"))
+    .catch(e => {
+      winston.error(e)
+      msg.channel.sendMessage("Ese quote no existe")
+    })
 }
 
 module.exports = Quote

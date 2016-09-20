@@ -38,6 +38,7 @@ function _removeColor(msg) {
   }).forEach(function(role) {
     role.delete()
   })
+  msg.channel.sendMessage("Quitado color de nombre")
 }
 
 class Color {
@@ -799,8 +800,8 @@ Color.prototype.change = function(msg) {
     return
   }
 
-  let command = msg.content.replace("!color ", "")
-  if(/^\s*$/.test(command)) {
+  let command = msg.content.replace("!color", "")
+  if(!command) {
     _removeColor(msg)
     return
   }
