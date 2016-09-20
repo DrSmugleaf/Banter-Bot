@@ -26,7 +26,7 @@ Palabras entre **[corchetes]** son opcionales
 
 **!help / !ayuda**: Muestra la lista de comandos
 **!ciudadanos**
-**!color / !colour [color]**: Cambia el color de tu nombre con el nombre del color, código hex o código RGB
+**!color / !colour [color | hex | rgb]**: Cambia el color de tu nombre con el nombre del color, código hex o código RGB
 **!coult**
 **!diavolo / !seifer / !seif**
 **!erika / !franrosave**
@@ -43,7 +43,7 @@ Words between **[brackets]** are optional
 
 **!help / !ayuda**: Show the list of commands
 **!ciudadanos**
-**!color / !colour [color]**: Change the color of your name with the name of the color, hex code or rgb code
+**!color / !colour [color | hex | rgb]**: Change the color of your name with the name of the color, hex code or rgb code
 **!coult**
 **!diavolo / !seifer / !seif**
 **!erika / !franrosave**

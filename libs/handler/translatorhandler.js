@@ -7,7 +7,7 @@ const MsTranslator = require("mstranslator")
 const mstranslator = new MsTranslator({
   client_id: process.env.MICROSOFT_KEY,
   client_secret: process.env.MICROSOFT_SECRET
-}, true);
+}, true)
 const winston = require("winston")
 
 class TranslatorHandler {
