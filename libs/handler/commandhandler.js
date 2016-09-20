@@ -1,3 +1,7 @@
+//
+// Copyright (c) 2016 DrSmugleaf
+//
+
 "use strict"
 const Color = require("../commands/color")
 const color = new Color()

@@ -1,3 +1,7 @@
+//
+// Copyright (c) 2016 DrSmugleaf
+//
+
 "use strict"
 require("./libs/util")
 const Discord = require("discord.js")

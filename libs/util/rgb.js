@@ -1,3 +1,7 @@
+//
+// Copyright (c) 2016 DrSmugleaf
+//
+
 "use strict"
 
 function _rgbToHex(r, g, b) {

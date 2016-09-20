@@ -1,3 +1,7 @@
+//
+// Copyright (c) 2016 DrSmugleaf
+//
+
 "use strict"
 const fs = require("fs")
 const winston = require("winston")

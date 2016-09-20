@@ -1,3 +1,7 @@
+//
+// Copyright (c) 2016 DrSmugleaf
+//
+
 "use strict"
 const LOADDIR = "./sounds/"
 const winston = require("winston")

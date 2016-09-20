@@ -1,3 +1,7 @@
+//
+// Copyright (c) 2016 DrSmugleaf
+//
+
 "use strict"
 const translate = require("yandex-translate")(process.env.YANDEX_KEY)
 const winston = require("winston")

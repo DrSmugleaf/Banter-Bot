@@ -1,3 +1,7 @@
+//
+// Copyright (c) 2016 DrSmugleaf
+//
+
 "use strict"
 const CommandHandler = require("./commandhandler")
 const commandhandler = new CommandHandler()

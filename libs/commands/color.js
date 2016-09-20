@@ -1,3 +1,7 @@
+//
+// Copyright (c) 2016 DrSmugleaf
+//
+
 "use strict"
 const ObjectUtil = require("../util/objectutil")
 const objectutil = new ObjectUtil()

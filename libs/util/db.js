@@ -1,3 +1,7 @@
+//
+// Copyright (c) 2016 DrSmugleaf
+//
+
 "use strict"
 const winston = require("winston")
 const PGP = require("pg-promise")({
