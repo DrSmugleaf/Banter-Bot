@@ -18,10 +18,10 @@
   "license": "Apache-2.0",
   "dependencies": {
     "discord.js": "9.2.0",
+    "mstranslator": "2.0.8",
     "pg": "6.1.0",
     "pg-promise": "5.3.3",
-    "winston": "2.2.0",
-    "yandex-translate": "2.1.0"
+    "winston": "2.2.0"
   },
   "devDependencies": {
     "foreman": "^2.0.0",

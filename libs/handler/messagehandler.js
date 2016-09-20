@@ -20,7 +20,7 @@ MessageHandler.prototype.handleMessage = function(msg) {
     commandhandler.getCommand(msg)
     break
   default:
-    translatorhandler.translate(msg, {"general": "spanish", "serbia": "english"})
+    translatorhandler.translate(msg, {"general": "es", "serbia": "en"})
     break
   }
 }

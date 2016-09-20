@@ -3,7 +3,11 @@
 //
 
 "use strict"
-const translate = require("yandex-translate")(process.env.YANDEX_KEY)
+const MsTranslator = require("mstranslator")
+const mstranslator = new MsTranslator({
+  client_id: process.env.MICROSOFT_KEY,
+  client_secret: process.env.MICROSOFT_SECRET
+}, true);
 const winston = require("winston")
 
 class TranslatorHandler {
@@ -15,9 +19,16 @@ TranslatorHandler.prototype.translate = function(msg, opts) {
     let language = opts[msg.channel.name]
     for(let channel in opts) {
       if(opts[channel] == opts[msg.channel.name]) { continue }
-      translate.translate(msg.cleanContent, {from: language, to: opts[channel]}, function(e, res) {
-        if(e) { winston.error(e) }
-        msg.guild.channels.find("name", channel).sendMessage("**" + msg.author.username + "**" + ": " + res.text[0])
+      mstranslator.translate({
+        text: msg.cleanContent,
+        from: language,
+        to: opts[channel]
+      }, function(e, data) {
+        if(e) {
+          winston.error(e)
+          return
+        }
+        msg.guild.channels.find("name", channel).sendMessage(`**${msg.author.username}**: ${data}`)
       })
     }
   }
