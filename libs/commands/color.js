@@ -1,7 +1,6 @@
 "use strict"
 const ObjectUtil = require("../util/objectutil")
 const objectutil = new ObjectUtil()
-const rgb = require("../util/rgb")
 const winston = require("winston")
 
 function _addColor(msg, hex) {
@@ -13,7 +12,7 @@ function _addColor(msg, hex) {
   msg.guild.createRole({
     name: "color-" + msg.author.id,
     color: hex,
-    permissions: [],
+    permissions: []
   })
     .then(role => {
       msg.member.addRole(role.id)
@@ -26,13 +25,13 @@ function _editColor(msg, hex) {
   msg.guild.roles.filter(function(role) {
     return role.name == "color-" + msg.author.id
   }).first().edit({color: hex})
-    .then(role => msg.channel.sendMessage(`Añadido color ${hex}`))
+    .then(msg.channel.sendMessage(`Añadido color ${hex}`))
 }
 
 function _removeColor(msg) {
   msg.guild.roles.filter(function(role) {
     return role.name == "color-" + msg.author.id
-  }).forEach(function(role, index, array) {
+  }).forEach(function(role) {
     role.delete()
   })
 }
@@ -785,7 +784,7 @@ class Color {
       yelloworange: "#FFAE42",
       yellowgreen: "#9ACD32",
       zaffre: "#0014A8",
-      zinnwalditebrown: "#2C1608",
+      zinnwalditebrown: "#2C1608"
     }
   }
 }
@@ -796,14 +795,15 @@ Color.prototype.change = function(msg) {
     return
   }
 
-  if(/^\s*$/.test(msg.content.replace("!color", ""))) {
+  let command = msg.content.replace("!color ", "")
+  if(/^\s*$/.test(command)) {
     _removeColor(msg)
     return
   }
 
-  var hex = msg.content.toHex()
+  var hex = command.toHex()
   if(!hex) {
-    let word = msg.content.replace("!color ", "").replace(/ |-|'|\/|/g, "").toLowerCase()
+    let word = command.replace(/ |-|'|\/|/g, "").toLowerCase()
     if(objectutil.hasKey(this.colors, word)) {
       _addColor(msg, this.colors[word])
       return

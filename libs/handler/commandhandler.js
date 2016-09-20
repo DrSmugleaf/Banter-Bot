@@ -9,7 +9,6 @@ const Quote = require("../commands/quote")
 const quote = new Quote()
 const Seifer = require("../commands/seifer")
 const seifer = new Seifer()
-const token = process.env.DISCORD_TOKEN
 const winston = require("winston")
 
 class CommandHandler {
@@ -60,67 +59,67 @@ CommandHandler.prototype.getCommand = function(msg) {
   let language = msg.content.includes("-ENGLISH") ? "english" : this.english.contains(msg.author.username) ? "english" : "spanish"
 
   switch(commandtext[0]) {
-    case "!color":
-    case "!colour":
-      color.change(msg)
-      break
-    case "!coult":
-      coult.trapCard(msg)
-      break
-    case "!erika":
-    case "!franrosave":
-      msg.channel.sendMessage("I am dropping the bomb :bomb:")
-        .then(sentmsg => setTimeout(function() {
-          sentmsg.edit("I am dropping the bomb :boom:")
-        }, 1500))
-        .catch(winston.error)
-      break
-    case "!ayuda":
-    case "!help":
-      msg.channel.sendMessage(this.helptext[language])
-      break
-    case "!josde":
-      msg.channel.sendMessage("wew")
-      break
-    case "!logoff":
-      if(this.admin.contains(msg.author.username)) {
-        msg.client.destroy()
+  case "!color":
+  case "!colour":
+    color.change(msg)
+    break
+  case "!coult":
+    coult.trapCard(msg)
+    break
+  case "!erika":
+  case "!franrosave":
+    msg.channel.sendMessage("I am dropping the bomb :bomb:")
+      .then(sentmsg => setTimeout(function() {
+        sentmsg.edit("I am dropping the bomb :boom:")
+      }, 1500))
+      .catch(winston.error)
+    break
+  case "!ayuda":
+  case "!help":
+    msg.channel.sendMessage(this.helptext[language])
+    break
+  case "!josde":
+    msg.channel.sendMessage("wew")
+    break
+  case "!logoff":
+    if(this.admin.contains(msg.author.username)) {
+      msg.client.destroy()
+    }
+    break
+  case "!logoffvoice":
+    if(this.admin.contains(msg.author.username)) {
+      if(msg.member.voiceChannel) {
+        msg.member.voiceChannel.leave()
       }
-      break
-    case "!logoffvoice":
-      if(this.admin.contains(msg.author.username)) {
-        if(msg.member.voiceChannel) {
-          msg.member.voiceChannel.leave()
-        }
-      }
-      break
-    case "!magic8ball":
-    case "!8":
-    case "!8ball":
-    case "!magic8":
-      magic8ball.answer(msg, language)
-      break
-    case "!podemos":
-    case "!ciudadanos":
-      msg.reply("Ese partido no existe")
-      break
-    case "!quote":
-      quote.getQuote(msg)
-      break
-    case "+quote":
-      quote.addQuote(msg)
-      break
-    case "-quote":
-      quote.delQuote(msg)
-      break
-    case "!seifer":
-    case "!seif":
-    case "!diavolo":
-      seifer.pepe(msg)
-      break
-    default:
-      msg.reply("Ese comando no existe")
-      break
+    }
+    break
+  case "!magic8ball":
+  case "!8":
+  case "!8ball":
+  case "!magic8":
+    magic8ball.answer(msg, language)
+    break
+  case "!podemos":
+  case "!ciudadanos":
+    msg.reply("Ese partido no existe")
+    break
+  case "!quote":
+    quote.getQuote(msg)
+    break
+  case "+quote":
+    quote.addQuote(msg)
+    break
+  case "-quote":
+    quote.delQuote(msg)
+    break
+  case "!seifer":
+  case "!seif":
+  case "!diavolo":
+    seifer.pepe(msg)
+    break
+  default:
+    msg.reply("Ese comando no existe")
+    break
   }
 }
 

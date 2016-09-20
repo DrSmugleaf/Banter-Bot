@@ -1,4 +1,5 @@
 "use strict"
+require("./libs/util")
 const Discord = require("discord.js")
 const discord = new Discord.Client()
 const fs = require("fs")

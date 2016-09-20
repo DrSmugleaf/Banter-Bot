@@ -1,7 +1,6 @@
 "use strict"
 const DB = require("../util/db.js")
 const db = new DB()
-const winston = require("winston")
 
 function _boldNames(quote) {
   return quote.replace(/(...\w* - \w*\b.*)/g, "**$1**")
@@ -27,26 +26,24 @@ Quote.prototype.delQuote = function(msg) {
       db.cleanTable("quotes")
       msg.channel.sendMessage(`Quote #${data.id} eliminado`)
     })
-    .catch(e => {
-      msg.channel.sendMessage("Número de quote inválido")
-    })
+    .catch(msg.channel.sendMessage("Número de quote inválido"))
 }
 
 Quote.prototype.getQuote = function(msg) {
   let id = +msg.content.match(/\d+/g) ? +msg.content.match(/\d+/g) : null
+  var query
+  var values
   if (isNaN(id)) {
-    var query = "SELECT id, text, submitter FROM quotes OFFSET random() * (SELECT count(*)-1 FROM quotes) LIMIT 1"
-    var values = null
+    query = "SELECT id, text, submitter FROM quotes OFFSET random() * (SELECT count(*)-1 FROM quotes) LIMIT 1"
+    values = null
   } else {
-    var query = "SELECT * FROM quotes WHERE id=$1::int"
-    var values = [id]
+    query = "SELECT * FROM quotes WHERE id=$1::int"
+    values = [id]
   }
 
   db.query(query, values, "one")
     .then(data => msg.channel.sendMessage(`Quote #${data.id}: ${data.text}`))
-    .catch(e => {
-      msg.channel.sendMessage("Ese quote no existe")
-    })
+    .catch(msg.channel.sendMessage("Ese quote no existe"))
 }
 
 module.exports = Quote

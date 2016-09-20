@@ -1,14 +1,13 @@
 "use strict"
 const winston = require("winston")
 const PGP = require("pg-promise")({
-  error: (err, e) => {
+  error: (err) => {
     if(err.name === "QueryResultError") { return }
     winston.error(err)
   }
 })
-const pgp = new PGP({
-  connectionString: process.env.DATABASE_URL + "?ssl=true"
-})
+
+const pgp = new PGP(process.env.DATABASE_URL + "?ssl=true")
 
 class DB {
   constructor() {
@@ -16,7 +15,7 @@ class DB {
       one: 1,
       many: 2,
       none: 4,
-      any: 6,
+      any: 6
     }
   }
 }

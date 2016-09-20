@@ -1,6 +1,4 @@
 "use strict"
-const ArrayUtil = require("../util/arrayutil")
-const arrayutil = new ArrayUtil()
 const fs = require("fs")
 const winston = require("winston")
 

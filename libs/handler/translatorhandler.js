@@ -1,8 +1,5 @@
 "use strict"
-const ArrayUtil = require("../util/arrayutil")
-const arrayutil = new ArrayUtil()
 const translate = require("yandex-translate")(process.env.YANDEX_KEY)
-const key = process.env.YANDEX_KEY
 const winston = require("winston")
 
 class TranslatorHandler {
