@@ -9,6 +9,8 @@ const Coult = require("../commands/coult")
 const coult = new Coult()
 const Magic8Ball = require("../commands/magic8ball")
 const magic8ball = new Magic8Ball()
+const Youtube = require("../commands/youtube")
+const youtube = new Youtube()
 const Quote = require("../commands/quote")
 const quote = new Quote()
 const Seifer = require("../commands/seifer")
@@ -102,6 +104,9 @@ CommandHandler.prototype.getCommand = function(msg) {
   case "!8ball":
   case "!magic8":
     magic8ball.answer(msg, language)
+    break
+  case "!youtube":
+    youtube.main(msg)
     break
   case "!podemos":
   case "!ciudadanos":

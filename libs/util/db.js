@@ -24,7 +24,7 @@ class DB {
   }
 }
 
-DB.prototype.query = function(text, values = undefined, mode = "any") {
+DB.prototype.query = function(text, values = null, mode = "any") {
   return pgp.query(text, values, this.qrm[mode])
 }
 

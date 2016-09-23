@@ -38,10 +38,10 @@ Quote.prototype.delQuote = function(msg) {
 }
 
 Quote.prototype.getQuote = function(msg) {
-  let id = +msg.content.match(/\d+/g) ? +msg.content.match(/\d+/g) : undefined
+  let id = +msg.content.match(/\d+/g) ? +msg.content.match(/\d+/g) : null
   var query
   var values
-  if (isNaN(id)) {
+  if (!id) {
     query = "SELECT id, text, submitter FROM quotes OFFSET random() * (SELECT count(*)-1 FROM quotes) LIMIT 1"
     values = null
   } else {
