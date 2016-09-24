@@ -3,6 +3,7 @@
 //
 
 "use strict"
+const constants = require("../util/constants")
 const Color = require("../commands/color")
 const color = new Color()
 const Coult = require("../commands/coult")
@@ -22,41 +23,6 @@ class CommandHandler {
     this.admin = ["DrSmugleaf"]
     this.muted = []
     this.english = ["Coult909"]
-    this.helptext = []
-    this.helptext.spanish = `Palabras entre **<flechas>** son obligatorias
-Palabras entre **[corchetes]** son opcionales
-
-**!help / !ayuda**: Muestra la lista de comandos
-**!ciudadanos**
-**!color / !colour [color | hex | rgb]**: Cambia el color de tu nombre con el nombre del color, código hex o código RGB
-**!coult**
-**!diavolo / !seifer / !seif**
-**!erika / !franrosave**
-**!josde**
-**!logoff**: Desactiva el bot
-**!logoffvoice**: Saca el bot del canal de voz
-**!magic8ball / !8 / !8ball / !magic8 [pregunta] [-ENGLISH]**: Respuesta de la Bola 8 Mágica
-**!podemos**
-**!quote [número]**: Selecciona un quote al azar o por número
-**+quote <texto>**: Añade un quote
-**-quote <número>**: Elimina un quote`
-    this.helptext.english = `Words between **<arrows>** are required
-Words between **[brackets]** are optional
-
-**!help / !ayuda**: Show the list of commands
-**!ciudadanos**
-**!color / !colour [color | hex | rgb]**: Change the color of your name with the name of the color, hex code or rgb code
-**!coult**
-**!diavolo / !seifer / !seif**
-**!erika / !franrosave**
-**!josde**
-**!logoff**: Shutdown the bot
-**!logoffvoice**: Remove the bot from voice channels
-**!magic8ball / !8 / !8ball / !magic8 [question] [-ENGLISH]**: An answer from the Magic 8 Ball
-**!podemos**
-**!quote [number]**: Select a quote at random or by number
-**+quote <text>**: Add a quote
-**-quote <number>**: Remove a quote`
   }
 }
 
@@ -82,7 +48,7 @@ CommandHandler.prototype.getCommand = function(msg) {
     break
   case "!ayuda":
   case "!help":
-    msg.channel.sendMessage(this.helptext[language])
+    msg.channel.sendMessage(constants.Help[language])
     break
   case "!josde":
     msg.channel.sendMessage("wew")

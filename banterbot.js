@@ -4,6 +4,7 @@
 
 "use strict"
 require("./libs/util")
+const constants = require("./libs/util/constants")
 const Discord = require("discord.js")
 const discord = new Discord.Client()
 const fs = require("fs")
@@ -19,8 +20,8 @@ discord.on("error", (e) => {
 })
 
 discord.on("ready", () => {
-  discord.user.setUsername("Banter Bot")
-  discord.user.setAvatar(fs.readFileSync("./images/LUL.png"))
+  discord.user.setUsername(constants.DefaultOptions.name)
+  discord.user.setAvatar(fs.readFileSync(constants.DefaultOptions.avatar))
     .catch(winston.error)
 })
 
