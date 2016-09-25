@@ -5,9 +5,9 @@
 "use strict"
 const winston = require("winston")
 const PGP = require("pg-promise")({
-  error: (err) => {
-    if(err.name === "QueryResultError") { return }
-    winston.error(err)
+  error: (e) => {
+    if(e.name === "QueryResultError") { return }
+    winston.error(e)
   }
 })
 

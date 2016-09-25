@@ -3,6 +3,7 @@
 //
 
 "use strict"
+const CommandBase = require("./commandbase")
 const constants = require("../util/constants")
 const ObjectUtil = require("../util/objectutil")
 const objectutil = new ObjectUtil()
@@ -42,9 +43,9 @@ function _removeColor(msg) {
   msg.channel.sendMessage("Quitado color de nombre")
 }
 
-class Color {
+class Color extends CommandBase {
   constructor() {
-    this.colors = constants.Colors
+    super()
   }
 }
 
@@ -54,8 +55,10 @@ Color.prototype.change = function(msg) {
     return
   }
 
-  let command = msg.content.replace("!color", "")
-  if(!command) {
+  let command = this.commandtext.replace("!color change")
+  winston.info(command)
+  winston.info(typeof command === "undefined")
+  if(command == "undefined") {
     _removeColor(msg)
     return
   }
@@ -63,8 +66,8 @@ Color.prototype.change = function(msg) {
   var hex = command.toHex()
   if(!hex) {
     let word = command.replace(/ |-|'|\/|/g, "").toLowerCase()
-    if(objectutil.hasKey(this.colors, word)) {
-      _addColor(msg, this.colors[word])
+    if(objectutil.hasKey(constants.colors, word)) {
+      _addColor(msg, constants.colors[word])
       return
     }
     msg.channel.sendMessage("Color no existe o código inválido, formato: Nombre(Inglés) / #RRGGBB / (R,G,B)")

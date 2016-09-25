@@ -4,12 +4,12 @@
 
 "use strict"
 
-exports.DefaultOptions = {
+exports.defaultoptions = {
   name: "Banter Bot",
   avatar: "./images/LUL.png"
 }
 
-exports.Colors = {
+exports.colors = {
   airforceblue: "#5D8AA8",
   aliceblue: "#F0F8FF",
   alizarincrimson: "#E32636",
@@ -758,17 +758,16 @@ exports.Colors = {
   zinnwalditebrown: "#2C1608"
 }
 
-exports.Errors = {
+exports.errors = {
   english: {
 
   },
-
   spanish: {
 
   }
 }
 
-exports.Help = {
+exports.help = {
   english: `Words between **<arrows>** are required
   Words between **[brackets]** are optional
 
@@ -803,4 +802,11 @@ Palabras entre **[corchetes]** son opcionales
 **!quote [número]**: Selecciona un quote al azar o por número
 **+quote <texto>**: Añade un quote
 **-quote <número>**: Elimina un quote`
+}
+
+exports.responses = {
+  MISSING_COMMAND: {
+    english: (command) => `the command ${command} doesn't exist`,
+    spanish: (command) => `el comando ${command} no existe`
+  }
 }

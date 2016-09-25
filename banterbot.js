@@ -20,8 +20,8 @@ discord.on("error", (e) => {
 })
 
 discord.on("ready", () => {
-  discord.user.setUsername(constants.DefaultOptions.name)
-  discord.user.setAvatar(fs.readFileSync(constants.DefaultOptions.avatar))
+  discord.user.setUsername(constants.defaultoptions.name)
+  discord.user.setAvatar(fs.readFileSync(constants.defaultoptions.avatar))
     .catch(winston.error)
 })
 
