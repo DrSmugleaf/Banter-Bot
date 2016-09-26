@@ -6,25 +6,28 @@
 const constants = require("../util/constants")
 
 class CommandBase {
-  constructor(help) {
+  constructor() {
+    this.command
+    this.commands
     this.commandtext
-    this.help = help
+    this.help
     this.language = "english"
-    this.msg
   }
 }
 
 CommandBase.prototype.main = function(msg) {
-  let command = msg.content.toLowerCase().replace(/ {2,}/g, " ").split(" ")
+  this.command = msg.content.toLowerCase().replace(/ {2,}/g, " ").split(" ").slice(0, 2)
   this.commandtext = msg.content.toLowerCase().replace(/ {2,}/g, " ").replace(/^([^ ]+ ){2}/g, "")
   //this.language = "english"
-  this.msg = msg
-  if(this[command[1]]) {
-    return this[command[1]](this.msg)
-  } else if(this.default) {
-    return this.default(this.msg)
+
+  if(this.commands[this.command.join(" ")]) {
+    return this.commands[this.command.join(" ")](msg)
+  } else if(this.commands[this.command[0]]) {
+    return this.commands[this.command[0]](msg)
+  } else if(typeof this.default === "function") {
+    return this.default(msg)
   } else {
-    msg.reply(constants.responses.MISSING_COMMAND[this.language](command.join(" ")))
+    msg.reply(constants.responses.MISSING_COMMAND[this.language](this.command.join(" ")))
   }
 }
 

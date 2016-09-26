@@ -3,6 +3,7 @@
 //
 
 "use strict"
+const CommandBase = require("./commandbase")
 const DB = require("../util/db.js")
 const db = new DB()
 const winston = require("winston")
@@ -11,12 +12,21 @@ function _boldNames(quote) {
   return quote.replace(/(...\w* - \w*\b.*)/g, "**$1**")
 }
 
-class Quote {
-  constructor() {}
+class Quote extends CommandBase {
+  constructor() {
+    super()
+    this.commands = {
+      "!quote": this.get,
+      "+quote": this.add,
+      "-quote": this.del
+    }
+  }
 }
 
-Quote.prototype.addQuote = function(msg) {
-  let quote = _boldNames(msg.content.replace("+quote", ""))
+Quote.prototype.default = function() {}
+
+Quote.prototype.add = function(msg) {
+  let quote = _boldNames(msg.content.replace("+quote ", ""))
   if(!quote) {
     msg.channel.sendMessage("Quote vacío, a\u00f1ade texto después del comando")
     return
@@ -25,7 +35,7 @@ Quote.prototype.addQuote = function(msg) {
     .then(data => msg.channel.sendMessage(`Quote #${data.id} a\u00f1adido`))
 }
 
-Quote.prototype.delQuote = function(msg) {
+Quote.prototype.del = function(msg) {
   db.query("DELETE FROM quotes WHERE id=$1::int RETURNING id", [+msg.content.match(/\d+/g)], "one")
     .then(data => {
       db.cleanTable("quotes")
@@ -37,10 +47,10 @@ Quote.prototype.delQuote = function(msg) {
     })
 }
 
-Quote.prototype.getQuote = function(msg) {
+Quote.prototype.get = function(msg) {
   let id = +msg.content.match(/\d+/g) ? +msg.content.match(/\d+/g) : null
-  var query
-  var values
+  let query
+  let values
   if (!id) {
     query = "SELECT id, text, submitter FROM quotes OFFSET random() * (SELECT count(*)-1 FROM quotes) LIMIT 1"
     values = null

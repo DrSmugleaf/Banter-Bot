@@ -3,14 +3,17 @@
 //
 
 "use strict"
+const CommandBase = require("./commandbase")
 const fs = require("fs")
 const winston = require("winston")
 
-class Seifer {
-  constructor() {}
+class Seifer extends CommandBase {
+  constructor() {
+    super()
+  }
 }
 
-Seifer.prototype.pepe = function(msg) {
+Seifer.prototype.default = function(msg) {
   msg.channel.sendFile(fs.readFileSync("./images/pepe.png"))
     .catch(winston.error)
 }

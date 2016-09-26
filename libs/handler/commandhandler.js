@@ -3,8 +3,8 @@
 //
 
 "use strict"
-const commands = require("../commands")
 const constants = require("../util/constants")
+const commands = require("../commands")
 // const Color = require("../commands/color")
 // const color = new Color()
 // const Coult = require("../commands/coult")
@@ -17,7 +17,6 @@ const constants = require("../util/constants")
 // const quote = new Quote()
 // const Seifer = require("../commands/seifer")
 // const seifer = new Seifer()
-const winston = require("winston")
 
 class CommandHandler {
   constructor() {
@@ -28,11 +27,12 @@ class CommandHandler {
 }
 
 CommandHandler.prototype.getCommand = function(msg) {
-  let commandtext = msg.content.toLowerCase().split(" ")
-  let language = msg.content.includes("-ENGLISH") ? "english" : this.english.contains(msg.author.username) ? "english" : "spanish"
+  let command = msg.content.toLowerCase().split(" ")
 
-  if(commands[commandtext[0].substring(1)]) {
-    commands[commandtext[0].substring(1)].main(msg)
+  if(commands[command[0].substring(1)]) {
+    commands[command[0].substring(1)].main(msg)
+  } else {
+    msg.reply(constants.responses.MISSING_COMMAND["english"](command.join(" ")))
   }
   // switch(commandtext[0]) {
   // case "!color":
