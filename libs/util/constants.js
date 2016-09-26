@@ -769,22 +769,22 @@ exports.errors = {
 
 exports.help = {
   english: `Words between **<arrows>** are required
-  Words between **[brackets]** are optional
+Words between **[brackets]** are optional
 
-  **!help / !ayuda**: Show the list of commands
-  **!ciudadanos**
-  **!color / !colour [color | hex | rgb]**: Change the color of your name with the name of the color, hex code or rgb code
-  **!coult**
-  **!diavolo / !seifer / !seif**
-  **!erika / !franrosave**
-  **!josde**
-  **!logoff**: Shutdown the bot
-  **!logoffvoice**: Remove the bot from voice channels
-  **!magic8ball / !8 / !8ball / !magic8 [question] [-ENGLISH]**: An answer from the Magic 8 Ball
-  **!podemos**
-  **!quote [number]**: Select a quote at random or by number
-  **+quote <text>**: Add a quote
-  **-quote <number>**: Remove a quote`,
+**!help / !ayuda**: Show the list of commands
+**!ciudadanos**
+**!color / !colour [color | hex | rgb]**: Change the color of your name with the name of the color, hex code or rgb code
+**!coult**
+**!diavolo / !seifer / !seif**
+**!erika / !franrosave**
+**!josde**
+**!logoff**: Shutdown the bot
+**!logoffvoice**: Remove the bot from voice channels
+**!magic8ball / !8 / !8ball / !magic8 [question] [-ENGLISH]**: An answer from the Magic 8 Ball
+**!podemos**
+**!quote [number]**: Select a quote at random or by number
+**+quote <text>**: Add a quote
+**-quote <number>**: Remove a quote`,
   spanish: `Palabras entre **<flechas>** son obligatorias
 Palabras entre **[corchetes]** son opcionales
 

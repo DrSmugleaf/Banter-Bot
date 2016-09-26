@@ -4,6 +4,7 @@
 
 "use strict"
 const constants = require("../util/constants")
+const winston = require("winston")
 
 class CommandBase {
   constructor() {
@@ -12,6 +13,7 @@ class CommandBase {
     this.commandtext
     this.help
     this.language = "english"
+    this.winston = winston
   }
 }
 
@@ -20,11 +22,11 @@ CommandBase.prototype.main = function(msg) {
   this.commandtext = msg.content.toLowerCase().replace(/ {2,}/g, " ").replace(/^([^ ]+ ){2}/g, "")
   //this.language = "english"
 
-  if(this.commands[this.command.join(" ")]) {
+  if(this.commands && this.commands[this.command.join(" ")]) {
     return this.commands[this.command.join(" ")](msg)
-  } else if(this.commands[this.command[0]]) {
+  } else if(this.commands && this.commands[this.command[0]]) {
     return this.commands[this.command[0]](msg)
-  } else if(typeof this.default === "function") {
+  } else if(this.default) {
     return this.default(msg)
   } else {
     msg.reply(constants.responses.MISSING_COMMAND[this.language](this.command.join(" ")))
