@@ -32,7 +32,7 @@ CommandHandler.prototype.getCommand = function(msg) {
   if(commands[command[0].substring(1)]) {
     commands[command[0].substring(1)].main(msg)
   } else {
-    msg.reply(constants.responses.MISSING_COMMAND["english"](command.join(" ")))
+    msg.reply(constants.errors.MISSING_COMMAND["english"](command.join(" ")))
   }
   // switch(commandtext[0]) {
   // case "!color":
