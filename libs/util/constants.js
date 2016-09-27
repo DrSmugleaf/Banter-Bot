@@ -758,6 +758,18 @@ exports.colors = {
   zinnwalditebrown: "#2C1608"
 }
 
+exports.commands = {
+  color: ["color", "colour"],
+  coult: ["coult"],
+  erika: ["erika", "franrosave"],
+  help: ["ayuda", "help"],
+  josde: ["josde"],
+  magic8ball: ["8", "8ball", "magic8", "magic8ball"],
+  quote: ["quote"],
+  seifer: ["diavolo", "seif", "seifer"],
+  youtube: ["youtube"]
+}
+
 exports.errors = {
   MISSING_COMMAND: {
     english: (command) => `the command ${command} doesn't exist`,
