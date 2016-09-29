@@ -29,7 +29,7 @@ CommandBase.prototype.main = function(msg) {
   } else if(this.default) {
     return this.default(msg)
   } else {
-    msg.reply(constants.errors.MISSING_COMMAND[this.language](this.command.join(" ")))
+    msg.reply(constants.responses.MISSING_COMMAND[this.language](this.command.join(" ")))
   }
 }
 

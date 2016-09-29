@@ -13,7 +13,7 @@ class Help extends CommandBase {
 }
 
 Help.prototype.default = function(msg) {
-  msg.channel.sendMessage(constants.help["english"])
+  msg.channel.sendMessage(constants.responses.help["english"])
 }
 
 module.exports = Help

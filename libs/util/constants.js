@@ -770,15 +770,35 @@ exports.commands = {
   youtube: ["youtube"]
 }
 
-exports.errors = {
-  MISSING_COMMAND: {
-    english: (command) => `the command ${command} doesn't exist`,
-    spanish: (command) => `el comando ${command} no existe`
-  }
-}
+exports.responses = {
+  COLOR: {
+    ADDED: {
+      english: (hex) => `Added name color ${hex}`,
+      spanish: (hex) => `Añadido color de nombre ${hex}`
+    },
+    INVALID: {
+      english: "Color doesn't exist or invalid code. Format: !color Name(English) / #RRGGBB / (R,G,B)",
+      spanish: "Color no existe o código inválido. Formato: !color Nombre(Inglés) / #RRGGBB / (R,G,B)"
+    },
+    REMOVED: {
+      english: "Removed name color",
+      spanish: "Quitado color de nombre"
+    }
+  },
 
-exports.help = {
-  english: `Words between **<arrows>** are required
+  ERIKA: {
+    BEFORE: {
+      english: "I am dropping the bomb :bomb:",
+      spanish: "I am dropping the bomb :bomb:"
+    },
+    AFTER: {
+      english: "I am dropping the bomb :boom:",
+      spanish: "I am dropping the bomb :boom:"
+    }
+  },
+
+  HELP: {
+    english: `Words between **<arrows>** are required
 Words between **[brackets]** are optional
 
 **!help / !ayuda**: Show the list of commands
@@ -795,7 +815,7 @@ Words between **[brackets]** are optional
 **!quote [number]**: Select a quote at random or by number
 **+quote <text>**: Add a quote
 **-quote <number>**: Remove a quote`,
-  spanish: `Palabras entre **<flechas>** son obligatorias
+    spanish: `Palabras entre **<flechas>** son obligatorias
 Palabras entre **[corchetes]** son opcionales
 
 **!help / !ayuda**: Muestra la lista de comandos
@@ -812,11 +832,48 @@ Palabras entre **[corchetes]** son opcionales
 **!quote [número]**: Selecciona un quote al azar o por número
 **+quote <texto>**: Añade un quote
 **-quote <número>**: Elimina un quote`
-}
+  },
 
-exports.responses = {
+  JOSDE: {
+    english: "wew",
+    spanish: "wew"
+  },
+
   MAGIC8BALL: {
     english: ["It is certain", "It is decidedly so", "Without a doubt", "Yes, definitely", "You may rely on it", "As I see it, yes", "Most likely", "Outlook good", "Yes", "Signs point to yes", "Reply hazy try again", "Ask again later", "Better not tell you now", "Cannot predict now", "Concentrate and ask again", "Don't count on it", "My reply is no", "My sources say no", "Outlook not so good", "Very doubtful"],
     spanish: ["En mi opinión, sí", "Es cierto", "Es decididamente así", "Probablemente", "Buen pronóstico", "Todo apunta a que sí", "Sin duda", "Sí", "Sí - definitivamente", "Debes confiar en ello", "Respuesta vaga, vuelve a intentarlo", "Pregunta en otro momento", "Será mejor que no te lo diga ahora", "No puedo predecirlo ahora", "Concéntrate y vuelve a preguntar", "No cuentes con ello", "Mi respuesta es no", "Mis fuentes me dicen que no", "Las perspectivas no son buenas", "Muy dudoso"]
+  },
+
+  MISSING_COMMAND: {
+    english: (command) => `the command ${command} doesn't exist`,
+    spanish: (command) => `el comando ${command} no existe`
+  },
+
+  NOT_A_SERVER: {
+    english: "Use the command in a server chat",
+    spanish: "Usa el comando en el chat de un servidor"
+  },
+
+  QUOTE: {
+    ADDED: {
+      english: (number) => `Quote #${number} added`,
+      spanish: (number) => `Quote #${number} a\u00f1adido`
+    },
+    EMPTY: {
+      english: "Quote empty, add text after the command",
+      spanish: "Quote vacío, a\u00f1ade texto después del comando"
+    },
+    INVALID: {
+      english: "Invalid quote number",
+      spanish: "Número de quote inválido"
+    },
+    MISSING: {
+      english: "That quote doesn't exist",
+      spanish: "Ese quote no existe"
+    },
+    REMOVED: {
+      english: (number) => `Quote #${number} removed`,
+      spanish: (number) => `Quote #${number} eliminado`
+    }
   }
 }
