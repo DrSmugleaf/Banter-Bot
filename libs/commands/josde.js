@@ -4,6 +4,7 @@
 
 "use strict"
 const CommandBase = require("./commandbase")
+const constants = require("../util/constants")
 
 class Josde extends CommandBase {
   constructor() {
@@ -12,7 +13,7 @@ class Josde extends CommandBase {
 }
 
 Josde.prototype.default = function(msg) {
-  msg.channel.sendMessage("wew")
+  msg.channel.sendMessage(constants.responses.JOSDE[this.language])
 }
 
 module.exports = Josde

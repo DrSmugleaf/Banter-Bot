@@ -4,6 +4,7 @@
 
 "use strict"
 const CommandBase = require("./commandbase")
+const constants = require("../util/constants")
 const DB = require("../util/db.js")
 const db = new DB()
 const winston = require("winston")
@@ -28,22 +29,22 @@ Quote.prototype.default = function() {}
 Quote.prototype.add = function(msg) {
   let quote = _boldNames(msg.content.replace("+quote ", ""))
   if(!quote) {
-    msg.channel.sendMessage("Quote vacío, a\u00f1ade texto después del comando")
+    msg.channel.sendMessage(constants.responses.QUOTE.EMPTY[this.language])
     return
   }
   db.query("INSERT INTO quotes (text, submitter) VALUES ($1::text, $2::text) RETURNING id", [quote, msg.author.username], "one")
-    .then(data => msg.channel.sendMessage(`Quote #${data.id} a\u00f1adido`))
+    .then(data => msg.channel.sendMessage(constants.responses.QUOTE.ADDED[this.language](data.id)))
 }
 
 Quote.prototype.del = function(msg) {
   db.query("DELETE FROM quotes WHERE id=$1::int RETURNING id", [+msg.content.match(/\d+/g)], "one")
     .then(data => {
       db.cleanTable("quotes")
-      msg.channel.sendMessage(`Quote #${data.id} eliminado`)
+      msg.channel.sendMessage(constants.responses.QUOTE.REMOVED[this.language](data.id))
     })
     .catch(e => {
       winston.error(e)
-      msg.channel.sendMessage("Número de quote inválido")
+      msg.channel.sendMessage(constants.responses.QUOTE.INVALID[this.language])
     })
 }
 
@@ -60,10 +61,10 @@ Quote.prototype.get = function(msg) {
   }
 
   db.query(query, values, "one")
-    .then(data => msg.channel.sendMessage(`Quote #${data.id}: ${data.text}`))
+    .then(data => msg.channel.sendMessage(constants.responses.QUOTE.GET[this.language](data.id, data.text)))
     .catch(e => {
       winston.error(e)
-      msg.channel.sendMessage("Ese quote no existe")
+      msg.channel.sendMessage(constants.responses.QUOTE.MISSING[this.language])
     })
 }
 

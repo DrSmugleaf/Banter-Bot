@@ -854,6 +854,11 @@ Palabras entre **[corchetes]** son opcionales
     spanish: "Usa el comando en el chat de un servidor"
   },
 
+  NOT_A_VOICE_CHANNEL: {
+    english: "You arent in a voice channel",
+    spanish: "No estás en un canal de voz"
+  },
+
   QUOTE: {
     ADDED: {
       english: (number) => `Quote #${number} added`,
@@ -862,6 +867,10 @@ Palabras entre **[corchetes]** son opcionales
     EMPTY: {
       english: "Quote empty, add text after the command",
       spanish: "Quote vacío, a\u00f1ade texto después del comando"
+    },
+    GET: {
+      english: (number, text) => `Quote #${number}: ${text}`,
+      spanish: (number, text) => `Quote #${number}: ${text}`
     },
     INVALID: {
       english: "Invalid quote number",
@@ -874,6 +883,13 @@ Palabras entre **[corchetes]** son opcionales
     REMOVED: {
       english: (number) => `Quote #${number} removed`,
       spanish: (number) => `Quote #${number} eliminado`
+    }
+  },
+
+  YOUTUBE: {
+    INVALID: {
+      english: "Invalid URL. Format: !youtube play URL",
+      spanish: "URL inválido. Formato: !youtube play URL"
     }
   }
 }

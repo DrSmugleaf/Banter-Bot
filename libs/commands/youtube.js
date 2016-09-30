@@ -4,6 +4,7 @@
 
 "use strict"
 const CommandBase = require("./commandbase")
+const constants = require("../util/constants")
 const https = require("https")
 const streamoptions = {seek: 0, volume: 0.25}
 const validurl = require("valid-url")
@@ -18,7 +19,7 @@ class Youtube extends CommandBase {
 
 Youtube.prototype.play = function(msg) {
   if(!msg.member.voiceChannel) {
-    msg.reply("No estás en un canal de voz")
+    msg.reply(constants.responses.NOT_A_VOICE_CHANNEL[this.language])
     return
   }
 
@@ -37,7 +38,7 @@ Youtube.prototype.play = function(msg) {
       }
     })
   } else {
-    msg.reply("URL inválido, formato: !youtube play URL")
+    msg.reply(constants.responses.YOUTUBE.INVALID[this.language])
     return
   }
 }

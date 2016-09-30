@@ -4,6 +4,7 @@
 
 "use strict"
 const CommandBase = require("./commandbase")
+const constants = require("../util/constants")
 const LOADDIR = "./sounds/"
 const winston = require("winston")
 
@@ -15,7 +16,7 @@ class Coult extends CommandBase {
 
 Coult.prototype.default = function(msg) {
   if(!msg.member.voiceChannel) {
-    msg.reply("No estás en un canal de voz")
+    msg.reply(constants.responses.NOT_A_VOICE_CHANNEL[this.language])
     return
   }
   msg.member.voiceChannel.join()
