@@ -18,6 +18,10 @@ class Youtube extends CommandBase {
 }
 
 Youtube.prototype.play = function(msg) {
+  if(!msg.guild || !msg.guild.available) {
+    msg.channel.sendMessage(constants.responses.NOT_A_SERVER(this.language))
+    return
+  }
   if(!msg.member.voiceChannel) {
     msg.reply(constants.responses.NOT_A_VOICE_CHANNEL[this.language])
     return
