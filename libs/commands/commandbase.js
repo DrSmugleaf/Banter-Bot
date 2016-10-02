@@ -12,7 +12,6 @@ class CommandBase {
     this.commands
     this.commandtext
     this.help
-    this.language = "english"
     this.winston = winston
   }
 }
@@ -20,7 +19,7 @@ class CommandBase {
 CommandBase.prototype.main = function(msg) {
   this.command = msg.content.toLowerCase().replace(/ {2,}/g, " ").split(" ").slice(0, 2)
   this.commandtext = msg.content.toLowerCase().replace(/ {2,}/g, " ").replace(/^([^ ]+ ){2}/g, "")
-  //this.language = "english"
+  msg.language = "english"
 
   if(this.commands && this.commands[this.command.join(" ")]) {
     return this.commands[this.command.join(" ")](msg)
@@ -29,7 +28,7 @@ CommandBase.prototype.main = function(msg) {
   } else if(this.default) {
     return this.default(msg)
   } else {
-    msg.reply(constants.responses.MISSING_COMMAND[this.language](this.command.join(" ")))
+    msg.reply(constants.responses.MISSING_COMMAND[msg.language](this.command.join(" ")))
   }
 }
 

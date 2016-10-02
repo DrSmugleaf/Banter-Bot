@@ -16,7 +16,7 @@ class Coult extends CommandBase {
 
 Coult.prototype.default = function(msg) {
   if(!msg.member.voiceChannel) {
-    msg.reply(constants.responses.NOT_A_VOICE_CHANNEL[this.language])
+    msg.reply(constants.responses.NOT_A_VOICE_CHANNEL[msg.language])
     return
   }
   msg.member.voiceChannel.join()

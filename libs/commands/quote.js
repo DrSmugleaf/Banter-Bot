@@ -29,22 +29,22 @@ Quote.prototype.default = function() {}
 Quote.prototype.add = function(msg) {
   let quote = _boldNames(msg.content.replace("+quote ", ""))
   if(!quote) {
-    msg.channel.sendMessage(constants.responses.QUOTE.EMPTY[this.language])
+    msg.channel.sendMessage(constants.responses.QUOTE.EMPTY[msg.language])
     return
   }
   db.query("INSERT INTO quotes (text, submitter) VALUES ($1::text, $2::text) RETURNING id", [quote, msg.author.username], "one")
-    .then(data => msg.channel.sendMessage(constants.responses.QUOTE.ADDED[this.language](data.id)))
+    .then(data => msg.channel.sendMessage(constants.responses.QUOTE.ADDED[msg.language](data.id)))
 }
 
 Quote.prototype.del = function(msg) {
   db.query("DELETE FROM quotes WHERE id=$1::int RETURNING id", [+msg.content.match(/\d+/g)], "one")
     .then(data => {
       db.cleanTable("quotes")
-      msg.channel.sendMessage(constants.responses.QUOTE.REMOVED[this.language](data.id))
+      msg.channel.sendMessage(constants.responses.QUOTE.REMOVED[msg.language](data.id))
     })
     .catch(e => {
       winston.error(e)
-      msg.channel.sendMessage(constants.responses.QUOTE.INVALID[this.language])
+      msg.channel.sendMessage(constants.responses.QUOTE.INVALID[msg.language])
     })
 }
 
@@ -61,10 +61,10 @@ Quote.prototype.get = function(msg) {
   }
 
   db.query(query, values, "one")
-    .then(data => msg.channel.sendMessage(constants.responses.QUOTE.GET[this.language](data.id, data.text)))
+    .then(data => msg.channel.sendMessage(constants.responses.QUOTE.GET[msg.language](data.id, data.text)))
     .catch(e => {
       winston.error(e)
-      msg.channel.sendMessage(constants.responses.QUOTE.MISSING[this.language])
+      msg.channel.sendMessage(constants.responses.QUOTE.MISSING[msg.language])
     })
 }
 

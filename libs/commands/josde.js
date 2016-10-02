@@ -13,7 +13,7 @@ class Josde extends CommandBase {
 }
 
 Josde.prototype.default = function(msg) {
-  msg.channel.sendMessage(constants.responses.JOSDE[this.language])
+  msg.channel.sendMessage(constants.responses.JOSDE[msg.language])
 }
 
 module.exports = Josde

@@ -13,9 +13,9 @@ class Erika extends CommandBase {
 }
 
 Erika.prototype.default = function(msg) {
-  msg.channel.sendMessage(constants.responses.ERIKA.BEFORE[this.language])
+  msg.channel.sendMessage(constants.responses.ERIKA.BEFORE[msg.language])
     .then(sentmsg => setTimeout(function() {
-      sentmsg.edit(constants.responses.ERIKA.AFTER[this.language])
+      sentmsg.edit(constants.responses.ERIKA.AFTER[msg.language])
     }, 1500))
     .catch(this.winston.error)
 }

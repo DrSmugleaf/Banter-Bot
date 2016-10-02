@@ -22,7 +22,7 @@ function _addColor(msg, hex) {
   })
     .then(role => {
       msg.member.addRole(role.id)
-      msg.channel.sendMessage(constants.responses.COLOR.ADDED[this.language](hex))
+      msg.channel.sendMessage(constants.responses.COLOR.ADDED[msg.language](hex))
     })
     .catch(winston.error)
 }
@@ -31,7 +31,7 @@ function _editColor(msg, hex) {
   msg.guild.roles.filter(function(role) {
     return role.name == "color-" + msg.author.id
   }).first().edit({color: hex})
-    .then(msg.channel.sendMessage(constants.responses.COLOR.ADDED[this.language](hex)))
+    .then(msg.channel.sendMessage(constants.responses.COLOR.ADDED[msg.language](hex)))
 }
 
 function _removeColor(msg) {
@@ -40,7 +40,7 @@ function _removeColor(msg) {
   }).forEach(function(role) {
     role.delete()
   })
-  msg.channel.sendMessage(constants.responses.COLOR.REMOVED[this.language])
+  msg.channel.sendMessage(constants.responses.COLOR.REMOVED[msg.language])
 }
 
 class Color extends CommandBase {
@@ -51,7 +51,7 @@ class Color extends CommandBase {
 
 Color.prototype.change = function(msg) {
   if(!msg.guild || !msg.guild.available) {
-    msg.channel.sendMessage(constants.responses.NOT_A_SERVER(this.language))
+    msg.channel.sendMessage(constants.responses.NOT_A_SERVER(msg.language))
     return
   }
 
@@ -70,7 +70,7 @@ Color.prototype.change = function(msg) {
       _addColor(msg, constants.colors[word])
       return
     }
-    msg.channel.sendMessage(constants.responses.COLOR.INVALID[this.language])
+    msg.channel.sendMessage(constants.responses.COLOR.INVALID[msg.language])
     return
   } else {
     _addColor(msg, hex)

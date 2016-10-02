@@ -19,11 +19,11 @@ class Youtube extends CommandBase {
 
 Youtube.prototype.play = function(msg) {
   if(!msg.guild || !msg.guild.available) {
-    msg.channel.sendMessage(constants.responses.NOT_A_SERVER(this.language))
+    msg.channel.sendMessage(constants.responses.NOT_A_SERVER(msg.language))
     return
   }
   if(!msg.member.voiceChannel) {
-    msg.reply(constants.responses.NOT_A_VOICE_CHANNEL[this.language])
+    msg.reply(constants.responses.NOT_A_VOICE_CHANNEL[msg.language])
     return
   }
 
@@ -42,7 +42,7 @@ Youtube.prototype.play = function(msg) {
       }
     })
   } else {
-    msg.reply(constants.responses.YOUTUBE.INVALID[this.language])
+    msg.reply(constants.responses.YOUTUBE.INVALID[msg.language])
     return
   }
 }
