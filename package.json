@@ -21,6 +21,7 @@
     "mstranslator": "2.0.8",
     "pg": "6.1.0",
     "pg-promise": "5.3.3",
+    "request": "2.75.0",
     "valid-url": "1.0.9",
     "winston": "2.2.0",
     "ytdl-core": "0.7.18"

@@ -759,6 +759,7 @@ exports.colors = {
 }
 
 exports.commands = {
+  avatar: ["avatar", "image"],
   color: ["color", "colour"],
   coult: ["coult"],
   erika: ["erika", "franrosave"],
