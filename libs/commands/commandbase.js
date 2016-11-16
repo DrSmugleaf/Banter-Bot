@@ -4,7 +4,6 @@
 
 "use strict"
 const constants = require("../util/constants")
-const winston = require("winston")
 
 class CommandBase {
   constructor() {
@@ -12,13 +11,12 @@ class CommandBase {
     this.commands
     this.commandtext
     this.help
-    this.winston = winston
   }
 }
 
 CommandBase.prototype.main = function(msg) {
-  this.command = msg.content.toLowerCase().replace(/ {2,}/g, " ").split(" ").slice(0, 2)
-  this.commandtext = msg.content.toLowerCase().replace(/ {2,}/g, " ").replace(/^([^ ]+ ){2}/g, "")
+  this.command = msg.content.replace(/ {2,}/g, " ").split(" ").slice(0, 2)
+  this.commandtext = msg.content.replace(/ {2,}/g, " ").replace(/^([^ ]+ ){2}/g, "") // Fix removing second word of single word command
   msg.language = "english"
 
   if(this.commands && this.commands[this.command.join(" ")]) {

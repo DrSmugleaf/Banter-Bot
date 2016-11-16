@@ -16,7 +16,7 @@ class Youtube extends CommandBase {
     super()
   }
 }
-
+// recognize !youtube <link> as !youtube play <link>
 Youtube.prototype.play = function(msg) {
   if(!msg.guild || !msg.guild.available) {
     msg.channel.sendMessage(constants.responses.NOT_A_SERVER(msg.language))
@@ -26,7 +26,7 @@ Youtube.prototype.play = function(msg) {
     msg.reply(constants.responses.NOT_A_VOICE_CHANNEL[msg.language])
     return
   }
-
+  // fix crashing with http weblinks
   if(validurl.isUri(this.commandtext[2])) {
     https.get(this.commandtext[2], function(res) {
       if(res.statusCode == 200) {
@@ -48,6 +48,7 @@ Youtube.prototype.play = function(msg) {
 }
 
 Youtube.prototype.pause = function() {
+  // fix this.video.pause() cannot read property pause of undefined
   this.video.pause()
 }
 

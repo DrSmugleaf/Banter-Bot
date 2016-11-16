@@ -766,6 +766,7 @@ exports.commands = {
   help: ["ayuda", "help"],
   josde: ["josde"],
   magic8ball: ["8", "8ball", "magic8", "magic8ball"],
+  markov: ["markov"],
   quote: ["quote"],
   seifer: ["diavolo", "seif", "seifer"],
   youtube: ["youtube"]
