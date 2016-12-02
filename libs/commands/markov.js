@@ -32,7 +32,7 @@ Markov.prototype.generate = function(msg, user = msg.author.username) {
   }
 
   async.whilst(
-    function() { return sentences.length < 1000 && i < 25},
+    function() { return sentences.length < 1000 && i < 25 },
     function(next) {
       winston.info(lastmessageid)
       msg.channel.fetchMessages({limit: 100, before: lastmessageid})

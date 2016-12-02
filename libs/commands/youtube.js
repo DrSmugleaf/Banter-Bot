@@ -49,7 +49,7 @@ Youtube.prototype.play = function(msg) {
 
 Youtube.prototype.pause = function() {
   // fix this.video.pause() cannot read property pause of undefined
-  this.video.pause()
+  msg.guild.player.dispatcher.pause()
 }
 
 module.exports = Youtube
