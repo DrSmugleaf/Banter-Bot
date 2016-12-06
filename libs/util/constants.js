@@ -768,6 +768,7 @@ exports.commands = {
   magic8ball: ["8", "8ball", "magic8", "magic8ball"],
   markov: ["markov"],
   quote: ["quote"],
+  search: ["search", "find"],
   seifer: ["diavolo", "seif", "seifer"],
   youtube: ["youtube"]
 }
