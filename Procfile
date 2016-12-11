@@ -1,1 +1,1 @@
-worker: node banterbot.js
+worker: node --harmony banterbot.js

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "A Discord bot",
   "engines": {
-    "node": "6.4.0"
+    "node": "7.2.1"
   },
   "main": "banterbot.js",
   "scripts": {
@@ -19,8 +19,10 @@
   "dependencies": {
     "async": "2.1.2",
     "discord.js": "10.0.1",
+    "discord.js-commando": "0.6.1",
     "markov": "0.0.7",
     "mstranslator": "2.1.0",
+    "node-opus": "0.2.4",
     "pg": "6.1.0",
     "pg-promise": "5.3.5",
     "request": "2.78.0",
