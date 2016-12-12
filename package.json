@@ -17,18 +17,19 @@
   "author": "DrSmugleaf",
   "license": "Apache-2.0",
   "dependencies": {
-    "async": "2.1.2",
+    "async": "2.1.4",
     "discord.js": "10.0.1",
-    "discord.js-commando": "0.6.1",
+    "discord.js-commando": "0.6.2",
     "markov": "0.0.7",
     "mstranslator": "2.1.0",
     "node-opus": "0.2.4",
-    "pg": "6.1.0",
-    "pg-promise": "5.3.5",
-    "request": "2.78.0",
+    "pg": "6.1.1",
+    "pg-promise": "5.5.0",
+    "request": "2.79.0",
+    "sqlite": "2.2.4",
     "valid-url": "1.0.9",
     "winston": "2.3.0",
-    "ytdl-core": "0.7.19"
+    "ytdl-core": "0.7.20"
   },
   "devDependencies": {
     "benchmark": "^2.1.2",
