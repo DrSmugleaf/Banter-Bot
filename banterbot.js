@@ -16,7 +16,8 @@ require("./libs/util")
 const path = require("path")
 const commando = require("discord.js-commando")
 const client = new commando.Client({
-  owner: "109067752286715904"
+  owner: "109067752286715904",
+  unknownCommandResponse: false
 })
 
 client.on("error", winston.error)
@@ -46,6 +47,7 @@ client.on("error", winston.error)
 
 client.registry
   .registerGroup("misc", "Misc")
+  .registerGroup("youtube", "Youtube")
   .registerDefaults()
   .registerCommandsIn(path.join(__dirname, "libs/commands"))
 
