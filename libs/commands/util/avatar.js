@@ -26,15 +26,17 @@ module.exports = class Avatar extends commando.Command {
     })
   }
 
+  hasPermission(msg) {
+    return msg.author.id === this.client.options.owner
+  }
+
   async run(msg, args) {
     const link = request.get(args.url)
-    if(msg.author.id == 109067752286715904) {
-      request.get(link, function(e, res, body) {
-        if(!e && res.statusCode == 200) {
-          msg.client.user.setAvatar(new Buffer(body))
-            .catch(winston.error)
-        }
-      })
-    }
+    request.get(link, function(e, res, body) {
+      if(!e && res.statusCode == 200) {
+        msg.client.user.setAvatar(new Buffer(body))
+          .catch(winston.error)
+      }
+    })
   }
 }
