@@ -38,16 +38,12 @@ module.exports = class Search extends commando.Command {
 
     msg.reply(`Searching for \`${searchtext}\``)
     async.whilst(
-      function() { return i < 25 },
+      function() { return i < 25 && lastmessageid},
       function(next) {
         msg.channel.fetchMessages({limit: 100, before: lastmessageid})
           .then(messages => {
-            if(!messages.last()) {
-              i = Number.MAX_VALUE
-              next(null, lastmessageid, sentences)
-            }
-            lastmessageid = messages.last().id
-            sentences = sentences.concat(messages.filter(function(value) {
+            lastmessageid = messages.last() ? messages.last().id : null
+            sentences = sentences.concat(messages.filter(value => {
               return value.content.includes(searchtext)
             }))
             i++
