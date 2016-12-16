@@ -3,28 +3,25 @@
 //
 
 "use strict"
-//require("./libs/util")
-//const constants = require("./libs/util/constants")
-//const Discord = require("discord.js")
-//const discord = new Discord.Client()
-//const fs = require("fs")
-//const MessageHandler = require("./libs/handler/messagehandler")
-//const messagehandler = new MessageHandler()
-const token = process.env.DISCORD_TOKEN
-const winston = require("winston")
 require("./libs/util")
-const path = require("path")
 const commando = require("discord.js-commando")
 const client = new commando.Client({
   owner: "109067752286715904",
   unknownCommandResponse: false
 })
+const constants = require("./libs/util/constants")
+const fs = require("fs")
+const path = require("path")
+const token = process.env.DISCORD_TOKEN
+const winston = require("winston")
 
 client.on("error", winston.error)
   .on("warn", winston.warn)
   .on("debug", winston.debug)
   .on("ready", () => {
     winston.info(`Client ready, logged in as ${client.user.username}#${client.user.discriminator} (${client.user.id})`)
+    client.user.setUsername(constants.defaultoptions.name)
+    client.user.setAvatar(fs.readFileSync(constants.defaultoptions.avatar))
   })
   .on("disconnect", () => { winston.warn("Disconnected") })
   .on("reconnect", () => { winston.warn("Reconnecting") })

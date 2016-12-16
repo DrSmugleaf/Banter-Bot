@@ -18,12 +18,14 @@
   "license": "Apache-2.0",
   "dependencies": {
     "async": "2.1.4",
+    "common-tags": "1.4.0",
     "discord.js": "10.0.1",
-    "discord.js-commando": "0.6.2",
+    "discord.js-commando": "0.6.3",
     "markov": "0.0.7",
     "mstranslator": "2.1.0",
     "node-opus": "0.2.4",
-    "pg": "6.1.1",
+    "opusscript": "0.0.1",
+    "pg": "6.1.2",
     "pg-promise": "5.5.0",
     "request": "2.79.0",
     "sqlite": "2.2.4",
@@ -32,7 +34,9 @@
     "ytdl-core": "0.7.20"
   },
   "devDependencies": {
+    "babel-eslint": "^7.1.1",
     "benchmark": "^2.1.2",
+    "eslint": "^3.12.2",
     "foreman": "^2.0.0",
     "nodemon": "^1.11.0"
   }

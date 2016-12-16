@@ -5,7 +5,6 @@
 "use strict"
 const async = require("async")
 const commando = require("discord.js-commando")
-const constants = require("../../util/constants")
 const Discord = require("discord.js")
 const os = require("os")
 const winston = require("winston")
@@ -64,7 +63,7 @@ module.exports = class Search extends commando.Command {
         }
 
         msg.author.sendMessage(res)
-        msg.reply(`Sent you a DM with the results`)
+        msg.reply("Sent you a DM with the results")
       }
     )
   }
