@@ -6,6 +6,7 @@
 require("./libs/util")
 const commando = require("discord.js-commando")
 const client = new commando.Client({
+  invite: "260158980343463937",
   owner: "109067752286715904",
   unknownCommandResponse: false
 })
