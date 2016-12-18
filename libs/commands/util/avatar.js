@@ -20,7 +20,8 @@ module.exports = class Avatar extends commando.Command {
         {
           key: "url",
           prompt: "The url of the image to apply",
-          type: "string"
+          type: "string",
+          default: "http://i.imgur.com/DJcsFvt.png"
         }
       ]
     })
