@@ -13,6 +13,8 @@ const constants = require("./libs/util/constants")
 const fs = require("fs")
 const path = require("path")
 const token = process.env.DISCORD_TOKEN
+const TranslatorHandler = require("./libs/handler/translatorhandler")
+const translatorhandler = new TranslatorHandler()
 const winston = require("winston")
 
 client.on("error", winston.error)
@@ -20,8 +22,6 @@ client.on("error", winston.error)
   .on("debug", winston.debug)
   .on("ready", () => {
     winston.info(`Client ready, logged in as ${client.user.username}#${client.user.discriminator} (${client.user.id})`)
-    client.user.setUsername(constants.defaultoptions.name)
-    client.user.setAvatar(fs.readFileSync(constants.defaultoptions.avatar))
   })
   .on("disconnect", () => { winston.warn("Disconnected") })
   .on("reconnect", () => { winston.warn("Reconnecting") })
@@ -40,6 +40,10 @@ client.on("error", winston.error)
   })
   .on("groupStatusChange", (guild, group, enabled) => {
     winston.info(`Group ${group.id} ${enabled ? "enabled" : "disabled"} ${guild ? `in guild ${guild.name} (${guild.id})` : "globally"}`)
+  })
+  .on("message", msg => {
+    if(msg.author.bot) return
+    translatorhandler.translate(msg, {"general": "es", "serbia": "en"})
   })
 
 client.registry
