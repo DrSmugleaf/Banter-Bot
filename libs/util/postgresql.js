@@ -18,13 +18,6 @@ class PostgreSQLProvider extends commando.SettingProvider {
     super()
     this.db = new PGP(db)
 
-    this.qrm = {
-      one: 1,
-      many: 2,
-      none: 4,
-      any: 6
-    }
-
     Object.defineProperty(this, "client", { value: null, writable: true })
 
     this.settings = new Map()
@@ -40,23 +33,26 @@ class PostgreSQLProvider extends commando.SettingProvider {
     this.client = client
     await this.db.none("CREATE TABLE IF NOT EXISTS settings (guild TEXT PRIMARY KEY, settings TEXT)")
 
-    const rows = await this.db.any("SELECT CAST(guild as TEXT) as guild, settings FROM settings")
-    for(const row of rows) {
-      let settings
-      try {
-        settings = JSON.parse(row.settings)
-      } catch(e) {
-        client.emit("warn", `PostgreSQLProvider couldn't parse the settings stored for guild ${row.guild}`)
-        continue
-      }
+    await this.db.any("SELECT CAST(guild as TEXT) as guild, settings FROM settings")
+      .then(data => {
+        for(let row in data) {
+          let settings
+          try {
+            settings = JSON.parse(data[row].settings)
+          } catch(e) {
+            client.emit("warn", `PostgreSQLProvider couldn't parse the settings stored for guild ${row.guild}`)
+            continue
+          }
 
-      this.settings.set(row.guild || "global", settings)
-      if(row.guild !== "0" && !client.guilds.has(row.guild)) continue
-      this.setupGuild(row.guild || "global", settings)
-    }
+          this.settings.set(row.guild || "global", settings)
+          if(row.guild !== "0" && !client.guilds.has(row.guild)) continue
+          this.setupGuild(row.guild || "global", settings)
+        }
+      })
+      .catch(winston.error)
 
     this.insertOrReplaceStatement = "INSERT INTO settings (guild, settings) VALUES ($1, $2) ON CONFLICT (guild) DO UPDATE SET guild = $1, settings = $2"
-    this.deleteStatement = "DELETE FROM settings WHERE guild = $1~"
+    this.deleteStatement = "DELETE FROM settings WHERE guild = $1"
 
     this.listeners
       .set("commandPrefixChange", (guild, prefix) => this.set(guild, "prefix", prefix))
