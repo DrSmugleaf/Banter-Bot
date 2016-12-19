@@ -10,9 +10,8 @@ const client = new commando.Client({
   owner: "109067752286715904",
   unknownCommandResponse: false
 })
-const constants = require("./libs/util/constants")
-const fs = require("fs")
 const path = require("path")
+const PostgreSQLProvider = require("./libs/util/postgresql")
 const token = process.env.DISCORD_TOKEN
 const TranslatorHandler = require("./libs/handler/translatorhandler")
 const translatorhandler = new TranslatorHandler()
@@ -46,6 +45,10 @@ client.on("error", winston.error)
     if(msg.author.bot) return
     translatorhandler.translate(msg, {"general": "es", "serbia": "en"})
   })
+
+client.setProvider(
+  new PostgreSQLProvider(process.env.DATABASE_URL.includes("?ssl=true") ? process.env.DATABASE_URL : process.env.DATABASE_URL + "?ssl=true")
+).catch(winston.error)
 
 client.registry
   .registerGroup("misc", "Misc")
