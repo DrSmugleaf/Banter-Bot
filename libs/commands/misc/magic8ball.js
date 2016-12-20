@@ -3,8 +3,8 @@
 //
 
 "use strict"
-const constants = require("../../util/constants")
 const commando = require("discord.js-commando")
+const constants = require("../../util/constants")
 
 module.exports = class Magic8Ball extends commando.Command {
   constructor(client) {
