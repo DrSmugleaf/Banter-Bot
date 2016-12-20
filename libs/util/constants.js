@@ -840,6 +840,8 @@ Palabras entre **[corchetes]** son opcionales
   JOSDE: {
     english: "wew",
     spanish: "wew"
+  INFO: {
+    english: "GitHub page: https://github.com/DrSmugleaf/Banter-Bot"
   },
 
   MAGIC8BALL: {
