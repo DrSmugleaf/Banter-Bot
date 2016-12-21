@@ -6,45 +6,56 @@
 require("./libs/util")
 const commando = require("discord.js-commando")
 const client = new commando.Client({
+  commandPrefix: "!",
   invite: "260158980343463937",
   owner: "109067752286715904",
   unknownCommandResponse: false
 })
+const oneLine = require("common-tags").oneLine
 const path = require("path")
 const PostgreSQLProvider = require("./libs/util/postgresql")
 const token = process.env.DISCORD_TOKEN
-const TranslatorHandler = require("./libs/handler/translatorhandler")
-const translatorhandler = new TranslatorHandler()
 const winston = require("winston")
 
-client.on("error", winston.error)
+client
+  .on("error", winston.error)
   .on("warn", winston.warn)
   .on("debug", winston.debug)
   .on("ready", () => {
-    winston.info(`Client ready, logged in as ${client.user.username}#${client.user.discriminator} (${client.user.id})`)
+    winston.info(`Client ready; logged in as ${client.user.username}#${client.user.discriminator} (${client.user.id})`);
   })
-  .on("disconnect", () => { winston.warn("Disconnected") })
-  .on("reconnect", () => { winston.warn("Reconnecting") })
-  .on("commandError", (cmd, e) => {
-    if(e instanceof commando.FriendlyError) return
-    winston.error(`Error in command ${cmd.groupID}:${cmd.memberName}`, e)
+  .on("disconnect", () => { console.warn("Disconnected!"); })
+  .on("reconnect", () => { console.warn("Reconnecting..."); })
+  .on("commandError", (cmd, err) => {
+    if(err instanceof commando.FriendlyError) return;
+    winston.error(`Error in command ${cmd.groupID}:${cmd.memberName}`, err);
   })
   .on("commandBlocked", (msg, reason) => {
-    winston.info(`Command ${msg.command ? `${msg.command.groupID}:${msg.command.memberName}` : ""} blocked; ${reason}`)
+    winston.info(oneLine`
+  		Command ${msg.command ? `${msg.command.groupID}:${msg.command.memberName}` : ""}
+  		blocked; ${reason}
+  	`);
   })
   .on("commandPrefixChange", (guild, prefix) => {
-    winston.info(`Prefix changed to ${prefix || "the default"} ${guild ? `in guild ${guild.name} (${guild.id})` : "globally"}`)
+    winston.info(oneLine`
+  		Prefix ${prefix === "" ? "removed" : `changed to ${prefix || "the default"}`}
+  		${guild ? `in guild ${guild.name} (${guild.id})` : "globally"}.
+  	`);
   })
   .on("commandStatusChange", (guild, command, enabled) => {
-    winston.info(`Command ${command.groupID}:${command.memberName} ${enabled ? "enabled" : "disabled"} ${guild ? `in guild ${guild.name} (${guild.id})` : "globally"}`)
+    winston.info(oneLine`
+  		Command ${command.groupID}:${command.memberName}
+  		${enabled ? "enabled" : "disabled"}
+  		${guild ? `in guild ${guild.name} (${guild.id})` : "globally"}.
+  	`);
   })
   .on("groupStatusChange", (guild, group, enabled) => {
-    winston.info(`Group ${group.id} ${enabled ? "enabled" : "disabled"} ${guild ? `in guild ${guild.name} (${guild.id})` : "globally"}`)
-  })
-  .on("message", msg => {
-    if(msg.author.bot) return
-    translatorhandler.translate(msg, {"general": "es", "serbia": "en"})
-  })
+    winston.info(oneLine`
+  		Group ${group.id}
+  		${enabled ? "enabled" : "disabled"}
+  		${guild ? `in guild ${guild.name} (${guild.id})` : "globally"}.
+  	`);
+  });
 
 client.setProvider(
   new PostgreSQLProvider(process.env.DATABASE_URL.includes("?ssl=true") ? process.env.DATABASE_URL : process.env.DATABASE_URL + "?ssl=true")

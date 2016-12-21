@@ -20,7 +20,7 @@
     "async": "2.1.4",
     "common-tags": "1.4.0",
     "discord.js": "10.0.1",
-    "discord.js-commando": "0.6.3",
+    "discord.js-commando": "0.7.2",
     "markov": "0.0.7",
     "mstranslator": "2.1.0",
     "node-opus": "0.2.4",
