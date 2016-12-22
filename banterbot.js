@@ -11,6 +11,8 @@ const client = new commando.Client({
   owner: "109067752286715904",
   unknownCommandResponse: false
 })
+const MessageHandler = require("./libs/handler/messagehandler")
+const messagehandler = new MessageHandler()
 const oneLine = require("common-tags").oneLine
 const path = require("path")
 const PostgreSQLProvider = require("./libs/util/postgresql")
@@ -24,8 +26,8 @@ client
   .on("ready", () => {
     winston.info(`Client ready; logged in as ${client.user.username}#${client.user.discriminator} (${client.user.id})`);
   })
-  .on("disconnect", () => { console.warn("Disconnected!") })
-  .on("reconnect", () => { console.warn("Reconnecting...") })
+  .on("disconnect", () => { winston.warn("Disconnected!") })
+  .on("reconnect", () => { winston.warn("Reconnecting...") })
   .on("commandError", (cmd, err) => {
     if(err instanceof commando.FriendlyError) return;
     winston.error(`Error in command ${cmd.groupID}:${cmd.memberName}`, err)
@@ -68,6 +70,7 @@ client.setProvider(
 
 client.registry
   .registerGroup("misc", "Misc")
+  .registerGroup("bridge", "Bridge")
   .registerGroup("youtube", "Youtube")
   .registerDefaults()
   .registerCommandsIn(path.join(__dirname, "libs/commands"))
