@@ -8,13 +8,13 @@ class ObjectUtil {
   constructor() {}
 }
 
-ObjectUtil.prototype.hasKey = function(obj, key) {
-  return obj.hasOwnProperty(key)
+ObjectUtil.prototype.hasKey = function(object, key) {
+  return object.hasOwnProperty(key)
 }
 
-ObjectUtil.prototype.hasValue = function(obj, value) {
-  for(let v in obj) {
-    if(value === v) return true
+ObjectUtil.prototype.hasValue = function(object, value) {
+  for(var property in object) {
+    if(object.hasOwnProperty(property) && object[property] === value) return property
   }
 }
 
