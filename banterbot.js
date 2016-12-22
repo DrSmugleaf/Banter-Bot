@@ -58,7 +58,9 @@ client
   });
 
 client.setProvider(
-  new PostgreSQLProvider(process.env.DATABASE_URL.includes("?ssl=true") ? process.env.DATABASE_URL : process.env.DATABASE_URL + "?ssl=true")
+  new commando.SQLiteProvider(new PostgreSQLProvider(
+    process.env.DATABASE_URL.includes("?ssl=true") ?
+      process.env.DATABASE_URL : process.env.DATABASE_URL + "?ssl=true"))
 ).catch(winston.error)
 
 client.registry
