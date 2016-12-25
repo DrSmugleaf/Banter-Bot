@@ -18,6 +18,7 @@ module.exports = class Bridge extends commando.Command {
       memberName: "bridge",
       description: "Bridge channels together, translating messages between them",
       examples: ["bridge general:english games:none", "bridge games:fr offtopic:italian"],
+      guildOnly: true,
       args: [
         {
           key: "channelsToBridge",

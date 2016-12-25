@@ -14,6 +14,7 @@ class Sender {
   constructor() {}
 
   send(msg) {
+    if(!msg.guild) return
     var settings = msg.guild.settings.get("bridged", {})
     if(!msg.author.bot && settings && settings[msg.channel.id]) {
       var channel = settings[msg.channel.id]
