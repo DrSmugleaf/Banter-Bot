@@ -856,7 +856,7 @@ exports.responses = {
   QUOTE: {
     ADDED: {
       english: (number) => `Quote #${number} added`,
-      spanish: (number) => `Quote #${number} a\u00f1adido`
+      spanish: (number) => `Quote #${number} añadido`
     },
     EMPTY: {
       english: "Quote empty, add text after the command",

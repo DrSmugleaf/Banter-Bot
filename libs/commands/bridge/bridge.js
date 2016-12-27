@@ -34,38 +34,10 @@ module.exports = class Bridge extends commando.Command {
               && (constants.languages.hasOwnProperty(language)
                 || objectutil.hasValue(constants.languages, language))
             })
-
-
-
-            // let channels = value.replace(/:\w*/g).split(" ")
-            // let languages = value.replace(/\w*:/g).split(" ")
-            // return channels.every(function(element) {
-            //   return msg.guild.channels.exists("name", element)
-            // })
-
-
-
-            // console.log(channels.every(function(element) {
-            //   return msg.guild.channels.exists("name", element)
-            // }))
-            // return channels.every(function(element) {
-            //   return msg.guild.channels.exists("name", element)
-            // })
-            // &&
-            // languages.every(function(element) {
-            //   return mstranslator.getLanguageNames().includes(element)
-            //   ||
-            //   mstranslator.getLanguagesForTranslate().includes(element)
-            // })
           }
         }
       ]
     })
-
-    // this.bridged = {}
-    // client.guilds.forEach(guild => {
-    //   this.bridged[guild.id] = this.getBridged(guild)
-    // })
   }
 
   async getBridged(guild) {
@@ -74,52 +46,11 @@ module.exports = class Bridge extends commando.Command {
 
   async setBridged(guild, bridged) {
     guild.settings.set("bridged", bridged)
-    // this.bridged[guild.id] = bridged
   }
 
   hasPermission(msg) {
     return msg.member.hasPermission("ADMINISTRATOR")
   }
-
-  // async run(msg, args) {
-  //   const channelsToBridge = args.channelsToBridge.split(" ")
-  //   let settings = msg.guild.settings.get("bridge", [])
-  //   let channelIdsToBridge = []
-  //   for(let i = 0; i < channelsToBridge.length; i++) {
-  //     let channel = msg.guild.channels.find("name", channelsToBridge[i]).id
-  //     channelIdsToBridge.push(channel)
-  //   }
-  //   settings.push(channelIdsToBridge)
-  //   await msg.guild.settings.set("bridge", settings)
-  //
-  //   return msg.reply(`Bridged channels \`${channelsToBridge.join(", ")}\``)
-  // }
-
-  // async run(msg, args) {
-  //   let channels = args.channelsToBridge.split(" ")
-  //   channels.forEach(function(element) {
-  //     let channelname = element.replace(/:\w*/g, "")
-  //     let channelid = msg.guild.channels.find("name", channelname).id
-  //     channels.replace(element, channelid + element.replace(channelname, ""))
-  //   })
-  //
-  //   let bridged = {}
-  //   for(let i = 0; i < channels.length; i++) {
-  //     let otherchannels = channels.slice(channels[i])
-  //     let language = channels[i].replace(/\w*:/g)
-  //     channelsobject[channelid] = {
-  //       name: channelname,
-  //       id: channelid,
-  //       language: language
-  //     }
-  //     channelsobject[channelid].language = language
-  //
-  //     for(let j = 0; j < otherchannels.length; i++) {
-  //       let otherchannel
-  //       channelsobject[channelid][otherchannels[i]]
-  //     }
-  //   }
-  // }
 
   async run(msg, args) {
     var bridged = this.getBridged(msg.guild)

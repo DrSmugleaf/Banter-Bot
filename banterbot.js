@@ -11,6 +11,8 @@ const client = new commando.Client({
   owner: "109067752286715904",
   unknownCommandResponse: false
 })
+const database = process.env.DATABASE_URL.includes("?ssl=true") ?
+                 process.env.DATABASE_URL : process.env.DATABASE_URL + "?ssl=true"
 const MessageHandler = require("./libs/handler/messagehandler")
 const messagehandler = new MessageHandler()
 const oneLine = require("common-tags").oneLine
@@ -62,11 +64,8 @@ client
     messagehandler.handle(msg)
   })
 
-client.setProvider(
-  new commando.SQLiteProvider(new PostgreSQLProvider(
-    process.env.DATABASE_URL.includes("?ssl=true") ?
-      process.env.DATABASE_URL : process.env.DATABASE_URL + "?ssl=true"))
-).catch(winston.error)
+client.setProvider(new commando.SQLiteProvider(new PostgreSQLProvider(database)))
+  .catch(winston.error)
 
 client.registry
   .registerGroup("misc", "Misc")
@@ -76,22 +75,3 @@ client.registry
   .registerCommandsIn(path.join(__dirname, "libs/commands"))
 
 client.login(token)
-
-// winston.info("Running banterbot.js")
-
-// discord.on("error", (e) => {
-//   winston.error(e)
-// })
-//
-// discord.on("ready", () => {
-//   discord.user.setUsername(constants.defaultoptions.name)
-//   discord.user.setAvatar(fs.readFileSync(constants.defaultoptions.avatar))
-//     .catch(winston.error)
-// })
-//
-// discord.on("message", (msg) => {
-//   if(msg.author.bot) { return }
-//   messagehandler.handleMessage(msg)
-// })
-//
-// client.login(token)
