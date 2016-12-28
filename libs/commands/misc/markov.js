@@ -39,11 +39,11 @@ module.exports = class Markov extends commando.Command {
 
     msg.reply(`Gathering messages to simulate \`${subject}\` in this channel, please wait`)
     async.whilst(
-      function() { return lines.length < 1000 && i < 25 && lastmessageid != null },
+      function() { return lines.length < 1500 && i < 30 && lastmessageid != null },
       function(next) {
         msg.channel.fetchMessages({ limit: 100, before: lastmessageid })
           .then(messages => {
-            let filteredmessages = messages.filter(m => m.author.username == subject)
+            let filteredmessages = messages.filter(m => m.author.username.toLowerCase() == subject.toLowerCase())
             lines = lines.concat(filteredmessages.array())
             lastmessageid = messages.last() ? messages.last().id : null
             i++
@@ -55,7 +55,7 @@ module.exports = class Markov extends commando.Command {
         if(e) winston.error(e)
         if(!(lines && lastmessageid)) return msg.reply("There are no messages in this channel from that user")
         markovchain.seed(lines.join(os.EOL), function() {
-          const answer = markovchain.fill(markovchain.pick(), 25).join(" ")
+          const answer = `**${subject} (Markov):** ${markovchain.fill(markovchain.pick(), 25).join(" ")}`
           return msg.channel.sendMessage(answer)
         })
       }
