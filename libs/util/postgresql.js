@@ -4,25 +4,19 @@
 
 // https://github.com/Gawdl3y/discord.js-commando/blob/master/src/providers/sqlite.js
 "use strict"
-const winston = require("winston")
-const PGP = require("pg-promise")({
-  error: (e) => {
-    if(e.name === "QueryResultError") return
-    winston.error(e)
-  }
-})
+const DB = require("./db")
 
-class PostgreSQLProvider {
-  constructor(db) {
-    this.db = new PGP(db)
+class PostgreSQLProvider extends DB {
+  constructor() {
+    super()
   }
 
   run(query) {
-    return this.db.any(query)
+    return this.pgp.any(query)
   }
 
   all(query) {
-    return this.db.any(query)
+    return this.pgp.any(query)
   }
 
   prepare(query) {
@@ -40,7 +34,7 @@ class PostgreSQLProvider {
 
     return {
       run: function(/**/) {
-        that.db.any(query, Array.prototype.slice.call(arguments))
+        that.pgp.any(query, Array.prototype.slice.call(arguments))
       },
       finalize: function() {
         query = null

@@ -11,8 +11,6 @@ const client = new commando.Client({
   owner: "109067752286715904",
   unknownCommandResponse: false
 })
-const database = process.env.DATABASE_URL.includes("?ssl=true") ?
-                 process.env.DATABASE_URL : process.env.DATABASE_URL + "?ssl=true"
 const MessageHandler = require("./libs/handler/messagehandler")
 const messagehandler = new MessageHandler()
 const oneLine = require("common-tags").oneLine
@@ -66,7 +64,7 @@ client
     messagehandler.handle(msg)
   })
 
-client.setProvider(new commando.SQLiteProvider(new PostgreSQLProvider(database)))
+client.setProvider(new commando.SQLiteProvider(new PostgreSQLProvider()))
   .catch(winston.error)
 
 client.registry
