@@ -19,7 +19,7 @@ class Sender {
     if(!msg.author.bot && settings && settings[msg.channel.id]) {
       var channel = settings[msg.channel.id]
       channel.connectedchannels.forEach(function(subchannel) {
-        var discordsubchannel = msg.guild.channels.find("id", subchannel)
+        var discordsubchannel = msg.guild.channels.get(subchannel)
         mstranslator.translate({
           text: msg.cleanContent,
           from: channel.language,
