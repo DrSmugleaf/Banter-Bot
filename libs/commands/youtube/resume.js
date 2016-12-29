@@ -9,7 +9,7 @@ module.exports = class Resume extends commando.Command {
   constructor(client) {
     super(client, {
       name: "resume",
-      aliases: ["resume"],
+      aliases: ["resume", "unpause"],
       group: "youtube",
       memberName: "resume",
       description: "Resume the currently playing video in this server",
