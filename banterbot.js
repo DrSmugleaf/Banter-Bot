@@ -19,6 +19,8 @@ const oneLine = require("common-tags").oneLine
 const path = require("path")
 const PostgreSQLProvider = require("./libs/util/postgresql")
 const token = process.env.DISCORD_TOKEN
+const VoiceAutoChannel = require("./libs/autochannel/voice")
+new VoiceAutoChannel(client)
 const winston = require("winston")
 
 client
@@ -26,12 +28,12 @@ client
   .on("warn", winston.warn)
   .on("debug", winston.debug)
   .on("ready", () => {
-    winston.info(`Client ready; logged in as ${client.user.username}#${client.user.discriminator} (${client.user.id})`);
+    winston.info(`Client ready; logged in as ${client.user.username}#${client.user.discriminator} (${client.user.id})`)
   })
   .on("disconnect", () => { winston.warn("Disconnected!") })
   .on("reconnect", () => { winston.warn("Reconnecting...") })
   .on("commandError", (cmd, err) => {
-    if(err instanceof commando.FriendlyError) return;
+    if(err instanceof commando.FriendlyError) return
     winston.error(`Error in command ${cmd.groupID}:${cmd.memberName}`, err)
   })
   .on("commandBlocked", (msg, reason) => {
@@ -58,7 +60,7 @@ client
   		Group ${group.id}
   		${enabled ? "enabled" : "disabled"}
   		${guild ? `in guild ${guild.name} (${guild.id})` : "globally"}.
-  	`);
+  	`)
   })
   .on("message", (msg) => {
     messagehandler.handle(msg)
