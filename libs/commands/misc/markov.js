@@ -55,7 +55,7 @@ module.exports = class Markov extends commando.Command {
         if(e) winston.error(e)
         if(!(lines && lastmessageid)) return msg.reply("There are no messages in this channel from that user")
         markovchain.seed(lines.join(os.EOL), function() {
-          const answer = `**${subject} (Markov):** ${markovchain.fill(markovchain.pick(), 25).join(" ")}`
+          const answer = `**${subject} (Markov):** ${markovchain.fill(markovchain.pick(), 25).join(" ").replace("@", "@ ")}`
           return msg.channel.sendMessage(answer)
         })
       }
