@@ -4,6 +4,7 @@
 
 "use strict"
 const commando = require("discord.js-commando")
+const moment = require("moment-timezone")
 const stripIndents = require("common-tags").stripIndents
 
 module.exports = class WhoIs extends commando.Command {
@@ -38,10 +39,10 @@ module.exports = class WhoIs extends commando.Command {
         **❯ Member Details**
         ${member.nickname !== null ? ` • Nickname: ${member.nickname}` : " • No Nickname"}
          • Roles: ${member.roles.map(roles => `\`${roles.name}\``).join(", ")}
-         • Joined at: ${member.joinedAt}
+         • Joined at: ${moment.tz(member.joinedAt, process.env.TZ).format("MMMM Do YYYY, HH:MM:SS zZ")}
 
         **❯ User Details**
-         • Created at: ${user.createdAt}${user.bot ? "\n • Is a bot account" : ""}
+         • Created at: ${moment.tz(user.createdAt, process.env.TZ).format("MMMM Do YYYY, HH:MM:SS zZ")}${user.bot ? "\n • Is a bot account" : ""}
          • Status: ${user.presence.status}
          • Game: ${user.presence.game ? user.presence.game.name : "None"}
       `)
