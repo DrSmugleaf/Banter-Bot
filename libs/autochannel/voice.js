@@ -36,19 +36,19 @@ class VoiceAutoChannel {
       const oldGame = oldMember.presence.game
       const newGame = newMember.presence.game
 
-      if(oldGame && oldMember.guild.presences.filter(function(presence) {
+      if(oldGame && oldGame.name && oldMember.guild.presences.filter(function(presence) {
         return presence.game && presence.game.name && oldGame.name && presence.game.name == oldGame.name
       }).size < 2) {
         const oldChannel = oldMember.guild.channels.find("name", `BB-${oldGame.name}`)
-        if(oldChannel && oldChannel.type == "voice" && oldChannel.members.size < 2) {
+        if(oldChannel && oldChannel.type == "voice" && oldChannel.members.size < 1) {
           oldChannel.delete()
         }
       }
 
-      if(newGame && newMember.guild.presences.filter(function(presence) {
+      if(newGame && newGame.name && newMember.guild.presences.filter(function(presence) {
         return presence.game && presence.game.name && newGame.name && presence.game.name == newGame.name
       }).size >= 2) {
-        if(!newMember.guild.channels.exists("name", `BB-${oldGame.name}`)) {
+        if(!newMember.guild.channels.exists("name", `BB-${newGame.name}`)) {
           newMember.guild.createChannel(`BB-${newGame.name}`, "voice")
             .catch(winston.error)
         }
