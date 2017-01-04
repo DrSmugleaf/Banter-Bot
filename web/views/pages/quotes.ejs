@@ -1,0 +1,37 @@
+<!--
+Copyright (c) 2016 DrSmugleaf
+ -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include ../partials/header.ejs %>
+  </head>
+
+  <body>
+
+        <%- include ../partials/nav.ejs %>
+            <li><a href="/">Home</a></li>
+            <li class="active"><a href="/quotes">Quotes</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <div class="container">
+
+      <div class="index-template">
+        <h1>Quote List</h1>
+        <ul class="lead quotes">
+          <% results.forEach(function(r) { %>
+            <%= r.id %> - <%= r.text %><br>
+          <% }) %>
+        <ul>
+      </div>
+
+    </div><!-- /.container -->
+
+
+    <%- include ../partials/footer.ejs %>
+  </body>
+</html>
