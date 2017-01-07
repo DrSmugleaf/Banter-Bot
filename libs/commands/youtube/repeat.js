@@ -36,19 +36,20 @@ module.exports = class Repeat extends commando.Command {
         }
       ]
     })
+
+    this.repeatList = new Map()
   }
 
   async repeat(voiceConnection, url) {
     var stream = ytdl(url, { filter: "audioonly" })
-    voiceConnection.playStream(stream, streamoptions)
-    var dispatcher = voiceConnection.dispatcher
+    var dispatcher = voiceConnection.playStream(stream, streamoptions)
 
-    if(dispatcher) {
-      dispatcher.on("end", () => {
+    this.repeatList.set(voiceConnection.channel.guild, dispatcher)
+    dispatcher.on("end", () => {
+      if(this.repeatList[voiceConnection.channel.guild]) {
         this.repeat(voiceConnection, url)
-      })
-    }
-    return dispatcher
+      }
+    })
   }
 
   async run(msg, args) {

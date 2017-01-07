@@ -22,10 +22,11 @@ module.exports = class Stop extends commando.Command {
     const voiceConnection = msg.guild.voiceConnection
 
     if(voiceConnection) {
-      const dispatcher = msg.guild.voiceConnection.player.dispatcher
+      var dispatcher = voiceConnection.player.dispatcher
 
+      var repeatList = this.client.registry.resolveCommand("youtube:repeat").repeatList
+      if(repeatList[msg.guild]) repeatList.delete(msg.guild)
       dispatcher.end()
-      voiceConnection.dispatcher = null
       return msg.reply("Stopped the current video")
     }
   }
