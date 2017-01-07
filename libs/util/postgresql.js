@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2016 DrSmugleaf
+// Copyright (c) 2016-2017 DrSmugleaf
 //
 
 // https://github.com/Gawdl3y/discord.js-commando/blob/master/src/providers/sqlite.js
