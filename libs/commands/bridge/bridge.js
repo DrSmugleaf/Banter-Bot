@@ -29,10 +29,10 @@ module.exports = class Bridge extends commando.Command {
             let values = value.split(" ")
             return values.length > 1 && values.every(element => {
               let channelname = element.replace(/:\w*/g, "")
-              let language = element.replace(/\w*:/g, "")
+              let language = element.replace(/\w*:/g, "").toLowerCase()
               return msg.guild.channels.exists("name", channelname)
-              && (constants.languages.hasOwnProperty(language)
-                || objectutil.hasValue(constants.languages, language))
+              && (constants.mslanguages.hasOwnProperty(language)
+                || objectutil.hasValue(constants.mslanguages, language))
             })
           }
         }

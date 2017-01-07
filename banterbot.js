@@ -70,6 +70,7 @@ client.setProvider(new commando.SQLiteProvider(new PostgreSQLProvider()))
 client.registry
   .registerGroup("misc", "Misc")
   .registerGroup("bridge", "Bridge")
+  .registerGroup("user", "User")
   .registerGroup("youtube", "Youtube")
   .registerDefaults()
   .registerCommandsIn(path.join(__dirname, "libs/commands"))
