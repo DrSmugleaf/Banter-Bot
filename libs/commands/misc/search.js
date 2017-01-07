@@ -63,7 +63,7 @@ module.exports = class Search extends commando.Command {
         }
 
         msg.author.sendMessage(res)
-        msg.reply("Sent you a DM with the results")
+        return msg.reply("Sent you a DM with the results")
       }
     )
   }

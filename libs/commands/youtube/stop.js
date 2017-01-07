@@ -21,7 +21,7 @@ module.exports = class Stop extends commando.Command {
   async run(msg) {
     if(msg.guild.voiceConnection) {
       msg.guild.voiceConnection.player.dispatcher.end()
-      msg.reply("Stopped the current video")
+      return msg.reply("Stopped the current video")
     }
   }
 }

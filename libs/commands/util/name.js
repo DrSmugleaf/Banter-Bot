@@ -34,5 +34,6 @@ module.exports = class Name extends commando.Command {
     const name = args.name
     msg.client.user.setUsername(name)
       .catch(winston.error)
+    return msg.reply(`Changed the bot's username to ${name}`)
   }
 }

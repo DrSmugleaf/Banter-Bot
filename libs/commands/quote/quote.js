@@ -69,7 +69,7 @@ module.exports = class Quote extends commando.Command {
       })
       .catch(e => {
         winston.error(e)
-        msg.reply(constants.responses.QUOTE.MISSING["english"])
+        return msg.reply(constants.responses.QUOTE.MISSING["english"])
       })
   }
 

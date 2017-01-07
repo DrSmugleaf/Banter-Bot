@@ -21,7 +21,7 @@ module.exports = class Resume extends commando.Command {
   async run(msg) {
     if(msg.guild.voiceConnection) {
       msg.guild.voiceConnection.player.dispatcher.resume()
-      msg.reply("Resumed the current video")
+      return msg.reply("Resumed the current video")
     }
   }
 }

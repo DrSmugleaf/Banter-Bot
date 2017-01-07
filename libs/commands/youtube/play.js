@@ -52,6 +52,7 @@ module.exports = class Play extends commando.Command {
         dispatcher.on("end", () => {
           voiceconnection.disconnect()
         })
+        return msg.reply(`Now playing ${url}`)
       })
       .catch(winston.error)
   }

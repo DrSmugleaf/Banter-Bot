@@ -37,6 +37,7 @@ module.exports = class Avatar extends commando.Command {
       if(!e && res.statusCode == 200) {
         msg.client.user.setAvatar(new Buffer(body))
           .catch(winston.error)
+        return msg.reply(`Changed the bot's image to ${args.url}`)
       }
     })
   }
