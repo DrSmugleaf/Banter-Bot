@@ -3,10 +3,9 @@
 //
 
 "use strict"
-const constants = require("../../util/constants")
 const commando = require("discord.js-commando")
+const constants = require("../../util/constants")
 const request = require("request")
-const streamoptions = {seek: 0, volume: 0.25}
 const validurl = require("valid-url")
 const winston = require("winston")
 const ytdl = require("ytdl-core")
@@ -26,9 +25,9 @@ module.exports = class Play extends commando.Command {
           key: "url",
           prompt: "What video do you want to hear?",
           type: "string",
-          validate: val => function() {
-            if(validurl.isWebUri(val)) {
-              request(val, function(e, res) {
+          validate: url => function() {
+            if(validurl.isWebUri(url)) {
+              request(url, function(e, res) {
                 return !e && res.statusCode == 200
               })
             }
@@ -38,22 +37,64 @@ module.exports = class Play extends commando.Command {
     })
   }
 
+  // async joinVoice(msg) {
+  //   const voiceChannel = msg.member.voiceChannel
+  //
+  //   if(voiceChannel.connection === msg.client.voiceConnection) {
+  //     winston.info(1)
+  //     return msg.client.voiceConnection
+  //   } else {
+  //     voiceChannel.join().then(voiceConnection => {
+  //       winston.info(2)
+  //       return voiceConnection
+  //     }).catch(winston.error)
+  //   }
+  // }
+
+  async joinVoice(msg) {
+    const voiceChannel = msg.member.voiceChannel
+
+    return new Promise(function(resolve, reject) {
+      if(voiceChannel.connection == msg.client.voiceConnection) {
+        resolve(msg.client.voiceConnection)
+      } else {
+        voiceChannel.join().then(voiceConnection => {
+          resolve(voiceConnection)
+        }).catch(reject)
+      }
+    })
+  }
+
   async run(msg, args) {
     if(!msg.member.voiceChannel) {
-      msg.reply(constants.responses.NOT_A_VOICE_CHANNEL["english"])
-      return
+      return msg.reply(constants.responses.NOT_A_VOICE_CHANNEL["english"])
     }
 
     const url = args.url
-    msg.member.voiceChannel.join()
-      .then(voiceconnection => {
-        let stream = ytdl(url, {filter: "audioonly"})
-        let dispatcher = voiceconnection.playStream(stream, streamoptions)
-        dispatcher.on("end", () => {
-          voiceconnection.disconnect()
-        })
-        return msg.reply(`Now playing ${url}`)
+
+    // var voiceConnection = this.joinVoice(msg)
+    var stream = ytdl(url, {filter: "audioonly"})
+    // winston.info(voiceConnection)
+    // var dispatcher = voiceConnection.playStream(
+    //   stream,
+    //   constants.youtube.STREAMOPTIONS
+    // )
+
+    this.joinVoice(msg).then((voiceConnection) => {
+      voiceConnection.playStream(
+        stream,
+        constants.youtube.STREAMOPTIONS
+      ).on("end", () => {
+        voiceConnection.disconnect()
       })
-      .catch(winston.error)
+    }).catch(winston.error)
+
+    // dispatcher.on("end", () => {
+    //   voiceConnection.disconnect()
+    // })
+    stream.on("info", (info) => {
+      console.log(info.title)
+    })
+    return msg.reply(`Now playing ${url}`)
   }
 }

@@ -893,4 +893,8 @@ exports.responses = {
       spanish: "URL inválido. Formato: !youtube play URL"
     }
   }
+},
+
+exports.youtube = {
+  STREAMOPTIONS: { seek: 0, volume: 0.25 }
 }
