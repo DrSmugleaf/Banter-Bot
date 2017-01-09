@@ -37,25 +37,12 @@ module.exports = class Play extends commando.Command {
     })
   }
 
-  // async joinVoice(msg) {
-  //   const voiceChannel = msg.member.voiceChannel
-  //
-  //   if(voiceChannel.connection === msg.client.voiceConnection) {
-  //     winston.info(1)
-  //     return msg.client.voiceConnection
-  //   } else {
-  //     voiceChannel.join().then(voiceConnection => {
-  //       winston.info(2)
-  //       return voiceConnection
-  //     }).catch(winston.error)
-  //   }
-  // }
-
   async joinVoice(msg) {
     const voiceChannel = msg.member.voiceChannel
+    const voiceConnection = msg.client.voiceConnection
 
     return new Promise(function(resolve, reject) {
-      if(voiceChannel.connection == msg.client.voiceConnection) {
+      if(voiceConnection && voiceConnection == voiceChannel.connection) {
         resolve(msg.client.voiceConnection)
       } else {
         voiceChannel.join().then(voiceConnection => {
@@ -71,16 +58,9 @@ module.exports = class Play extends commando.Command {
     }
 
     const url = args.url
+    const stream = ytdl(url, {filter: "audioonly"})
 
-    // var voiceConnection = this.joinVoice(msg)
-    var stream = ytdl(url, {filter: "audioonly"})
-    // winston.info(voiceConnection)
-    // var dispatcher = voiceConnection.playStream(
-    //   stream,
-    //   constants.youtube.STREAMOPTIONS
-    // )
-
-    this.joinVoice(msg).then((voiceConnection) => {
+    this.joinVoice(msg).then(voiceConnection => {
       voiceConnection.playStream(
         stream,
         constants.youtube.STREAMOPTIONS
@@ -89,12 +69,8 @@ module.exports = class Play extends commando.Command {
       })
     }).catch(winston.error)
 
-    // dispatcher.on("end", () => {
-    //   voiceConnection.disconnect()
-    // })
     stream.on("info", (info) => {
-      console.log(info.title)
+      return msg.reply(`Now playing ${info.title}`)
     })
-    return msg.reply(`Now playing ${url}`)
   }
 }
