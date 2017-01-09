@@ -6,7 +6,6 @@
 const commando = require("discord.js-commando")
 const constants = require("../../util/constants")
 const request = require("request")
-const streamoptions = { seek: 0, volume: 0.25 } // TODO: Move to constants
 const validurl = require("valid-url")
 const winston = require("winston")
 const ytdl = require("ytdl-core")
@@ -42,11 +41,13 @@ module.exports = class Repeat extends commando.Command {
 
   async repeat(voiceConnection, url) {
     var stream = ytdl(url, { filter: "audioonly" })
-    var dispatcher = voiceConnection.playStream(stream, streamoptions)
+    var dispatcher = voiceConnection.playStream(stream,
+      constants.youtube.STREAMOPTIONS)
+    var guild = voiceConnection.channel.guild
 
-    this.repeatList.set(voiceConnection.channel.guild, dispatcher)
+    this.repeatList.set(guild, dispatcher)
     dispatcher.on("end", () => {
-      if(this.repeatList[voiceConnection.channel.guild]) {
+      if(this.repeatList[guild]) {
         this.repeat(voiceConnection, url)
       }
     })
@@ -54,9 +55,8 @@ module.exports = class Repeat extends commando.Command {
 
   async run(msg, args) {
     if(!msg.member.voiceChannel) {
-      msg.reply(constants.responses.NOT_A_VOICE_CHANNEL["english"])
-      return
-    } // TODO: Change all not a voice channel responses to return the msg.reply
+      return msg.reply(constants.responses.NOT_A_VOICE_CHANNEL["english"])
+    }
 
     const url = args.url
     msg.member.voiceChannel.join() // TODO: Check if the bot is already in the channel

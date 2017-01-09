@@ -4,6 +4,7 @@
 
 "use strict"
 const commando = require("discord.js-commando")
+const constants = require("../../util/constants")
 
 module.exports = class Pause extends commando.Command {
   constructor(client) {
@@ -19,9 +20,11 @@ module.exports = class Pause extends commando.Command {
   }
 
   async run(msg) {
-    if(msg.guild.voiceConnection) {
-      msg.guild.voiceConnection.player.dispatcher.pause()
-      return msg.reply("Paused the current video")
+    const voiceConnection = msg.guild.voiceConnection
+
+    if(voiceConnection) {
+      voiceConnection.player.dispatcher.pause()
+      return msg.reply(constants.responses.YOUTUBE.PAUSE["english"])
     }
   }
 }

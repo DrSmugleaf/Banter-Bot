@@ -39,7 +39,7 @@ module.exports = class Play extends commando.Command {
 
   async joinVoice(msg) {
     const voiceChannel = msg.member.voiceChannel
-    const voiceConnection = msg.client.voiceConnection
+    const voiceConnection = msg.guild.voiceConnection
 
     return new Promise(function(resolve, reject) {
       if(voiceConnection && voiceConnection == voiceChannel.connection) {

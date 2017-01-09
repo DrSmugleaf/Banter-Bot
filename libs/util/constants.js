@@ -891,6 +891,10 @@ exports.responses = {
     INVALID: {
       english: "Invalid URL. Format: !youtube play URL",
       spanish: "URL inválido. Formato: !youtube play URL"
+    },
+    PAUSE: {
+      english: "Paused the current video",
+      spanish: "Vídeo pausado"
     }
   }
 },
