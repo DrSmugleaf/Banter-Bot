@@ -1,0 +1,27 @@
+/*
+Copyright (c) 2016-2017 DrSmugleaf
+*/
+
+body {
+  padding-top: 50px;
+}
+.index-template {
+  padding: 40px 15px;
+  text-align: center;
+}
+
+.quotes {
+  text-align: left;
+}
+
+.error-template {
+  padding: 40px 15px;
+  text-align: center;
+}
+.error-actions {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+.error-actions .btn {
+  margin-right: 10px;
+}

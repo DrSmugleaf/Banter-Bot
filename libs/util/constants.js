@@ -1,12 +1,11 @@
 //
-// Copyright (c) 2016 DrSmugleaf
+// Copyright (c) 2016-2017 DrSmugleaf
 //
 
 "use strict"
 
 exports.defaultoptions = {
-  name: "Banter Bot",
-  avatar: "./images/LUL.png"
+  name: "Banter Bot"
 }
 
 exports.colors = {
@@ -758,18 +757,60 @@ exports.colors = {
   zinnwalditebrown: "#2C1608"
 }
 
-exports.commands = {
-  avatar: ["avatar", "image"],
-  color: ["color", "colour"],
-  coult: ["coult"],
-  erika: ["erika", "franrosave"],
-  help: ["ayuda", "help"],
-  josde: ["josde"],
-  magic8ball: ["8", "8ball", "magic8", "magic8ball"],
-  markov: ["markov"],
-  quote: ["quote"],
-  seifer: ["diavolo", "seif", "seifer"],
-  youtube: ["youtube"]
+exports.mslanguages = {
+  af: "afrikaans",
+  ar: "arabic",
+  bslatn: "bosnian (latin)",
+  bg: "bulgarian",
+  ca: "catalan",
+  zhchs: "chinese simplified",
+  zhcht: "chinese traditional",
+  hr: "croatian",
+  cs: "czech",
+  da: "danish",
+  nl: "dutch",
+  en: "english",
+  et: "estonian",
+  fi: "finnish",
+  fr: "french",
+  de: "german",
+  el: "greek",
+  ht: "haitian creole",
+  he: "hebrew",
+  hi: "hindi",
+  mww: "hmong daw",
+  hu: "hungarian",
+  id: "indonesian",
+  it: "italian",
+  ja: "japanese",
+  sw: "kiswahili",
+  tlh: "klingon",
+  tlhqaak: "klingon (piqad)",
+  ko: "korean",
+  lv: "latvian",
+  lt: "lithuanian",
+  ms: "malay",
+  mt: "maltese",
+  no: "norwegian",
+  fa: "persian",
+  pl: "polish",
+  pt: "portuguese",
+  otq: "querétaro otomi",
+  ro: "romanian",
+  ru: "russian",
+  srcyrl: "serbian (cyrillic)",
+  srlatn: "serbian (latin)",
+  sk: "slovak",
+  sl: "slovenian",
+  es: "spanish",
+  sv: "swedish",
+  th: "thai",
+  tr: "turkish",
+  uk: "ukrainian",
+  ur: "urdu",
+  vi: "vietnamese",
+  cy: "welsh",
+  yua: "yucatec maya"
 }
 
 exports.responses = {
@@ -788,57 +829,15 @@ exports.responses = {
     }
   },
 
-  ERIKA: {
-    BEFORE: {
-      english: "I am dropping the bomb :bomb:",
-      spanish: "I am dropping the bomb :bomb:"
-    },
-    AFTER: {
-      english: "I am dropping the bomb :boom:",
-      spanish: "I am dropping the bomb :boom:"
+  INFO: {
+    english: "GitHub page: https://github.com/DrSmugleaf/Banter-Bot"
+  },
+
+  LANGUAGE: {
+    SET: {
+      english: (language) => `Set your language to ${language}`,
+      spanish: (language) => `Asignado tu lenguaje a ${language}`
     }
-  },
-
-  HELP: {
-    english: `Words between **<arrows>** are required
-Words between **[brackets]** are optional
-
-**!help / !ayuda**: Show the list of commands
-**!ciudadanos**
-**!color / !colour [color | hex | rgb]**: Change the color of your name with the name of the color, hex code or rgb code
-**!coult**
-**!diavolo / !seifer / !seif**
-**!erika / !franrosave**
-**!josde**
-**!logoff**: Shutdown the bot
-**!logoffvoice**: Remove the bot from voice channels
-**!magic8ball / !8 / !8ball / !magic8 [question] [-ENGLISH]**: An answer from the Magic 8 Ball
-**!podemos**
-**!quote [number]**: Select a quote at random or by number
-**+quote <text>**: Add a quote
-**-quote <number>**: Remove a quote`,
-    spanish: `Palabras entre **<flechas>** son obligatorias
-Palabras entre **[corchetes]** son opcionales
-
-**!help / !ayuda**: Muestra la lista de comandos
-**!ciudadanos**
-**!color / !colour [color | hex | rgb]**: Cambia el color de tu nombre con el nombre del color, código hex o código RGB
-**!coult**
-**!diavolo / !seifer / !seif**
-**!erika / !franrosave**
-**!josde**
-**!logoff**: Desactiva el bot
-**!logoffvoice**: Saca el bot del canal de voz
-**!magic8ball / !8 / !8ball / !magic8 [pregunta] [-ENGLISH]**: Respuesta de la Bola 8 Mágica
-**!podemos**
-**!quote [número]**: Selecciona un quote al azar o por número
-**+quote <texto>**: Añade un quote
-**-quote <número>**: Elimina un quote`
-  },
-
-  JOSDE: {
-    english: "wew",
-    spanish: "wew"
   },
 
   MAGIC8BALL: {
@@ -864,7 +863,7 @@ Palabras entre **[corchetes]** son opcionales
   QUOTE: {
     ADDED: {
       english: (number) => `Quote #${number} added`,
-      spanish: (number) => `Quote #${number} a\u00f1adido`
+      spanish: (number) => `Quote #${number} añadido`
     },
     EMPTY: {
       english: "Quote empty, add text after the command",
@@ -892,6 +891,14 @@ Palabras entre **[corchetes]** son opcionales
     INVALID: {
       english: "Invalid URL. Format: !youtube play URL",
       spanish: "URL inválido. Formato: !youtube play URL"
+    },
+    PAUSE: {
+      english: "Paused the current video",
+      spanish: "Vídeo pausado"
     }
   }
+},
+
+exports.youtube = {
+  STREAMOPTIONS: { seek: 0, volume: 0.25 }
 }

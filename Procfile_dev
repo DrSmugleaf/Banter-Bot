@@ -1,1 +1,2 @@
-worker: nodemon banterbot.js
+web: node web.js
+worker: nodemon --harmony banterbot.js
