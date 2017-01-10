@@ -43,7 +43,7 @@ module.exports = class Play extends commando.Command {
 
     return new Promise(function(resolve, reject) {
       if(voiceConnection && voiceConnection == voiceChannel.connection) {
-        resolve(msg.client.voiceConnection)
+        resolve(voiceConnection)
       } else {
         voiceChannel.join().then(voiceConnection => {
           resolve(voiceConnection)
