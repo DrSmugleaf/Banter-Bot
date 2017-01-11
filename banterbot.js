@@ -6,7 +6,7 @@
 require("./libs/util")
 const commando = require("discord.js-commando")
 const client = new commando.Client({
-  commandPrefix: "!",
+  commandPrefix: process.env.NODE_ENV === "dev" ? "!!" : "!",
   invite: "https://discord.gg/yyDWNBr",
   owner: "109067752286715904",
   unknownCommandResponse: false
@@ -16,7 +16,7 @@ const messagehandler = new MessageHandler()
 const oneLine = require("common-tags").oneLine
 const path = require("path")
 const PostgreSQLProvider = require("./libs/util/postgresql")
-const token = process.env.DISCORD_TOKEN
+const token = process.env.NODE_ENV === "dev" ? process.env.DISCORD_TOKEN_DEV : process.env.DISCORD_TOKEN
 const VoiceAutoChannel = require("./libs/autochannel/voice")
 new VoiceAutoChannel(client)
 const winston = require("winston")
