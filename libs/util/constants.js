@@ -3,6 +3,7 @@
 //
 
 "use strict"
+const oneLine = require("common-tags").oneLine
 
 exports.defaultoptions = {
   name: "Banter Bot"
@@ -830,7 +831,14 @@ exports.responses = {
   },
 
   INFO: {
-    english: "GitHub page: https://github.com/DrSmugleaf/Banter-Bot"
+    english: oneLine`
+      GitHub page: https://github.com/DrSmugleaf/Banter-Bot
+      Support server: https://discord.gg/yyDWNBr
+    `,
+    spanish: oneLine`
+      Página de GitHub: https://github.com/DrSmugleaf/Banter-Bot
+      Servidor de soporte: https://discord.gg/yyDWNBr
+    `
   },
 
   LANGUAGE: {
