@@ -18,6 +18,10 @@ module.exports = class Stop extends commando.Command {
     })
   }
 
+  hasPermission(msg) {
+    return msg.member.hasPermission("MUTE_MEMBERS")
+  }
+
   async run(msg) {
     const voiceConnection = msg.guild.voiceConnection
 
