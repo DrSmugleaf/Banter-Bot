@@ -68,8 +68,9 @@ client.setProvider(new commando.SQLiteProvider(new PostgreSQLProvider()))
   .catch(winston.error)
 
 client.registry
-  .registerGroup("misc", "Misc")
   .registerGroup("bridge", "Bridge")
+  .registerGroup("misc", "Misc")
+  .registerGroup("server", "Server")
   .registerGroup("user", "User")
   .registerGroup("youtube", "Youtube")
   .registerDefaults()
