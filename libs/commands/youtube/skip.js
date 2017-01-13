@@ -4,6 +4,7 @@
 
 "use strict"
 const commando = require("discord.js-commando")
+const constants = require("../../util/constants")
 const oneLine = require("common-tags").oneLine
 
 module.exports = class Skip extends commando.Command {
@@ -23,11 +24,16 @@ module.exports = class Skip extends commando.Command {
 
   isSameVoiceChannel(msg) {
     return msg.member.voiceChannel &&
-      msg.member.voiceChannel == msg.guild.voiceConnection
+      msg.member.voiceChannel.connection &&
+      msg.member.voiceChannel.connection == msg.guild.voiceConnection
   }
 
   async run(msg) {
-    if(this.isSameVoiceChannel(msg)) {
+    if(!msg.member.voiceChannel) {
+      return msg.reply(constants.responses.NOT_A_VOICE_CHANNEL["english"])
+    }
+
+    if(!this.isSameVoiceChannel(msg)) {
       return msg.reply("You arent in the voice channel")
     }
 
@@ -44,14 +50,14 @@ module.exports = class Skip extends commando.Command {
         if(repeatList[id]) repeatList.delete(msg.guild)
         dispatcher.end()
 
-        return msg.send(oneLine`
-          ${this.votes[id]} members voted to skip,
-          skipped the current video
+        return msg.channel.send(oneLine`
+          ${this.votes[id]} out of ${voiceConnection.channel.members.size - 1}
+          members voted to skip, skipped the current video
         `)
       } else {
         return msg.reply(oneLine`
-          ${this.votes[id]} members want to skip
-          the current video
+          ${this.votes[id]} out of ${voiceConnection.channel.members.size - 1}
+          members want to skip the current video
         `)
       }
     }
