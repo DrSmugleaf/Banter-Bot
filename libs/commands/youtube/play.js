@@ -70,6 +70,7 @@ module.exports = class Play extends commando.Command {
     }).catch(winston.error)
 
     stream.on("info", (info) => {
+      if(msg.deletable) msg.delete()
       return msg.reply(`Now playing ${info.title}`)
     })
   }
