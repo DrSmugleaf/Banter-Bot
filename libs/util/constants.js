@@ -887,6 +887,13 @@ exports.responses = {
     }
   },
 
+  SERVER_LANGUAGE: {
+    SET: {
+      english: (language) => `Set the server language to ${language}`,
+      spanish: (language) => `Asignado el lenguaje del servidor a ${language}`
+    }
+  },
+
   YOUTUBE: {
     INVALID: {
       english: "Invalid URL. Format: !youtube play URL",
