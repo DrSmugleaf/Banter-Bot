@@ -82,7 +82,7 @@ module.exports = class Color extends commando.Command {
         this.addColor(msg, constants.colors[word])
         return
       } else {
-        msg.channel.reply(constants.responses.COLOR.INVALID["english"])
+        msg.reply(constants.responses.COLOR.INVALID["english"])
         return
       }
     } else {
