@@ -9,7 +9,10 @@ const winston = require("winston")
 module.exports = class AutoChannel {
   constructor(discord, type) {
     this.discord = discord
+
+    this.channelName = (name) => `${this.prefix + name}`
     this.countThreshold = 2
+    this.prefix = "BB-"
     this.type = type
   }
 
@@ -18,7 +21,10 @@ module.exports = class AutoChannel {
   }
 
   deleteChannel(guild, name) {
-    guild.channels.find("name", name).delete().catch(winston.error)
+    const channel = guild.channels.find(channel => {
+      return channel.name === name && channel.type === this.type
+    })
+    if(channel) channel.delete().catch(winston.error)
   }
 
   getGameNames(guild) {
@@ -26,44 +32,72 @@ module.exports = class AutoChannel {
 
     guild.presences.forEach(presence => {
       if(presence.game && presence.game.name) {
-        const name = presence.game.name
-        games.set(name, +1)
+        games.set(presence.game.name, +1)
       }
     })
     return games
   }
 
-  processPresences() {
+  getSpareChannels(guild) {
+    const spareChannels = guild.channels.filter(channel => {
+      return channel.name.includes("BB-") && channel.type === this.type
+    })
+    return spareChannels
+  }
+
+  onPresenceUpdate(guild) {
+    this.processPresences(guild)
+  }
+
+  onReady() {
     this.discord.guilds.forEach(guild => {
-      const games = this.getGameNames(guild)
+      this.processPresences(guild)
+    })
+  }
 
-      games.forEach((count, name) => {
-        if(this.shouldCreateChannel(guild, games, name)) {
-          this.createChannel(guild, `BB-${name}`)
-        }
+  onVoiceStateUpdate(guild) {
+    this.processPresences(guild)
+  }
 
-        if(this.shouldDeleteChannel(guild, games, name)) {
-          this.deleteChannel(guild, `BB-${name}`)
-        }
-      })
+  processPresences(guild) {
+    if(!guild.member(guild.client.user).hasPermission("MANAGE_CHANNELS")) return
+
+    const games = this.getGameNames(guild)
+    const spareChannels = this.getSpareChannels(guild)
+
+    games.forEach((count, name) => {
+      if(this.shouldCreateChannel(guild, games, name)) {
+        this.createChannel(guild, this.channelName(name))
+      }
+
+      if(this.shouldDeleteChannel(guild, games, name)) {
+        this.deleteChannel(guild, this.channelName(name))
+      }
+    })
+
+    spareChannels.forEach((channel) => {
+      if(this.shouldDeleteChannel(guild, games, channel.name.replace("BB-", ""))) {
+        this.deleteChannel(guild, channel.name)
+      }
     })
   }
 
   shouldCreateChannel(guild, games, name) {
     const count = games.get(name) >= this.countThreshold
-    const exists = Boolean(guild.channels.find(channel => {
-      return channel.name === `BB-${name}` && channel.type === this.type
-    }))
+    const exists = guild.channels.find(channel => {
+      return channel.name === this.channelName(name) && channel.type === this.type
+    })
 
     return count && !exists
   }
 
   shouldDeleteChannel(guild, games, name) {
     const count = games.get(name) >= this.countThreshold
-    const exists = Boolean(guild.channels.find(channel => {
-      return channel.name === `BB-${name}` && channel.type === this.type
-    }))
+    const exists = guild.channels.find(channel => {
+      return channel.name === this.channelName(name) && channel.type === this.type
+    })
+    const empty = exists && exists.members.size < 1
 
-    return !count && exists
+    return !count && exists && empty
   }
 }
