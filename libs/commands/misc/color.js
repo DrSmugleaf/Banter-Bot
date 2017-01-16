@@ -5,8 +5,7 @@
 "use strict"
 const constants = require("../../util/constants")
 const commando = require("discord.js-commando")
-const ObjectUtil = require("../../util/objectutil")
-const objectutil = new ObjectUtil()
+const parse = require("parse-color")
 const winston = require("winston")
 
 module.exports = class Color extends commando.Command {
@@ -16,77 +15,69 @@ module.exports = class Color extends commando.Command {
       aliases: ["color", "colour"],
       group: "misc",
       memberName: "color",
-      description: "Change your color's name in the server",
-      examples: ["color green"],
+      description: "Change your name color in this server",
+      examples: ["color red", "color #FF0000"],
+      guildOnly: true,
       args: [
         {
           key: "color",
           prompt: "What color do you want?",
           type: "string",
-          default: "none"
+          default: "",
+          validate: (color) => {
+            return Boolean(constants.colors.hasOwnProperty(color) ||
+              parse(color).hex || color === "")
+          }
         }
       ]
     })
+
+    this.roleName = (userid) => `color-${userid}`
   }
 
-  async addColor(msg, hex) {
-    if(msg.guild.roles.exists("name", "color-" + msg.author.id)) {
-      this.editColor(msg, hex)
-      return
+  parseColor(color) {
+    if(constants.colors.hasOwnProperty(color)) return constants.colors[color]
+    return parse(color).hex
+  }
+
+  addColor(msg, color) {
+    const existingRole = msg.member.roles.find("name", this.roleName(msg.member.id))
+
+    if(existingRole) {
+      existingRole.edit({ color: color }).then(() => {
+        return msg.reply(constants.responses.COLOR.ADDED["english"](msg.argString))
+      }).catch(winston.error)
     }
 
     msg.guild.createRole({
-      name: "color-" + msg.author.id,
-      color: hex,
+      name: this.roleName(msg.member.id),
+      color: color,
       permissions: []
-    })
-      .then(role => {
-        msg.member.addRole(role.id)
-        msg.reply(constants.responses.COLOR.ADDED["english"](hex))
+    }).then(role => {
+      msg.member.addRole(role.id)
+      return msg.reply(constants.responses.COLOR.ADDED["english"](msg.argString))
+    }).catch(winston.error)
+  }
+
+  removeColor(msg) {
+    const role = msg.member.roles.find("name", this.roleName(msg.member.id))
+
+    if(role) {
+      role.delete().then(() => {
+        return msg.reply(constants.responses.COLOR.REMOVED["english"])
       })
-      .catch(winston.error)
-  }
-
-  async editColor(msg, hex) {
-    msg.guild.roles.filter(function(role) {
-      return role.name == "color-" + msg.author.id
-    }).first().edit({color: hex})
-      .then(msg.reply(constants.responses.COLOR.ADDED["english"](hex)))
-  }
-
-  async removeColor(msg) {
-    msg.guild.roles.filter(function(role) {
-      return role.name == "color-" + msg.author.id
-    }).forEach(function(role) {
-      role.delete()
-    })
-    msg.reply(constants.responses.COLOR.REMOVED["english"])
+    } else {
+      return msg.reply(constants.responses.COLOR.MISSING["english"])
+    }
   }
 
   async run(msg, args) {
-    if(!msg.guild || !msg.guild.available) {
-      msg.reply(constants.responses.NOT_A_SERVER["english"])
-      return
-    }
+    const color = args.color ? this.parseColor(args.color) : null
 
-    const color = args.color
-    if(color == "none") {
-      this.removeColor(msg)
-      return
-    }
-
-    const hex = color.toHex()
-    if(!hex) {
-      let word = color.replace(/ |-|'|\/|/g, "").toLowerCase()
-      if(objectutil.hasKey(constants.colors, word)) {
-        this.addColor(msg, constants.colors[word])
-        return
-      } else {
-        msg.reply(constants.responses.COLOR.INVALID["english"])
-        return
-      }
+    if(!color) {
+      return this.removeColor(msg, color)
     } else {
-      this.addColor(msg, hex)
+      return this.addColor(msg, color)
     }
   }
 }

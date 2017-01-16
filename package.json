@@ -30,6 +30,7 @@
     "mstranslator": "2.1.0",
     "node-opus": "0.2.4",
     "opusscript": "0.0.1",
+    "parse-color": "1.0.0",
     "pg": "6.1.2",
     "pg-promise": "5.5.0",
     "request": "2.79.0",

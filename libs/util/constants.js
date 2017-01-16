@@ -817,12 +817,16 @@ exports.mslanguages = {
 exports.responses = {
   COLOR: {
     ADDED: {
-      english: (hex) => `Added name color ${hex}`,
-      spanish: (hex) => `Añadido color de nombre ${hex}`
+      english: (hex) => `Added name color\`${hex}\``,
+      spanish: (hex) => `Añadido color de nombre\`${hex}\``
     },
     INVALID: {
       english: "Color doesn't exist or invalid code. Format: !color Name(English) / #RRGGBB / (R,G,B)",
       spanish: "Color no existe o código inválido. Formato: !color Nombre(Inglés) / #RRGGBB / (R,G,B)"
+    },
+    MISSING: {
+      english: "You don't have a name color.",
+      spanish: "No tienes un color de nombre."
     },
     REMOVED: {
       english: "Removed name color",
