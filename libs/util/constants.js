@@ -817,38 +817,38 @@ exports.mslanguages = {
 exports.responses = {
   COLOR: {
     ADDED: {
-      english: (hex) => `Added name color\`${hex}\``,
-      spanish: (hex) => `Añadido color de nombre\`${hex}\``
+      english: (hex) => `Added name color\`${hex}\`.`,
+      spanish: (hex) => `Añadido color de nombre\`${hex}\`.`
     },
     INVALID: {
-      english: "Color doesn't exist or invalid code. Format: !color Name(English) / #RRGGBB / (R,G,B)",
-      spanish: "Color no existe o código inválido. Formato: !color Nombre(Inglés) / #RRGGBB / (R,G,B)"
+      english: "Color doesn't exist or invalid code. Format: !color Name(English) / #RRGGBB / (R,G,B).",
+      spanish: "Color no existe o código inválido. Formato: !color Nombre(Inglés) / #RRGGBB / (R,G,B)."
     },
     MISSING: {
       english: "You don't have a name color.",
       spanish: "No tienes un color de nombre."
     },
     REMOVED: {
-      english: "Removed name color",
-      spanish: "Quitado color de nombre"
+      english: "Removed name color.",
+      spanish: "Quitado color de nombre."
     }
   },
 
   INFO: {
     english: oneLine`
-      GitHub page: https://github.com/DrSmugleaf/Banter-Bot
-      Support server: https://discord.gg/yyDWNBr
+      GitHub page: https://github.com/DrSmugleaf/Banter-Bot.
+      Support server: https://discord.gg/yyDWNBr.
     `,
     spanish: oneLine`
-      Página de GitHub: https://github.com/DrSmugleaf/Banter-Bot
-      Servidor de soporte: https://discord.gg/yyDWNBr
+      Página de GitHub: https://github.com/DrSmugleaf/Banter-Bot.
+      Servidor de soporte: https://discord.gg/yyDWNBr.
     `
   },
 
   LANGUAGE: {
     SET: {
-      english: (language) => `Set your language to ${language}`,
-      spanish: (language) => `Asignado tu lenguaje a ${language}`
+      english: (language) => `Set your language to ${language}.`,
+      spanish: (language) => `Asignado tu lenguaje a ${language}.`
     }
   },
 
@@ -858,62 +858,62 @@ exports.responses = {
   },
 
   MISSING_COMMAND: {
-    english: (command) => `the command ${command} doesn't exist`,
-    spanish: (command) => `el comando ${command} no existe`
+    english: (command) => `the command ${command} doesn't exist.`,
+    spanish: (command) => `el comando ${command} no existe.`
   },
 
   NOT_A_SERVER: {
-    english: "Use the command in a server chat",
-    spanish: "Usa el comando en el chat de un servidor"
+    english: "Use the command in a server chat.",
+    spanish: "Usa el comando en el chat de un servidor."
   },
 
   NOT_A_VOICE_CHANNEL: {
-    english: "You arent in a voice channel",
-    spanish: "No estás en un canal de voz"
+    english: "You arent in a voice channel.",
+    spanish: "No estás en un canal de voz."
   },
 
   QUOTE: {
     ADDED: {
-      english: (number) => `Quote #${number} added`,
-      spanish: (number) => `Quote #${number} añadido`
+      english: (number) => `Quote #${number} added.`,
+      spanish: (number) => `Quote #${number} añadido.`
     },
     EMPTY: {
-      english: "Quote empty, add text after the command",
-      spanish: "Quote vacío, a\u00f1ade texto después del comando"
+      english: "Quote empty, add text after the command.",
+      spanish: "Quote vacío, a\u00f1ade texto después del comando."
     },
     GET: {
-      english: (number, text) => `Quote #${number}: ${text}`,
-      spanish: (number, text) => `Quote #${number}: ${text}`
+      english: (number, text) => `Quote #${number}: ${text}.`,
+      spanish: (number, text) => `Quote #${number}: ${text}.`
     },
     INVALID: {
-      english: "Invalid quote number",
-      spanish: "Número de quote inválido"
+      english: "Invalid quote number.",
+      spanish: "Número de quote inválido."
     },
     MISSING: {
-      english: "That quote doesn't exist",
-      spanish: "Ese quote no existe"
+      english: "That quote doesn't exist.",
+      spanish: "Ese quote no existe."
     },
     REMOVED: {
-      english: (number) => `Quote #${number} removed`,
-      spanish: (number) => `Quote #${number} eliminado`
+      english: (number) => `Quote #${number} removed.`,
+      spanish: (number) => `Quote #${number} eliminado.`
     }
   },
 
   SERVER_LANGUAGE: {
     SET: {
-      english: (language) => `Set the server language to ${language}`,
-      spanish: (language) => `Asignado el lenguaje del servidor a ${language}`
+      english: (language) => `Set the server language to ${language}.`,
+      spanish: (language) => `Asignado el lenguaje del servidor a ${language}.`
     }
   },
 
   YOUTUBE: {
     INVALID: {
-      english: "Invalid URL. Format: !youtube play URL",
-      spanish: "URL inválido. Formato: !youtube play URL"
+      english: "Invalid URL. Format: !youtube play URL.",
+      spanish: "URL inválido. Formato: !youtube play URL."
     },
     PAUSE: {
-      english: "Paused the current video",
-      spanish: "Vídeo pausado"
+      english: "Paused the current video.",
+      spanish: "Vídeo pausado."
     }
   }
 },
