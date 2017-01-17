@@ -40,22 +40,22 @@ module.exports = class Quote extends commando.Command {
   async quoteAdd(msg, text) {
     if(!text) return msg.reply(constants.responses.QUOTE.EMPTY["english"])
     db.query("INSERT INTO quotes (text, submitter) VALUES ($1::text, $2::text) RETURNING id",
-    [text, msg.author.username], "one")
-      .then(data => {
-        return msg.reply(constants.responses.QUOTE.ADDED["english"](data.id))
-      })
+      [text, msg.author.username], "one"
+    ).then(data => {
+      return msg.reply(constants.responses.QUOTE.ADDED["english"](data.id))
+    }).catch(winston.error)
   }
 
   async quoteDel(msg, id) {
-    db.query("DELETE FROM quotes WHERE id=$1::int RETURNING id", [id], "one")
-      .then(data => {
-        db.cleanTable("quotes")
-        return msg.reply(constants.responses.QUOTE.REMOVED["english"](data.id))
-      })
-      .catch(e => {
-        winston.error(e)
-        return msg.reply(constants.responses.QUOTE.INVALID["english"])
-      })
+    db.query("DELETE FROM quotes WHERE id=$1::int RETURNING id",
+      [id], "one"
+    ).then(data => {
+      db.cleanTable("quotes")
+      return msg.reply(constants.responses.QUOTE.REMOVED["english"](data.id))
+    }).catch(e => {
+      winston.error(e)
+      return msg.reply(constants.responses.QUOTE.INVALID["english"])
+    })
   }
 
   async quoteGet(msg, id) {
@@ -63,14 +63,12 @@ module.exports = class Quote extends commando.Command {
     "SELECT id, text, submitter FROM quotes OFFSET random() * (SELECT count(*)-1 FROM quotes) LIMIT 1"
     const values = id ? [id] : null
 
-    db.query(query, values, "one")
-      .then(data => {
-        return msg.reply(constants.responses.QUOTE.GET["english"](data.id, data.text))
-      })
-      .catch(e => {
-        winston.error(e)
-        return msg.reply(constants.responses.QUOTE.MISSING["english"])
-      })
+    db.query(query, values, "one").then(data => {
+      return msg.reply(constants.responses.QUOTE.GET["english"](data.id, data.text))
+    }).catch(e => {
+      winston.error(e)
+      return msg.reply(constants.responses.QUOTE.MISSING["english"])
+    })
   }
 
   async run(msg, args) {

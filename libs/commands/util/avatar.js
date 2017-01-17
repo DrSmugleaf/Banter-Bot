@@ -4,6 +4,7 @@
 
 "use strict"
 const commando = require("discord.js-commando")
+const constants = require("../../util/constants")
 const request = require("request").defaults({encoding: null})
 const winston = require("winston")
 
@@ -32,12 +33,14 @@ module.exports = class Avatar extends commando.Command {
   }
 
   async run(msg, args) {
-    const link = request.get(args.url)
+    const url = args.url
+    const link = request.get(url)
+
     request.get(link, function(e, res, body) {
       if(!e && res.statusCode == 200) {
-        msg.client.user.setAvatar(new Buffer(body))
-          .catch(winston.error)
-        return msg.reply(`Changed the bot's image to ${args.url}`)
+        msg.client.user.setAvatar(new Buffer(body)).then(() => {
+          return msg.reply(constants.responses.AVATAR.SET["english"](url))
+        }).catch(winston.error)
       }
     })
   }

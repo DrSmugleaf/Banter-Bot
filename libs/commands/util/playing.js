@@ -4,6 +4,7 @@
 
 "use strict"
 const commando = require("discord.js-commando")
+const constants = require("../../util/constants")
 const winston = require("winston")
 
 module.exports = class Playing extends commando.Command {
@@ -34,7 +35,7 @@ module.exports = class Playing extends commando.Command {
     const name = args.name ? args.name : null
 
     msg.client.user.setGame(name).then(() => {
-      return msg.reply(`Changed the bot's game to ${name ? name : "none"}`)
+      return msg.reply(constants.responses.PLAYING.SET["english"](name ? name : "none"))
     }).catch(winston.error)
   }
 }

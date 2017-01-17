@@ -59,11 +59,9 @@ module.exports = class Repeat extends commando.Command {
     }
 
     const url = args.url
-    msg.member.voiceChannel.join() // TODO: Check if the bot is already in the channel
-      .then(voiceConnection => {
-        this.repeat(voiceConnection, url)
-        return msg.reply(`Now repeating ${url}`)
-      })
-      .catch(winston.error)
+    msg.member.voiceChannel.join().then(voiceConnection => {
+      this.repeat(voiceConnection, url)
+      return msg.reply(`Now repeating ${url}`)
+    }).catch(winston.error)
   }
 }

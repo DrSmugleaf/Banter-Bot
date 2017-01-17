@@ -11,12 +11,13 @@ const client = new commando.Client({
   owner: "109067752286715904",
   unknownCommandResponse: false
 })
-const MessageHandler = require("./libs/handler/messagehandler")
-const messagehandler = new MessageHandler()
 const oneLine = require("common-tags").oneLine
 const path = require("path")
-const PostgreSQLProvider = require("./libs/util/postgresql")
-const token = process.env.NODE_ENV === "dev" ? process.env.DISCORD_TOKEN_DEV : process.env.DISCORD_TOKEN
+const PostgreSQLProvider = require("./libs/providers/postgresql")
+const Sender = require("./libs/bridge/sender")
+new Sender(client)
+const token = process.env.NODE_ENV === "dev" ?
+  process.env.DISCORD_TOKEN_DEV : process.env.DISCORD_TOKEN
 const VoiceAutoChannel = require("./libs/autochannel/voice")
 new VoiceAutoChannel(client)
 const winston = require("winston")
@@ -60,12 +61,10 @@ client
   		${guild ? `in guild ${guild.name} (${guild.id})` : "globally"}.
   	`)
   })
-  .on("message", (msg) => {
-    messagehandler.handle(msg)
-  })
 
-client.setProvider(new commando.SQLiteProvider(new PostgreSQLProvider()))
-  .catch(winston.error)
+client.setProvider(
+  new commando.SQLiteProvider(new PostgreSQLProvider())
+).catch(winston.error)
 
 client.registry
   .registerGroup("bridge", "Bridge")

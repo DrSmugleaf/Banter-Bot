@@ -39,20 +39,20 @@ module.exports = class CleanMessages extends commando.Command {
 
   async clean(msg) {
     const channel = msg.channel
-    var lastmessageid = msg.id
+    var lastMessageID = msg.id
     var i = 0
 
     async.whilst(
-      function() { return i < 100 && lastmessageid },
+      function() { return i < 100 && lastMessageID },
       function(next) {
         channel.fetchMessages({
           limit: 100,
-          before: lastmessageid
+          before: lastMessageID
         }).then(messages => {
-          lastmessageid = messages.last() ? messages.last().id : null
+          lastMessageID = messages.last() ? messages.last().id : null
           messages.deleteAll()
           i++
-          next(null, lastmessageid)
+          next(null, lastMessageID)
         }).catch(winston.error)
       }
     )

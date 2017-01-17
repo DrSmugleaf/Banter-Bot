@@ -13,7 +13,7 @@ module.exports = class Color extends commando.Command {
     super(client, {
       name: "color",
       aliases: ["color", "colour"],
-      group: "misc",
+      group: "user",
       memberName: "color",
       description: "Change your name color in this server",
       examples: ["color red", "color #FF0000"],

@@ -3,7 +3,7 @@
 //
 
 "use strict"
-const oneLine = require("common-tags").oneLine
+const stripIndents = require("common-tags").stripIndents
 
 exports.defaultoptions = {
   name: "Banter Bot"
@@ -815,6 +815,13 @@ exports.mslanguages = {
 }
 
 exports.responses = {
+  AVATAR: {
+    SET: {
+      english: (url) => `Changed the bot's image to ${url}`,
+      spanish: (url) => `Cambiado la imagen del bot a ${url}`
+    }
+  },
+
   COLOR: {
     ADDED: {
       english: (hex) => `Added name color\`${hex}\`.`,
@@ -835,11 +842,11 @@ exports.responses = {
   },
 
   INFO: {
-    english: oneLine`
+    english: stripIndents`
       GitHub page: https://github.com/DrSmugleaf/Banter-Bot.
       Support server: https://discord.gg/yyDWNBr.
     `,
-    spanish: oneLine`
+    spanish: stripIndents`
       Página de GitHub: https://github.com/DrSmugleaf/Banter-Bot.
       Servidor de soporte: https://discord.gg/yyDWNBr.
     `
@@ -857,6 +864,24 @@ exports.responses = {
     spanish: ["En mi opinión, sí", "Es cierto", "Es decididamente así", "Probablemente", "Buen pronóstico", "Todo apunta a que sí", "Sin duda", "Sí", "Sí - definitivamente", "Debes confiar en ello", "Respuesta vaga, vuelve a intentarlo", "Pregunta en otro momento", "Será mejor que no te lo diga ahora", "No puedo predecirlo ahora", "Concéntrate y vuelve a preguntar", "No cuentes con ello", "Mi respuesta es no", "Mis fuentes me dicen que no", "Las perspectivas no son buenas", "Muy dudoso"]
   },
 
+  MARKOV: {
+    ANSWER: {
+      english: (subject, answer) => `**${subject} (Markov):** ${answer}`,
+      spanish: (subject, answer) => `**${subject} (Markov):** ${answer}`
+    },
+    MISSING: {
+      english: (user) => `There are no messages in this channel from ${user}`,
+      spanish: (user) => `No hay mensajes en este canal de ${user}`
+    }
+  },
+
+  NAME: {
+    SET: {
+      english: (name) => `Changed the bot's username to ${name}`,
+      spanish: (name) => `Cambiado el nombre del bot a ${name}`
+    }
+  },
+
   MISSING_COMMAND: {
     english: (command) => `the command ${command} doesn't exist.`,
     spanish: (command) => `el comando ${command} no existe.`
@@ -870,6 +895,13 @@ exports.responses = {
   NOT_A_VOICE_CHANNEL: {
     english: "You arent in a voice channel.",
     spanish: "No estás en un canal de voz."
+  },
+
+  PLAYING: {
+    SET: {
+      english: (name) => `Changed the bot's game to ${name}`,
+      spanish: (name) => `Cambiado el nombre del bot a ${name}`
+    }
   },
 
   QUOTE: {
@@ -904,6 +936,33 @@ exports.responses = {
       english: (language) => `Set the server language to ${language}.`,
       spanish: (language) => `Asignado el lenguaje del servidor a ${language}.`
     }
+  },
+
+  WHOIS: {
+    english: (user, member, joined, created) => stripIndents`
+      Info on **${user.username}#${user.discriminator}** (ID: ${user.id})
+      **❯ Member Details**
+      ${member.nickname !== null ? ` • Nickname: ${member.nickname}` : " • No Nickname"}
+       • Roles: ${member.roles.map(roles => `\`${roles.name}\``).join(", ")}
+       • Joined at: ${joined}
+
+      **❯ User Details**
+       • Created at: ${created}${user.bot ? "\n • Is a bot account" : ""}
+       • Status: ${user.presence.status}
+       • Game: ${user.presence.game ? user.presence.game.name : "None"}
+    `,
+    spanish: (user, member, joined, created) => stripIndents`
+      Información sobre **${user.username}#${user.discriminator}** (ID: ${user.id})
+      **❯ Detalles de Miembro**
+      ${member.nickname !== null ? ` • Apodo: ${member.nickname}` : " • Ningún Apodo"}
+       • Roles: ${member.roles.map(roles => `\`${roles.name}\``).join(", ")}
+       • Se unió en: ${joined}
+
+      **❯ Detalles de Usuario**
+       • Se creó en: ${created}${user.bot ? "\n • Es una cuenta bot" : ""}
+       • Estado: ${user.presence.status}
+       • Juego: ${user.presence.game ? user.presence.game.name : "Ninguno"}
+    `
   },
 
   YOUTUBE: {

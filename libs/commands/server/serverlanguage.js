@@ -27,11 +27,15 @@ module.exports = class ServerLanguage extends commando.Command {
           type: "string",
           validate: (language) => {
             language = language.toLowerCase()
-            return !!objectutil.hasValue(constants.mslanguages, language)
+            return Boolean(objectutil.hasValue(constants.mslanguages, language))
           }
         }
       ]
     })
+  }
+
+  hasPermission(msg) {
+    return msg.member.hasPermission("ADMINISTRATOR")
   }
 
   async run(msg, args) {

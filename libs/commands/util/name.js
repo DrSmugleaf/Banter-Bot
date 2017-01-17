@@ -4,6 +4,7 @@
 
 "use strict"
 const commando = require("discord.js-commando")
+const constants = require("../../util/constants")
 const winston = require("winston")
 
 module.exports = class Name extends commando.Command {
@@ -32,8 +33,9 @@ module.exports = class Name extends commando.Command {
 
   async run(msg, args) {
     const name = args.name
-    msg.client.user.setUsername(name)
-      .catch(winston.error)
-    return msg.reply(`Changed the bot's username to ${name}`)
+
+    msg.client.user.setUsername(name).then(() => {
+      return msg.reply(constants.responses.NAME.SET["english"](name))
+    }).catch(winston.error)
   }
 }
