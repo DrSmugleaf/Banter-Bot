@@ -843,12 +843,12 @@ exports.responses = {
 
   INFO: {
     english: stripIndents`
-      GitHub page: https://github.com/DrSmugleaf/Banter-Bot.
-      Support server: https://discord.gg/yyDWNBr.
+      GitHub page: https://github.com/DrSmugleaf/Banter-Bot
+      Support server: https://discord.gg/yyDWNBr
     `,
     spanish: stripIndents`
-      Página de GitHub: https://github.com/DrSmugleaf/Banter-Bot.
-      Servidor de soporte: https://discord.gg/yyDWNBr.
+      Página de GitHub: https://github.com/DrSmugleaf/Banter-Bot
+      Servidor de soporte: https://discord.gg/yyDWNBr
     `
   },
 

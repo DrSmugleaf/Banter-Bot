@@ -16,7 +16,7 @@ module.exports = class Search extends commando.Command {
       aliases: ["search", "lookfor"],
       group: "misc",
       memberName: "search",
-      description: "Search for a message in this channel",
+      description: "Search for a message in this channel.",
       examples: ["search Look at this image"],
       guildOnly: true,
       args: [

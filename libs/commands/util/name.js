@@ -14,7 +14,7 @@ module.exports = class Name extends commando.Command {
       aliases: ["alias", "name", "nick", "nickname"],
       group: "util",
       memberName: "name",
-      description: "Change the bot's name",
+      description: "Change the bot's name.",
       examples: ["name Banter Bot"],
       args: [
         {

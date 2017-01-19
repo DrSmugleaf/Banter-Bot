@@ -19,7 +19,7 @@ module.exports = class CleanMessages extends commando.Command {
       ],
       group: "server",
       memberName: "clean-messages",
-      description: "Delete the messages of a channel forever",
+      description: "Delete the messages of a channel forever.",
       examples: ["clean-messages"],
       guildOnly: true,
       args: [

@@ -15,7 +15,7 @@ module.exports = class Color extends commando.Command {
       aliases: ["color", "colour"],
       group: "user",
       memberName: "color",
-      description: "Change your name color in this server",
+      description: "Change your name color in this server.",
       examples: ["color red", "color #FF0000"],
       guildOnly: true,
       args: [

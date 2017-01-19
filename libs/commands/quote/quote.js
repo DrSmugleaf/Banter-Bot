@@ -16,7 +16,7 @@ module.exports = class Quote extends commando.Command {
       aliases: ["quote"],
       group: "misc",
       memberName: "quote",
-      description: "Add, remove or get a quote from the list",
+      description: "Add, remove or get a quote from the list.",
       examples: ["quote", "quote 25", "quote add Hello World", "quote del 25"],
       guildOnly: true,
       args: [

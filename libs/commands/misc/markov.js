@@ -17,7 +17,7 @@ module.exports = class Markov extends commando.Command {
       aliases: ["markov", "mimic", "simulate"],
       group: "misc",
       memberName: "markov",
-      description: "Simulate a user's speech",
+      description: "Simulate a user's speech.",
       examples: ["markov", "markov DrSmugleaf"],
       guildOnly: true,
       args: [

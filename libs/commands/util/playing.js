@@ -14,7 +14,7 @@ module.exports = class Playing extends commando.Command {
       aliases: ["playing"],
       group: "util",
       memberName: "playing",
-      description: "Change the bot's playing status",
+      description: "Change the bot's playing status.",
       examples: ["playing Overwatch", "playing"],
       args: [
         {

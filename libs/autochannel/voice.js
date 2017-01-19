@@ -12,16 +12,16 @@ module.exports = class VoiceAutoChannel extends AutoChannel {
     this.discord = discord
 
     this.discord.on("presenceUpdate", (oldMember, newMember) => {
-      super.onPresenceUpdate(newMember.guild)
+      this.onPresenceUpdate(newMember.guild)
     })
 
     this.discord.on("ready", () => {
-      super.onReady()
+      this.onReady()
     })
 
     this.discord.on("voiceStateUpdate", (oldMember, newMember) => {
       if(oldMember.voiceChannel === newMember.voiceChannel) return
-      super.onVoiceStateUpdate(newMember.guild)
+      this.onVoiceStateUpdate(newMember.guild)
     })
   }
 }

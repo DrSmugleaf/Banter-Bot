@@ -14,7 +14,7 @@ module.exports = class WhoIs extends commando.Command {
       aliases: ["nsa", "user", "user-info", "userinfo", "whois"],
       group: "util",
       memberName: "whois",
-      description: "Get information about a user",
+      description: "Get information about a user.",
       examples: ["whois DrSmugleaf", "whois 109067752286715904"],
       guildOnly: true,
       args: [

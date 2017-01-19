@@ -13,7 +13,7 @@ module.exports = class Language extends commando.Command {
       aliases: ["language", "lang"],
       group: "user",
       memberName: "language",
-      description: "Set your language",
+      description: "Set your language.",
       examples: ["language spanish", "language french"],
       args: [
         {

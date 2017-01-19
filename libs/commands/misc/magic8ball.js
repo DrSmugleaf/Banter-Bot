@@ -9,11 +9,11 @@ const constants = require("../../util/constants")
 module.exports = class Magic8Ball extends commando.Command {
   constructor(client) {
     super(client, {
-      name: "magic-ball",
+      name: "8ball",
       aliases: ["8", "8ball", "magic8", "magic8ball"],
       group: "misc",
-      memberName: "magic8ball",
-      description: "An answer from the Magic 8 Ball",
+      memberName: "8ball",
+      description: "An answer from the Magic 8 Ball.",
       examples: ["8 will I get an answer?"],
       args: [
         {

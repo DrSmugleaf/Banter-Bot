@@ -18,7 +18,7 @@ module.exports = class ServerLanguage extends commando.Command {
       ],
       group: "server",
       memberName: "server-language",
-      description: "Set the server's default language for the bot",
+      description: "Set the server's default language for the bot.",
       examples: ["server-language spanish", "server-language french"],
       args: [
         {

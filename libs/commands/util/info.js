@@ -13,7 +13,7 @@ module.exports = class Info extends commando.Command {
       aliases: ["info", "information"],
       group: "util",
       memberName: "info",
-      description: "Information about Banter Bot",
+      description: "Information about Banter Bot.",
       examples: ["info"]
     })
   }
