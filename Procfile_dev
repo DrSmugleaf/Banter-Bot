@@ -1,2 +1,2 @@
-web: node web.js
-worker: nodemon --harmony banterbot.js
+web: nodemon --trace-warnings web.js
+worker: nodemon --harmony --trace-warnings banterbot.js
