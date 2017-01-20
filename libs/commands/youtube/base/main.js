@@ -1,0 +1,125 @@
+//
+// Copyright (c) 2017 DrSmugleaf
+//
+
+"use strict"
+const constants = require("../../../util/constants")
+const Discord = require("discord.js")
+const winston = require("winston")
+const ytdl = require("ytdl-core")
+
+module.exports = {
+  queue: new Map(),
+
+  dispatcher(guild) {
+    if(!(guild instanceof Discord.Guild)) {
+      throw new TypeError("Guild must be an instance of Discord.Guild")
+    }
+    if(!this.isInVoiceChannel(guild)) return
+
+    return guild.voiceConnection.player.dispatcher
+  },
+
+  isCurrentlyPlaying(guild) {
+    if(!(guild instanceof Discord.Guild)) {
+      throw new TypeError("Guild must be an instance of Discord.Guild")
+    }
+
+    return this.isPlaying(guild) && !this.isPaused(guild)
+  },
+
+  isInVoiceChannel(guild) {
+    if(!(guild instanceof Discord.Guild)) {
+      throw new TypeError("Guild must be an instance of Discord.Guild")
+    }
+
+    return guild.voiceConnection
+  },
+
+  isMemberInVoiceChannel(member) {
+    if(!(member instanceof Discord.GuildMember)) {
+      throw new TypeError("Guild must be an instance of Discord.Guild")
+    }
+
+    return member.voiceChannel
+  },
+
+  isPaused(guild) {
+    if(!(guild instanceof Discord.Guild)) {
+      throw new TypeError("Guild must be an instance of Discord.Guild")
+    }
+
+    return guild.voiceConnection && guild.voiceConnection.player.dispatcher.paused
+  },
+
+  isPlaying(guild) {
+    if(!(guild instanceof Discord.Guild)) {
+      throw new TypeError("Guild must be an instance of Discord.Guild")
+    }
+
+    return guild.voiceConnection && !this.isQueueEmpty(guild)
+  },
+
+  isSameVoiceChannel(member) {
+    if(!(member instanceof Discord.GuildMember)) {
+      throw new TypeError("Guild must be an instance of Discord.Guild")
+    }
+
+    return member.voiceChannel && member.voiceChannel.connection &&
+      member.voiceChannel.connection === member.guild.voiceConnection
+  },
+
+  isQueueEmpty(guild) {
+    if(!(guild instanceof Discord.Guild)) {
+      throw new TypeError("Guild must be an instance of Discord.Guild")
+    }
+
+    return !this.queue.has(guild.id) || !this.queue.get(guild.id)[0]
+  },
+
+  joinVoice(member) {
+    if(!(member instanceof Discord.GuildMember)) {
+      throw new TypeError("Guild must be an instance of Discord.Guild")
+    }
+
+    const voiceChannel = member.voiceChannel
+    const voiceConnection = member.guild.voiceConnection
+
+    return new Promise(function(resolve, reject) {
+      if(voiceConnection && voiceConnection == voiceChannel.connection) {
+        resolve(voiceConnection)
+      } else {
+        voiceChannel.join().then(resolve).catch(reject)
+      }
+    })
+  },
+
+  playNext(guild) {
+    if(!(guild instanceof Discord.Guild)) {
+      throw new TypeError("Guild must be an instance of Discord.Guild")
+    }
+    if(this.isQueueEmpty(guild)) return
+
+    const queue = this.queue.get(guild.id)
+    const next = queue[0]
+    const stream = ytdl(next.url, { filter: "audioonly" })
+
+    this.joinVoice(next.member).then(voiceConnection => {
+      voiceConnection.playStream(
+        stream, constants.youtube.STREAMOPTIONS
+      ).on("end", (reason) => {
+        next.repeated = true
+        if(reason === "skip") next.repeat = false
+        if(!next.repeat) queue.shift()
+
+        return this.playNext(next.guild)
+      })
+
+      if(next.repeat && !next.repeated) {
+        return next.channel.sendMessage(`Now repeating ${next.url}`)
+      } else if(!next.repeated) {
+        return next.channel.sendMessage(`Now playing ${next.url}`)
+      }
+    }).catch(winston.error)
+  }
+}

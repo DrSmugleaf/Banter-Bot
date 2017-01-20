@@ -5,6 +5,7 @@
 "use strict"
 const commando = require("discord.js-commando")
 const constants = require("../../util/constants")
+const main = require("./base/main")
 const oneLine = require("common-tags").oneLine
 
 module.exports = class Skip extends commando.Command {
@@ -14,7 +15,7 @@ module.exports = class Skip extends commando.Command {
       aliases: ["skip"],
       group: "youtube",
       memberName: "skip",
-      description: "Skips the currently playing video in this server",
+      description: "Skips the currently playing video in this server.",
       examples: ["skip"],
       guildOnly: true
     })
@@ -22,18 +23,11 @@ module.exports = class Skip extends commando.Command {
     this.votes = {}
   }
 
-  isSameVoiceChannel(msg) {
-    return msg.member.voiceChannel &&
-      msg.member.voiceChannel.connection &&
-      msg.member.voiceChannel.connection == msg.guild.voiceConnection
-  }
-
   async run(msg) {
-    if(!msg.member.voiceChannel) {
-      return msg.reply(constants.responses.NOT_A_VOICE_CHANNEL["english"])
+    if(!main.isCurrentlyPlaying(msg.guild)) {
+      return msg.reply("There is no currently playing song.")
     }
-
-    if(!this.isSameVoiceChannel(msg)) {
+    if(!main.isSameVoiceChannel(msg.member)) {
       return msg.reply("You arent in the voice channel")
     }
 
@@ -44,11 +38,7 @@ module.exports = class Skip extends commando.Command {
       this.votes[id] = this.votes[id] ? +1 : 1
 
       if(this.votes[id] > (voiceConnection.channel.members.size - 1) / 2) {
-        var dispatcher = voiceConnection.player.dispatcher
-        var repeatList = this.client.registry.resolveCommand("youtube:repeat").repeatList
-
-        if(repeatList[id]) repeatList.delete(msg.guild)
-        dispatcher.end()
+        main.dispatcher(msg.guild).end("skip")
 
         return msg.channel.send(oneLine`
           ${this.votes[id]} out of ${voiceConnection.channel.members.size - 1}

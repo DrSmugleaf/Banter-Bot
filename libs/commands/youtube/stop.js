@@ -4,6 +4,7 @@
 
 "use strict"
 const commando = require("discord.js-commando")
+const main = require("./base/main")
 
 module.exports = class Stop extends commando.Command {
   constructor(client) {
@@ -12,7 +13,7 @@ module.exports = class Stop extends commando.Command {
       aliases: ["stop"],
       group: "youtube",
       memberName: "stop",
-      description: "Stops the currently playing video in this server",
+      description: "Stops the currently playing video in this server.",
       examples: ["stop"],
       guildOnly: true
     })
@@ -23,14 +24,15 @@ module.exports = class Stop extends commando.Command {
   }
 
   async run(msg) {
+    if(!main.isCurrentlyPlaying(msg.guild)) {
+      return msg.reply("There is no currently playing song.")
+    }
     const voiceConnection = msg.guild.voiceConnection
 
     if(voiceConnection) {
-      var dispatcher = voiceConnection.player.dispatcher
+      const queue = main.queue.get(msg.guild.id)
+      if(queue) queue[0].repeat = false
 
-      var repeatList = this.client.registry.resolveCommand("youtube:repeat").repeatList
-      if(repeatList[msg.guild]) repeatList.delete(msg.guild)
-      dispatcher.end()
       return msg.reply("Stopped the current video")
     }
   }
