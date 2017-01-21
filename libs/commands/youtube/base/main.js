@@ -126,20 +126,11 @@ module.exports = {
         return this.playNext(next.guild)
       })
 
-      request({
-        uri: next.url,
-        transform: (body) => {
-          return cheerio.load(body)
-        }
-      }).then(($) => {
-        const title = $("title").text()
-
-        if(next.repeat && !next.repeated) {
-          return next.channel.sendMessage(`Now repeating ${title}`)
-        } else if(!next.repeated) {
-          return next.channel.sendMessage(`Now playing ${title}`)
-        }
-      }).catch(winston.error)
+      if(next.repeat && !next.repeated) {
+        return next.channel.sendMessage(`Now repeating ${next.video.title}`)
+      } else if(!next.repeated) {
+        return next.channel.sendMessage(`Now playing ${next.video.title}`)
+      }
     }).catch(winston.error)
   }
 }
