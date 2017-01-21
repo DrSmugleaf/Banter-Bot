@@ -8,6 +8,8 @@ const constants = require("../../util/constants")
 const request = require("request-promise")
 const main = require("./base/main")
 const Song = require("./base/song")
+const Youtube = require("simple-youtube-api")
+const youtube = new Youtube(process.env.GOOGLE_KEY)
 
 module.exports = class Play extends commando.Command {
   constructor(client) {
@@ -53,16 +55,20 @@ module.exports = class Play extends commando.Command {
 
     if(msg.deletable) msg.delete()
 
-    const queue = main.queue.get(msg.guild.id) || []
-    const song = new Song(msg, args)
+    const url = args.url
 
-    queue.push(song)
-    main.queue.set(msg.guild.id, queue)
+    youtube.getVideo(url).then((video) => {
+      const queue = main.queue.get(msg.guild.id) || []
+      const song = new Song(msg, args, video)
 
-    if(queue.length <= 1) {
-      main.playNext(msg.guild)
-    } else {
-      queue[0].repeat = false
-    }
+      queue.push(song)
+      main.queue.set(msg.guild.id, queue)
+
+      if(queue.length <= 1) {
+        main.playNext(msg.guild)
+      } else {
+        queue[0].repeat = false
+      }
+    })
   }
 }

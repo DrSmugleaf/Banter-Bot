@@ -51,7 +51,7 @@ module.exports = {
       throw new TypeError("Guild must be an instance of Discord.Guild")
     }
 
-    return guild.voiceConnection && guild.voiceConnection.player.dispatcher.paused
+    return this.isReady(guild) && guild.voiceConnection.player.dispatcher.paused
   },
 
   isPlaying(guild) {
@@ -60,6 +60,15 @@ module.exports = {
     }
 
     return guild.voiceConnection && !this.isQueueEmpty(guild)
+  },
+
+  isReady(guild) {
+    if(!(guild instanceof Discord.Guild)) {
+      throw new TypeError("Guild must be an instance of Discord.Guild")
+    }
+
+    return guild.voiceConnection && guild.voiceConnection.player &&
+      guild.voiceConnection.player.dispatcher
   },
 
   isSameVoiceChannel(member) {
