@@ -8,6 +8,7 @@ const constants = require("../../util/constants")
 const request = require("request-promise")
 const main = require("./base/main")
 const Song = require("./base/song")
+const winston = require("winston")
 const Youtube = require("simple-youtube-api")
 const youtube = new Youtube(process.env.GOOGLE_KEY)
 
@@ -41,12 +42,8 @@ module.exports = class Play extends commando.Command {
         {
           key: "repeat",
           prompt: "Repeat the video?",
-          type: "string",
-          default: false,
-          parse: (repeat) => {
-            if(["yes", "true", true].includes(repeat)) return true
-            return false
-          }
+          type: "boolean",
+          default: false
         }
       ]
     })
@@ -54,7 +51,7 @@ module.exports = class Play extends commando.Command {
 
   async run(msg, args) {
     if(!main.isMemberInVoiceChannel(msg.member)) {
-      return constants.responses.NOT_A_VOICE_CHANNEL["english"]
+      return constants.responses.YOUTUBE.NOT_A_VOICE_CHANNEL["english"]
     }
 
     if(msg.deletable) msg.delete()
@@ -73,6 +70,11 @@ module.exports = class Play extends commando.Command {
       } else {
         queue[0].repeat = false
       }
+
+      return msg.reply(constants.responses.YOUTUBE.PLAY["english"](song.video.title))
+    }).catch(e => {
+      winston.error(e)
+      return msg.reply(constants.responses.YOUTUBE.INVALID["english"])
     })
   }
 }

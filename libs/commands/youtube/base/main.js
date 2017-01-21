@@ -3,10 +3,8 @@
 //
 
 "use strict"
-const cheerio = require("cheerio")
 const constants = require("../../../util/constants")
 const Discord = require("discord.js")
-const request = require("request-promise")
 const winston = require("winston")
 const ytdl = require("ytdl-core")
 

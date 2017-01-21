@@ -28,10 +28,10 @@ module.exports = class Pause extends commando.Command {
 
   async run(msg) {
     if(!main.isCurrentlyPlaying(msg.guild)) {
-      return msg.reply("There is no currently playing song.")
+      return msg.reply(constants.responses.YOUTUBE.NO_CURRENTLY_PLAYING["english"])
     }
     if(!main.isSameVoiceChannel(msg.member)) {
-      return msg.reply("You aren't in the same voice channel.")
+      return msg.reply(constants.responses.YOUTUBE.NOT_SAME_VOICE_CHANNEL["english"])
     }
 
     msg.guild.voiceConnection.player.dispatcher.pause()

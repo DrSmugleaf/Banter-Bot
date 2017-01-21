@@ -6,7 +6,6 @@
 const commando = require("discord.js-commando")
 const constants = require("../../util/constants")
 const main = require("./base/main")
-const oneLine = require("common-tags").oneLine
 
 module.exports = class Skip extends commando.Command {
   constructor(client) {
@@ -37,18 +36,14 @@ module.exports = class Skip extends commando.Command {
     if(voiceConnection) {
       this.votes[id] = this.votes[id] ? +1 : 1
 
+      const votes = this.votes[id]
+      const total = voiceConnection.channel.members.size - 1
+
       if(this.votes[id] > (voiceConnection.channel.members.size - 1) / 2) {
         main.dispatcher(msg.guild).end("skip")
-
-        return msg.channel.send(oneLine`
-          ${this.votes[id]} out of ${voiceConnection.channel.members.size - 1}
-          members voted to skip, skipped the current video
-        `)
+        return msg.channel.send(constants.responses.YOUTUBE.SKIP.SUCCESS["english"](votes, total))
       } else {
-        return msg.reply(oneLine`
-          ${this.votes[id]} out of ${voiceConnection.channel.members.size - 1}
-          members want to skip the current video
-        `)
+        return msg.channel.send(constants.responses.YOUTUBE.SKIP.FAIL["english"](votes, total))
       }
     }
   }

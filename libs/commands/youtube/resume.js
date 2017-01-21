@@ -4,6 +4,7 @@
 
 "use strict"
 const commando = require("discord.js-commando")
+const constants = require("../../util/constants")
 const main = require("./base/main")
 
 module.exports = class Resume extends commando.Command {
@@ -25,13 +26,13 @@ module.exports = class Resume extends commando.Command {
 
   async run(msg) {
     if(!main.isPaused(msg.guild)) {
-      return msg.reply("There is no currently paused song.")
+      return msg.reply(constants.responses.YOUTUBE.NO_PAUSED["english"])
     }
     if(!main.isSameVoiceChannel(msg.member)) {
-      return msg.reply("You aren't in the same voice channel.")
+      return msg.reply(constants.responses.YOUTUBE.NOT_SAME_VOICE_CHANNEL["english"])
     }
 
     msg.guild.voiceConnection.player.dispatcher.resume()
-    return msg.reply("Resumed the current video.")
+    return msg.reply(constants.responses.YOUTUBE.RESUME["english"])
   }
 }

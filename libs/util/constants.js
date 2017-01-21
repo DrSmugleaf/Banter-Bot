@@ -3,7 +3,7 @@
 //
 
 "use strict"
-const stripIndents = require("common-tags").stripIndents
+const { oneLine, stripIndents } = require("common-tags")
 
 exports.defaultoptions = {
   name: "Banter Bot"
@@ -896,11 +896,6 @@ exports.responses = {
     spanish: "Usa el comando en el chat de un servidor."
   },
 
-  NOT_A_VOICE_CHANNEL: {
-    english: "You arent in a voice channel.",
-    spanish: "No estás en un canal de voz."
-  },
-
   PLAYING: {
     SET: {
       english: (name) => `Changed the bot's game to ${name}`,
@@ -970,13 +965,63 @@ exports.responses = {
   },
 
   YOUTUBE: {
+    EMPTY_QUEUE: {
+      english: "There are no songs in the queue.",
+      spanish: "No hay canciones en cola."
+    },
     INVALID: {
-      english: "Invalid URL. Format: !youtube play URL.",
-      spanish: "URL inválido. Formato: !youtube play URL."
+      english: "Invalid URL.",
+      spanish: "URL inválido."
+    },
+    NO_CURRENTLY_PLAYING: {
+      english: "There is no currently playing song.",
+      spanish: "No hay ninguna canción puesta."
+    },
+    NO_PAUSED: {
+      english: "There is no currently paused song.",
+      spanish: "No hay ninguna canción pausada.",
+    },
+    NOT_IN_VOICE_CHANNEL: {
+      english: "You arent in a voice channel.",
+      spanish: "No estás en un canal de voz."
+    },
+    NOT_SAME_VOICE_CHANNEL: {
+      english: "You aren't in the same voice channel.",
+      spanish: "No estas en el mismo canal de voz."
     },
     PAUSE: {
       english: "Paused the current video.",
       spanish: "Vídeo pausado."
+    },
+    PLAY: {
+      english: (title) => `Added ${title} to the queue.`,
+      spanish: (title) => `Añadido ${title} a la cola.`
+    },
+    QUEUE: {
+      english: (length) => `There are ${length} songs in the queue.`,
+      spanish: (length) => `Hay ${length} canciones en la cola.`
+    },
+    RESUME: {
+      english: "Resumed the current video.",
+      spanish: "Vídeo reanudado"
+    },
+    SKIP: {
+      FAIL: {
+        english: (votes, total) => oneLine`${votes} out of ${total} members want
+          to skip the current video`,
+        spanish: (votes, total) => oneLine`${votes} de ${total} miembros quieren
+          saltarse el vídeo actual`
+      },
+      SUCCESS: {
+        english: (votes, total) => oneLine`${votes} out of ${total} members voted
+          to skip, skipped the current video`,
+        spanish: (votes, total) => oneLine`${votes} de ${total} miembros votaron
+          para saltar este vídeo, saltado el vídeo actual`
+      }
+    },
+    STOP: {
+      english: "Stopped the current video",
+      spanish: "Parado el vídeo actual"
     }
   }
 },
