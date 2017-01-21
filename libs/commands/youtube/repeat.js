@@ -17,6 +17,10 @@ module.exports = class Repeat extends commando.Command {
       description: "Repeat a song",
       examples: ["repeat https://www.youtube.com/watch?v=dQw4w9WgXcQ"],
       guildOnly: true,
+      throttling: {
+        usages: 2,
+        duration: 120,
+      },
       args: [
         {
           key: "url",

@@ -21,6 +21,10 @@ module.exports = class Play extends commando.Command {
       description: "Queue a video to be played.",
       examples: ["play https://www.youtube.com/watch?v=dQw4w9WgXcQ"],
       guildOnly: true,
+      throttling: {
+        usages: 2,
+        duration: 120,
+      },
       args: [
         {
           key: "url",
