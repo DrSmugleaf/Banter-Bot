@@ -816,6 +816,10 @@ exports.mslanguages = {
 
 exports.responses = {
   AVATAR: {
+    INVALID: {
+      english: (url) => `${url} is an invalid image`,
+      spanish: (url) => `${url} es una imagen inválida`
+    },
     SET: {
       english: (url) => `Changed the bot's image to ${url}`,
       spanish: (url) => `Cambiado la imagen del bot a ${url}`

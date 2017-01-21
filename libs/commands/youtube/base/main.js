@@ -3,8 +3,10 @@
 //
 
 "use strict"
+const cheerio = require("cheerio")
 const constants = require("../../../util/constants")
 const Discord = require("discord.js")
+const request = require("request-promise")
 const winston = require("winston")
 const ytdl = require("ytdl-core")
 
@@ -115,11 +117,20 @@ module.exports = {
         return this.playNext(next.guild)
       })
 
-      if(next.repeat && !next.repeated) {
-        return next.channel.sendMessage(`Now repeating ${next.url}`)
-      } else if(!next.repeated) {
-        return next.channel.sendMessage(`Now playing ${next.url}`)
-      }
+      request({
+        uri: next.url,
+        transform: (body) => {
+          return cheerio.load(body)
+        }
+      }).then(($) => {
+        const title = $("title").text()
+
+        if(next.repeat && !next.repeated) {
+          return next.channel.sendMessage(`Now repeating ${title}`)
+        } else if(!next.repeated) {
+          return next.channel.sendMessage(`Now playing ${title}`)
+        }
+      }).catch(winston.error)
     }).catch(winston.error)
   }
 }

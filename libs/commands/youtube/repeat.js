@@ -4,7 +4,7 @@
 
 "use strict"
 const commando = require("discord.js-commando")
-const request = require("request")
+const request = require("request-promise")
 const validurl = require("valid-url")
 
 module.exports = class Repeat extends commando.Command {

@@ -5,9 +5,9 @@
 "use strict"
 const commando = require("discord.js-commando")
 const constants = require("../../util/constants")
-const request = require("request")
-const validurl = require("valid-url")
+const request = require("request-promise")
 const main = require("./base/main")
+const Song = require("./base/song")
 
 module.exports = class Play extends commando.Command {
   constructor(client) {
@@ -25,11 +25,11 @@ module.exports = class Play extends commando.Command {
           prompt: "What video do you want to queue?",
           type: "string",
           validate: (url) => {
-            if(validurl.isWebUri(url)) {
-              return request(url, function(e, res) {
-                return !e && res.statusCode === 200
-              })
-            }
+            return request(url).then(() => {
+              return true
+            }).catch(() => {
+              return false
+            })
           }
         },
         {
@@ -53,18 +53,8 @@ module.exports = class Play extends commando.Command {
 
     if(msg.deletable) msg.delete()
 
-    const url = args.url
-    const repeat = args.repeat
     const queue = main.queue.get(msg.guild.id) || []
-
-    const song = {
-      channel: msg.channel,
-      guild: msg.guild,
-      member: msg.member,
-      url: url,
-      repeat: repeat,
-      repeated: false
-    }
+    const song = new Song(msg, args)
 
     queue.push(song)
     main.queue.set(msg.guild.id, queue)
