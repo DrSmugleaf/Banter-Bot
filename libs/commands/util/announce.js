@@ -90,7 +90,7 @@ module.exports = class Announce extends commando.Command {
     if(this.fails.length > 0) {
       return msg.reply(stripIndents`
         Failed to send the announcement to these guilds:
-        ${this.fails}
+        ${this.fails.join(", ")}
       `)
     }
   }
