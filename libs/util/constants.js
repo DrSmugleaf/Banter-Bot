@@ -35,7 +35,7 @@ exports.versions = {
     `,
     spanish: stripIndents`
       **AÑADIDO**
-      Notas de version.
+      Notas de versión.
       !announce: Anuncia un mensaje a un servidor, servidores o todos los servidores, solo dueño.
       !clean-messages: Borra los mensajes de un canal para siempre, solo admins.
       !playing: Cambia el estado de Jugando del bot, solo dueño.
@@ -58,6 +58,11 @@ exports.versions = {
       Arreglado un crash cuando el parametro de !color color no existía.
       Arreglado un crash cuando se usaba !help en un mensaje directo al bot.
       Arreglado un crash cuando se intentaba reproducir un video ajeno a youtube con !play.
+    `
+  },
+  "3": {
+    english: stripIndents`
+
     `
   }
 }
@@ -1100,6 +1105,10 @@ exports.responses = {
       spanish: "Vídeo reanudado"
     },
     SKIP: {
+      ALREADY_VOTED: {
+        english: "You already voted to skip this song",
+        spanish: "Ya has votado para omitir esta canción"
+      },
       FAIL: {
         english: (votes, total) => oneLine`${votes} out of ${total} members want
           to skip the current video`,
@@ -1116,6 +1125,14 @@ exports.responses = {
     STOP: {
       english: "Stopped the current video",
       spanish: "Parado el vídeo actual"
+    },
+    TOO_MANY_SONGS: {
+      english: oneLine`You have submitted too many songs to the queue,
+        wait until one of yours finishes
+      `,
+      spanish: oneLine`Has enviado demasiadas canciones a la cola,
+        espera hasta que una de las tuyas termine
+      `
     }
   }
 },

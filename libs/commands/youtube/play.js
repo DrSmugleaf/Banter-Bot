@@ -53,12 +53,18 @@ module.exports = class Play extends commando.Command {
       return msg.reply(constants.responses.YOUTUBE.NOT_IN_VOICE_CHANNEL["english"])
     }
 
+    const queue = main.queue.get(msg.guild.id) || []
+
     if(msg.deletable) msg.delete()
+    if(queue.filter((song) => {
+      return song.member.id === msg.author.id
+    }).length >= 2) {
+      return msg.reply(constants.responses.YOUTUBE.TOO_MANY_SONGS["english"])
+    }
 
     const url = args.url
 
     youtube.getVideo(url).then((video) => {
-      const queue = main.queue.get(msg.guild.id) || []
       const song = new Song(msg, args, video)
 
       queue.push(song)

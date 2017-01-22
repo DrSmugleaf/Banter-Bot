@@ -34,21 +34,22 @@ module.exports = class Skip extends commando.Command {
       return msg.reply(constants.responses.YOUTUBE.NOT_SAME_VOICE_CHANNEL["english"])
     }
 
-    const voiceConnection = msg.guild.voiceConnection
-    const id = msg.guild.id
+    if(!this.votes[msg.guild.id]) this.votes[msg.guild.id] = []
+    if(this.votes[msg.guild.id].includes(msg.author.id)) {
+      return msg.reply(constants.responses.YOUTUBE.SKIP.ALREADY_VOTED["english"])
+    }
 
-    if(voiceConnection) {
-      this.votes[id] = this.votes[id] ? +1 : 1
+    this.votes[msg.guild.id].push(msg.author.id)
 
-      const votes = this.votes[id]
-      const total = voiceConnection.channel.members.size - 1
+    const votes = this.votes[msg.guild.id].length
+    const total = msg.guild.voiceConnection.channel.members.size - 1
 
-      if(this.votes[id] > (voiceConnection.channel.members.size - 1) / 2) {
-        main.dispatcher(msg.guild).end("skip")
-        return msg.channel.send(constants.responses.YOUTUBE.SKIP.SUCCESS["english"](votes, total))
-      } else {
-        return msg.channel.send(constants.responses.YOUTUBE.SKIP.FAIL["english"](votes, total))
-      }
+    if(this.votes[msg.guild.id].length >= total / 2) {
+      this.votes[msg.guild.id] = []
+      main.dispatcher(msg.guild).end("skip")
+      return msg.channel.send(constants.responses.YOUTUBE.SKIP.SUCCESS["english"](votes, total))
+    } else {
+      return msg.channel.send(constants.responses.YOUTUBE.SKIP.FAIL["english"](votes, total))
     }
   }
 }
