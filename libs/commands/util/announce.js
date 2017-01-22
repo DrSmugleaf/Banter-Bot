@@ -30,6 +30,8 @@ module.exports = class Announce extends commando.Command {
         }
       ]
     })
+
+    this.fails = []
   }
 
   hasPermission(msg) {
@@ -71,11 +73,25 @@ module.exports = class Announce extends commando.Command {
     } else if(guilds instanceof Array) {
       guilds.forEach((guildID) => {
         const guild = msg.client.guilds.get(guildID)
+        if(!guild) {
+          this.fails.push(guildID)
+          return
+        }
+
         this.sendAnnouncement(msg, guild, text)
       })
     } else {
       const guild = msg.client.guilds.get(guilds)
+      if(!guild) return msg.reply(`Failed to send the announcement to ${guilds}`)
+
       this.sendAnnouncement(msg, guild, text)
+    }
+
+    if(this.fails.length > 0) {
+      return msg.reply(stripIndents`
+        Failed to send the announcement to these guilds:
+        ${this.fails}
+      `)
     }
   }
 }
