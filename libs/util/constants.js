@@ -5,6 +5,53 @@
 "use strict"
 const { oneLine, stripIndents } = require("common-tags")
 
+exports.builds = {
+  "2": {
+    english: stripIndents`
+      ADDED
+      !announce: Announces a message to a guild, guilds or all guilds, owner only.
+      !clean-messages: Deletes a channel's messages forever, admin only.
+      !playing: Changes the bot's playing status, owner only.
+      !queue: Shows how many songs are in the queue.
+      !skip: Replaces !stop and !pause commands for regular users, vote based.
+      !server-language: Sets the server language.
+      !version: Shows the changes of a specific version.
+
+      CHANGES
+      !color now supports a lot more types of color formats.
+      !info now shows the support server invite link.
+      !stop and !pause commands can now only be used by members with the permission to mute others.
+      !play now deletes the command message if it is able to, to reduce clutter.
+      When playing a song, it now only shows the name instead of the link.
+      !play and !repeat now have a maximum usage rate of 2 times every 2 minutes.
+
+
+      FIXES
+      Fixed crash when !color's color parameter doesn't exist.
+      Fixed crash when using !help in a direct message with the bot.
+      Fixed crash when trying to !play a link that isn't a youtube video.
+    `,
+    spanish: stripIndents`
+      AÑADIDO
+      !announce: Anuncia un mensaje a un servidor, servidores o todos los servidores, solo dueño.
+      !clean-messages: Borra los mensajes de un canal para siempre, solo admins.
+      !playing: Cambia el estado de Jugando del bot, solo dueño.
+      !queue: Enseña cuantas canciones hay en cola.
+      !skip: Reemplaza !stop y !pause para usuarios normales, basado en votos.
+      !server-language: Cambia el idioma del servidor.
+      !version: Enseña los cambios de una versión especifica.
+
+      CAMBIOS
+      !color ahora es compatible con mas variantes de formatos de colores.
+      !info ahora enseña el link de invitación al servidor de soporte.
+      !stop y !pause solo pueden ser usados por usuarios con el permiso para silenciar a otros.
+      !play ahora borra el mensaje del comando si puede, para reducir desorden.
+      Cuando reproduce una cancion, ahora solo enseña el nombre en vez del link.
+      !play y !repeat ahora tienen un máximo de usos de 2 veces cada 2 minutos.
+    `
+  }
+}
+
 exports.defaultoptions = {
   name: "Banter Bot"
 }
