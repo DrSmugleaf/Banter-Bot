@@ -10,30 +10,33 @@ const mstranslator = new MsTranslator({
 }, true)
 const winston = require("winston")
 
-class Sender {
-  constructor() {}
+module.exports = class Sender {
+  constructor(discord) {
+    this.discord = discord
 
-  send(msg) {
-    if(!msg.guild) return
-    var settings = msg.guild.settings.get("bridged", {})
-    if(!msg.author.bot && settings && settings[msg.channel.id]) {
-      var channel = settings[msg.channel.id]
-      channel.connectedchannels.forEach(function(subchannel) {
-        var discordsubchannel = msg.guild.channels.get(subchannel)
+    this.discord.on("message", (msg) => this.onMessage(msg))
+  }
+
+  onMessage(msg) {
+    if(!msg.guild || msg.author.bot) return
+
+    const settings = msg.guild.settings.get("bridged", {})
+
+    if(settings && settings[msg.channel.id]) {
+      const channel = settings[msg.channel.id]
+
+      channel.connectedchannels.forEach(subChannel => {
+        const discordSubChannel = msg.guild.channels.get(subChannel)
+
         mstranslator.translate({
           text: msg.cleanContent,
           from: channel.language,
-          to: settings[subchannel].language
+          to: settings[subChannel].language
         }, function(e, translation) {
-          if(e) {
-            winston.error(e)
-            return
-          }
-          discordsubchannel.sendMessage(`**${msg.author.username}**: ${translation}`)
+          if(e) return winston.error(e)
+          return discordSubChannel.sendMessage(`**${msg.author.username}**: ${translation}`)
         })
       })
     }
   }
 }
-
-module.exports = Sender

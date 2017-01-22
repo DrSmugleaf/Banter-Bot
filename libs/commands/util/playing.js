@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2016-2017 DrSmugleaf
+// Copyright (c) 2017 DrSmugleaf
 //
 
 "use strict"
@@ -7,15 +7,15 @@ const commando = require("discord.js-commando")
 const constants = require("../../util/constants")
 const winston = require("winston")
 
-module.exports = class Name extends commando.Command {
+module.exports = class Playing extends commando.Command {
   constructor(client) {
     super(client, {
-      name: "name",
-      aliases: ["alias", "name", "nick", "nickname"],
+      name: "playing",
+      aliases: ["playing"],
       group: "util",
-      memberName: "name",
-      description: "Change the bot's name.",
-      examples: ["name Banter Bot"],
+      memberName: "playing",
+      description: "Change the bot's playing status.",
+      examples: ["playing Overwatch", "playing"],
       throttling: {
         usages: 2,
         duration: 3
@@ -23,9 +23,9 @@ module.exports = class Name extends commando.Command {
       args: [
         {
           key: "name",
-          prompt: "The name to apply",
+          prompt: "The game to set as playing",
           type: "string",
-          default: "Banter Bot"
+          default: ""
         }
       ]
     })
@@ -36,10 +36,10 @@ module.exports = class Name extends commando.Command {
   }
 
   async run(msg, args) {
-    const name = args.name
+    const name = args.name ? args.name : null
 
-    msg.client.user.setUsername(name).then(() => {
-      return msg.reply(constants.responses.NAME.SET["english"](name))
+    msg.client.user.setGame(name).then(() => {
+      return msg.reply(constants.responses.PLAYING.SET["english"](name ? name : "none"))
     }).catch(winston.error)
   }
 }

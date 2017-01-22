@@ -27,14 +27,12 @@ app.get("/", function(req, res) {
 })
 
 app.get("/quotes", function(req, res) {
-  db.query("SELECT * FROM quotes")
-    .then(data => {
-      res.render("pages/quotes", { results: data })
-    })
-    .catch(e => {
-      winston.error(e)
-      res.send("Error")
-    })
+  db.query("SELECT * FROM quotes").then(data => {
+    res.render("pages/quotes", { results: data })
+  }).catch(e => {
+    winston.error(e)
+    res.send("Error")
+  })
 })
 
 app.use("*", function(req, res) {

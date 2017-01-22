@@ -3,6 +3,64 @@
 //
 
 "use strict"
+const { oneLine, stripIndents } = require("common-tags")
+
+exports.versions = {
+  "2": {
+    english: stripIndents`
+      **ADDED**
+      Version notes.
+      !announce: Announces a message to a guild, guilds or all guilds, owner only.
+      !clean-messages: Deletes a channel's messages forever, admin only.
+      !playing: Changes the bot's playing status, owner only.
+      !queue: Shows how many songs are in the queue.
+      !skip: Replaces !stop and !pause commands for regular users, vote based.
+      !server-language: Sets the server language.
+      !server-settings: Clears, gets, removes or sets a setting in this server, owner only.
+      !version: Shows the changes of a specific version.
+
+      **CHANGES**
+      !color now supports a lot more types of color formats.
+      !info now shows the support server invite link.
+      !stop and !pause commands can now only be used by members with the permission to mute others.
+      !play now deletes the command message if it is able to, to reduce clutter.
+      When playing a song, it now only shows the name instead of the link.
+      Every command now has a maximum usage rate of 2 uses every 3 seconds.
+      !play and !repeat usage rate is 2 uses every 5 seconds
+
+      **FIXES**
+      Fixed crash when !color's color parameter doesn't exist.
+      Fixed crash when using !help in a direct message with the bot.
+      Fixed crash when trying to !play a link that isn't a youtube video.
+    `,
+    spanish: stripIndents`
+      **AÑADIDO**
+      Notas de version.
+      !announce: Anuncia un mensaje a un servidor, servidores o todos los servidores, solo dueño.
+      !clean-messages: Borra los mensajes de un canal para siempre, solo admins.
+      !playing: Cambia el estado de Jugando del bot, solo dueño.
+      !queue: Enseña cuantas canciones hay en cola.
+      !skip: Reemplaza !stop y !pause para usuarios normales, basado en votos.
+      !server-language: Cambia el idioma del servidor.
+      !server-settings: Limpia, adquiere, quita o aplica una opción en este servidor, solo dueño.
+      !version: Enseña los cambios de una versión especifica.
+
+      **CAMBIOS**
+      !color ahora es compatible con mas variantes de formatos de colores.
+      !info ahora enseña el link de invitación al servidor de soporte.
+      !stop y !pause solo pueden ser usados por usuarios con el permiso para silenciar a otros.
+      !play ahora borra el mensaje del comando si puede, para reducir desorden.
+      Cuando reproduce una cancion, ahora solo enseña el nombre en vez del link.
+      Todos los comandos ahora tienen un máximo de usos de 2 veces cada 3 segundos.
+      !play y !repeat tienen un máximo de usos de 2 veces cada 5 segundos.
+
+      **ARREGLOS**
+      Arreglado un crash cuando el parametro de !color color no existía.
+      Arreglado un crash cuando se usaba !help en un mensaje directo al bot.
+      Arreglado un crash cuando se intentaba reproducir un video ajeno a youtube con !play.
+    `
+  }
+}
 
 exports.defaultoptions = {
   name: "Banter Bot"
@@ -814,29 +872,51 @@ exports.mslanguages = {
 }
 
 exports.responses = {
+  AVATAR: {
+    INVALID: {
+      english: (url) => `${url} is an invalid image`,
+      spanish: (url) => `${url} es una imagen inválida`
+    },
+    SET: {
+      english: (url) => `Changed the bot's image to ${url}`,
+      spanish: (url) => `Cambiado la imagen del bot a ${url}`
+    }
+  },
+
   COLOR: {
     ADDED: {
-      english: (hex) => `Added name color ${hex}`,
-      spanish: (hex) => `Añadido color de nombre ${hex}`
+      english: (hex) => `Added name color\`${hex}\`.`,
+      spanish: (hex) => `Añadido color de nombre\`${hex}\`.`
     },
     INVALID: {
-      english: "Color doesn't exist or invalid code. Format: !color Name(English) / #RRGGBB / (R,G,B)",
-      spanish: "Color no existe o código inválido. Formato: !color Nombre(Inglés) / #RRGGBB / (R,G,B)"
+      english: "Color doesn't exist or invalid code. Format: !color Name(English) / #RRGGBB / (R,G,B).",
+      spanish: "Color no existe o código inválido. Formato: !color Nombre(Inglés) / #RRGGBB / (R,G,B)."
+    },
+    MISSING: {
+      english: "You don't have a name color.",
+      spanish: "No tienes un color de nombre."
     },
     REMOVED: {
-      english: "Removed name color",
-      spanish: "Quitado color de nombre"
+      english: "Removed name color.",
+      spanish: "Quitado color de nombre."
     }
   },
 
   INFO: {
-    english: "GitHub page: https://github.com/DrSmugleaf/Banter-Bot"
+    english: stripIndents`
+      GitHub page: https://github.com/DrSmugleaf/Banter-Bot
+      Support server: https://discord.gg/yyDWNBr
+    `,
+    spanish: stripIndents`
+      Página de GitHub: https://github.com/DrSmugleaf/Banter-Bot
+      Servidor de soporte: https://discord.gg/yyDWNBr
+    `
   },
 
   LANGUAGE: {
     SET: {
-      english: (language) => `Set your language to ${language}`,
-      spanish: (language) => `Asignado tu lenguaje a ${language}`
+      english: (language) => `Set your language to ${language}.`,
+      spanish: (language) => `Asignado tu lenguaje a ${language}.`
     }
   },
 
@@ -845,56 +925,197 @@ exports.responses = {
     spanish: ["En mi opinión, sí", "Es cierto", "Es decididamente así", "Probablemente", "Buen pronóstico", "Todo apunta a que sí", "Sin duda", "Sí", "Sí - definitivamente", "Debes confiar en ello", "Respuesta vaga, vuelve a intentarlo", "Pregunta en otro momento", "Será mejor que no te lo diga ahora", "No puedo predecirlo ahora", "Concéntrate y vuelve a preguntar", "No cuentes con ello", "Mi respuesta es no", "Mis fuentes me dicen que no", "Las perspectivas no son buenas", "Muy dudoso"]
   },
 
+  MARKOV: {
+    ANSWER: {
+      english: (subject, answer) => `**${subject} (Markov):** ${answer}`,
+      spanish: (subject, answer) => `**${subject} (Markov):** ${answer}`
+    },
+    MISSING: {
+      english: (user) => `There are no messages in this channel from ${user}`,
+      spanish: (user) => `No hay mensajes en este canal de ${user}`
+    }
+  },
+
+  NAME: {
+    SET: {
+      english: (name) => `Changed the bot's username to ${name}`,
+      spanish: (name) => `Cambiado el nombre del bot a ${name}`
+    }
+  },
+
   MISSING_COMMAND: {
-    english: (command) => `the command ${command} doesn't exist`,
-    spanish: (command) => `el comando ${command} no existe`
+    english: (command) => `the command ${command} doesn't exist.`,
+    spanish: (command) => `el comando ${command} no existe.`
   },
 
   NOT_A_SERVER: {
-    english: "Use the command in a server chat",
-    spanish: "Usa el comando en el chat de un servidor"
+    english: "Use the command in a server chat.",
+    spanish: "Usa el comando en el chat de un servidor."
   },
 
-  NOT_A_VOICE_CHANNEL: {
-    english: "You arent in a voice channel",
-    spanish: "No estás en un canal de voz"
+  PLAYING: {
+    SET: {
+      english: (name) => `Changed the bot's game to ${name}`,
+      spanish: (name) => `Cambiado el nombre del bot a ${name}`
+    }
   },
 
   QUOTE: {
     ADDED: {
-      english: (number) => `Quote #${number} added`,
-      spanish: (number) => `Quote #${number} añadido`
+      english: (number) => `Quote #${number} added.`,
+      spanish: (number) => `Quote #${number} añadido.`
     },
     EMPTY: {
-      english: "Quote empty, add text after the command",
-      spanish: "Quote vacío, a\u00f1ade texto después del comando"
+      english: "Quote empty, add text after the command.",
+      spanish: "Quote vacío, a\u00f1ade texto después del comando."
     },
     GET: {
-      english: (number, text) => `Quote #${number}: ${text}`,
-      spanish: (number, text) => `Quote #${number}: ${text}`
+      english: (number, text) => `Quote #${number}: ${text}.`,
+      spanish: (number, text) => `Quote #${number}: ${text}.`
     },
     INVALID: {
-      english: "Invalid quote number",
-      spanish: "Número de quote inválido"
+      english: "Invalid quote number.",
+      spanish: "Número de quote inválido."
     },
     MISSING: {
-      english: "That quote doesn't exist",
-      spanish: "Ese quote no existe"
+      english: "That quote doesn't exist.",
+      spanish: "Ese quote no existe."
     },
     REMOVED: {
-      english: (number) => `Quote #${number} removed`,
-      spanish: (number) => `Quote #${number} eliminado`
+      english: (number) => `Quote #${number} removed.`,
+      spanish: (number) => `Quote #${number} eliminado.`
     }
   },
 
+  SERVER_LANGUAGE: {
+    SET: {
+      english: (language) => `Set the server language to ${language}.`,
+      spanish: (language) => `Asignado el lenguaje del servidor a ${language}.`
+    }
+  },
+
+  SERVER_SETTINGS: {
+    CLEAR: {
+      english: "Cleared settings for this server",
+      spanish: "Limpiadas las opciones de este servidor"
+    },
+    GET: {
+      english: (key, value) => `Settings for \`${key}\`: \`${value}\``,
+      spanish: (key, value) => `Opciones para \`${key}\`: \`0${value}\``
+    },
+    REMOVE: {
+      english: (key) => `Removed setting \`${key}\``,
+      spanish: (key) => `Eliminada opción \`${key}\``
+    },
+    SET: {
+      english: (key, value) => `Set \`${key}\` to \`${value}\``,
+      spanish: (key, value) => `Establecida \`${key}\` como \`${value}\``
+    }
+  },
+
+  WHOIS: {
+    english: (user, member, joined, created) => stripIndents`
+      Info on **${user.username}#${user.discriminator}** (ID: ${user.id})
+      **❯ Member Details**
+      ${member.nickname !== null ? ` • Nickname: ${member.nickname}` : " • No Nickname"}
+       • Roles: ${member.roles.map(roles => `\`${roles.name}\``).join(", ")}
+       • Joined at: ${joined}
+
+      **❯ User Details**
+       • Created at: ${created}${user.bot ? "\n • Is a bot account" : ""}
+       • Status: ${user.presence.status}
+       • Game: ${user.presence.game ? user.presence.game.name : "None"}
+    `,
+    spanish: (user, member, joined, created) => stripIndents`
+      Información sobre **${user.username}#${user.discriminator}** (ID: ${user.id})
+      **❯ Detalles de Miembro**
+      ${member.nickname !== null ? ` • Apodo: ${member.nickname}` : " • Ningún Apodo"}
+       • Roles: ${member.roles.map(roles => `\`${roles.name}\``).join(", ")}
+       • Se unió en: ${joined}
+
+      **❯ Detalles de Usuario**
+       • Se creó en: ${created}${user.bot ? "\n • Es una cuenta bot" : ""}
+       • Estado: ${user.presence.status}
+       • Juego: ${user.presence.game ? user.presence.game.name : "Ninguno"}
+    `
+  },
+
   YOUTUBE: {
+    EMPTY_QUEUE: {
+      english: "There are no songs in the queue.",
+      spanish: "No hay canciones en cola."
+    },
     INVALID: {
-      english: "Invalid URL. Format: !youtube play URL",
-      spanish: "URL inválido. Formato: !youtube play URL"
+      english: "Invalid URL.",
+      spanish: "URL inválido."
+    },
+    NEXT: {
+      ERROR: {
+        english: (title) => `Couldn't play ${title}, skipping.`,
+        spanish: (title) => `Error al reproducir la canción ${title}, omitiendo`
+      },
+      PLAY: {
+        english: (title) => `Now playing: ${title}`,
+        spanish: (title) => `Ahora jugando: ${title}`,
+      },
+      REPEAT: {
+        english: (title) => `Now repeating: ${title}`,
+        spanish: (title) => `Ahora repitiendo: ${title}`
+      }
+    },
+    NO_CURRENTLY_PLAYING: {
+      english: "There is no currently playing song.",
+      spanish: "No hay ninguna canción puesta."
+    },
+    NO_PAUSED: {
+      english: "There is no currently paused song.",
+      spanish: "No hay ninguna canción pausada.",
+    },
+    NO_PLAYING: {
+      english: "There is no currently playing or paused song.",
+      spanish: "No hay ninguna canción puesta o pausada actualmente."
+    },
+    NOT_IN_VOICE_CHANNEL: {
+      english: "You arent in a voice channel.",
+      spanish: "No estás en un canal de voz."
+    },
+    NOT_SAME_VOICE_CHANNEL: {
+      english: "You aren't in the same voice channel.",
+      spanish: "No estas en el mismo canal de voz."
     },
     PAUSE: {
-      english: "Paused the current video",
-      spanish: "Vídeo pausado"
+      english: "Paused the current video.",
+      spanish: "Vídeo pausado."
+    },
+    PLAY: {
+      english: (title) => `Added ${title} to the queue.`,
+      spanish: (title) => `Añadido ${title} a la cola.`
+    },
+    QUEUE: {
+      english: (length) => `There are ${length} songs in the queue.`,
+      spanish: (length) => `Hay ${length} canciones en la cola.`
+    },
+    RESUME: {
+      english: "Resumed the current video.",
+      spanish: "Vídeo reanudado"
+    },
+    SKIP: {
+      FAIL: {
+        english: (votes, total) => oneLine`${votes} out of ${total} members want
+          to skip the current video`,
+        spanish: (votes, total) => oneLine`${votes} de ${total} miembros quieren
+          saltarse el vídeo actual`
+      },
+      SUCCESS: {
+        english: (votes, total) => oneLine`${votes} out of ${total} members voted
+          to skip, skipped the current video`,
+        spanish: (votes, total) => oneLine`${votes} de ${total} miembros votaron
+          para saltar este vídeo, saltado el vídeo actual`
+      }
+    },
+    STOP: {
+      english: "Stopped the current video",
+      spanish: "Parado el vídeo actual"
     }
   }
 },

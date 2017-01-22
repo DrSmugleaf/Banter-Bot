@@ -4,7 +4,7 @@
 
 // https://github.com/Gawdl3y/discord.js-commando/blob/master/src/providers/sqlite.js
 "use strict"
-const DB = require("./db")
+const DB = require("../util/db")
 
 class PostgreSQLProvider extends DB {
   constructor() {
@@ -33,8 +33,8 @@ class PostgreSQLProvider extends DB {
     }
 
     return {
-      run: function(/**/) {
-        that.pgp.any(query, Array.prototype.slice.call(arguments))
+      run: function(...args) {
+        that.pgp.any(query, args)
       },
       finalize: function() {
         query = null

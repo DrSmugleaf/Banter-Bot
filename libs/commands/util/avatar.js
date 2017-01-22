@@ -4,7 +4,7 @@
 
 "use strict"
 const commando = require("discord.js-commando")
-const request = require("request").defaults({encoding: null})
+const constants = require("../../util/constants")
 const winston = require("winston")
 
 module.exports = class Avatar extends commando.Command {
@@ -14,8 +14,12 @@ module.exports = class Avatar extends commando.Command {
       aliases: ["avatar", "image"],
       group: "util",
       memberName: "avatar",
-      description: "Change the bot's image",
+      description: "Change the bot's image.",
       examples: ["avatar http://i.imgur.com/DJcsFvt.png"],
+      throttling: {
+        usages: 2,
+        duration: 3
+      },
       args: [
         {
           key: "url",
@@ -32,13 +36,13 @@ module.exports = class Avatar extends commando.Command {
   }
 
   async run(msg, args) {
-    const link = request.get(args.url)
-    request.get(link, function(e, res, body) {
-      if(!e && res.statusCode == 200) {
-        msg.client.user.setAvatar(new Buffer(body))
-          .catch(winston.error)
-        return msg.reply(`Changed the bot's image to ${args.url}`)
-      }
+    const url = args.url
+
+    msg.client.user.setAvatar(url).then(() => {
+      return msg.reply(constants.responses.AVATAR.SET["english"](url))
+    }).catch(e => {
+      winston.error(e)
+      return msg.reply(constants.responses.AVATAR.INVALID["english"](url))
     })
   }
 }

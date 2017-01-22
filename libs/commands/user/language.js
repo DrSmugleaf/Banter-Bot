@@ -13,8 +13,12 @@ module.exports = class Language extends commando.Command {
       aliases: ["language", "lang"],
       group: "user",
       memberName: "language",
-      description: "Set your language",
+      description: "Set your language.",
       examples: ["language spanish", "language french"],
+      throttling: {
+        usages: 2,
+        duration: 3
+      },
       args: [
         {
           key: "language",
@@ -22,8 +26,7 @@ module.exports = class Language extends commando.Command {
           type: "string",
           validate: (language) => {
             language = language.toLowerCase()
-            return (constants.mslanguages.hasOwnProperty(language)
-              || true)
+            return constants.mslanguages.hasOwnProperty(language)
           }
         }
       ]
@@ -33,9 +36,9 @@ module.exports = class Language extends commando.Command {
   async run(msg, args) {
     const language = args.language.toLowerCase()
 
-    const usersettings = msg.guild.settings.get(msg.author.id, {})
-    usersettings.language = language
-    msg.guild.settings.set(msg.author.id, usersettings)
+    const userSettings = msg.guild.settings.get(msg.author.id, {})
+    userSettings.language = language
+    msg.guild.settings.set(msg.author.id, userSettings)
 
     return msg.reply(constants.responses.LANGUAGE.SET["english"](language))
   }

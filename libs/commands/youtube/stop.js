@@ -4,6 +4,8 @@
 
 "use strict"
 const commando = require("discord.js-commando")
+const constants = require("../../util/constants")
+const main = require("./base/main")
 
 module.exports = class Stop extends commando.Command {
   constructor(client) {
@@ -12,22 +14,32 @@ module.exports = class Stop extends commando.Command {
       aliases: ["stop"],
       group: "youtube",
       memberName: "stop",
-      description: "Stops the currently playing video in this server",
+      description: "Stops the currently playing video in this server.",
       examples: ["stop"],
-      guildOnly: true
+      guildOnly: true,
+      throttling: {
+        usages: 2,
+        duration: 3
+      }
     })
   }
 
+  hasPermission(msg) {
+    return msg.member.hasPermission("MUTE_MEMBERS")
+  }
+
   async run(msg) {
+    if(!main.isCurrentlyPlaying(msg.guild)) {
+      return msg.reply(constants.responses.YOUTUBE.NO_CURRENTLY_PLAYING["english"])
+    }
     const voiceConnection = msg.guild.voiceConnection
 
     if(voiceConnection) {
-      var dispatcher = voiceConnection.player.dispatcher
+      const queue = main.queue.get(msg.guild.id)
+      queue.length = 0
+      main.dispatcher(msg.guild).end()
 
-      var repeatList = this.client.registry.resolveCommand("youtube:repeat").repeatList
-      if(repeatList[msg.guild]) repeatList.delete(msg.guild)
-      dispatcher.end()
-      return msg.reply("Stopped the current video")
+      return msg.reply(constants.responses.YOUTUBE.STOP["english"])
     }
   }
 }

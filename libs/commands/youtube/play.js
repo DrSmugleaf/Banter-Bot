@@ -5,10 +5,11 @@
 "use strict"
 const commando = require("discord.js-commando")
 const constants = require("../../util/constants")
-const request = require("request")
-const validurl = require("valid-url")
+const main = require("./base/main")
+const Song = require("./base/song")
 const winston = require("winston")
-const ytdl = require("ytdl-core")
+const Youtube = require("simple-youtube-api")
+const youtube = new Youtube(process.env.GOOGLE_KEY)
 
 module.exports = class Play extends commando.Command {
   constructor(client) {
@@ -17,60 +18,62 @@ module.exports = class Play extends commando.Command {
       aliases: ["play"],
       group: "youtube",
       memberName: "play",
-      description: "Play a video's sound from youtube to your voice channel",
+      description: "Queue a video to be played.",
       examples: ["play https://www.youtube.com/watch?v=dQw4w9WgXcQ"],
       guildOnly: true,
+      throttling: {
+        usages: 2,
+        duration: 5
+      },
       args: [
         {
           key: "url",
-          prompt: "What video do you want to hear?",
+          prompt: "What video do you want to queue?",
           type: "string",
-          validate: url => function() {
-            if(validurl.isWebUri(url)) {
-              request(url, function(e, res) {
-                return !e && res.statusCode == 200
-              })
-            }
+          validate: (url) => {
+            return youtube.getVideo(url).then(() => {
+              return true
+            }).catch(() => {
+              return false
+            })
           }
+        },
+        {
+          key: "repeat",
+          prompt: "Repeat the video?",
+          type: "boolean",
+          default: false
         }
       ]
     })
   }
 
-  async joinVoice(msg) {
-    const voiceChannel = msg.member.voiceChannel
-    const voiceConnection = msg.guild.voiceConnection
-
-    return new Promise(function(resolve, reject) {
-      if(voiceConnection && voiceConnection == voiceChannel.connection) {
-        resolve(voiceConnection)
-      } else {
-        voiceChannel.join().then(voiceConnection => {
-          resolve(voiceConnection)
-        }).catch(reject)
-      }
-    })
-  }
-
   async run(msg, args) {
-    if(!msg.member.voiceChannel) {
-      return msg.reply(constants.responses.NOT_A_VOICE_CHANNEL["english"])
+    if(!main.isMemberInVoiceChannel(msg.member)) {
+      return msg.reply(constants.responses.YOUTUBE.NOT_IN_VOICE_CHANNEL["english"])
     }
 
+    if(msg.deletable) msg.delete()
+
     const url = args.url
-    const stream = ytdl(url, {filter: "audioonly"})
 
-    this.joinVoice(msg).then(voiceConnection => {
-      voiceConnection.playStream(
-        stream,
-        constants.youtube.STREAMOPTIONS
-      ).on("end", () => {
-        voiceConnection.disconnect()
-      })
-    }).catch(winston.error)
+    youtube.getVideo(url).then((video) => {
+      const queue = main.queue.get(msg.guild.id) || []
+      const song = new Song(msg, args, video)
 
-    stream.on("info", (info) => {
-      return msg.reply(`Now playing ${info.title}`)
+      queue.push(song)
+      main.queue.set(msg.guild.id, queue)
+
+      if(queue.length <= 1) {
+        main.playNext(msg.guild)
+      } else {
+        queue[0].repeat = false
+      }
+
+      return msg.reply(constants.responses.YOUTUBE.PLAY["english"](song.video.title))
+    }).catch(e => {
+      winston.error(e)
+      return msg.reply(constants.responses.YOUTUBE.INVALID["english"])
     })
   }
 }

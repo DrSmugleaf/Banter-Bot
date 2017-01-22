@@ -16,9 +16,13 @@ module.exports = class Bridge extends commando.Command {
       aliases: ["bridge", "orboffusing"],
       group: "bridge",
       memberName: "bridge",
-      description: "Bridge channels together, translating messages between them",
+      description: "Bridge channels together, translating messages between them.",
       examples: ["bridge general:english games:none", "bridge games:fr offtopic:italian"],
       guildOnly: true,
+      throttling: {
+        usages: 2,
+        duration: 3
+      },
       args: [
         {
           key: "channelsToBridge",
@@ -26,13 +30,16 @@ module.exports = class Bridge extends commando.Command {
           prompt: "What channels do you want to link together?",
           type: "string",
           validate: (value, msg) => {
-            let values = value.split(" ")
-            return values.length > 1 && values.every(element => {
-              let channelname = element.replace(/:\w*/g, "")
-              let language = element.replace(/\w*:/g, "").toLowerCase()
-              return msg.guild.channels.exists("name", channelname)
-              && (constants.mslanguages.hasOwnProperty(language)
-                || objectutil.hasValue(constants.mslanguages, language))
+            const pairs = value.split(" ")
+
+            return pairs.length > 1 && pairs.every(element => {
+              const channelName = element.replace(/:\w*/g, "")
+              const language = element.replace(/\w*:/g, "").toLowerCase()
+
+              return msg.guild.channels.exists("name", channelName) &&
+                (constants.mslanguages.hasOwnProperty(language) ||
+                  objectutil.hasValue(constants.mslanguages, language)
+              )
             })
           }
         }
@@ -40,43 +47,37 @@ module.exports = class Bridge extends commando.Command {
     })
   }
 
-  async getBridged(guild) {
-    return guild.settings.get("bridged", {})
-  }
-
-  async setBridged(guild, bridged) {
-    guild.settings.set("bridged", bridged)
-  }
-
   hasPermission(msg) {
     return msg.member.hasPermission("ADMINISTRATOR")
   }
 
   async run(msg, args) {
-    var bridged = this.getBridged(msg.guild)
-    var channelsToBridge = args.channelsToBridge.split(" ")
+    const bridged = msg.guild.settings.get("bridged", {})
+    const channelsToBridge = args.channelsToBridge.split(" ")
 
     channelsToBridge.forEach(function(channel) {
-      var channelname = channel.replace(/:\w*/g, "")
-      var channelid = msg.guild.channels.find("name", channelname).id
-      var channellanguage = channel.replace(/\w*:/g, "")
-      var otherchannels = []
-      channelsToBridge.forEach(function(subchannel) {
-        if(channel == subchannel) return
-        var subchannelname = subchannel.replace(/:\w*/g, "")
-        var subchannelid = msg.guild.channels.find("name", subchannelname).id
-        otherchannels.push(subchannelid)
+      const channelName = channel.replace(/:\w*/g, "")
+      const channelID = msg.guild.channels.find("name", channelName).id
+      const channelLanguage = channel.replace(/\w*:/g, "")
+      const otherChannels = []
+
+      channelsToBridge.forEach(function(subChannel) {
+        if(channel == subChannel) return
+        const subchannelName = subChannel.replace(/:\w*/g, "")
+        const subchannelID = msg.guild.channels.find("name", subchannelName).id
+
+        otherChannels.push(subchannelID)
       })
 
-      bridged[channelid] = {
-        name: channelname,
-        id: channelid,
-        language: channellanguage,
-        connectedchannels: otherchannels
+      bridged[channelID] = {
+        name: channelName,
+        id: channelID,
+        language: channelLanguage,
+        connectedchannels: otherChannels
       }
     })
 
-    this.setBridged(msg.guild, bridged)
+    msg.guild.settings.set("bridged", bridged)
     return msg.reply(`Bridged channels ${channelsToBridge.join(", ")}`)
   }
 }

@@ -13,13 +13,18 @@ module.exports = class Info extends commando.Command {
       aliases: ["info", "information"],
       group: "util",
       memberName: "info",
-      description: "Information about Banter Bot",
-      examples: ["info"]
+      description: "Information about Banter Bot.",
+      examples: ["info"],
+      throttling: {
+        usages: 2,
+        duration: 3
+      }
     })
   }
 
   async run(msg) {
     const answer = constants.responses.INFO["english"]
+
     return msg.reply(answer)
   }
 }
