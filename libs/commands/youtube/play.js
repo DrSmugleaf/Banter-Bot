@@ -5,7 +5,6 @@
 "use strict"
 const commando = require("discord.js-commando")
 const constants = require("../../util/constants")
-const request = require("request-promise")
 const main = require("./base/main")
 const Song = require("./base/song")
 const winston = require("winston")
@@ -24,7 +23,7 @@ module.exports = class Play extends commando.Command {
       guildOnly: true,
       throttling: {
         usages: 2,
-        duration: 120,
+        duration: 120
       },
       args: [
         {

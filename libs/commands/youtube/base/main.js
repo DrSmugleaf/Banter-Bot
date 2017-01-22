@@ -20,6 +20,14 @@ module.exports = {
     return guild.voiceConnection.player.dispatcher
   },
 
+  isCurrentlyPaused(guild) {
+    if(!(guild instanceof Discord.Guild)) {
+      throw new TypeError("Guild must be an instance of Discord.Guild")
+    }
+
+    return this.isPlaying(guild) && this.isPaused(guild)
+  },
+
   isCurrentlyPlaying(guild) {
     if(!(guild instanceof Discord.Guild)) {
       throw new TypeError("Guild must be an instance of Discord.Guild")
@@ -49,7 +57,7 @@ module.exports = {
       throw new TypeError("Guild must be an instance of Discord.Guild")
     }
 
-    return this.isReady(guild) && guild.voiceConnection.player.dispatcher.paused
+    return !this.isQueueEmpty(guild) && this.dispatcher(guild).paused
   },
 
   isPlaying(guild) {
@@ -57,7 +65,7 @@ module.exports = {
       throw new TypeError("Guild must be an instance of Discord.Guild")
     }
 
-    return guild.voiceConnection && !this.isQueueEmpty(guild)
+    return !this.isQueueEmpty(guild) && this.dispatcher(guild)
   },
 
   isReady(guild) {
@@ -65,8 +73,7 @@ module.exports = {
       throw new TypeError("Guild must be an instance of Discord.Guild")
     }
 
-    return guild.voiceConnection && guild.voiceConnection.player &&
-      guild.voiceConnection.player.dispatcher
+    return this.dispatcher(guild)
   },
 
   isSameVoiceChannel(member) {
@@ -125,10 +132,17 @@ module.exports = {
       })
 
       if(next.repeat && !next.repeated) {
-        return next.channel.sendMessage(`Now repeating ${next.video.title}`)
+        return next.channel.sendMessage(
+          constants.responses.YOUTUBE.NEXT.REPEAT["english"](next.video.title)
+        )
       } else if(!next.repeated) {
-        return next.channel.sendMessage(`Now playing ${next.video.title}`)
+        return next.channel.sendMessage(
+          constants.responses.YOUTUBE.NEXT.PLAY["english"](next.video.title)
+        )
       }
-    }).catch(winston.error)
+    }).catch(e => {
+      winston.error(e)
+      next.channel.sendMessage(constants.responses.YOUTUBE.NEXT.ERROR["english"](next.url))
+    })
   }
 }

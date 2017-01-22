@@ -973,6 +973,20 @@ exports.responses = {
       english: "Invalid URL.",
       spanish: "URL inválido."
     },
+    NEXT: {
+      ERROR: {
+        english: (title) => `Couldn't play ${title}, skipping.`,
+        spanish: (title) => `Error al reproducir la canción ${title}, omitiendo`
+      },
+      PLAY: {
+        english: (title) => `Now playing: ${title}`,
+        spanish: (title) => `Ahora jugando: ${title}`,
+      },
+      REPEAT: {
+        english: (title) => `Now repeating: ${title}`,
+        spanish: (title) => `Ahora repitiendo: ${title}`
+      }
+    },
     NO_CURRENTLY_PLAYING: {
       english: "There is no currently playing song.",
       spanish: "No hay ninguna canción puesta."
@@ -980,6 +994,10 @@ exports.responses = {
     NO_PAUSED: {
       english: "There is no currently paused song.",
       spanish: "No hay ninguna canción pausada.",
+    },
+    NO_PLAYING: {
+      english: "There is no currently playing or paused song.",
+      spanish: "No hay ninguna canción puesta o pausada actualmente."
     },
     NOT_IN_VOICE_CHANNEL: {
       english: "You arent in a voice channel.",

@@ -23,11 +23,11 @@ module.exports = class Skip extends commando.Command {
   }
 
   async run(msg) {
-    if(!main.isCurrentlyPlaying(msg.guild)) {
-      return msg.reply("There is no currently playing song.")
+    if(!main.isPlaying(msg.guild)) {
+      return msg.reply(constants.responses.YOUTUBE.NO_CURRENTLY_PLAYING["english"])
     }
     if(!main.isSameVoiceChannel(msg.member)) {
-      return msg.reply("You arent in the voice channel")
+      return msg.reply(constants.responses.YOUTUBE.NOT_SAME_VOICE_CHANNEL["english"])
     }
 
     const voiceConnection = msg.guild.voiceConnection

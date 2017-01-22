@@ -34,7 +34,7 @@ module.exports = class Pause extends commando.Command {
       return msg.reply(constants.responses.YOUTUBE.NOT_SAME_VOICE_CHANNEL["english"])
     }
 
-    msg.guild.voiceConnection.player.dispatcher.pause()
+    main.dispatcher(msg.guild).pause()
     return msg.reply(constants.responses.YOUTUBE.PAUSE["english"])
   }
 }

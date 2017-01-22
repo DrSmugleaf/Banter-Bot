@@ -32,7 +32,8 @@ module.exports = class Stop extends commando.Command {
 
     if(voiceConnection) {
       const queue = main.queue.get(msg.guild.id)
-      if(queue) queue[0].repeat = false
+      queue.length = 0
+      main.dispatcher(msg.guild).end()
 
       return msg.reply(constants.responses.YOUTUBE.STOP["english"])
     }

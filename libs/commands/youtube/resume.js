@@ -25,14 +25,14 @@ module.exports = class Resume extends commando.Command {
   }
 
   async run(msg) {
-    if(!main.isPaused(msg.guild)) {
+    if(!main.isCurrentlyPaused(msg.guild)) {
       return msg.reply(constants.responses.YOUTUBE.NO_PAUSED["english"])
     }
     if(!main.isSameVoiceChannel(msg.member)) {
       return msg.reply(constants.responses.YOUTUBE.NOT_SAME_VOICE_CHANNEL["english"])
     }
 
-    msg.guild.voiceConnection.player.dispatcher.resume()
+    main.dispatcher(msg.guild).resume()
     return msg.reply(constants.responses.YOUTUBE.RESUME["english"])
   }
 }
