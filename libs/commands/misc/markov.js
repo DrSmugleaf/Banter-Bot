@@ -20,6 +20,10 @@ module.exports = class Markov extends commando.Command {
       description: "Simulate a user's speech.",
       examples: ["markov", "markov DrSmugleaf"],
       guildOnly: true,
+      throttling: {
+        usages: 2,
+        duration: 10
+      },
       args: [
         {
           key: "subject",

@@ -16,7 +16,11 @@ module.exports = class Skip extends commando.Command {
       memberName: "skip",
       description: "Skips the currently playing video in this server.",
       examples: ["skip"],
-      guildOnly: true
+      guildOnly: true,
+      throttling: {
+        usages: 2,
+        duration: 10
+      }
     })
 
     this.votes = {}

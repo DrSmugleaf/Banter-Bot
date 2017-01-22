@@ -21,6 +21,10 @@ module.exports = class ServerLanguage extends commando.Command {
       description: "Set the server's default language for the bot.",
       examples: ["server-language spanish", "server-language french"],
       guildOnly: true,
+      throttling: {
+        usages: 2,
+        duration: 10
+      },
       args: [
         {
           key: "language",

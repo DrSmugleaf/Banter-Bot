@@ -17,6 +17,10 @@ module.exports = class WhoIs extends commando.Command {
       description: "Get information about a user.",
       examples: ["whois DrSmugleaf", "whois 109067752286715904"],
       guildOnly: true,
+      throttling: {
+        usages: 2,
+        duration: 10
+      },
       args: [
         {
           key: "user",

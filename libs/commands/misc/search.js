@@ -19,6 +19,10 @@ module.exports = class Search extends commando.Command {
       description: "Search for a message in this channel.",
       examples: ["search Look at this image"],
       guildOnly: true,
+      throttling: {
+        usages: 2,
+        duration: 10
+      },
       args: [
         {
           key: "text",

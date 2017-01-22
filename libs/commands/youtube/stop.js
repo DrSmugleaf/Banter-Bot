@@ -16,7 +16,11 @@ module.exports = class Stop extends commando.Command {
       memberName: "stop",
       description: "Stops the currently playing video in this server.",
       examples: ["stop"],
-      guildOnly: true
+      guildOnly: true,
+      throttling: {
+        usages: 2,
+        duration: 10
+      }
     })
   }
 

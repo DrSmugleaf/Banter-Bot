@@ -16,7 +16,11 @@ module.exports = class Resume extends commando.Command {
       memberName: "resume",
       description: "Resume the currently playing video in this server.",
       examples: ["resume"],
-      guildOnly: true
+      guildOnly: true,
+      throttling: {
+        usages: 2,
+        duration: 10
+      }
     })
   }
 

@@ -19,6 +19,10 @@ module.exports = class Bridge extends commando.Command {
       description: "Bridge channels together, translating messages between them.",
       examples: ["bridge general:english games:none", "bridge games:fr offtopic:italian"],
       guildOnly: true,
+      throttling: {
+        usages: 2,
+        duration: 10
+      },
       args: [
         {
           key: "channelsToBridge",
@@ -61,7 +65,7 @@ module.exports = class Bridge extends commando.Command {
         if(channel == subChannel) return
         const subchannelName = subChannel.replace(/:\w*/g, "")
         const subchannelID = msg.guild.channels.find("name", subchannelName).id
-        
+
         otherChannels.push(subchannelID)
       })
 

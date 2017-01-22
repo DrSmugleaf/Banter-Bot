@@ -16,6 +16,10 @@ module.exports = class Name extends commando.Command {
       memberName: "name",
       description: "Change the bot's name.",
       examples: ["name Banter Bot"],
+      throttling: {
+        usages: 2,
+        duration: 10
+      },
       args: [
         {
           key: "name",

@@ -15,6 +15,10 @@ module.exports = class Magic8Ball extends commando.Command {
       memberName: "8ball",
       description: "An answer from the Magic 8 Ball.",
       examples: ["8 will I get an answer?"],
+      throttling: {
+        usages: 2,
+        duration: 10
+      },
       args: [
         {
           key: "question",

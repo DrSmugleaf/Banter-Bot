@@ -19,6 +19,10 @@ module.exports = class Quote extends commando.Command {
       description: "Add, remove or get a quote from the list.",
       examples: ["quote", "quote 25", "quote add Hello World", "quote del 25"],
       guildOnly: true,
+      throttling: {
+        usages: 2,
+        duration: 10
+      },
       args: [
         {
           key: "mode",

@@ -18,6 +18,10 @@ module.exports = class Color extends commando.Command {
       description: "Change your name color in this server.",
       examples: ["color red", "color #FF0000"],
       guildOnly: true,
+      throttling: {
+        usages: 2,
+        duration: 10
+      },
       args: [
         {
           key: "color",

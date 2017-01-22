@@ -16,6 +16,10 @@ module.exports = class Avatar extends commando.Command {
       memberName: "avatar",
       description: "Change the bot's image.",
       examples: ["avatar http://i.imgur.com/DJcsFvt.png"],
+      throttling: {
+        usages: 2,
+        duration: 10
+      },
       args: [
         {
           key: "url",

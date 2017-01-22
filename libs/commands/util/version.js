@@ -15,6 +15,10 @@ module.exports = class Version extends commando.Command {
       memberName: "version",
       description: "Shows details about a bot version.",
       examples: ["version 2"],
+      throttling: {
+        usages: 2,
+        duration: 10
+      },
       args: [
         {
           key: "version",

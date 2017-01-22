@@ -14,7 +14,11 @@ module.exports = class Info extends commando.Command {
       group: "util",
       memberName: "info",
       description: "Information about Banter Bot.",
-      examples: ["info"]
+      examples: ["info"],
+      throttling: {
+        usages: 2,
+        duration: 10
+      }
     })
   }
 

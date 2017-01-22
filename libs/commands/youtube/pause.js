@@ -16,7 +16,11 @@ module.exports = class Pause extends commando.Command {
       memberName: "pause",
       description: "Pause the currently playing video in this server.",
       examples: ["pause"],
-      guildOnly: true
+      guildOnly: true,
+      throttling: {
+        usages: 2,
+        duration: 10
+      },
     })
 
     this.votes = {}

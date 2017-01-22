@@ -15,6 +15,10 @@ module.exports = class Language extends commando.Command {
       memberName: "language",
       description: "Set your language.",
       examples: ["language spanish", "language french"],
+      throttling: {
+        usages: 2,
+        duration: 10
+      },
       args: [
         {
           key: "language",

@@ -16,6 +16,10 @@ module.exports = class Announce extends commando.Command {
       memberName: "announce",
       description: "Announce a message to a server, list of servers or all servers",
       examples: ["announce all Doom is upon us"],
+      throttling: {
+        usages: 2,
+        duration: 10
+      },
       args: [
         {
           key: "guilds",

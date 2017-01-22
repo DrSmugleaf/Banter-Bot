@@ -16,7 +16,11 @@ module.exports = class Queue extends commando.Command {
       memberName: "queue",
       description: "See the current video queue",
       examples: ["queue"],
-      guildOnly: true
+      guildOnly: true,
+      throttling: {
+        usages: 2,
+        duration: 10
+      }
     })
   }
 
