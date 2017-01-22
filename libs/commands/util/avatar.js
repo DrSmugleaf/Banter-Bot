@@ -18,7 +18,7 @@ module.exports = class Avatar extends commando.Command {
       examples: ["avatar http://i.imgur.com/DJcsFvt.png"],
       throttling: {
         usages: 2,
-        duration: 10
+        duration: 3
       },
       args: [
         {

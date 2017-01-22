@@ -17,7 +17,7 @@ module.exports = class Info extends commando.Command {
       examples: ["info"],
       throttling: {
         usages: 2,
-        duration: 10
+        duration: 3
       }
     })
   }

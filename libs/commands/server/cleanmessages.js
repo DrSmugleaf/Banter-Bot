@@ -24,7 +24,7 @@ module.exports = class CleanMessages extends commando.Command {
       guildOnly: true,
       throttling: {
         usages: 2,
-        duration: 10
+        duration: 3
       },
       args: [
         {

@@ -23,7 +23,7 @@ module.exports = class Play extends commando.Command {
       guildOnly: true,
       throttling: {
         usages: 2,
-        duration: 120
+        duration: 5
       },
       args: [
         {

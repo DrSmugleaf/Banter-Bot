@@ -17,7 +17,7 @@ module.exports = class Language extends commando.Command {
       examples: ["language spanish", "language french"],
       throttling: {
         usages: 2,
-        duration: 10
+        duration: 3
       },
       args: [
         {

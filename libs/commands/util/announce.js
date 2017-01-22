@@ -18,7 +18,7 @@ module.exports = class Announce extends commando.Command {
       examples: ["announce all Doom is upon us"],
       throttling: {
         usages: 2,
-        duration: 10
+        duration: 3
       },
       args: [
         {

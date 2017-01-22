@@ -18,7 +18,7 @@ module.exports = class Playing extends commando.Command {
       examples: ["playing Overwatch", "playing"],
       throttling: {
         usages: 2,
-        duration: 10
+        duration: 3
       },
       args: [
         {

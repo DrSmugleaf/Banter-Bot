@@ -18,7 +18,7 @@ module.exports = class Name extends commando.Command {
       examples: ["name Banter Bot"],
       throttling: {
         usages: 2,
-        duration: 10
+        duration: 3
       },
       args: [
         {
