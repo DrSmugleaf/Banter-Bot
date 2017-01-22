@@ -57,19 +57,19 @@ module.exports = class ServerSettings extends commando.Command {
     switch (mode) {
     case "clear": {
       guildSettings.clear()
-      return msg.reply(constants.responses.SERVER_SETTINGS.CLEAR["english"])
+      return msg.reply(constants.responses.SERVER_SETTINGS.CLEAR[msg.member.language])
     }
     case "get": {
       const get = guildSettings.get(key)
-      return msg.reply(constants.responses.SERVER_SETTINGS.GET["english"](key, get))
+      return msg.reply(constants.responses.SERVER_SETTINGS.GET[msg.member.language](key, get))
     }
     case "remove": {
       guildSettings.remove(key)
-      return msg.reply(constants.responses.SERVER_SETTINGS.REMOVE["english"](key))
+      return msg.reply(constants.responses.SERVER_SETTINGS.REMOVE[msg.member.language](key))
     }
     case "set": {
       guildSettings.set(key, value)
-      return msg.reply(constants.responses.SERVER_SETTINGS.SET["english"](key, value))
+      return msg.reply(constants.responses.SERVER_SETTINGS.SET[msg.member.language](key, value))
     }
     }
   }

@@ -50,7 +50,7 @@ module.exports = class Play extends commando.Command {
 
   async run(msg, args) {
     if(!main.isMemberInVoiceChannel(msg.member)) {
-      return msg.reply(constants.responses.YOUTUBE.NOT_IN_VOICE_CHANNEL["english"])
+      return msg.reply(constants.responses.YOUTUBE.NOT_IN_VOICE_CHANNEL[msg.member.language])
     }
 
     const queue = main.queue.get(msg.guild.id) || []
@@ -59,7 +59,7 @@ module.exports = class Play extends commando.Command {
     if(queue.filter((song) => {
       return song.member.id === msg.author.id
     }).length >= 2) {
-      return msg.reply(constants.responses.YOUTUBE.TOO_MANY_SONGS["english"])
+      return msg.reply(constants.responses.YOUTUBE.TOO_MANY_SONGS[msg.member.language])
     }
 
     const url = args.url
@@ -76,10 +76,10 @@ module.exports = class Play extends commando.Command {
         queue[0].repeat = false
       }
 
-      return msg.reply(constants.responses.YOUTUBE.PLAY["english"](song.video.title))
+      return msg.reply(constants.responses.YOUTUBE.PLAY[msg.member.language](song.video.title))
     }).catch(e => {
       winston.error(e)
-      return msg.reply(constants.responses.YOUTUBE.INVALID["english"])
+      return msg.reply(constants.responses.YOUTUBE.INVALID[msg.member.language])
     })
   }
 }
