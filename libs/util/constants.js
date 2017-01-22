@@ -9,12 +9,14 @@ exports.versions = {
   "2": {
     english: stripIndents`
       ADDED
+      Version notes.
       !announce: Announces a message to a guild, guilds or all guilds, owner only.
       !clean-messages: Deletes a channel's messages forever, admin only.
       !playing: Changes the bot's playing status, owner only.
       !queue: Shows how many songs are in the queue.
       !skip: Replaces !stop and !pause commands for regular users, vote based.
       !server-language: Sets the server language.
+      !server-settings: Clears, gets, removes or sets a setting in this server, owner only.
       !version: Shows the changes of a specific version.
 
       CHANGES
@@ -34,12 +36,14 @@ exports.versions = {
     `,
     spanish: stripIndents`
       AÑADIDO
+      Notas de versiones.
       !announce: Anuncia un mensaje a un servidor, servidores o todos los servidores, solo dueño.
       !clean-messages: Borra los mensajes de un canal para siempre, solo admins.
       !playing: Cambia el estado de Jugando del bot, solo dueño.
       !queue: Enseña cuantas canciones hay en cola.
       !skip: Reemplaza !stop y !pause para usuarios normales, basado en votos.
       !server-language: Cambia el idioma del servidor.
+      !server-settings: Limpia, adquiere, quita o aplica una opción en este servidor, solo dueño.
       !version: Enseña los cambios de una versión especifica.
 
       CAMBIOS
