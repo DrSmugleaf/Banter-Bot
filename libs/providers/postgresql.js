@@ -34,7 +34,7 @@ class PostgreSQLProvider extends DB {
 
     return {
       run: function(...args) {
-        that.pgp.any(query, [args])
+        that.pgp.any(query, args)
       },
       finalize: function() {
         query = null

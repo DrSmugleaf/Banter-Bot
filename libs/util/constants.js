@@ -5,7 +5,7 @@
 "use strict"
 const { oneLine, stripIndents } = require("common-tags")
 
-exports.builds = {
+exports.versions = {
   "2": {
     english: stripIndents`
       ADDED
@@ -983,6 +983,25 @@ exports.responses = {
     SET: {
       english: (language) => `Set the server language to ${language}.`,
       spanish: (language) => `Asignado el lenguaje del servidor a ${language}.`
+    }
+  },
+
+  SERVER_SETTINGS: {
+    CLEAR: {
+      english: "Cleared settings for this server",
+      spanish: "Limpiadas las opciones de este servidor"
+    },
+    GET: {
+      english: (key, value) => `Settings for \`${key}\`: \`${value}\``,
+      spanish: (key, value) => `Opciones para \`${key}\`: \`0${value}\``
+    },
+    REMOVE: {
+      english: (key) => `Removed setting \`${key}\``,
+      spanish: (key) => `Eliminada opción \`${key}\``
+    },
+    SET: {
+      english: (key, value) => `Set \`${key}\` to \`${value}\``,
+      spanish: (key, value) => `Establecida \`${key}\` como \`${value}\``
     }
   },
 

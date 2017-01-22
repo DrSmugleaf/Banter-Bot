@@ -25,7 +25,7 @@ module.exports = class Version extends commando.Command {
           prompt: "What version do you want the details of?",
           type: "string",
           validate: (version) => {
-            return Boolean(constants.builds[version])
+            return Boolean(constants.versions[version])
           }
         }
       ]
@@ -35,6 +35,6 @@ module.exports = class Version extends commando.Command {
   async run(msg, args) {
     const version = args.version
 
-    msg.reply(constants.builds[version]["english"])
+    msg.reply(constants.versions[version]["english"])
   }
 }

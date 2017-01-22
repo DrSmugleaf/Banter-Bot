@@ -13,8 +13,8 @@ module.exports = class ServerLanguage extends commando.Command {
     super(client, {
       name: "server-language",
       aliases: [
-        "server-language", "server-lang",
-        "serverlanguage", "serverlang"
+        "server-language", "serverlanguage",
+        "server-lang", "serverlang"
       ],
       group: "server",
       memberName: "server-language",
