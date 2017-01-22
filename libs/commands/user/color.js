@@ -49,7 +49,7 @@ module.exports = class Color extends commando.Command {
 
     if(existingRole) {
       existingRole.edit({ color: color }).then(() => {
-        return msg.reply(constants.responses.COLOR.ADDED["english"](msg.argString))
+        return msg.reply(constants.responses.COLOR.ADDED[msg.member.language || msg.guild.language || msg.author.language || "english"](msg.argString))
       }).catch(winston.error)
     }
 
@@ -59,7 +59,7 @@ module.exports = class Color extends commando.Command {
       permissions: []
     }).then(role => {
       msg.member.addRole(role.id)
-      return msg.reply(constants.responses.COLOR.ADDED["english"](msg.argString))
+      return msg.reply(constants.responses.COLOR.ADDED[msg.member.language || msg.guild.language || msg.author.language || "english"](msg.argString))
     }).catch(winston.error)
   }
 
@@ -68,10 +68,10 @@ module.exports = class Color extends commando.Command {
 
     if(role) {
       role.delete().then(() => {
-        return msg.reply(constants.responses.COLOR.REMOVED["english"])
+        return msg.reply(constants.responses.COLOR.REMOVED[msg.member.language || msg.guild.language || msg.author.language || "english"])
       })
     } else {
-      return msg.reply(constants.responses.COLOR.MISSING["english"])
+      return msg.reply(constants.responses.COLOR.MISSING[msg.member.language || msg.guild.language || msg.author.language || "english"])
     }
   }
 

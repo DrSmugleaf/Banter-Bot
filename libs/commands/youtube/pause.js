@@ -32,13 +32,13 @@ module.exports = class Pause extends commando.Command {
 
   async run(msg) {
     if(!main.isCurrentlyPlaying(msg.guild)) {
-      return msg.reply(constants.responses.YOUTUBE.NO_CURRENTLY_PLAYING["english"])
+      return msg.reply(constants.responses.YOUTUBE.NO_CURRENTLY_PLAYING[msg.member.language || msg.guild.language || msg.author.language || "english"])
     }
     if(!main.isSameVoiceChannel(msg.member)) {
-      return msg.reply(constants.responses.YOUTUBE.NOT_SAME_VOICE_CHANNEL["english"])
+      return msg.reply(constants.responses.YOUTUBE.NOT_SAME_VOICE_CHANNEL[msg.member.language || msg.guild.language || msg.author.language || "english"])
     }
 
     main.dispatcher(msg.guild).pause()
-    return msg.reply(constants.responses.YOUTUBE.PAUSE["english"])
+    return msg.reply(constants.responses.YOUTUBE.PAUSE[msg.member.language || msg.guild.language || msg.author.language || "english"])
   }
 }

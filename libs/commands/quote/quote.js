@@ -42,11 +42,11 @@ module.exports = class Quote extends commando.Command {
   }
 
   async quoteAdd(msg, text) {
-    if(!text) return msg.reply(constants.responses.QUOTE.EMPTY["english"])
+    if(!text) return msg.reply(constants.responses.QUOTE.EMPTY[msg.member.language || msg.guild.language || msg.author.language || "english"])
     db.query("INSERT INTO quotes (text, submitter) VALUES ($1::text, $2::text) RETURNING id",
       [text, msg.author.username], "one"
     ).then(data => {
-      return msg.reply(constants.responses.QUOTE.ADDED["english"](data.id))
+      return msg.reply(constants.responses.QUOTE.ADDED[msg.member.language || msg.guild.language || msg.author.language || "english"](data.id))
     }).catch(winston.error)
   }
 
@@ -55,10 +55,10 @@ module.exports = class Quote extends commando.Command {
       [id], "one"
     ).then(data => {
       db.cleanTable("quotes")
-      return msg.reply(constants.responses.QUOTE.REMOVED["english"](data.id))
+      return msg.reply(constants.responses.QUOTE.REMOVED[msg.member.language || msg.guild.language || msg.author.language || "english"](data.id))
     }).catch(e => {
       winston.error(e)
-      return msg.reply(constants.responses.QUOTE.INVALID["english"])
+      return msg.reply(constants.responses.QUOTE.INVALID[msg.member.language || msg.guild.language || msg.author.language || "english"])
     })
   }
 
@@ -68,10 +68,10 @@ module.exports = class Quote extends commando.Command {
     const values = id ? [id] : null
 
     db.query(query, values, "one").then(data => {
-      return msg.reply(constants.responses.QUOTE.GET["english"](data.id, data.text))
+      return msg.reply(constants.responses.QUOTE.GET[msg.member.language || msg.guild.language || msg.author.language || "english"](data.id, data.text))
     }).catch(e => {
       winston.error(e)
-      return msg.reply(constants.responses.QUOTE.MISSING["english"])
+      return msg.reply(constants.responses.QUOTE.MISSING[msg.member.language || msg.guild.language || msg.author.language || "english"])
     })
   }
 

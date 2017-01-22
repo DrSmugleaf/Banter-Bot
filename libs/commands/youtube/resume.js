@@ -30,13 +30,13 @@ module.exports = class Resume extends commando.Command {
 
   async run(msg) {
     if(!main.isCurrentlyPaused(msg.guild)) {
-      return msg.reply(constants.responses.YOUTUBE.NO_PAUSED["english"])
+      return msg.reply(constants.responses.YOUTUBE.NO_PAUSED[msg.member.language || msg.guild.language || msg.author.language || "english"])
     }
     if(!main.isSameVoiceChannel(msg.member)) {
-      return msg.reply(constants.responses.YOUTUBE.NOT_SAME_VOICE_CHANNEL["english"])
+      return msg.reply(constants.responses.YOUTUBE.NOT_SAME_VOICE_CHANNEL[msg.member.language || msg.guild.language || msg.author.language || "english"])
     }
 
     main.dispatcher(msg.guild).resume()
-    return msg.reply(constants.responses.YOUTUBE.RESUME["english"])
+    return msg.reply(constants.responses.YOUTUBE.RESUME[msg.member.language || msg.guild.language || msg.author.language || "english"])
   }
 }

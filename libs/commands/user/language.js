@@ -44,6 +44,6 @@ module.exports = class Language extends commando.Command {
 
     msg.member.language = constants.mslanguages[language] || language
 
-    return msg.reply(constants.responses.LANGUAGE.SET["english"](language))
+    return msg.reply(constants.responses.LANGUAGE.SET[msg.member.language || msg.guild.language || msg.author.language || "english"](language))
   }
 }

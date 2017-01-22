@@ -63,12 +63,12 @@ module.exports = class Markov extends commando.Command {
       function(e, lastMessageID, lines) {
         if(e) winston.error(e)
         if(!(lines && lastMessageID)) {
-          return msg.reply(constants.responses.MARKOV.MISSING["english"](subject))
+          return msg.reply(constants.responses.MARKOV.MISSING[msg.member.language || msg.guild.language || msg.author.language || "english"](subject))
         }
 
         markovChain.seed(lines.join(os.EOL), function() {
           const markovAnswer = markovChain.fill(markovChain.pick(), 25).join(" ").replace("@", "@ ")
-          const answer = constants.responses.MARKOV.ANSWER["english"](subject, markovAnswer)
+          const answer = constants.responses.MARKOV.ANSWER[msg.member.language || msg.guild.language || msg.author.language || "english"](subject, markovAnswer)
           return msg.channel.sendMessage(answer)
         })
       }

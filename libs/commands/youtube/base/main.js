@@ -133,16 +133,16 @@ module.exports = {
 
       if(next.repeat && !next.repeated) {
         return next.channel.sendMessage(
-          constants.responses.YOUTUBE.NEXT.REPEAT["english"](next.video.title)
+          constants.responses.YOUTUBE.NEXT.REPEAT[msg.member.language || msg.guild.language || msg.author.language || "english"](next.video.title)
         )
       } else if(!next.repeated) {
         return next.channel.sendMessage(
-          constants.responses.YOUTUBE.NEXT.PLAY["english"](next.video.title)
+          constants.responses.YOUTUBE.NEXT.PLAY[msg.member.language || msg.guild.language || msg.author.language || "english"](next.video.title)
         )
       }
     }).catch(e => {
       winston.error(e)
-      next.channel.sendMessage(constants.responses.YOUTUBE.NEXT.ERROR["english"](next.url))
+      next.channel.sendMessage(constants.responses.YOUTUBE.NEXT.ERROR[msg.member.language || msg.guild.language || msg.author.language || "english"](next.url))
     })
   }
 }
