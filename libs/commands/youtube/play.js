@@ -32,7 +32,7 @@ module.exports = class Play extends commando.Command {
           prompt: "What video do you want to queue?",
           type: "string",
           validate: (url) => {
-            return request(url).then(() => {
+            return youtube.getVideo(url).then(() => {
               return true
             }).catch(() => {
               return false
@@ -51,7 +51,7 @@ module.exports = class Play extends commando.Command {
 
   async run(msg, args) {
     if(!main.isMemberInVoiceChannel(msg.member)) {
-      return constants.responses.YOUTUBE.NOT_A_VOICE_CHANNEL["english"]
+      return msg.reply(constants.responses.YOUTUBE.NOT_IN_VOICE_CHANNEL["english"])
     }
 
     if(msg.deletable) msg.delete()
