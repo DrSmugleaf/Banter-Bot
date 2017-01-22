@@ -18,6 +18,7 @@ const Sender = require("./libs/bridge/sender")
 new Sender(client)
 const token = process.env.NODE_ENV === "dev" ?
   process.env.DISCORD_TOKEN_DEV : process.env.DISCORD_TOKEN
+const VersionAnnouncer = require("./libs/versionannouncer/announcer")
 const VoiceAutoChannel = require("./libs/autochannel/voice")
 new VoiceAutoChannel(client)
 const winston = require("winston")
@@ -28,6 +29,7 @@ client
   .on("debug", winston.debug)
   .on("ready", () => {
     winston.info(`Client ready; logged in as ${client.user.username}#${client.user.discriminator} (${client.user.id})`)
+    new VersionAnnouncer(client)
   })
   .on("disconnect", () => { winston.warn("Disconnected!") })
   .on("reconnect", () => { winston.warn("Reconnecting...") })
