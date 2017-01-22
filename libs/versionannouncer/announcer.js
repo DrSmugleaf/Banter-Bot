@@ -27,7 +27,7 @@ module.exports = class Announcer {
 
       if(version < Object.keys(constants.versions).length + 1) {
         this.discord.guilds.forEach(guild => {
-          const language = guild.settings.get("server-language", msg.member.language || msg.guild.language || msg.author.language || "english")
+          const language = guild.settings.get("server-language", guild.language || "english")
           guild.defaultChannel.sendMessage(stripIndents`
             @everyone,\n
             ${constants.versions[newVersion][language]}

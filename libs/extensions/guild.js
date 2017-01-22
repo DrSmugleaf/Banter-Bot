@@ -2,20 +2,18 @@
 // Copyright (c) 2017 DrSmugleaf
 //
 
-class MemberExtension {
+class GuildExtension {
   get language() {
     if(!this._language) {
-      const userSettings = this.guild.settings.get(this.id)
-      this._language = userSettings.language
+      const language = this.guild.settings.get("server-language")
+      this._language = language
     }
     return this._language || "english"
   }
 
   set language(language) {
-    const userSettings = this.guild.settings.get(this.id, {})
     this._language = language
-    userSettings.language = language
-    this.guild.settings.set(this.id, userSettings)
+    this.guild.settings.set("server-language", language)
   }
 
   static applyToClass(target) {
@@ -27,4 +25,4 @@ class MemberExtension {
   }
 }
 
-module.exports = MemberExtension
+module.exports = GuildExtension

@@ -49,7 +49,7 @@ module.exports = class ServerLanguage extends commando.Command {
   async run(msg, args) {
     const language = args.language.toLowerCase()
 
-    msg.guild.settings.set("server-language", constants.mslanguages[language] || language)
+    msg.guild.language = constants.mslanguages[language] || language
 
     return msg.reply(constants.responses.SERVER_LANGUAGE.SET[msg.member.language || msg.member.language || msg.guild.language || msg.author.language || "english"](language))
   }

@@ -4,6 +4,7 @@
 
 "use strict"
 const discord = require("discord.js")
+require("./libs/extensions/guild").applyToClass(discord.Guild)
 require("./libs/extensions/member").applyToClass(discord.GuildMember)
 require("./libs/util")
 const commando = require("discord.js-commando")
