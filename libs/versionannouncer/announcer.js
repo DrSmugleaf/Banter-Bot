@@ -17,7 +17,7 @@ module.exports = class Announcer {
 
   checkVersion() {
     if(process.env.NODE_ENV === "dev") return
-    
+
     db.query(
       "SELECT guild, settings FROM settings WHERE guild = '0'", null, "one"
     ).then((data) => {
@@ -29,7 +29,7 @@ module.exports = class Announcer {
         this.discord.guilds.forEach(guild => {
           const language = guild.settings.get("server-language", "english")
           guild.defaultChannel.sendMessage(stripIndents`
-            @everyone
+            @everyone,\n
             ${constants.versions[newVersion][language]}
           `)
         })

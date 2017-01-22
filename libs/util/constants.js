@@ -8,7 +8,7 @@ const { oneLine, stripIndents } = require("common-tags")
 exports.versions = {
   "2": {
     english: stripIndents`
-      ADDED
+      **ADDED**
       Version notes.
       !announce: Announces a message to a guild, guilds or all guilds, owner only.
       !clean-messages: Deletes a channel's messages forever, admin only.
@@ -19,7 +19,7 @@ exports.versions = {
       !server-settings: Clears, gets, removes or sets a setting in this server, owner only.
       !version: Shows the changes of a specific version.
 
-      CHANGES
+      **CHANGES**
       !color now supports a lot more types of color formats.
       !info now shows the support server invite link.
       !stop and !pause commands can now only be used by members with the permission to mute others.
@@ -28,15 +28,14 @@ exports.versions = {
       Every command now has a maximum usage rate of 2 uses every 3 seconds.
       !play and !repeat usage rate is 2 uses every 5 seconds
 
-
-      FIXES
+      **FIXES**
       Fixed crash when !color's color parameter doesn't exist.
       Fixed crash when using !help in a direct message with the bot.
       Fixed crash when trying to !play a link that isn't a youtube video.
     `,
     spanish: stripIndents`
-      AÑADIDO
-      Notas de versiones.
+      **AÑADIDO**
+      Notas de version.
       !announce: Anuncia un mensaje a un servidor, servidores o todos los servidores, solo dueño.
       !clean-messages: Borra los mensajes de un canal para siempre, solo admins.
       !playing: Cambia el estado de Jugando del bot, solo dueño.
@@ -46,7 +45,7 @@ exports.versions = {
       !server-settings: Limpia, adquiere, quita o aplica una opción en este servidor, solo dueño.
       !version: Enseña los cambios de una versión especifica.
 
-      CAMBIOS
+      **CAMBIOS**
       !color ahora es compatible con mas variantes de formatos de colores.
       !info ahora enseña el link de invitación al servidor de soporte.
       !stop y !pause solo pueden ser usados por usuarios con el permiso para silenciar a otros.
@@ -54,6 +53,11 @@ exports.versions = {
       Cuando reproduce una cancion, ahora solo enseña el nombre en vez del link.
       Todos los comandos ahora tienen un máximo de usos de 2 veces cada 3 segundos.
       !play y !repeat tienen un máximo de usos de 2 veces cada 5 segundos.
+
+      **ARREGLOS**
+      Arreglado un crash cuando el parametro de !color color no existía.
+      Arreglado un crash cuando se usaba !help en un mensaje directo al bot.
+      Arreglado un crash cuando se intentaba reproducir un video ajeno a youtube con !play.
     `
   }
 }

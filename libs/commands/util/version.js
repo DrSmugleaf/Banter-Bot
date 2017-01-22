@@ -35,6 +35,6 @@ module.exports = class Version extends commando.Command {
   async run(msg, args) {
     const version = args.version
 
-    msg.reply(constants.versions[version]["english"])
+    msg.reply("\n" + constants.versions[version]["english"])
   }
 }
