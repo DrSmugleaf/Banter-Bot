@@ -23,7 +23,8 @@ exports.builds = {
       !stop and !pause commands can now only be used by members with the permission to mute others.
       !play now deletes the command message if it is able to, to reduce clutter.
       When playing a song, it now only shows the name instead of the link.
-      !play and !repeat now have a maximum usage rate of 2 times every 2 minutes.
+      Every command now has a maximum usage rate of 2 uses every 3 seconds.
+      !play and !repeat usage rate is 2 uses every 5 seconds
 
 
       FIXES
@@ -47,7 +48,8 @@ exports.builds = {
       !stop y !pause solo pueden ser usados por usuarios con el permiso para silenciar a otros.
       !play ahora borra el mensaje del comando si puede, para reducir desorden.
       Cuando reproduce una cancion, ahora solo enseña el nombre en vez del link.
-      !play y !repeat ahora tienen un máximo de usos de 2 veces cada 2 minutos.
+      Todos los comandos ahora tienen un máximo de usos de 2 veces cada 3 segundos.
+      !play y !repeat tienen un máximo de usos de 2 veces cada 5 segundos.
     `
   }
 }
