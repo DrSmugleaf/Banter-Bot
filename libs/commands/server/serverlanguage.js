@@ -32,7 +32,10 @@ module.exports = class ServerLanguage extends commando.Command {
           type: "string",
           validate: (language) => {
             language = language.toLowerCase()
-            return Boolean(objectutil.hasValue(constants.mslanguages, language))
+            return Boolean(
+              objectutil.hasKey(constants.msglanguages, language) ||
+              objectutil.hasValue(constants.mslanguages, language)
+            )
           }
         }
       ]
@@ -46,7 +49,7 @@ module.exports = class ServerLanguage extends commando.Command {
   async run(msg, args) {
     const language = args.language.toLowerCase()
 
-    msg.guild.settings.set("server-language", language)
+    msg.guild.settings.set("server-language", constants.mslanguages[language] || language)
 
     return msg.reply(constants.responses.SERVER_LANGUAGE.SET["english"](language))
   }

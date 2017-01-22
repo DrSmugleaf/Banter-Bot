@@ -5,6 +5,8 @@
 "use strict"
 const commando = require("discord.js-commando")
 const constants = require("../../util/constants")
+const ObjectUtil = require("../../util/objectutil")
+const objectutil = new ObjectUtil()
 
 module.exports = class Language extends commando.Command {
   constructor(client) {
@@ -15,6 +17,7 @@ module.exports = class Language extends commando.Command {
       memberName: "language",
       description: "Set your language.",
       examples: ["language spanish", "language french"],
+      guildOnly: true,
       throttling: {
         usages: 2,
         duration: 3
@@ -26,7 +29,10 @@ module.exports = class Language extends commando.Command {
           type: "string",
           validate: (language) => {
             language = language.toLowerCase()
-            return constants.mslanguages.hasOwnProperty(language)
+            return Boolean(
+              objectutil.hasKey(constants.mslanguages, language) ||
+              objectutil.hasValue(constants.mslanguages, language)
+            )
           }
         }
       ]
@@ -36,9 +42,7 @@ module.exports = class Language extends commando.Command {
   async run(msg, args) {
     const language = args.language.toLowerCase()
 
-    const userSettings = msg.guild.settings.get(msg.author.id, {})
-    userSettings.language = language
-    msg.guild.settings.set(msg.author.id, userSettings)
+    msg.member.language = constants.mslanguages[language] || language
 
     return msg.reply(constants.responses.LANGUAGE.SET["english"](language))
   }
