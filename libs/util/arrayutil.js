@@ -4,21 +4,13 @@
 
 "use strict"
 
-class ArrayUtil {
-  constructor() {}
-}
-
-ArrayUtil.prototype.clone = function(obj) {
-  if(null == obj || typeof obj != "object") return obj
-  var copy = obj.constructor()
-  for(var attr in obj) {
-    if(obj.hasOwnProperty(attr)) copy[attr] = obj[attr]
+module.exports = {
+  clone(object) {
+    if(object == null || typeof object != "object") return object
+    var copy = object.constructor()
+    for(const attribute in object) {
+      if(object.hasOwnProperty(attribute)) copy[attribute] = object[attribute]
+    }
+    return copy
   }
-  return copy
 }
-
-ArrayUtil.prototype.contains = function(element) {
-  return this.indexOf(element) > -1
-}
-
-module.exports = ArrayUtil

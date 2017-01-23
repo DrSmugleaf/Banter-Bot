@@ -6,8 +6,6 @@
 const commando = require("discord.js-commando")
 const constants = require("../../util/constants")
 const ObjectUtil = require("../../util/objectutil")
-const objectutil = new ObjectUtil()
-
 
 module.exports = class Bridge extends commando.Command {
   constructor(client) {
@@ -38,7 +36,7 @@ module.exports = class Bridge extends commando.Command {
 
               return msg.guild.channels.exists("name", channelName) &&
                 (constants.mslanguages.hasOwnProperty(language) ||
-                  objectutil.hasValue(constants.mslanguages, language)
+                  ObjectUtil.hasValue(constants.mslanguages, language)
               )
             })
           }

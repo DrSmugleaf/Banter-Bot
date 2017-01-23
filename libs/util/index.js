@@ -2,7 +2,7 @@
 // Copyright (c) 2016-2017 DrSmugleaf
 //
 
-exports.arrayutil = require("./arrayutil")
-exports.constants = require("./constants")
-exports.db = require("./db")
-exports.objectutil = require("./objectutil")
+exports.ArrayUtil = require("./arrayutil")
+exports.Constants = require("./constants")
+exports.DB = require("./db")
+exports.ObjectUtil = require("./objectutil")

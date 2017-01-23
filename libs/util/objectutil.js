@@ -4,22 +4,18 @@
 
 "use strict"
 
-class ObjectUtil {
-  constructor() {}
-}
+module.exports = {
+  hasKey(object, key) {
+    return object.hasOwnProperty(key)
+  },
 
-ObjectUtil.prototype.hasKey = function(object, key) {
-  return object.hasOwnProperty(key)
-}
+  hasValue(object, value) {
+    for(const property in object) {
+      if(object.hasOwnProperty(property) && object[property] === value) return property
+    }
+  },
 
-ObjectUtil.prototype.hasValue = function(object, value) {
-  for(var property in object) {
-    if(object.hasOwnProperty(property) && object[property] === value) return property
+  hasKeyAndValue(object, key, value) {
+    return object.hasOwnProperty(key) && object[key] === value
   }
 }
-
-ObjectUtil.prototype.hasKeyAndValue = function(obj, key, value) {
-  return obj.hasOwnProperty(key) && obj[key] === value
-}
-
-module.exports = ObjectUtil
