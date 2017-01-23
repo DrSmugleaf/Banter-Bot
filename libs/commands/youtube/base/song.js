@@ -9,6 +9,7 @@ module.exports = class Song {
     this.channel = msg.channel,
     this.guild = msg.guild,
     this.member = msg.member,
+    this.message = msg
 
     this.url = args.url,
     this.repeat = args.repeat,
