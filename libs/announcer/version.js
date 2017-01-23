@@ -8,7 +8,7 @@ const DB = require("../util/db")
 const db = new DB()
 const stripIndents = require("common-tags").stripIndents
 
-module.exports = class Announcer {
+module.exports = class Version {
   constructor(discord) {
     this.discord = discord
 

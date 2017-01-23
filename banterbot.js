@@ -23,7 +23,7 @@ const Sender = require("./libs/bridge/sender")
 new Sender(client)
 const token = process.env.NODE_ENV === "dev" ?
   process.env.DISCORD_TOKEN_DEV : process.env.DISCORD_TOKEN
-const VersionAnnouncer = require("./libs/versionannouncer/announcer")
+const VersionAnnouncer = require("./libs/announcer/version")
 const VoiceAutoChannel = require("./libs/autochannel/voice")
 new VoiceAutoChannel(client)
 const winston = require("winston")
