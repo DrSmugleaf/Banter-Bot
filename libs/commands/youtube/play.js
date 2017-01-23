@@ -53,6 +53,14 @@ module.exports = class Play extends commando.Command {
       return msg.reply(constants.responses.YOUTUBE.NOT_IN_VOICE_CHANNEL[msg.member.language])
     }
 
+    const voicePermissions = msg.member.voiceChannel.permissionsFor(msg.client.user)
+    if(!voicePermissions.hasPermission("CONNECT")) {
+      return msg.reply(constants.responses.YOUTUBE.CANT_CONNECT[msg.member.language])
+    }
+    if(!voicePermissions.hasPermission("SPEAK")) {
+      return msg.reply(constants.responses.YOUTUBE.CANT_CONNECT[msg.member.language])
+    }
+
     const queue = main.queue.get(msg.guild.id) || []
 
     if(msg.deletable) msg.delete()

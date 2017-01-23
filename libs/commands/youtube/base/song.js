@@ -14,11 +14,6 @@ module.exports = class Song {
     this.repeat = args.repeat,
     this.repeated = false
 
-    this.video = {}
-    for(const prop in video) {
-      if(video.hasOwnProperty(prop)) {
-        this.video[prop] = video[prop]
-      }
-    }
+    this.video = video
   }
 }

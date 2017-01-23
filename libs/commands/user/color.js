@@ -76,6 +76,9 @@ module.exports = class Color extends commando.Command {
   }
 
   async run(msg, args) {
+    if(!msg.channel.permissionsFor(msg.client.user).hasPermission("MANAGE_ROLES_OR_PERMISSIONS")) {
+      return msg.reply(constants.responses.COLOR.NO_PERMISSION[msg.member.language || msg.guild.language || msg.author.language || "english"])
+    }
     const color = args.color ? this.parseColor(args.color) : null
 
     if(!color) {

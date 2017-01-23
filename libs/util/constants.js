@@ -63,6 +63,9 @@ exports.versions = {
   "3": {
     english: stripIndents`
 
+    `,
+    spanish: stripIndents`
+
     `
   }
 }
@@ -888,6 +891,13 @@ exports.responses = {
     }
   },
 
+  CLEAN_MESSAGES: {
+    NO_PERMISSION: {
+      english: "I don't have permission to delete messages in this channel.",
+      spanish: "No tengo permiso para borrar mensajes en este canal."
+    }
+  },
+
   COLOR: {
     ADDED: {
       english: (hex) => `Added name color\`${hex}\`.`,
@@ -1046,6 +1056,22 @@ exports.responses = {
   },
 
   YOUTUBE: {
+    CANT_CONNECT: {
+      english: "I can't connect to your voice channel.",
+      spanish: "No puedo conectarme a tu canal de voz."
+    },
+    CANT_CONNECT_ANYMORE: {
+      english: "I can't connect to your voice channel anymore, skipping song.",
+      spanish: "Ya no puedo conectarme a tu canal de voz, omitiendo canción."
+    },
+    CANT_SPEAK: {
+      english: "I can't speak in your voice channel.",
+      spanish: "No puedo hablar en tu canal de voz."
+    },
+    CANT_SPEAK_ANYMORE: {
+      english: "I can't speak in your voice channel anymore, skipping song.",
+      spanish: "Ya no puedo hablar en tu canal de voz, omitiendo canción."
+    },
     EMPTY_QUEUE: {
       english: "There are no songs in the queue.",
       spanish: "No hay canciones en cola."
@@ -1054,10 +1080,14 @@ exports.responses = {
       english: "Invalid URL.",
       spanish: "URL inválido."
     },
+    LEFT_VOICE: {
+      english: "You aren't in a voice channel anymore, skipping song.",
+      spanish: "Ya no estás en un canal de voz, omitiendo canción."
+    },
     NEXT: {
       ERROR: {
-        english: (title) => `Couldn't play ${title}, skipping.`,
-        spanish: (title) => `Error al reproducir la canción ${title}, omitiendo`
+        english: (title) => `Couldn't play ${title}, skipping song.`,
+        spanish: (title) => `Error al reproducir la canción ${title}, omitiendo canción`
       },
       PLAY: {
         english: (title) => `Now playing: ${title}`,

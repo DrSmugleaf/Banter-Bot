@@ -118,6 +118,20 @@ module.exports = {
 
     const queue = this.queue.get(guild.id)
     const next = queue[0]
+    if(!this.isMemberInVoiceChannel(next.member)) {
+      next.channel.sendMessage(constants.responses.YOUTUBE.LEFT_VOICE[next.member.language])
+      return this.playNext(guild)
+    }
+
+    const voicePermissions = next.member.voiceChannel.permissionsFor(guild.client.user)
+    if(!voicePermissions.hasPermission("CONNECT")) {
+      next.channel.sendMessage(constants.responses.YOUTUBE.CANT_CONNECT_ANYMORE[next.member.language])
+      return this.playNext(guild)
+    }
+    if(!voicePermissions.hasPermission("SPEAK")) {
+      next.channel.sendMessage(constants.responses.YOUTUBE.CANT_SPEAK_ANYMORE[next.member.language])
+    }
+
     const stream = ytdl(next.url, { filter: "audioonly" })
 
     this.joinVoice(next.member).then(voiceConnection => {
@@ -133,16 +147,16 @@ module.exports = {
 
       if(next.repeat && !next.repeated) {
         return next.channel.sendMessage(
-          constants.responses.YOUTUBE.NEXT.REPEAT[msg.member.language || msg.guild.language || msg.author.language || "english"](next.video.title)
+          constants.responses.YOUTUBE.NEXT.REPEAT[next.member.language || next.guild.language || next.author.language || "english"](next.video.title)
         )
       } else if(!next.repeated) {
         return next.channel.sendMessage(
-          constants.responses.YOUTUBE.NEXT.PLAY[msg.member.language || msg.guild.language || msg.author.language || "english"](next.video.title)
+          constants.responses.YOUTUBE.NEXT.PLAY[next.member.language || next.guild.language || next.author.language || "english"](next.video.title)
         )
       }
     }).catch(e => {
       winston.error(e)
-      next.channel.sendMessage(constants.responses.YOUTUBE.NEXT.ERROR[msg.member.language || msg.guild.language || msg.author.language || "english"](next.url))
+      next.channel.sendMessage(constants.responses.YOUTUBE.NEXT.ERROR[next.member.language || next.guild.language || next.author.language || "english"](next.url))
     })
   }
 }

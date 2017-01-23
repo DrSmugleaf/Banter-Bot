@@ -21,6 +21,7 @@ module.exports = class VoiceAutoChannel extends AutoChannel {
 
     this.discord.on("voiceStateUpdate", (oldMember, newMember) => {
       if(oldMember.voiceChannel === newMember.voiceChannel) return
+      if(!newMember.guild.member(newMember.client.user).hasPermission("MANAGE_CHANNELS")) return
       this.onVoiceStateUpdate(newMember.guild)
     })
   }
