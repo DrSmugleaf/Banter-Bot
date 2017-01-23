@@ -30,7 +30,7 @@ module.exports = class Stop extends commando.Command {
 
   async run(msg) {
     if(!main.isCurrentlyPlaying(msg.guild)) {
-      return msg.reply(constants.responses.YOUTUBE.NO_CURRENTLY_PLAYING[msg.member.language || msg.guild.language || msg.author.language || "english"])
+      return msg.reply(constants.responses.YOUTUBE.NO_CURRENTLY_PLAYING[msg.language])
     }
     const voiceConnection = msg.guild.voiceConnection
 
@@ -39,7 +39,7 @@ module.exports = class Stop extends commando.Command {
       queue.length = 0
       main.dispatcher(msg.guild).end()
 
-      return msg.reply(constants.responses.YOUTUBE.STOP[msg.member.language || msg.guild.language || msg.author.language || "english"])
+      return msg.reply(constants.responses.YOUTUBE.STOP[msg.language])
     }
   }
 }

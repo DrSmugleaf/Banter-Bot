@@ -28,15 +28,15 @@ module.exports = class Skip extends commando.Command {
 
   async run(msg) {
     if(!main.isPlaying(msg.guild)) {
-      return msg.reply(constants.responses.YOUTUBE.NO_CURRENTLY_PLAYING[msg.member.language])
+      return msg.reply(constants.responses.YOUTUBE.NO_CURRENTLY_PLAYING[msg.language])
     }
     if(!main.isSameVoiceChannel(msg.member)) {
-      return msg.reply(constants.responses.YOUTUBE.NOT_SAME_VOICE_CHANNEL[msg.member.language])
+      return msg.reply(constants.responses.YOUTUBE.NOT_SAME_VOICE_CHANNEL[msg.language])
     }
 
     if(!this.votes[msg.guild.id]) this.votes[msg.guild.id] = []
     if(this.votes[msg.guild.id].includes(msg.author.id)) {
-      return msg.reply(constants.responses.YOUTUBE.SKIP.ALREADY_VOTED[msg.member.language])
+      return msg.reply(constants.responses.YOUTUBE.SKIP.ALREADY_VOTED[msg.language])
     }
 
     this.votes[msg.guild.id].push(msg.author.id)
@@ -47,9 +47,9 @@ module.exports = class Skip extends commando.Command {
     if(this.votes[msg.guild.id].length >= total / 2) {
       this.votes[msg.guild.id] = []
       main.dispatcher(msg.guild).end("skip")
-      return msg.channel.send(constants.responses.YOUTUBE.SKIP.SUCCESS[msg.member.language](votes, total))
+      return msg.channel.send(constants.responses.YOUTUBE.SKIP.SUCCESS[msg.language](votes, total))
     } else {
-      return msg.channel.send(constants.responses.YOUTUBE.SKIP.FAIL[msg.member.language](votes, total))
+      return msg.channel.send(constants.responses.YOUTUBE.SKIP.FAIL[msg.language](votes, total))
     }
   }
 }

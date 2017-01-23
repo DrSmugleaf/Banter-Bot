@@ -3,12 +3,14 @@
 //
 
 "use strict"
+const Commando = require("discord.js-commando")
 const Discord = require("discord.js")
 require("./libs/extensions/guild").applyToClass(Discord.Guild)
 require("./libs/extensions/member").applyToClass(Discord.GuildMember)
+require("./libs/extensions/message").applyToClass(Discord.Message)
+require("./libs/extensions/message").applyToClass(Commando.CommandMessage)
 require("./libs/util")
-const commando = require("discord.js-commando")
-const client = new commando.Client({
+const client = new Commando.Client({
   commandPrefix: process.env.NODE_ENV === "dev" ? "!!" : "!",
   invite: "https://discord.gg/yyDWNBr",
   owner: "109067752286715904",
@@ -37,7 +39,7 @@ client
   .on("disconnect", () => { winston.warn("Disconnected!") })
   .on("reconnect", () => { winston.warn("Reconnecting...") })
   .on("commandError", (cmd, err) => {
-    if(err instanceof commando.FriendlyError) return
+    if(err instanceof Commando.FriendlyError) return
     winston.error(`Error in command ${cmd.groupID}:${cmd.memberName}`, err)
   })
   .on("commandBlocked", (msg, reason) => {
@@ -68,7 +70,7 @@ client
   })
 
 client.setProvider(
-  new commando.SQLiteProvider(new PostgreSQLProvider())
+  new Commando.SQLiteProvider(new PostgreSQLProvider())
 ).catch(winston.error)
 
 client.registry

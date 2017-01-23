@@ -39,10 +39,10 @@ module.exports = class Avatar extends commando.Command {
     const url = args.url
 
     msg.client.user.setAvatar(url).then(() => {
-      return msg.reply(constants.responses.AVATAR.SET[msg.member.language || msg.guild.language || msg.author.language || "english"](url))
+      return msg.reply(constants.responses.AVATAR.SET[msg.language](url))
     }).catch(e => {
       winston.error(e)
-      return msg.reply(constants.responses.AVATAR.INVALID[msg.member.language || msg.guild.language || msg.author.language || "english"](url))
+      return msg.reply(constants.responses.AVATAR.INVALID[msg.language](url))
     })
   }
 }

@@ -2,6 +2,8 @@
 // Copyright (c) 2017 DrSmugleaf
 //
 
+"use strict"
+
 class GuildExtension {
   get language() {
     if(!this._language) {

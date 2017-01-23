@@ -39,7 +39,7 @@ module.exports = class Playing extends commando.Command {
     const name = args.name ? args.name : null
 
     msg.client.user.setGame(name).then(() => {
-      return msg.reply(constants.responses.PLAYING.SET[msg.member.language || msg.guild.language || msg.author.language || "english"](name ? name : "none"))
+      return msg.reply(constants.responses.PLAYING.SET[msg.language](name ? name : "none"))
     }).catch(winston.error)
   }
 }

@@ -39,7 +39,7 @@ module.exports = class Name extends commando.Command {
     const name = args.name
 
     msg.client.user.setUsername(name).then(() => {
-      return msg.reply(constants.responses.NAME.SET[msg.member.language || msg.guild.language || msg.author.language || "english"](name))
+      return msg.reply(constants.responses.NAME.SET[msg.language](name))
     }).catch(winston.error)
   }
 }
