@@ -11,6 +11,19 @@ const ytdl = require("ytdl-core")
 module.exports = {
   queue: new Map(),
 
+  addToQueue(guild, song) {
+    const queue = this.queue.get(guild.id) || []
+
+    queue.push(song)
+    this.queue.set(guild.id, queue)
+
+    if(queue.length <= 1) {
+      this.playNext(guild)
+    } else {
+      queue[0].repeat = false
+    }
+  },
+
   dispatcher(guild) {
     if(!(guild instanceof Discord.Guild)) {
       throw new TypeError("Guild must be an instance of Discord.Guild")
@@ -119,22 +132,21 @@ module.exports = {
     const queue = this.queue.get(guild.id)
     const next = queue[0]
     if(!this.isMemberInVoiceChannel(next.member)) {
-      next.channel.sendMessage(constants.responses.YOUTUBE.LEFT_VOICE[next.member.language])
+      next.channel.sendMessage(constants.responses.YOUTUBE.LEFT_VOICE[next.message.language])
       return this.playNext(guild)
     }
 
     const voicePermissions = next.member.voiceChannel.permissionsFor(guild.client.user)
     if(!voicePermissions.hasPermission("CONNECT")) {
-      next.channel.sendMessage(constants.responses.YOUTUBE.CANT_CONNECT_ANYMORE[next.member.language])
+      next.channel.sendMessage(constants.responses.YOUTUBE.CANT_CONNECT_ANYMORE[next.message.language])
       return this.playNext(guild)
     }
     if(!voicePermissions.hasPermission("SPEAK")) {
-      next.channel.sendMessage(constants.responses.YOUTUBE.CANT_SPEAK_ANYMORE[next.member.language])
+      next.channel.sendMessage(constants.responses.YOUTUBE.CANT_SPEAK_ANYMORE[next.message.language])
     }
 
-    const stream = ytdl(next.url, { filter: "audioonly" })
-
     this.joinVoice(next.member).then(voiceConnection => {
+      const stream = ytdl(next.url, { filter: "audioonly" })
       voiceConnection.playStream(
         stream, constants.youtube.STREAMOPTIONS
       ).on("end", (reason) => {
@@ -147,16 +159,16 @@ module.exports = {
 
       if(next.repeat && !next.repeated) {
         return next.channel.sendMessage(
-          constants.responses.YOUTUBE.NEXT.REPEAT[next.member.language || next.guild.language || next.author.language || "english"](next.video.title)
+          constants.responses.YOUTUBE.NEXT.REPEAT[next.message.language](next.video.title)
         )
       } else if(!next.repeated) {
         return next.channel.sendMessage(
-          constants.responses.YOUTUBE.NEXT.PLAY[next.member.language || next.guild.language || next.author.language || "english"](next.video.title)
+          constants.responses.YOUTUBE.NEXT.PLAY[next.message.language](next.video.title)
         )
       }
     }).catch(e => {
       winston.error(e)
-      next.channel.sendMessage(constants.responses.YOUTUBE.NEXT.ERROR[next.member.language || next.guild.language || next.author.language || "english"](next.url))
+      next.channel.sendMessage(constants.responses.YOUTUBE.NEXT.ERROR[next.message.language](next.url))
     })
   }
 }

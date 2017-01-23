@@ -8,9 +8,9 @@ class GuildExtension {
   get language() {
     if(!this._language) {
       const language = this.guild.settings.get("server-language")
-      this._language = language
+      this._language = language || "english"
     }
-    return this._language || "english"
+    return this._language
   }
 
   set language(language) {
