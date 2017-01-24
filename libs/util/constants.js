@@ -1043,6 +1043,21 @@ exports.responses = {
     }
   },
 
+  SONG_TEXT_CHANNEL: {
+    INVALID: {
+      english: (channel) => `${channel} isn't a text channel.`,
+      spanish: (channel) => `${channel} no es un canal de texto.`
+    },
+    NO_PERMISSION: {
+      english: (channel) => `I don't have permission to send messages to ${channel}.`,
+      spanish: (channel) => `No tengo permiso para enviar mensajes a ${channel}.`
+    },
+    SET: {
+      english: (channel) => `Set ${channel} as this server's song text channel.`,
+      spanish: (channel) => `Asignado ${channel} como el canal de texto de canciones de este servidor.`
+    },
+  },
+
   WHOIS: {
     english: (user, member, joined, created) => stripIndents`
       Info on **${user.username}#${user.discriminator}** (ID: ${user.id})
