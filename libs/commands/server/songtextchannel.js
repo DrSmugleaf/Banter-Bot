@@ -6,7 +6,7 @@
 const commando = require("discord.js-commando")
 const constants = require("../../util/constants")
 
-module.exports = class SongChannel extends commando.Command {
+module.exports = class SongTextChannel extends commando.Command {
   constructor(client) {
     super(client, {
       name: "song-text-channel",
@@ -15,9 +15,9 @@ module.exports = class SongChannel extends commando.Command {
         "text-song-channel", "textsongchannel",
       ],
       group: "server",
-      memberName: "song-channel",
-      description: "Set the server's song chanenl for the bot.",
-      examples: ["song-channel songs", "song-channel videos"],
+      memberName: "song-text-channel",
+      description: "Set the server's song channel for the bot.",
+      examples: ["song-text-channel songs", "song-text-channel videos"],
       guildOnly: true,
       throttling: {
         usages: 2,
@@ -26,7 +26,7 @@ module.exports = class SongChannel extends commando.Command {
       args: [
         {
           key: "channel",
-          prompt: "What channel do you want to set as the info channel?",
+          prompt: "What channel do you want to set as the song text channel?",
           type: "channel"
         }
       ]
@@ -46,7 +46,7 @@ module.exports = class SongChannel extends commando.Command {
       return msg.reply(constants.responses.SONG_TEXT_CHANNEL.NO_PERMISSION[msg.language](channel.name))
     }
 
-    msg.guild.settings.set("song-channel", channel)
+    msg.guild.settings.set("song-text-channel", channel)
 
     return msg.reply(constants.responses.SONG_TEXT_CHANNEL.SET[msg.language](channel.name))
   }

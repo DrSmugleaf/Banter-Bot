@@ -1055,7 +1055,26 @@ exports.responses = {
     SET: {
       english: (channel) => `Set ${channel} as this server's song text channel.`,
       spanish: (channel) => `Asignado ${channel} como el canal de texto de canciones de este servidor.`
+    }
+  },
+
+  SONG_VOICE_CHANNEL: {
+    INVALID: {
+      english: (channel) => `${channel} isn't a voice channel.`,
+      spanish: (channel) => `${channel} no es un canal de voz.`
     },
+    CANT_CONNECT: {
+      english: (channel) => `I can't connect to ${channel}.`,
+      spanish: (channel) => `No puedo conectarme a ${channel}.`
+    },
+    CANT_SPEAK: {
+      english: "I can't speak in that voice channel.",
+      spanish: "No puedo hablar en ese canal de voz."
+    },
+    SET: {
+      english: (channel) => `Set ${channel} as this server's song voice channel.`,
+      spanish: (channel) => `Asignado ${channel} como el canal de voz de canciones de este servidor.`
+    }
   },
 
   WHOIS: {
