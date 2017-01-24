@@ -147,7 +147,7 @@ module.exports = {
 
     this.joinVoice(next.member).then(voiceConnection => {
       const stream = ytdl(next.url, { filter: "audioonly" })
-      voiceConnection.playStream(
+      const dispatcher = voiceConnection.playStream(
         stream, constants.youtube.STREAMOPTIONS
       ).on("end", (reason) => {
         next.repeated = true
@@ -155,7 +155,11 @@ module.exports = {
         if(!next.repeat) queue.shift()
 
         return this.playNext(next.guild)
+      }).on("error", (e) => {
+        winston.error(`Error playing song ${next.name} in guild ${next.guild.id}`, e)
       })
+
+      next.dispatcher = dispatcher
 
       if(next.repeat && !next.repeated) {
         return next.channel.sendMessage(
