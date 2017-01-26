@@ -156,7 +156,11 @@ module.exports = {
 
         return this.playNext(next.guild)
       }).on("error", (e) => {
-        winston.error(`Error playing song ${next.name} in guild ${next.guild.id}`, e)
+        winston.error(`Error playing song ${next.video.title} in guild ${next.guild.id}`, e)
+        next.channel.sendMessage(
+          constants.responses.YOUTUBE.NEXT.DISPATCHER_ERROR[next.message.language](next.video.title)
+        )
+        return this.playNext(next.guild)
       })
 
       next.dispatcher = dispatcher

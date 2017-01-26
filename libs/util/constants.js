@@ -882,12 +882,12 @@ exports.mslanguages = {
 exports.responses = {
   AVATAR: {
     INVALID: {
-      english: (url) => `${url} is an invalid image`,
-      spanish: (url) => `${url} es una imagen inválida`
+      english: (url) => `${url} is an invalid image.`,
+      spanish: (url) => `${url} es una imagen inválida.`
     },
     SET: {
-      english: (url) => `Changed the bot's image to ${url}`,
-      spanish: (url) => `Cambiado la imagen del bot a ${url}`
+      english: (url) => `Changed the bot's image to ${url}.`,
+      spanish: (url) => `Cambiado la imagen del bot a ${url}.`
     }
   },
 
@@ -951,25 +951,25 @@ exports.responses = {
   },
 
   MAGIC8BALL: {
-    english: ["It is certain", "It is decidedly so", "Without a doubt", "Yes, definitely", "You may rely on it", "As I see it, yes", "Most likely", "Outlook good", "Yes", "Signs point to yes", "Reply hazy try again", "Ask again later", "Better not tell you now", "Cannot predict now", "Concentrate and ask again", "Don't count on it", "My reply is no", "My sources say no", "Outlook not so good", "Very doubtful"],
-    spanish: ["En mi opinión, sí", "Es cierto", "Es decididamente así", "Probablemente", "Buen pronóstico", "Todo apunta a que sí", "Sin duda", "Sí", "Sí - definitivamente", "Debes confiar en ello", "Respuesta vaga, vuelve a intentarlo", "Pregunta en otro momento", "Será mejor que no te lo diga ahora", "No puedo predecirlo ahora", "Concéntrate y vuelve a preguntar", "No cuentes con ello", "Mi respuesta es no", "Mis fuentes me dicen que no", "Las perspectivas no son buenas", "Muy dudoso"]
+    english: ["It is certain.", "It is decidedly so.", "Without a doubt.", "Yes, definitely.", "You may rely on it.", "As I see it, yes.", "Most likely.", "Outlook good.", "Yes.", "Signs point to yes.", "Reply hazy try again.", "Ask again later.", "Better not tell you now.", "Cannot predict now.", "Concentrate and ask again.", "Don't count on it.", "My reply is no.", "My sources say no.", "Outlook not so good.", "Very doubtful."],
+    spanish: ["En mi opinión, sí.", "Es cierto.", "Es decididamente así.", "Probablemente.", "Buen pronóstico.", "Todo apunta a que sí.", "Sin duda.", "Sí.", "Sí - definitivamente.", "Debes confiar en ello.", "Respuesta vaga, vuelve a intentarlo.", "Pregunta en otro momento.", "Será mejor que no te lo diga ahora.", "No puedo predecirlo ahora.", "Concéntrate y vuelve a preguntar.", "No cuentes con ello.", "Mi respuesta es no.", "Mis fuentes me dicen que no.", "Las perspectivas no son buenas.", "Muy dudoso."]
   },
 
   MARKOV: {
     ANSWER: {
-      english: (subject, answer) => `**${subject} (Markov):** ${answer}`,
-      spanish: (subject, answer) => `**${subject} (Markov):** ${answer}`
+      english: (subject, answer) => `**${subject} (Markov):** ${answer}.`,
+      spanish: (subject, answer) => `**${subject} (Markov):** ${answer}.`
     },
     MISSING: {
-      english: (user) => `There are no messages in this channel from ${user}`,
-      spanish: (user) => `No hay mensajes en este canal de ${user}`
+      english: (user) => `There are no messages in this channel from ${user}.`,
+      spanish: (user) => `No hay mensajes en este canal de ${user}.`
     }
   },
 
   NAME: {
     SET: {
-      english: (name) => `Changed the bot's username to ${name}`,
-      spanish: (name) => `Cambiado el nombre del bot a ${name}`
+      english: (name) => `Changed the bot's username to ${name}.`,
+      spanish: (name) => `Cambiado el nombre del bot a ${name}.`
     }
   },
 
@@ -985,8 +985,8 @@ exports.responses = {
 
   PLAYING: {
     SET: {
-      english: (name) => `Changed the bot's game to ${name}`,
-      spanish: (name) => `Cambiado el nombre del bot a ${name}`
+      english: (name) => `Changed the bot's game to ${name}.`,
+      spanish: (name) => `Cambiado el nombre del bot a ${name}.`
     }
   },
 
@@ -1026,20 +1026,20 @@ exports.responses = {
 
   SERVER_SETTINGS: {
     CLEAR: {
-      english: "Cleared settings for this server",
-      spanish: "Limpiadas las opciones de este servidor"
+      english: "Cleared settings for this server.",
+      spanish: "Limpiadas las opciones de este servidor."
     },
     GET: {
-      english: (key, value) => `Settings for \`${key}\`: \`${value}\``,
-      spanish: (key, value) => `Opciones para \`${key}\`: \`0${value}\``
+      english: (key, value) => `Settings for \`${key}\`: \`${value}\`.`,
+      spanish: (key, value) => `Opciones para \`${key}\`: \`0${value}\`.`
     },
     REMOVE: {
-      english: (key) => `Removed setting \`${key}\``,
-      spanish: (key) => `Eliminada opción \`${key}\``
+      english: (key) => `Removed setting \`${key}\`.`,
+      spanish: (key) => `Eliminada opción \`${key}\`.`
     },
     SET: {
-      english: (key, value) => `Set \`${key}\` to \`${value}\``,
-      spanish: (key, value) => `Establecida \`${key}\` como \`${value}\``
+      english: (key, value) => `Set \`${key}\` to \`${value}\`.`,
+      spanish: (key, value) => `Establecida \`${key}\` como \`${value}\`.`
     }
   },
 
@@ -1134,17 +1134,21 @@ exports.responses = {
       spanish: "Ya no estás en un canal de voz, omitiendo canción."
     },
     NEXT: {
+      DISPATCHER_ERROR: {
+        english: (title) => `Error playing ${title}, skipping song.`,
+        spanish: (title) => `Error reproduciendo ${title}, omitiendo canción.`
+      },
       ERROR: {
         english: (title) => `Couldn't play ${title}, skipping song.`,
-        spanish: (title) => `Error al reproducir la canción ${title}, omitiendo canción`
+        spanish: (title) => `Error al reproducir la canción ${title}, omitiendo canción.`
       },
       PLAY: {
-        english: (title) => `Now playing: ${title}`,
-        spanish: (title) => `Ahora jugando: ${title}`,
+        english: (title) => `Now playing: ${title}.`,
+        spanish: (title) => `Ahora jugando: ${title}.`,
       },
       REPEAT: {
-        english: (title) => `Now repeating: ${title}`,
-        spanish: (title) => `Ahora repitiendo: ${title}`
+        english: (title) => `Now repeating: ${title}.`,
+        spanish: (title) => `Ahora repitiendo: ${title}.`
       }
     },
     NO_CURRENTLY_PLAYING: {
@@ -1181,36 +1185,36 @@ exports.responses = {
     },
     RESUME: {
       english: "Resumed the current video.",
-      spanish: "Vídeo reanudado"
+      spanish: "Vídeo reanudado."
     },
     SKIP: {
       ALREADY_VOTED: {
-        english: "You already voted to skip this song",
-        spanish: "Ya has votado para omitir esta canción"
+        english: "You already voted to skip this song.",
+        spanish: "Ya has votado para omitir esta canción."
       },
       FAIL: {
         english: (votes, total) => oneLine`${votes} out of ${total} members want
-          to skip the current video`,
+          to skip the current video.`,
         spanish: (votes, total) => oneLine`${votes} de ${total} miembros quieren
-          saltarse el vídeo actual`
+          saltarse el vídeo actual.`
       },
       SUCCESS: {
         english: (votes, total) => oneLine`${votes} out of ${total} members voted
-          to skip, skipped the current video`,
+          to skip, skipped the current video.`,
         spanish: (votes, total) => oneLine`${votes} de ${total} miembros votaron
-          para saltar este vídeo, saltado el vídeo actual`
+          para saltar este vídeo, saltado el vídeo actual.`
       }
     },
     STOP: {
-      english: "Stopped the current video",
-      spanish: "Parado el vídeo actual"
+      english: "Stopped the current video.",
+      spanish: "Parado el vídeo actual."
     },
     TOO_MANY_SONGS: {
       english: oneLine`You have submitted too many songs to the queue,
-        wait until one of yours finishes
+        wait until one of yours finishes.
       `,
       spanish: oneLine`Has enviado demasiadas canciones a la cola,
-        espera hasta que una de las tuyas termine
+        espera hasta que una de las tuyas termine.
       `
     }
   }
