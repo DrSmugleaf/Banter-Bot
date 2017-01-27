@@ -51,7 +51,7 @@ module.exports = class SongVoiceChannel extends commando.Command {
       return msg.reply(constants.responses.SONG_VOICE_CHANNEL.CANT_SPEAK[msg.language](channel.name))
     }
 
-    msg.guild.settings.set("song-voice-channel", channel)
+    msg.guild.settings.set("song-voice-channel", channel.id)
 
     return msg.reply(constants.responses.SONG_VOICE_CHANNEL.SET[msg.language](channel.name))
   }
