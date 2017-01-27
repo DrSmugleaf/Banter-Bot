@@ -42,6 +42,7 @@ module.exports = class SongTextChannel extends commando.Command {
     if(channel.type !== "text") {
       return msg.reply(constants.responses.SONG_TEXT_CHANNEL.INVALID[msg.language](channel.name))
     }
+    
     if(!channel.permissionsFor(msg.guild.member(msg.client.user)).hasPermission("SEND_MESSAGES")) {
       return msg.reply(constants.responses.SONG_TEXT_CHANNEL.NO_PERMISSION[msg.language](channel.name))
     }
