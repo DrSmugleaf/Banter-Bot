@@ -1217,6 +1217,10 @@ exports.responses = {
       english: "Stopped the current video.",
       spanish: "Parado el vídeo actual."
     },
+    STOP_ALL: {
+      english: "Stopped and removed all videos from the queue.",
+      spanish: "Parados y quitados todos los vídeos en cola."
+    },
     TOO_MANY_SONGS: {
       english: oneLine`You have submitted too many songs to the queue,
         wait until one of yours finishes.
