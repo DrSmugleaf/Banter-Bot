@@ -30,7 +30,7 @@ module.exports = {
     }
     if(!this.isInVoiceChannel(guild)) return
 
-    return this.queue.get(guild.id)[0].dispatcher
+    return guild.voiceConnection.player.dispatcher
   },
 
   isCurrentlyPaused(guild) {
@@ -132,38 +132,48 @@ module.exports = {
     const queue = this.queue.get(guild.id)
     const next = queue[0]
     if(!this.isMemberInVoiceChannel(next.member)) {
-      next.channel.sendMessage(constants.responses.YOUTUBE.LEFT_VOICE[next.message.language])
+      next.channel.sendMessage(
+        constants.responses.YOUTUBE.LEFT_VOICE[next.message.language]
+      )
       return this.playNext(guild)
     }
 
     const voicePermissions = next.member.voiceChannel.permissionsFor(guild.client.user)
     if(!voicePermissions.hasPermission("CONNECT")) {
-      next.channel.sendMessage(constants.responses.YOUTUBE.CANT_CONNECT_ANYMORE[next.message.language])
+      next.channel.sendMessage(
+        constants.responses.YOUTUBE.CANT_CONNECT_ANYMORE[next.message.language]
+      )
       return this.playNext(guild)
     }
     if(!voicePermissions.hasPermission("SPEAK")) {
-      next.channel.sendMessage(constants.responses.YOUTUBE.CANT_SPEAK_ANYMORE[next.message.language])
+      next.channel.sendMessage(
+        constants.responses.YOUTUBE.CANT_SPEAK_ANYMORE[next.message.language]
+      )
     }
 
     this.joinVoice(next.member).then(voiceConnection => {
-      const stream = ytdl(next.url, { filter: "audioonly" })
-      const dispatcher = voiceConnection.playStream(
+      const stream = ytdl(next.url, { filter: "audioonly" }).on("error", (e) => {
+        winston.error(e)
+        queue.shift()
+        this.playNext(guild)
+        return next.channel.sendMessage(
+          constants.responses.YOUTUBE.NEXT.DISPATCHER_ERROR[next.message.language](next.video.title)
+        )
+      })
+
+      voiceConnection.playStream(
         stream, constants.youtube.STREAMOPTIONS
       ).on("end", (reason) => {
         next.repeated = true
         if(reason === "skip") next.repeat = false
         if(!next.repeat) queue.shift()
-
         return this.playNext(next.guild)
       }).on("error", (e) => {
-        winston.error(`Error playing song ${next.video.title} in guild ${next.guild.id}`, e)
+        winston.error(e)
         next.channel.sendMessage(
           constants.responses.YOUTUBE.NEXT.DISPATCHER_ERROR[next.message.language](next.video.title)
         )
-        return this.playNext(next.guild)
       })
-
-      next.dispatcher = dispatcher
 
       if(next.repeat && !next.repeated) {
         return next.channel.sendMessage(
@@ -176,7 +186,10 @@ module.exports = {
       }
     }).catch(e => {
       winston.error(e)
-      next.channel.sendMessage(constants.responses.YOUTUBE.NEXT.ERROR[next.message.language](next.url))
+      next.channel.sendMessage(
+        constants.responses.YOUTUBE.NEXT.ERROR[next.message.language](next.video.title)
+      )
+      return this.playNext(guild)
     })
   }
 }
