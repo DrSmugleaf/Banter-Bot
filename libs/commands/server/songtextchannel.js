@@ -40,7 +40,7 @@ module.exports = class SongTextChannel extends commando.Command {
 
   async run(msg, args) {
     const channel = args.channel
-    if(!channel || channel === "none") {
+    if(!channel) {
       msg.guild.settings.remove("song-text-channel")
       return msg.reply(constants.responses.SONG_TEXT_CHANNEL.REMOVED[msg.language])
     }
