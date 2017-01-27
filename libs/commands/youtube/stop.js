@@ -25,7 +25,8 @@ module.exports = class Stop extends commando.Command {
   }
 
   hasPermission(msg) {
-    return msg.member.hasPermission("MUTE_MEMBERS")
+    const song = main.queue.get(msg.guild.id)[0]
+    return msg.member.hasPermission("MUTE_MEMBERS") || msg.member.id === song.member.id
   }
 
   async run(msg) {
@@ -35,9 +36,7 @@ module.exports = class Stop extends commando.Command {
     const voiceConnection = msg.guild.voiceConnection
 
     if(voiceConnection) {
-      main.queue.set(msg.guild.id, [])
-      main.dispatcher(msg.guild).end()
-
+      main.dispatcher(msg.guild).end("skip")
       return msg.reply(constants.responses.YOUTUBE.STOP[msg.language])
     }
   }

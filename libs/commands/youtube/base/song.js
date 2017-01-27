@@ -14,7 +14,6 @@ module.exports = class Song {
       || msg.member.voiceChannel
     this.member = msg.member
 
-
     this.url = args.url
     this.repeat = args.repeat
     this.repeated = false
