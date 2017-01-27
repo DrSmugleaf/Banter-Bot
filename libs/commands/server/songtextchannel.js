@@ -17,7 +17,7 @@ module.exports = class SongTextChannel extends commando.Command {
       group: "server",
       memberName: "song-text-channel",
       description: "Set the server's song channel for the bot.",
-      examples: ["song-text-channel songs", "song-text-channel videos"],
+      examples: ["song-text-channel none", "song-text-channel songs", "song-text-channel videos"],
       guildOnly: true,
       throttling: {
         usages: 2,
@@ -27,7 +27,8 @@ module.exports = class SongTextChannel extends commando.Command {
         {
           key: "channel",
           prompt: "What channel do you want to set as the song text channel?",
-          type: "channel"
+          type: "channel",
+          default: ""
         }
       ]
     })
@@ -39,6 +40,10 @@ module.exports = class SongTextChannel extends commando.Command {
 
   async run(msg, args) {
     const channel = args.channel
+    if(!channel || channel === "none") {
+      msg.guild.settings.remove("song-text-channel")
+      return msg.reply(constants.responses.SONG_TEXT_CHANNEL.REMOVED[msg.language])
+    }
     if(channel.type !== "text") {
       return msg.reply(constants.responses.SONG_TEXT_CHANNEL.INVALID[msg.language](channel.name))
     }

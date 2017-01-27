@@ -1052,6 +1052,10 @@ exports.responses = {
       english: (channel) => `I don't have permission to send messages to ${channel}.`,
       spanish: (channel) => `No tengo permiso para enviar mensajes a ${channel}.`
     },
+    REMOVED: {
+      english: "Removed server's song text channel.",
+      spanish: "Quitado el canal de texto de canciones de este servidor."
+    },
     SET: {
       english: (channel) => `Set ${channel} as this server's song text channel.`,
       spanish: (channel) => `Asignado ${channel} como el canal de texto de canciones de este servidor.`
@@ -1070,6 +1074,10 @@ exports.responses = {
     CANT_SPEAK: {
       english: "I can't speak in that voice channel.",
       spanish: "No puedo hablar en ese canal de voz."
+    },
+    REMOVED: {
+      english: "Removed server's song voice channel.",
+      spanish: "Quitado el canal de voz de canciones de este servidor."
     },
     SET: {
       english: (channel) => `Set ${channel} as this server's song voice channel.`,
