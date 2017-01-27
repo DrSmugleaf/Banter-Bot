@@ -169,7 +169,9 @@ module.exports = {
         return this.playNext(next.guild)
       }).on("error", (e) => {
         winston.error(e)
-        next.textChannel.sendMessage(
+        queue.shift()
+        this.playNext(guild)
+        return next.textChannel.sendMessage(
           constants.responses.YOUTUBE.NEXT.DISPATCHER_ERROR[next.message.language](next.video.title)
         )
       })
