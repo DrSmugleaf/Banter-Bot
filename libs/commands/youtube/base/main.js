@@ -106,13 +106,12 @@ module.exports = {
     return Boolean(!this.queue.has(guild.id) || !this.queue.get(guild.id)[0])
   },
 
-  joinVoice(member) {
-    if(!(member instanceof Discord.GuildMember)) {
-      throw new TypeError("Guild must be an instance of Discord.Guild")
+  joinVoice(voiceChannel) {
+    if(!(voiceChannel instanceof Discord.VoiceChannel)) {
+      throw new TypeError("VoiceChannel must be an instance of Discord.VoiceChannel")
     }
 
-    const voiceChannel = member.voiceChannel
-    const voiceConnection = member.guild.voiceConnection
+    const voiceConnection = voiceChannel.guild.voiceConnection
 
     return new Promise(function(resolve, reject) {
       if(voiceConnection && voiceConnection == voiceChannel.connection) {
@@ -132,31 +131,31 @@ module.exports = {
     const queue = this.queue.get(guild.id)
     const next = queue[0]
     if(!this.isMemberInVoiceChannel(next.member)) {
-      next.channel.sendMessage(
+      next.textChannel.sendMessage(
         constants.responses.YOUTUBE.LEFT_VOICE[next.message.language]
       )
       return this.playNext(guild)
     }
 
-    const voicePermissions = next.member.voiceChannel.permissionsFor(guild.client.user)
+    const voicePermissions = next.voiceChannel.permissionsFor(guild.client.user)
     if(!voicePermissions.hasPermission("CONNECT")) {
-      next.channel.sendMessage(
+      next.textChannel.sendMessage(
         constants.responses.YOUTUBE.CANT_CONNECT_ANYMORE[next.message.language]
       )
       return this.playNext(guild)
     }
     if(!voicePermissions.hasPermission("SPEAK")) {
-      next.channel.sendMessage(
+      next.textChannel.sendMessage(
         constants.responses.YOUTUBE.CANT_SPEAK_ANYMORE[next.message.language]
       )
     }
 
-    this.joinVoice(next.member).then(voiceConnection => {
+    this.joinVoice(next.voiceChannel).then(voiceConnection => {
       const stream = ytdl(next.url, { filter: "audioonly" }).on("error", (e) => {
         winston.error(e)
         queue.shift()
         this.playNext(guild)
-        return next.channel.sendMessage(
+        return next.textChannel.sendMessage(
           constants.responses.YOUTUBE.NEXT.DISPATCHER_ERROR[next.message.language](next.video.title)
         )
       })
@@ -170,23 +169,23 @@ module.exports = {
         return this.playNext(next.guild)
       }).on("error", (e) => {
         winston.error(e)
-        next.channel.sendMessage(
+        next.textChannel.sendMessage(
           constants.responses.YOUTUBE.NEXT.DISPATCHER_ERROR[next.message.language](next.video.title)
         )
       })
 
       if(next.repeat && !next.repeated) {
-        return next.channel.sendMessage(
+        return next.textChannel.sendMessage(
           constants.responses.YOUTUBE.NEXT.REPEAT[next.message.language](next.video.title)
         )
       } else if(!next.repeated) {
-        return next.channel.sendMessage(
+        return next.textChannel.sendMessage(
           constants.responses.YOUTUBE.NEXT.PLAY[next.message.language](next.video.title)
         )
       }
     }).catch(e => {
       winston.error(e)
-      next.channel.sendMessage(
+      next.textChannel.sendMessage(
         constants.responses.YOUTUBE.NEXT.ERROR[next.message.language](next.video.title)
       )
       return this.playNext(guild)
