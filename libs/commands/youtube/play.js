@@ -54,7 +54,7 @@ module.exports = class Play extends commando.Command {
     }
 
     if(msg.deletable) msg.delete()
-    
+
     const voicePermissions = msg.member.voiceChannel.permissionsFor(msg.client.user)
     if(!voicePermissions.hasPermission("CONNECT")) {
       return msg.reply(constants.responses.YOUTUBE.CANT_CONNECT[msg.language])
@@ -77,7 +77,7 @@ module.exports = class Play extends commando.Command {
       return msg.reply(constants.responses.YOUTUBE.PLAY[msg.language](video.title))
     }).catch(e => {
       winston.error(e)
-      return msg.reply(constants.responses.YOUTUBE.INVALID[msg.language])
+      return msg.reply(constants.responses.YOUTUBE.ERROR[msg.language])
     })
   }
 }
