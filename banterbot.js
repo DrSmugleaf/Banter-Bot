@@ -24,8 +24,8 @@ new Sender(client)
 const token = process.env.NODE_ENV === "dev" ?
   process.env.DISCORD_TOKEN_DEV : process.env.DISCORD_TOKEN
 const VersionAnnouncer = require("./libs/announcer/version")
-const VoiceAutoChannel = require("./libs/autochannel/voice")
-new VoiceAutoChannel(client)
+const AutoChannel = require("./libs/autochannel/autochannel")
+new AutoChannel(client)
 const winston = require("winston")
 
 client
