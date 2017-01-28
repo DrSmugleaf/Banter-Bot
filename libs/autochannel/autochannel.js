@@ -57,7 +57,7 @@ module.exports = class AutoChannel {
     guild.channels.filter((channel) => {
       return channel.name.includes("BB-") && channel.type === "voice"
     }).forEach((channel) => {
-      const gameInObject = guildGames[channel.name.replace("BB-", "")]
+      const gameInObject = guildGames ? guildGames[channel.name.replace("BB-", "")] : null
 
       if(channel.members.size < 1 && (!gameInObject || gameInObject.length < this.threshold)) {
         if(channel) channel.delete().catch(winston.error)
