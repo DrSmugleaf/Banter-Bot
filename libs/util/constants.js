@@ -1133,9 +1133,9 @@ exports.responses = {
       english: "There are no songs in the queue.",
       spanish: "No hay canciones en cola."
     },
-    INVALID: {
-      english: "Invalid URL.",
-      spanish: "URL inválido."
+    ERROR: {
+      english: "Error downloading song.",
+      spanish: "Error descargando canción."
     },
     LEFT_VOICE: {
       english: "You aren't in a voice channel anymore, skipping song.",
