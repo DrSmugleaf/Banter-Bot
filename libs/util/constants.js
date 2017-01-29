@@ -62,10 +62,42 @@ exports.versions = {
   },
   "3": {
     english: stripIndents`
+      **ADDED**
+      !info-channel: Sets the info channel for the bot.
+      !language: Sets your language in this server for the bot to respond with.
+      !server-language: Sets the server's language for the bot to respond with.
+      !song-text-channel: Sets the server's song text channel for the bot to send song status messages to.
+      !song-voice-channel: Sets the server's song voice channel for the bot to always play songs in.
+      !stop-all: Stops and removes all videos in the server's queue, users with mute members permission or above only.
+      The bot will now answer in the language you set for yourself (!language language) or the server's language (!server-language language).
 
+      **CHANGES**
+      !play now only allows every user to queue 2 songs each.
+      !stop now also allows the member that put the song in the queue.
+
+      **FIXES**
+      Fixed automatic voice channels by game not working.
+      Fixed !skip command always staying at one vote maximum.
+      Fixed !play command audio cutting out at random times.
     `,
     spanish: stripIndents`
+      **AÑADIDO**
+      !info-channel: Establece el canal de información del bot.
+      !language: Establece tu lenguaje en este servidor con el que el bot te responderá.
+      !server-language: Estable el lenguaje del servidor con el que el bot responderá.
+      !song-text-channel: Establece el canal de texto para canciones del servidor en el que el bot pondrá mensajes de estado sobre canciones.
+      !song-voice-channel: Establece el canal de voz para canciones del servidor en el que el bot exclusivamente reproducirá canciones.
+      !stop-all: Para y quita todas las canciones en cola, usuarios con permiso para silenciar a otros o más solo.
+      El bot ahora te responderá en el idioma de tu elección (!language language) o el idioma del servidor (!server-language language).
 
+      **CAMBIOS**
+      !play ahora solo permite 2 canciones por usuario en cola.
+      !stop ahora también permite usarlo al usuario que puso la canción en cola.
+
+      **ARREGLOS**
+      Arreglado canales automáticos para juegos no funcionando.
+      Arreglado !skip manteniéndose en un voto como máximo.
+      Arreglado el audio de !play cortándose al azar.
     `
   }
 }
