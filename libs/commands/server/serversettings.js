@@ -10,7 +10,10 @@ module.exports = class ServerSettings extends commando.Command {
   constructor(client) {
     super(client, {
       name: "server-settings",
-      aliases: ["server-settings", "serversettings"],
+      aliases: [
+        "server-settings", "serversettings",
+        "guild-settings", "guildsettings"
+      ],
       group: "server",
       memberName: "server-settings",
       description: "Modifies this server's settings",
