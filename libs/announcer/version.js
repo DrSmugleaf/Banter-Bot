@@ -4,38 +4,22 @@
 
 "use strict"
 const constants = require("../util/constants")
-const DB = require("../util/db")
-const db = new DB()
-const stripIndents = require("common-tags").stripIndents
 
 module.exports = class Version {
-  constructor(discord) {
-    this.discord = discord
-
-    this.discord.on("ready", () => this.checkVersion())
+  constructor(client) {
+    this.client = client
+    this.checkVersion()
   }
 
   checkVersion() {
-    if(process.env.NODE_ENV === "dev") return
+    const version = this.client.settings.get("version")
 
-    db.query(
-      "SELECT guild, settings FROM settings WHERE guild = '0'", null, "one"
-    ).then((data) => {
-      const settings = JSON.parse(data.settings)
-      const version = parseInt(settings.version, 10)
-      const newVersion = (version + 1).toString()
-
-      if(version < Object.keys(constants.versions).length + 1) {
-        this.discord.guilds.forEach(guild => {
-          const language = guild.settings.get("server-language", guild.language || "english")
-          guild.defaultChannel.sendMessage(stripIndents`
-            @everyone,\n
-            ${constants.versions[newVersion][language]}
-          `)
-        })
-        settings.version++
-        db.query("UPDATE settings SET settings = $1 WHERE guild = '0'", [JSON.stringify(settings)], "none")
-      }
-    })
+    if(version < Object.keys(constants.versions).length + 1) {
+      this.client.guilds.forEach((guild) => {
+        const infoChannel = guild.channels.get(guild.settings.get("info-channel", guild.defaultChannel.id))
+        infoChannel.sendMessage(constants.versions[version + 1][guild.language])
+      })
+      if(!process.env.NODE_ENV === "dev") this.client.settings.set("version", version + 1)
+    }
   }
 }

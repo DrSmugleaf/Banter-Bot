@@ -20,21 +20,24 @@ const oneLine = require("common-tags").oneLine
 const path = require("path")
 const PostgreSQLProvider = require("./libs/providers/postgresql")
 const Sender = require("./libs/bridge/sender")
-new Sender(client)
 const token = process.env.NODE_ENV === "dev" ?
   process.env.DISCORD_TOKEN_DEV : process.env.DISCORD_TOKEN
 const VersionAnnouncer = require("./libs/announcer/version")
 const AutoChannel = require("./libs/autochannel/autochannel")
-new AutoChannel(client)
 const winston = require("winston")
 
 client
   .on("error", winston.error)
   .on("warn", winston.warn)
-  .on("debug", winston.debug)
+  .on("debug", (string) => {
+    if(string === "Provider finished initialisation.") {
+      new AutoChannel(client)
+      new Sender(client)
+      new VersionAnnouncer(client)
+    }
+  })
   .on("ready", () => {
     winston.info(`Client ready; logged in as ${client.user.username}#${client.user.discriminator} (${client.user.id})`)
-    new VersionAnnouncer(client)
   })
   .on("disconnect", () => { winston.warn("Disconnected!") })
   .on("reconnect", () => { winston.warn("Reconnecting...") })

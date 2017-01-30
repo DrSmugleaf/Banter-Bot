@@ -16,13 +16,11 @@ module.exports = class AutoChannel {
     this.games = new Discord.Collection()
     this.previousGame = new Object()
 
-    this.discord.on("ready", () => {
-      this.discord.guilds.forEach((guild) => {
-        guild.presences.forEach((presence, id) => {
-          this.processPresence(guild, presence, id)
-        })
-        this.setupChannels(guild)
+    this.discord.guilds.forEach((guild) => {
+      guild.presences.forEach((presence, id) => {
+        this.processPresence(guild, presence, id)
       })
+      this.setupChannels(guild)
     })
 
     this.discord.on("presenceUpdate", (oldMember, newMember) => {
