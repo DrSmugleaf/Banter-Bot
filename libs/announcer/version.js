@@ -16,6 +16,7 @@ module.exports = class Version {
 
     if(version < Object.keys(constants.versions).length + 1) {
       this.client.guilds.forEach((guild) => {
+        if(process.env.NODE_ENV === "dev" && guild.id !== "260158980343463937") return
         const infoChannel = guild.channels.get(guild.settings.get("info-channel", guild.defaultChannel.id))
         infoChannel.sendMessage(constants.versions[version + 1][guild.language])
       })
