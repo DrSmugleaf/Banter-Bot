@@ -24,7 +24,8 @@ module.exports = class InfoChannel extends commando.Command {
         {
           key: "channel",
           prompt: "What channel do you want to set as the info channel?",
-          type: "channel"
+          type: "channel",
+          default: ""
         }
       ]
     })
@@ -36,6 +37,10 @@ module.exports = class InfoChannel extends commando.Command {
 
   async run(msg, args) {
     const channel = args.channel
+    if(!channel) {
+      msg.guild.settings.remove("info-channel")
+      return msg.reply(constants.responses.INFO_CHANNEL.REMOVED[msg.language])
+    }
     if(channel.type !== "text") {
       return msg.reply(constants.responses.INFO_CHANNEL.INVALID[msg.language](channel.name))
     }

@@ -969,6 +969,10 @@ exports.responses = {
       english: (channel) => `I don't have permission to send messages to ${channel}.`,
       spanish: (channel) => `No tengo permiso para enviar mensajes a ${channel}.`
     },
+    REMOVED: {
+      english: "Removed server's info channel.",
+      spanish: "Quitado el canal de información del servidor."
+    },
     SET: {
       english: (channel) => `Set ${channel} as this server's info channel.`,
       spanish: (channel) => `Asignado ${channel} como el canal de información de este servidor.`
