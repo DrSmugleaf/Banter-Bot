@@ -3,9 +3,14 @@
 //
 
 "use strict"
+const Commando = require("discord.js-commando")
+const Discord = require("discord.js")
+require("./libs/extensions/guild").applyToClass(Discord.Guild)
+require("./libs/extensions/member").applyToClass(Discord.GuildMember)
+require("./libs/extensions/message").applyToClass(Discord.Message)
+require("./libs/extensions/message").applyToClass(Commando.CommandMessage)
 require("./libs/util")
-const commando = require("discord.js-commando")
-const client = new commando.Client({
+const client = new Commando.Client({
   commandPrefix: process.env.NODE_ENV === "dev" ? "!!" : "!",
   invite: "https://discord.gg/yyDWNBr",
   owner: "109067752286715904",
@@ -15,26 +20,29 @@ const oneLine = require("common-tags").oneLine
 const path = require("path")
 const PostgreSQLProvider = require("./libs/providers/postgresql")
 const Sender = require("./libs/bridge/sender")
-new Sender(client)
 const token = process.env.NODE_ENV === "dev" ?
   process.env.DISCORD_TOKEN_DEV : process.env.DISCORD_TOKEN
-const VersionAnnouncer = require("./libs/versionannouncer/announcer")
-const VoiceAutoChannel = require("./libs/autochannel/voice")
-new VoiceAutoChannel(client)
+const VersionAnnouncer = require("./libs/announcer/version")
+// const AutoChannel = require("./libs/autochannel/autochannel")
 const winston = require("winston")
 
 client
   .on("error", winston.error)
   .on("warn", winston.warn)
-  .on("debug", winston.debug)
+  .on("debug", (string) => {
+    if(string === "Provider finished initialisation.") {
+      // new AutoChannel(client)
+      new Sender(client)
+      new VersionAnnouncer(client)
+    }
+  })
   .on("ready", () => {
     winston.info(`Client ready; logged in as ${client.user.username}#${client.user.discriminator} (${client.user.id})`)
-    new VersionAnnouncer(client)
   })
   .on("disconnect", () => { winston.warn("Disconnected!") })
   .on("reconnect", () => { winston.warn("Reconnecting...") })
   .on("commandError", (cmd, err) => {
-    if(err instanceof commando.FriendlyError) return
+    if(err instanceof Commando.FriendlyError) return
     winston.error(`Error in command ${cmd.groupID}:${cmd.memberName}`, err)
   })
   .on("commandBlocked", (msg, reason) => {
@@ -65,7 +73,7 @@ client
   })
 
 client.setProvider(
-  new commando.SQLiteProvider(new PostgreSQLProvider())
+  new Commando.SQLiteProvider(new PostgreSQLProvider())
 ).catch(winston.error)
 
 client.registry

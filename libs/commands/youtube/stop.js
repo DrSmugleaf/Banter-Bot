@@ -25,21 +25,19 @@ module.exports = class Stop extends commando.Command {
   }
 
   hasPermission(msg) {
-    return msg.member.hasPermission("MUTE_MEMBERS")
+    const song = main.queue.get(msg.guild.id)[0]
+    return msg.member.hasPermission("MUTE_MEMBERS") || msg.member.id === song.member.id
   }
 
   async run(msg) {
     if(!main.isCurrentlyPlaying(msg.guild)) {
-      return msg.reply(constants.responses.YOUTUBE.NO_CURRENTLY_PLAYING["english"])
+      return msg.reply(constants.responses.YOUTUBE.NO_CURRENTLY_PLAYING[msg.language])
     }
     const voiceConnection = msg.guild.voiceConnection
 
     if(voiceConnection) {
-      const queue = main.queue.get(msg.guild.id)
-      queue.length = 0
-      main.dispatcher(msg.guild).end()
-
-      return msg.reply(constants.responses.YOUTUBE.STOP["english"])
+      main.dispatcher(msg.guild).end("skip")
+      return msg.reply(constants.responses.YOUTUBE.STOP[msg.language])
     }
   }
 }

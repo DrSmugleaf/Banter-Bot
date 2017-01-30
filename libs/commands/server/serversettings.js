@@ -10,7 +10,10 @@ module.exports = class ServerSettings extends commando.Command {
   constructor(client) {
     super(client, {
       name: "server-settings",
-      aliases: ["server-settings", "serversettings"],
+      aliases: [
+        "server-settings", "serversettings",
+        "guild-settings", "guildsettings"
+      ],
       group: "server",
       memberName: "server-settings",
       description: "Modifies this server's settings",
@@ -57,19 +60,19 @@ module.exports = class ServerSettings extends commando.Command {
     switch (mode) {
     case "clear": {
       guildSettings.clear()
-      return msg.reply(constants.responses.SERVER_SETTINGS.CLEAR["english"])
+      return msg.reply(constants.responses.SERVER_SETTINGS.CLEAR[msg.language])
     }
     case "get": {
       const get = guildSettings.get(key)
-      return msg.reply(constants.responses.SERVER_SETTINGS.GET["english"](key, get))
+      return msg.reply(constants.responses.SERVER_SETTINGS.GET[msg.language](key, get))
     }
     case "remove": {
       guildSettings.remove(key)
-      return msg.reply(constants.responses.SERVER_SETTINGS.REMOVE["english"](key))
+      return msg.reply(constants.responses.SERVER_SETTINGS.REMOVE[msg.language](key))
     }
     case "set": {
       guildSettings.set(key, value)
-      return msg.reply(constants.responses.SERVER_SETTINGS.SET["english"](key, value))
+      return msg.reply(constants.responses.SERVER_SETTINGS.SET[msg.language](key, value))
     }
     }
   }

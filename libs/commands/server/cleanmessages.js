@@ -5,6 +5,7 @@
 "use strict"
 const async = require("async")
 const commando = require("discord.js-commando")
+const constants = require("../../util/constants")
 const { oneLine, stripIndents } = require("common-tags")
 const winston = require("winston")
 
@@ -13,9 +14,9 @@ module.exports = class CleanMessages extends commando.Command {
     super(client, {
       name: "clean-messages",
       aliases: [
-        "clean-messages", "cleanmessages", "cleanmsgs",
-        "clear-messages", "clearmessages", "clearmsgs",
-        "delete-messages", "deletemessages", "deletemsgs"
+        "clean-messages", "cleanmessages", "cleanmsgs", "clean-msgs",
+        "clear-messages", "clearmessages", "clearmsgs", "clear-msgs",
+        "delete-messages", "deletemessages", "deletemsgs", "delete-msgs"
       ],
       group: "server",
       memberName: "clean-messages",
@@ -63,6 +64,9 @@ module.exports = class CleanMessages extends commando.Command {
   }
 
   async run(msg, args) {
+    if(!msg.channel.permissionsFor(msg.client.user).hasPermission("MANAGE_MESSAGES")) {
+      return msg.reply(constants.responses.CLEAN_MESSAGES.NO_PERMISSION[msg.language])
+    }
     const confirmation = args.confirmation.toLowerCase()
 
     switch (confirmation) {

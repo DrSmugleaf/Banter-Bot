@@ -31,8 +31,8 @@ module.exports = class Magic8Ball extends commando.Command {
   }
 
   async run(msg) {
-    const answer = constants.responses.MAGIC8BALL["english"][Math.floor(
-      Math.random() * constants.responses.MAGIC8BALL["english"].length
+    const answer = constants.responses.MAGIC8BALL[msg.language][Math.floor(
+      Math.random() * constants.responses.MAGIC8BALL[msg.language].length
     )]
     return msg.reply(answer)
   }

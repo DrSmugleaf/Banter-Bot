@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2016-2017 DrSmugleaf
+// Copyright (c) 2017 DrSmugleaf
 //
 
 "use strict"
@@ -7,23 +7,21 @@ const commando = require("discord.js-commando")
 const constants = require("../../util/constants")
 const main = require("./base/main")
 
-module.exports = class Pause extends commando.Command {
+module.exports = class StopAll extends commando.Command {
   constructor(client) {
     super(client, {
-      name: "pause",
-      aliases: ["pause"],
+      name: "stop-all",
+      aliases: ["stop-all", "stopall", "all-stop", "allstop"],
       group: "youtube",
-      memberName: "pause",
-      description: "Pause the currently playing video in this server.",
-      examples: ["pause"],
+      memberName: "stop-all",
+      description: "Stops and removes all songs in the queue.",
+      examples: ["stop-all"],
       guildOnly: true,
       throttling: {
         usages: 2,
         duration: 3
-      },
+      }
     })
-
-    this.votes = {}
   }
 
   hasPermission(msg) {
@@ -34,11 +32,13 @@ module.exports = class Pause extends commando.Command {
     if(!main.isCurrentlyPlaying(msg.guild)) {
       return msg.reply(constants.responses.YOUTUBE.NO_CURRENTLY_PLAYING[msg.language])
     }
-    if(!main.isSameVoiceChannel(msg.member)) {
-      return msg.reply(constants.responses.YOUTUBE.NOT_SAME_VOICE_CHANNEL[msg.language])
-    }
+    const voiceConnection = msg.guild.voiceConnection
 
-    main.dispatcher(msg.guild).pause()
-    return msg.reply(constants.responses.YOUTUBE.PAUSE[msg.language])
+    if(voiceConnection) {
+      main.queue.set(msg.guild.id, [])
+      main.dispatcher(msg.guild).end()
+
+      return msg.reply(constants.responses.YOUTUBE.STOP_ALL[msg.language])
+    }
   }
 }

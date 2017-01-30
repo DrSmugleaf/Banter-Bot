@@ -46,6 +46,6 @@ module.exports = class WhoIs extends commando.Command {
       "MMMM Do YYYY, HH:MM:SS zZ"
     )
 
-    return msg.reply(constants.responses.WHOIS["english"](user, member, joined, created))
+    return msg.reply(constants.responses.WHOIS[msg.language](user, member, joined, created))
   }
 }

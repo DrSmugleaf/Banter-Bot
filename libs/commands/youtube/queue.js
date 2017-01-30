@@ -26,11 +26,11 @@ module.exports = class Queue extends commando.Command {
 
   async run(msg) {
     if(main.isQueueEmpty(msg.guild)) {
-      return msg.reply(constants.responses.YOUTUBE.EMPTY_QUEUE["english"])
+      return msg.reply(constants.responses.YOUTUBE.EMPTY_QUEUE[msg.language])
     }
 
     const queue = main.queue.get(msg.guild.id)
 
-    return msg.reply(constants.responses.YOUTUBE.QUEUE["english"](queue.length))
+    return msg.reply(constants.responses.YOUTUBE.QUEUE[msg.language](queue.length))
   }
 }

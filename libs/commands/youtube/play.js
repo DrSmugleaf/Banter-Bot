@@ -50,30 +50,34 @@ module.exports = class Play extends commando.Command {
 
   async run(msg, args) {
     if(!main.isMemberInVoiceChannel(msg.member)) {
-      return msg.reply(constants.responses.YOUTUBE.NOT_IN_VOICE_CHANNEL["english"])
+      return msg.reply(constants.responses.YOUTUBE.NOT_IN_VOICE_CHANNEL[msg.language])
     }
 
     if(msg.deletable) msg.delete()
 
+    const voicePermissions = msg.member.voiceChannel.permissionsFor(msg.client.user)
+    if(!voicePermissions.hasPermission("CONNECT")) {
+      return msg.reply(constants.responses.YOUTUBE.CANT_CONNECT[msg.language])
+    }
+    if(!voicePermissions.hasPermission("SPEAK")) {
+      return msg.reply(constants.responses.YOUTUBE.CANT_CONNECT[msg.language])
+    }
+
+    const queue = main.queue.get(msg.guild.id) || []
+    if(queue.filter((song) => {
+      return song.member.id === msg.author.id
+    }).length >= 2) {
+      return msg.reply(constants.responses.YOUTUBE.TOO_MANY_SONGS[msg.language])
+    }
+
     const url = args.url
-
     youtube.getVideo(url).then((video) => {
-      const queue = main.queue.get(msg.guild.id) || []
       const song = new Song(msg, args, video)
-
-      queue.push(song)
-      main.queue.set(msg.guild.id, queue)
-
-      if(queue.length <= 1) {
-        main.playNext(msg.guild)
-      } else {
-        queue[0].repeat = false
-      }
-
-      return msg.reply(constants.responses.YOUTUBE.PLAY["english"](song.video.title))
+      main.addToQueue(msg.guild, song)
+      return msg.reply(constants.responses.YOUTUBE.PLAY[msg.language](video.title))
     }).catch(e => {
       winston.error(e)
-      return msg.reply(constants.responses.YOUTUBE.INVALID["english"])
+      return msg.reply(constants.responses.YOUTUBE.ERROR[msg.language])
     })
   }
 }

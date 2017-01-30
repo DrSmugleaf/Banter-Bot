@@ -6,7 +6,6 @@
 const commando = require("discord.js-commando")
 const constants = require("../../util/constants")
 const ObjectUtil = require("../../util/objectutil")
-const objectutil = new ObjectUtil()
 
 module.exports = class ServerLanguage extends commando.Command {
   constructor(client) {
@@ -32,7 +31,10 @@ module.exports = class ServerLanguage extends commando.Command {
           type: "string",
           validate: (language) => {
             language = language.toLowerCase()
-            return Boolean(objectutil.hasValue(constants.mslanguages, language))
+            return Boolean(
+              ObjectUtil.hasKey(constants.mslanguages, language) ||
+              ObjectUtil.hasValue(constants.mslanguages, language)
+            )
           }
         }
       ]
@@ -46,8 +48,8 @@ module.exports = class ServerLanguage extends commando.Command {
   async run(msg, args) {
     const language = args.language.toLowerCase()
 
-    msg.guild.settings.set("server-language", language)
+    msg.guild.language = constants.mslanguages[language] || language
 
-    return msg.reply(constants.responses.SERVER_LANGUAGE.SET["english"](language))
+    return msg.reply(constants.responses.SERVER_LANGUAGE.SET[msg.language](language))
   }
 }

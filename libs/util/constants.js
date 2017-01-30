@@ -35,7 +35,7 @@ exports.versions = {
     `,
     spanish: stripIndents`
       **AÑADIDO**
-      Notas de version.
+      Notas de versión.
       !announce: Anuncia un mensaje a un servidor, servidores o todos los servidores, solo dueño.
       !clean-messages: Borra los mensajes de un canal para siempre, solo admins.
       !playing: Cambia el estado de Jugando del bot, solo dueño.
@@ -58,6 +58,52 @@ exports.versions = {
       Arreglado un crash cuando el parametro de !color color no existía.
       Arreglado un crash cuando se usaba !help en un mensaje directo al bot.
       Arreglado un crash cuando se intentaba reproducir un video ajeno a youtube con !play.
+    `
+  },
+  "3": {
+    english: stripIndents`
+      **ADDED**
+      !info-channel: Sets the info channel for the bot.
+      !language: Sets your language in this server for the bot to respond with.
+      !server-language: Sets the server's language for the bot to respond with.
+      !song-text-channel: Sets the server's song text channel for the bot to send song status messages to.
+      !song-voice-channel: Sets the server's song voice channel for the bot to always play songs in.
+      !stop-all: Stops and removes all videos in the server's queue, users with mute members permission or above only.
+      The bot will now answer in the language you set for yourself (!language language) or the server's language (!server-language language).
+
+      **REMOVED**
+      Removed automatic voice channels when 2 or more people are playing the same game. Will be added back in a future update.
+      Removed !search command as it is now obsolete because of Discord's search feature.
+
+      **CHANGES**
+      !play now only allows every user to queue 2 songs each.
+      !stop now also allows the member that put the song in the queue.
+
+      **FIXES**
+      Fixed !skip command always staying at one vote maximum.
+      Fixed !play command audio cutting out at random times.
+    `,
+    spanish: stripIndents`
+      **AÑADIDO**
+      !info-channel: Establece el canal de información del bot.
+      !language: Establece tu lenguaje en este servidor con el que el bot te responderá.
+      !server-language: Estable el lenguaje del servidor con el que el bot responderá.
+      !song-text-channel: Establece el canal de texto para canciones del servidor en el que el bot pondrá mensajes de estado sobre canciones.
+      !song-voice-channel: Establece el canal de voz para canciones del servidor en el que el bot exclusivamente reproducirá canciones.
+      !stop-all: Para y quita todas las canciones en cola, usuarios con permiso para silenciar a otros o más solo.
+      El bot ahora te responderá en el idioma de tu elección (!language language) o el idioma del servidor (!server-language language).
+
+      **QUITADO**
+      Quitado canales automáticos de voz cuando dos o más personas estan jugando al mismo juego. Se añadirá de nuevo en una proxima actualización.
+      Quitado comando !search porque ya está obsoleto con el modo de búsqueda implementado por Discord.
+
+      **CAMBIOS**
+      !play ahora solo permite 2 canciones por usuario en cola.
+      !stop ahora también permite usarlo al usuario que puso la canción en cola.
+
+      **ARREGLOS**
+      Arreglado !skip manteniéndose en un voto como máximo.
+      Arreglado el audio de !play cortándose al azar.
     `
   }
 }
@@ -874,12 +920,19 @@ exports.mslanguages = {
 exports.responses = {
   AVATAR: {
     INVALID: {
-      english: (url) => `${url} is an invalid image`,
-      spanish: (url) => `${url} es una imagen inválida`
+      english: (url) => `${url} is an invalid image.`,
+      spanish: (url) => `${url} es una imagen inválida.`
     },
     SET: {
-      english: (url) => `Changed the bot's image to ${url}`,
-      spanish: (url) => `Cambiado la imagen del bot a ${url}`
+      english: (url) => `Changed the bot's image to ${url}.`,
+      spanish: (url) => `Cambiado la imagen del bot a ${url}.`
+    }
+  },
+
+  CLEAN_MESSAGES: {
+    NO_PERMISSION: {
+      english: "I don't have permission to delete messages in this channel.",
+      spanish: "No tengo permiso para borrar mensajes en este canal."
     }
   },
 
@@ -913,6 +966,25 @@ exports.responses = {
     `
   },
 
+  INFO_CHANNEL: {
+    INVALID: {
+      english: (channel) => `${channel} isn't a text channel.`,
+      spanish: (channel) => `${channel} no es un canal de texto.`
+    },
+    NO_PERMISSION: {
+      english: (channel) => `I don't have permission to send messages to ${channel}.`,
+      spanish: (channel) => `No tengo permiso para enviar mensajes a ${channel}.`
+    },
+    REMOVED: {
+      english: "Removed server's info channel.",
+      spanish: "Quitado el canal de información del servidor."
+    },
+    SET: {
+      english: (channel) => `Set ${channel} as this server's info channel.`,
+      spanish: (channel) => `Asignado ${channel} como el canal de información de este servidor.`
+    },
+  },
+
   LANGUAGE: {
     SET: {
       english: (language) => `Set your language to ${language}.`,
@@ -921,25 +993,25 @@ exports.responses = {
   },
 
   MAGIC8BALL: {
-    english: ["It is certain", "It is decidedly so", "Without a doubt", "Yes, definitely", "You may rely on it", "As I see it, yes", "Most likely", "Outlook good", "Yes", "Signs point to yes", "Reply hazy try again", "Ask again later", "Better not tell you now", "Cannot predict now", "Concentrate and ask again", "Don't count on it", "My reply is no", "My sources say no", "Outlook not so good", "Very doubtful"],
-    spanish: ["En mi opinión, sí", "Es cierto", "Es decididamente así", "Probablemente", "Buen pronóstico", "Todo apunta a que sí", "Sin duda", "Sí", "Sí - definitivamente", "Debes confiar en ello", "Respuesta vaga, vuelve a intentarlo", "Pregunta en otro momento", "Será mejor que no te lo diga ahora", "No puedo predecirlo ahora", "Concéntrate y vuelve a preguntar", "No cuentes con ello", "Mi respuesta es no", "Mis fuentes me dicen que no", "Las perspectivas no son buenas", "Muy dudoso"]
+    english: ["It is certain.", "It is decidedly so.", "Without a doubt.", "Yes, definitely.", "You may rely on it.", "As I see it, yes.", "Most likely.", "Outlook good.", "Yes.", "Signs point to yes.", "Reply hazy try again.", "Ask again later.", "Better not tell you now.", "Cannot predict now.", "Concentrate and ask again.", "Don't count on it.", "My reply is no.", "My sources say no.", "Outlook not so good.", "Very doubtful."],
+    spanish: ["En mi opinión, sí.", "Es cierto.", "Es decididamente así.", "Probablemente.", "Buen pronóstico.", "Todo apunta a que sí.", "Sin duda.", "Sí.", "Sí - definitivamente.", "Debes confiar en ello.", "Respuesta vaga, vuelve a intentarlo.", "Pregunta en otro momento.", "Será mejor que no te lo diga ahora.", "No puedo predecirlo ahora.", "Concéntrate y vuelve a preguntar.", "No cuentes con ello.", "Mi respuesta es no.", "Mis fuentes me dicen que no.", "Las perspectivas no son buenas.", "Muy dudoso."]
   },
 
   MARKOV: {
     ANSWER: {
-      english: (subject, answer) => `**${subject} (Markov):** ${answer}`,
-      spanish: (subject, answer) => `**${subject} (Markov):** ${answer}`
+      english: (subject, answer) => `**${subject} (Markov):** ${answer}.`,
+      spanish: (subject, answer) => `**${subject} (Markov):** ${answer}.`
     },
     MISSING: {
-      english: (user) => `There are no messages in this channel from ${user}`,
-      spanish: (user) => `No hay mensajes en este canal de ${user}`
+      english: (user) => `There are no messages in this channel from ${user}.`,
+      spanish: (user) => `No hay mensajes en este canal de ${user}.`
     }
   },
 
   NAME: {
     SET: {
-      english: (name) => `Changed the bot's username to ${name}`,
-      spanish: (name) => `Cambiado el nombre del bot a ${name}`
+      english: (name) => `Changed the bot's username to ${name}.`,
+      spanish: (name) => `Cambiado el nombre del bot a ${name}.`
     }
   },
 
@@ -955,8 +1027,8 @@ exports.responses = {
 
   PLAYING: {
     SET: {
-      english: (name) => `Changed the bot's game to ${name}`,
-      spanish: (name) => `Cambiado el nombre del bot a ${name}`
+      english: (name) => `Changed the bot's game to ${name}.`,
+      spanish: (name) => `Cambiado el nombre del bot a ${name}.`
     }
   },
 
@@ -996,20 +1068,62 @@ exports.responses = {
 
   SERVER_SETTINGS: {
     CLEAR: {
-      english: "Cleared settings for this server",
-      spanish: "Limpiadas las opciones de este servidor"
+      english: "Cleared settings for this server.",
+      spanish: "Limpiadas las opciones de este servidor."
     },
     GET: {
-      english: (key, value) => `Settings for \`${key}\`: \`${value}\``,
-      spanish: (key, value) => `Opciones para \`${key}\`: \`0${value}\``
+      english: (key, value) => `Settings for \`${key}\`: \`${value}\`.`,
+      spanish: (key, value) => `Opciones para \`${key}\`: \`0${value}\`.`
     },
     REMOVE: {
-      english: (key) => `Removed setting \`${key}\``,
-      spanish: (key) => `Eliminada opción \`${key}\``
+      english: (key) => `Removed setting \`${key}\`.`,
+      spanish: (key) => `Eliminada opción \`${key}\`.`
     },
     SET: {
-      english: (key, value) => `Set \`${key}\` to \`${value}\``,
-      spanish: (key, value) => `Establecida \`${key}\` como \`${value}\``
+      english: (key, value) => `Set \`${key}\` to \`${value}\`.`,
+      spanish: (key, value) => `Establecida \`${key}\` como \`${value}\`.`
+    }
+  },
+
+  SONG_TEXT_CHANNEL: {
+    INVALID: {
+      english: (channel) => `${channel} isn't a text channel.`,
+      spanish: (channel) => `${channel} no es un canal de texto.`
+    },
+    NO_PERMISSION: {
+      english: (channel) => `I don't have permission to send messages to ${channel}.`,
+      spanish: (channel) => `No tengo permiso para enviar mensajes a ${channel}.`
+    },
+    REMOVED: {
+      english: "Removed server's song text channel.",
+      spanish: "Quitado el canal de texto de canciones de este servidor."
+    },
+    SET: {
+      english: (channel) => `Set ${channel} as this server's song text channel.`,
+      spanish: (channel) => `Asignado ${channel} como el canal de texto de canciones de este servidor.`
+    }
+  },
+
+  SONG_VOICE_CHANNEL: {
+    INVALID: {
+      english: (channel) => `${channel} isn't a voice channel.`,
+      spanish: (channel) => `${channel} no es un canal de voz.`
+    },
+    CANT_CONNECT: {
+      english: (channel) => `I can't connect to ${channel}.`,
+      spanish: (channel) => `No puedo conectarme a ${channel}.`
+    },
+    CANT_SPEAK: {
+      english: "I can't speak in that voice channel.",
+      spanish: "No puedo hablar en ese canal de voz."
+    },
+    REMOVED: {
+      english: "Removed server's song voice channel.",
+      spanish: "Quitado el canal de voz de canciones de este servidor."
+    },
+    SET: {
+      english: (channel) => `Set ${channel} as this server's song voice channel.`,
+      spanish: (channel) => `Asignado ${channel} como el canal de voz de canciones de este servidor.`
     }
   },
 
@@ -1041,26 +1155,50 @@ exports.responses = {
   },
 
   YOUTUBE: {
+    CANT_CONNECT: {
+      english: "I can't connect to your voice channel.",
+      spanish: "No puedo conectarme a tu canal de voz."
+    },
+    CANT_CONNECT_ANYMORE: {
+      english: "I can't connect to your voice channel anymore, skipping song.",
+      spanish: "Ya no puedo conectarme a tu canal de voz, omitiendo canción."
+    },
+    CANT_SPEAK: {
+      english: "I can't speak in your voice channel.",
+      spanish: "No puedo hablar en tu canal de voz."
+    },
+    CANT_SPEAK_ANYMORE: {
+      english: "I can't speak in your voice channel anymore, skipping song.",
+      spanish: "Ya no puedo hablar en tu canal de voz, omitiendo canción."
+    },
     EMPTY_QUEUE: {
       english: "There are no songs in the queue.",
       spanish: "No hay canciones en cola."
     },
-    INVALID: {
-      english: "Invalid URL.",
-      spanish: "URL inválido."
+    ERROR: {
+      english: "Error downloading song.",
+      spanish: "Error descargando canción."
+    },
+    LEFT_VOICE: {
+      english: "You aren't in a voice channel anymore, skipping song.",
+      spanish: "Ya no estás en un canal de voz, omitiendo canción."
     },
     NEXT: {
+      DISPATCHER_ERROR: {
+        english: (title) => `Error playing ${title}, skipping song.`,
+        spanish: (title) => `Error reproduciendo ${title}, omitiendo canción.`
+      },
       ERROR: {
-        english: (title) => `Couldn't play ${title}, skipping.`,
-        spanish: (title) => `Error al reproducir la canción ${title}, omitiendo`
+        english: (title) => `Couldn't play ${title}, skipping song.`,
+        spanish: (title) => `Error al reproducir la canción ${title}, omitiendo canción.`
       },
       PLAY: {
-        english: (title) => `Now playing: ${title}`,
-        spanish: (title) => `Ahora jugando: ${title}`,
+        english: (title) => `Now playing: ${title}.`,
+        spanish: (title) => `Ahora jugando: ${title}.`,
       },
       REPEAT: {
-        english: (title) => `Now repeating: ${title}`,
-        spanish: (title) => `Ahora repitiendo: ${title}`
+        english: (title) => `Now repeating: ${title}.`,
+        spanish: (title) => `Ahora repitiendo: ${title}.`
       }
     },
     NO_CURRENTLY_PLAYING: {
@@ -1097,25 +1235,41 @@ exports.responses = {
     },
     RESUME: {
       english: "Resumed the current video.",
-      spanish: "Vídeo reanudado"
+      spanish: "Vídeo reanudado."
     },
     SKIP: {
+      ALREADY_VOTED: {
+        english: "You already voted to skip this song.",
+        spanish: "Ya has votado para omitir esta canción."
+      },
       FAIL: {
         english: (votes, total) => oneLine`${votes} out of ${total} members want
-          to skip the current video`,
+          to skip the current video.`,
         spanish: (votes, total) => oneLine`${votes} de ${total} miembros quieren
-          saltarse el vídeo actual`
+          saltarse el vídeo actual.`
       },
       SUCCESS: {
         english: (votes, total) => oneLine`${votes} out of ${total} members voted
-          to skip, skipped the current video`,
+          to skip, skipped the current video.`,
         spanish: (votes, total) => oneLine`${votes} de ${total} miembros votaron
-          para saltar este vídeo, saltado el vídeo actual`
+          para saltar este vídeo, saltado el vídeo actual.`
       }
     },
     STOP: {
-      english: "Stopped the current video",
-      spanish: "Parado el vídeo actual"
+      english: "Stopped the current video.",
+      spanish: "Parado el vídeo actual."
+    },
+    STOP_ALL: {
+      english: "Stopped and removed all videos from the queue.",
+      spanish: "Parados y quitados todos los vídeos en cola."
+    },
+    TOO_MANY_SONGS: {
+      english: oneLine`You have submitted too many songs to the queue,
+        wait until one of yours finishes.
+      `,
+      spanish: oneLine`Has enviado demasiadas canciones a la cola,
+        espera hasta que una de las tuyas termine.
+      `
     }
   }
 },

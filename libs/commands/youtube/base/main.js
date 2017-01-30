@@ -11,6 +11,19 @@ const ytdl = require("ytdl-core")
 module.exports = {
   queue: new Map(),
 
+  addToQueue(guild, song) {
+    const queue = this.queue.get(guild.id) || []
+
+    queue.push(song)
+    this.queue.set(guild.id, queue)
+
+    if(queue.length <= 1) {
+      this.playNext(guild)
+    } else {
+      queue[0].repeat = false
+    }
+  },
+
   dispatcher(guild) {
     if(!(guild instanceof Discord.Guild)) {
       throw new TypeError("Guild must be an instance of Discord.Guild")
@@ -25,7 +38,7 @@ module.exports = {
       throw new TypeError("Guild must be an instance of Discord.Guild")
     }
 
-    return this.isPlaying(guild) && this.isPaused(guild)
+    return Boolean(this.isPlaying(guild) && this.isPaused(guild))
   },
 
   isCurrentlyPlaying(guild) {
@@ -33,7 +46,7 @@ module.exports = {
       throw new TypeError("Guild must be an instance of Discord.Guild")
     }
 
-    return this.isPlaying(guild) && !this.isPaused(guild)
+    return Boolean(this.isPlaying(guild) && !this.isPaused(guild))
   },
 
   isInVoiceChannel(guild) {
@@ -41,7 +54,7 @@ module.exports = {
       throw new TypeError("Guild must be an instance of Discord.Guild")
     }
 
-    return guild.voiceConnection
+    return Boolean(guild.voiceConnection)
   },
 
   isMemberInVoiceChannel(member) {
@@ -49,7 +62,7 @@ module.exports = {
       throw new TypeError("Guild must be an instance of Discord.Guild")
     }
 
-    return member.voiceChannel
+    return Boolean(member.voiceChannel)
   },
 
   isPaused(guild) {
@@ -57,7 +70,7 @@ module.exports = {
       throw new TypeError("Guild must be an instance of Discord.Guild")
     }
 
-    return !this.isQueueEmpty(guild) && this.dispatcher(guild).paused
+    return Boolean(!this.isQueueEmpty(guild) && this.dispatcher(guild).paused)
   },
 
   isPlaying(guild) {
@@ -65,7 +78,7 @@ module.exports = {
       throw new TypeError("Guild must be an instance of Discord.Guild")
     }
 
-    return !this.isQueueEmpty(guild) && this.dispatcher(guild)
+    return Boolean(!this.isQueueEmpty(guild) && this.dispatcher(guild))
   },
 
   isReady(guild) {
@@ -73,7 +86,7 @@ module.exports = {
       throw new TypeError("Guild must be an instance of Discord.Guild")
     }
 
-    return this.dispatcher(guild)
+    return Boolean(this.dispatcher(guild))
   },
 
   isSameVoiceChannel(member) {
@@ -81,8 +94,8 @@ module.exports = {
       throw new TypeError("Guild must be an instance of Discord.Guild")
     }
 
-    return member.voiceChannel && member.voiceChannel.connection &&
-      member.voiceChannel.connection === member.guild.voiceConnection
+    return Boolean(member.voiceChannel && member.voiceChannel.connection &&
+      member.voiceChannel.connection === member.guild.voiceConnection)
   },
 
   isQueueEmpty(guild) {
@@ -90,16 +103,15 @@ module.exports = {
       throw new TypeError("Guild must be an instance of Discord.Guild")
     }
 
-    return !this.queue.has(guild.id) || !this.queue.get(guild.id)[0]
+    return Boolean(!this.queue.has(guild.id) || !this.queue.get(guild.id)[0])
   },
 
-  joinVoice(member) {
-    if(!(member instanceof Discord.GuildMember)) {
-      throw new TypeError("Guild must be an instance of Discord.Guild")
+  joinVoice(voiceChannel) {
+    if(!(voiceChannel instanceof Discord.VoiceChannel)) {
+      throw new TypeError("VoiceChannel must be an instance of Discord.VoiceChannel")
     }
 
-    const voiceChannel = member.voiceChannel
-    const voiceConnection = member.guild.voiceConnection
+    const voiceConnection = voiceChannel.guild.voiceConnection
 
     return new Promise(function(resolve, reject) {
       if(voiceConnection && voiceConnection == voiceChannel.connection) {
@@ -118,31 +130,67 @@ module.exports = {
 
     const queue = this.queue.get(guild.id)
     const next = queue[0]
-    const stream = ytdl(next.url, { filter: "audioonly" })
+    if(!this.isMemberInVoiceChannel(next.member)) {
+      next.textChannel.sendMessage(
+        constants.responses.YOUTUBE.LEFT_VOICE[next.message.language]
+      )
+      return this.playNext(guild)
+    }
 
-    this.joinVoice(next.member).then(voiceConnection => {
+    const voicePermissions = next.voiceChannel.permissionsFor(guild.client.user)
+    if(!voicePermissions.hasPermission("CONNECT")) {
+      next.textChannel.sendMessage(
+        constants.responses.YOUTUBE.CANT_CONNECT_ANYMORE[next.message.language]
+      )
+      return this.playNext(guild)
+    }
+    if(!voicePermissions.hasPermission("SPEAK")) {
+      next.textChannel.sendMessage(
+        constants.responses.YOUTUBE.CANT_SPEAK_ANYMORE[next.message.language]
+      )
+    }
+
+    this.joinVoice(next.voiceChannel).then(voiceConnection => {
+      const stream = ytdl(next.url, { filter: "audioonly" }).on("error", (e) => {
+        winston.error(e)
+        queue.shift()
+        this.playNext(guild)
+        return next.textChannel.sendMessage(
+          constants.responses.YOUTUBE.NEXT.DISPATCHER_ERROR[next.message.language](next.video.title)
+        )
+      })
+
       voiceConnection.playStream(
         stream, constants.youtube.STREAMOPTIONS
       ).on("end", (reason) => {
         next.repeated = true
         if(reason === "skip") next.repeat = false
         if(!next.repeat) queue.shift()
-
         return this.playNext(next.guild)
+      }).on("error", (e) => {
+        winston.error(e)
+        queue.shift()
+        this.playNext(guild)
+        return next.textChannel.sendMessage(
+          constants.responses.YOUTUBE.NEXT.DISPATCHER_ERROR[next.message.language](next.video.title)
+        )
       })
 
       if(next.repeat && !next.repeated) {
-        return next.channel.sendMessage(
-          constants.responses.YOUTUBE.NEXT.REPEAT["english"](next.video.title)
+        return next.textChannel.sendMessage(
+          constants.responses.YOUTUBE.NEXT.REPEAT[next.message.language](next.video.title)
         )
       } else if(!next.repeated) {
-        return next.channel.sendMessage(
-          constants.responses.YOUTUBE.NEXT.PLAY["english"](next.video.title)
+        return next.textChannel.sendMessage(
+          constants.responses.YOUTUBE.NEXT.PLAY[next.message.language](next.video.title)
         )
       }
     }).catch(e => {
       winston.error(e)
-      next.channel.sendMessage(constants.responses.YOUTUBE.NEXT.ERROR["english"](next.url))
+      next.textChannel.sendMessage(
+        constants.responses.YOUTUBE.NEXT.ERROR[next.message.language](next.video.title)
+      )
+      return this.playNext(guild)
     })
   }
 }

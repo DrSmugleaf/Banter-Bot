@@ -23,7 +23,7 @@ module.exports = class Info extends commando.Command {
   }
 
   async run(msg) {
-    const answer = constants.responses.INFO["english"]
+    const answer = constants.responses.INFO[msg.language]
 
     return msg.reply(answer)
   }

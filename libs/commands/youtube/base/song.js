@@ -6,19 +6,18 @@
 
 module.exports = class Song {
   constructor(msg, args, video) {
-    this.channel = msg.channel,
-    this.guild = msg.guild,
-    this.member = msg.member,
+    this.message = msg
+    this.guild = msg.guild
+    this.textChannel = msg.guild.channels.get(msg.guild.settings.get("song-text-channel"))
+      || msg.channel
+    this.voiceChannel = msg.guild.channels.get(msg.guild.settings.get("song-voice-channel"))
+      || msg.member.voiceChannel
+    this.member = msg.member
 
-    this.url = args.url,
-    this.repeat = args.repeat,
+    this.url = args.url
+    this.repeat = args.repeat
     this.repeated = false
 
-    this.video = {}
-    for(const prop in video) {
-      if(video.hasOwnProperty(prop)) {
-        this.video[prop] = video[prop]
-      }
-    }
+    this.video = video
   }
 }
