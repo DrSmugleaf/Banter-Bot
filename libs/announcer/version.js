@@ -4,6 +4,7 @@
 
 "use strict"
 const constants = require("../util/constants")
+const stripIndents = require("common-tags").stripIndents
 
 module.exports = class Version {
   constructor(client) {
@@ -18,7 +19,9 @@ module.exports = class Version {
       this.client.guilds.forEach((guild) => {
         if(process.env.NODE_ENV === "dev" && guild.id !== "260158980343463937") return
         const infoChannel = guild.channels.get(guild.settings.get("info-channel", guild.defaultChannel.id))
-        infoChannel.sendMessage(constants.versions[version + 1][guild.language])
+        infoChannel.sendMessage(stripIndents`@everyone
+          ${constants.versions[version + 1][guild.language]}
+        `)
       })
       if(!process.env.NODE_ENV === "dev") this.client.settings.set("version", version + 1)
     }
