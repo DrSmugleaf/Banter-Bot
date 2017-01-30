@@ -71,12 +71,15 @@ exports.versions = {
       !stop-all: Stops and removes all videos in the server's queue, users with mute members permission or above only.
       The bot will now answer in the language you set for yourself (!language language) or the server's language (!server-language language).
 
+      **REMOVED**
+      Removed automatic voice channels when 2 or more people are playing the same game. Will be added back in a future update.
+      Removed !search command as it is now obsolete because of Discord's search feature.
+
       **CHANGES**
       !play now only allows every user to queue 2 songs each.
       !stop now also allows the member that put the song in the queue.
 
       **FIXES**
-      Fixed automatic voice channels by game not working.
       Fixed !skip command always staying at one vote maximum.
       Fixed !play command audio cutting out at random times.
     `,
@@ -90,12 +93,15 @@ exports.versions = {
       !stop-all: Para y quita todas las canciones en cola, usuarios con permiso para silenciar a otros o más solo.
       El bot ahora te responderá en el idioma de tu elección (!language language) o el idioma del servidor (!server-language language).
 
+      **QUITADO**
+      Quitado canales automáticos de voz cuando dos o más personas estan jugando al mismo juego. Se añadirá de nuevo en una proxima actualización.
+      Quitado comando !search porque ya está obsoleto con el modo de búsqueda implementado por Discord.
+
       **CAMBIOS**
       !play ahora solo permite 2 canciones por usuario en cola.
       !stop ahora también permite usarlo al usuario que puso la canción en cola.
 
       **ARREGLOS**
-      Arreglado canales automáticos para juegos no funcionando.
       Arreglado !skip manteniéndose en un voto como máximo.
       Arreglado el audio de !play cortándose al azar.
     `
