@@ -25,11 +25,13 @@ module.exports = class AutoChannel {
 
     this.discord.on("presenceUpdate", (oldMember, newMember) => {
       this.processPresence(newMember.guild, newMember.presence, newMember.id)
+      this.setupChannels(newMember.guild)
     })
 
     this.discord.on("voiceStateUpdate", (oldMember, newMember) => {
       if(oldMember.voiceChannel === newMember.voiceChannel) return
       this.processPresence(newMember.guild, newMember.presence, newMember.id)
+      this.setupChannels(newMember.guild)
     })
   }
 
