@@ -23,7 +23,7 @@ const Sender = require("./libs/bridge/sender")
 const token = process.env.NODE_ENV === "dev" ?
   process.env.DISCORD_TOKEN_DEV : process.env.DISCORD_TOKEN
 const VersionAnnouncer = require("./libs/announcer/version")
-const AutoChannel = require("./libs/autochannel/autochannel")
+// const AutoChannel = require("./libs/autochannel/autochannel")
 const winston = require("winston")
 
 client
@@ -31,7 +31,7 @@ client
   .on("warn", winston.warn)
   .on("debug", (string) => {
     if(string === "Provider finished initialisation.") {
-      new AutoChannel(client)
+      // new AutoChannel(client)
       new Sender(client)
       new VersionAnnouncer(client)
     }
