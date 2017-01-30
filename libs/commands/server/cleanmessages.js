@@ -14,9 +14,9 @@ module.exports = class CleanMessages extends commando.Command {
     super(client, {
       name: "clean-messages",
       aliases: [
-        "clean-messages", "cleanmessages", "cleanmsgs",
-        "clear-messages", "clearmessages", "clearmsgs",
-        "delete-messages", "deletemessages", "deletemsgs"
+        "clean-messages", "cleanmessages", "cleanmsgs", "clean-msgs",
+        "clear-messages", "clearmessages", "clearmsgs", "clear-msgs",
+        "delete-messages", "deletemessages", "deletemsgs", "delete-msgs"
       ],
       group: "server",
       memberName: "clean-messages",
