@@ -1206,7 +1206,7 @@ exports.responses = {
       },
       PLAY: {
         english: (title) => `Now playing: ${title}.`,
-        spanish: (title) => `Ahora jugando: ${title}.`,
+        spanish: (title) => `Ahora reproduciendo: ${title}.`,
       },
       REPEAT: {
         english: (title) => `Now repeating: ${title}.`,
