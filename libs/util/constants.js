@@ -105,6 +105,18 @@ exports.versions = {
       Arreglado !skip manteniéndose en un voto como máximo.
       Arreglado el audio de !play cortándose al azar.
     `
+  },
+  "4": {
+    english: stripIndents`
+      **FIXES**
+      Fixed server language not applying to members who had no language set.
+      Fixed error when using !help while a song isn't playing.
+    `,
+    spanish: stripIndents`
+      **ARREGLOS**
+      Arreglado el lenguaje del servidor no aplicándose a miembros que no tenian un lenguaje propio aplicado.
+      Arreglado un error al usar !help cuando una canción no esta reproduciéndose.
+    `
   }
 }
 
