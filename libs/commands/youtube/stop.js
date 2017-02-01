@@ -25,7 +25,8 @@ module.exports = class Stop extends commando.Command {
   }
 
   hasPermission(msg) {
-    const song = main.queue.get(msg.guild.id)[0]
+    var song = main.queue.get(msg.guild.id)
+    if(song) song = song[0]
     return msg.member.hasPermission("MUTE_MEMBERS") || msg.member.id === song.member.id
   }
 
