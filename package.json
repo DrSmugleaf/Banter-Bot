@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "A Discord bot",
   "engines": {
-    "node": "7.2.1"
+    "node": "7.5.0"
   },
   "main": "banterbot.js",
   "scripts": {
