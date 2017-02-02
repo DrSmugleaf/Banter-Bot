@@ -972,13 +972,37 @@ exports.responses = {
       english: (name) => `Custom command \`${name}\` already exists.`,
       spanish: (name) => `Comando personalizado \`${name}\` ya existe.`
     },
+    CANT_CONNECT: {
+      english: "I can't connect to that voice channel.",
+      spanish: "No puedo conectarme a ese canal de voz."
+    },
+    CANT_SPEAK: {
+      english: "I can't speak in that voice channel.",
+      spanish: "No puedo hablar en ese canal de voz."
+    },
+    CURRENTLY_PLAYING: {
+      english: "A song is currently playing, please wait until it finishes.",
+      spanish: "Una canción se esta reproduciendo actualmente, por favor espere a que termine."
+    },
+    DISPATCHER_ERROR: {
+      english: (name) => `Error playing ${name}`,
+      spanish: (name) => `Error descargando ${name}`
+    },
     DOESNT_EXIST: {
       english: (name) => `Custom command \`${name}\` doesn't exist.`,
       spanish: (name) => `Comando personalizado \`${name}\` no existe.`
     },
+    NOT_IN_VOICE_CHANNEL: {
+      english: (name) => `Member ${name} isn't currently in a voice channel.`,
+      spanish: (name) => `El miembro ${name} no está actualmente en un canal de voz.`
+    },
     REMOVED: {
       english: (name) => `Removed custom command \`${name}\`.`,
       spanish: (name) => `Quitado comando personalizado \`${name}\`.`
+    },
+    YTDL_ERROR: {
+      english: (name) => `Error downloading ${name}`,
+      spanish: (name) => `Error descargando ${name}`
     }
   },
 

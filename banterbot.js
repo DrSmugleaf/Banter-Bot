@@ -78,6 +78,7 @@ client.setProvider(
 
 client.registry
   .registerGroup("bridge", "Bridge")
+  .registerGroup("customcommand", "Custom Command")
   .registerGroup("misc", "Misc")
   .registerGroup("server", "Server")
   .registerGroup("user", "User")
