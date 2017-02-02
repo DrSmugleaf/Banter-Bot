@@ -967,6 +967,21 @@ exports.responses = {
     }
   },
 
+  CUSTOM_COMMAND: {
+    ALREADY_EXISTS: {
+      english: (name) => `Custom command \`${name}\` already exists.`,
+      spanish: (name) => `Comando personalizado \`${name}\` ya existe.`
+    },
+    DOESNT_EXIST: {
+      english: (name) => `Custom command \`${name}\` doesn't exist.`,
+      spanish: (name) => `Comando personalizado \`${name}\` no existe.`
+    },
+    REMOVED: {
+      english: (name) => `Removed custom command \`${name}\`.`,
+      spanish: (name) => `Quitado comando personalizado \`${name}\`.`
+    }
+  },
+
   INFO: {
     english: stripIndents`
       GitHub page: https://github.com/DrSmugleaf/Banter-Bot
@@ -1287,5 +1302,5 @@ exports.responses = {
 },
 
 exports.youtube = {
-  STREAMOPTIONS: { seek: 0, volume: 0.25 }
+  STREAM_OPTIONS: { seek: 0, volume: 0.25, passes: 2 }
 }

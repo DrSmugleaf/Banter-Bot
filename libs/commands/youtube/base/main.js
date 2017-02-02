@@ -153,15 +153,13 @@ module.exports = {
     this.joinVoice(next.voiceChannel).then(voiceConnection => {
       const stream = ytdl(next.url, { filter: "audioonly" }).on("error", (e) => {
         winston.error(e)
-        queue.shift()
-        this.playNext(guild)
         return next.textChannel.sendMessage(
           constants.responses.YOUTUBE.NEXT.DISPATCHER_ERROR[next.message.language](next.video.title)
         )
       })
 
       voiceConnection.playStream(
-        stream, constants.youtube.STREAMOPTIONS
+        stream, constants.youtube.STREAM_OPTIONS
       ).on("end", (reason) => {
         next.repeated = true
         if(reason === "skip") next.repeat = false
