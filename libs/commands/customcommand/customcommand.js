@@ -9,10 +9,10 @@ const winston = require("winston")
 const youtube = require("../youtube/base/main")
 const ytdl = require("ytdl-core")
 
-module.exports = class CustomCommandAdmin extends commando.Command {
+module.exports = class CustomCommand extends commando.Command {
   constructor(client) {
     super(client, {
-      name: "custom-command-admin",
+      name: "custom-command",
       aliases: [
         "custom-command", "customcommand",
         "custom-cmd", "customcmd",
@@ -20,7 +20,7 @@ module.exports = class CustomCommandAdmin extends commando.Command {
         "custom-cmd-admin", "customcmdadmin"
       ],
       group: "customcommand",
-      memberName: "custom-command-admin",
+      memberName: "custom-command",
       description: "Make a basic custom command",
       examples: ["customcommand rickroll voice self https://www.youtube.com/watch?v=dQw4w9WgXcQ"],
       guildOnly: true,
@@ -164,35 +164,38 @@ module.exports = class CustomCommandAdmin extends commando.Command {
   }
 
   async run(msg, args) {
+    const mode = args.mode
     const name = args.name
     const type = args.type
     const target = args.target
     const text = type === "text" ? args.textOrVideo : null
     const video = type === "voice" ? args.textOrVideo : null
 
-    // if(type === "remove") {
-    //   if(commandList && !commandList[name]) {
-    //     return msg.reply(constants.responses.CUSTOM_COMMAND.DOESNT_EXIST[msg.language](name))
-    //   } else {
-    //     this.commands.set(msg.guild.id, _.without(commandList, name))
-    //     return msg.reply(constants.responses.CUSTOM_COMMAND.REMOVED[msg.language](name))
-    //   }
-    // }
-    //
-    // if(type === "add" && commandList && commandList[name]) {
-    //   return msg.reply(constants.responses.CUSTOM_COMMAND.ALREADY_EXISTS[msg.language](name))
-    // }
+    if(mode === "add") {
+      if(this.client.registry.commands.get(name)) {
+        return msg.reply(constants.responses.CUSTOM_COMMAND.ALREADY_EXISTS[msg.language](name))
+      }
 
-    const command = this.command({
-      name: name,
-      type: type,
-      target: target,
-      text: text,
-      video: video,
-      guild: msg.guild
-    })
+      const command = this.command({
+        name: name,
+        type: type,
+        target: target,
+        text: text,
+        video: video,
+        guild: msg.guild
+      })
+      this.client.registry.registerCommand(command)
+      return msg.reply(constants.responses.CUSTOM_COMMAND.REGISTERED[msg.language](
+        name, this.client.commandPrefix || `<@${msg.client.user.id}> `)
+      )
+    } else if(mode === "remove") {
+      const command = this.client.registry.commands.get(name)
+      if(!command) {
+        return msg.reply(constants.respones.CUSTOM_COMMAND.DOESNT_EXIST[msg.language](name))
+      }
 
-    this.client.registry.registerCommand(command)
-    msg.reply("Registered command")
+      this.client.registry.unregisterCommand(command)
+      return msg.reply(constants.responses.CUSTOM_COMMAND.UNREGISTERED[msg.language](name))
+    }
   }
 }

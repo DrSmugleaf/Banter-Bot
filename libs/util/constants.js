@@ -996,9 +996,19 @@ exports.responses = {
       english: (name) => `Member ${name} isn't currently in a voice channel.`,
       spanish: (name) => `El miembro ${name} no está actualmente en un canal de voz.`
     },
+    REGISTERED: {
+      english: (name, commandPrefix) => oneLine`Registered command ${name},
+        use ${commandPrefix}${name} to use it.`,
+      spanish: (name, commandPrefix) => oneLine`Registrado comando ${name},
+        usa ${commandPrefix}${name} para usarlo.`
+    },
     REMOVED: {
       english: (name) => `Removed custom command \`${name}\`.`,
       spanish: (name) => `Quitado comando personalizado \`${name}\`.`
+    },
+    UNREGISTERED: {
+      english: (name) => `Unregistered command ${name}`,
+      spanish: (name) => `Borrado comando ${name}`
     },
     YTDL_ERROR: {
       english: (name) => `Error downloading ${name}`,
