@@ -142,12 +142,9 @@ module.exports = class CustomCommand extends commando.Command {
       }
     }
 
-    this.setup()
-    this.client.on("dbReady", () => {
-      winston.info(1)
+    this.client.once("dbReady", () => {
       this.client.guilds.forEach((guild) => {
         const commands = guild.settings.get("custom-commands")
-        winston.info(commands)
         for(const customCommand in commands) {
           if(!commands.hasOwnProperty(customCommand)) return
 
@@ -157,10 +154,6 @@ module.exports = class CustomCommand extends commando.Command {
         }
       })
     })
-  }
-
-  setup() {
-
   }
 
   hasPermission(msg) {
@@ -210,6 +203,11 @@ module.exports = class CustomCommand extends commando.Command {
       }
 
       this.client.registry.unregisterCommand(command)
+
+      const commands = msg.guild.settings.get("custom-commands", {})
+      delete commands[name]
+      msg.guild.settings.set(commands)
+
       return msg.reply(constants.responses.CUSTOM_COMMAND.UNREGISTERED[msg.language](name))
     }
   }
