@@ -14,7 +14,7 @@ const client = new Commando.Client({
   commandPrefix: process.env.NODE_ENV === "dev" ? "!!" : "!",
   invite: "https://discord.gg/yyDWNBr",
   owner: "109067752286715904",
-  unknownCommandResponse: false
+  unknownCommandResponse: process.env.NODE_ENV === "dev"
 })
 const oneLine = require("common-tags").oneLine
 const path = require("path")
