@@ -34,6 +34,7 @@ client
       // new AutoChannel(client)
       new Sender(client)
       new VersionAnnouncer(client)
+      client.emit("dbReady")
     }
   })
   .on("ready", () => {
@@ -78,7 +79,7 @@ client.setProvider(
 
 client.registry
   .registerGroup("bridge", "Bridge")
-  .registerGroup("customcommand", "Custom Command")
+  .registerGroup("customcommand", "Custom Commands")
   .registerGroup("misc", "Misc")
   .registerGroup("server", "Server")
   .registerGroup("user", "User")

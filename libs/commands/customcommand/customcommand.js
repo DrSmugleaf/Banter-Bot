@@ -109,7 +109,6 @@ module.exports = class CustomCommand extends commando.Command {
           if(this.type === "text") {
             return msg.channel.sendMessage(`<@${member.id}>, ${command.text}`)
           } else if(this.type === "voice") {
-            winston.info(1)
             if(youtube.isCurrentlyPlaying(msg.guild)) {
               return msg.reply(constants.responses.CUSTOM_COMMAND.CURRENTLY_PLAYING[msg.language])
             }
@@ -144,19 +143,24 @@ module.exports = class CustomCommand extends commando.Command {
     }
 
     this.setup()
+    this.client.on("dbReady", () => {
+      winston.info(1)
+      this.client.guilds.forEach((guild) => {
+        const commands = guild.settings.get("custom-commands")
+        winston.info(commands)
+        for(const customCommand in commands) {
+          if(!commands.hasOwnProperty(customCommand)) return
+
+          commands[customCommand].guild = guild
+          const command = this.command(commands[customCommand])
+          this.client.registry.registerCommand(command)
+        }
+      })
+    })
   }
 
   setup() {
-    this.client.guilds.forEach((guild) => {
-      const commands = guild.settings.get("custom-commands")
-      for(const customCommand in commands) {
-        if(!commands.hasOwnProperty(customCommand)) return
 
-        commands[customCommand].guild = guild
-        const command = this.command(commands[customCommand])
-        this.client.registry.registerCommand(command)
-      }
-    })
   }
 
   hasPermission(msg) {
@@ -185,6 +189,17 @@ module.exports = class CustomCommand extends commando.Command {
         guild: msg.guild
       })
       this.client.registry.registerCommand(command)
+
+      const commands = msg.guild.settings.get("custom-commands", {})
+      commands[name] = {
+        name: name,
+        type: type,
+        target: target,
+        text: text,
+        video: video
+      }
+      msg.guild.settings.set("custom-commands", commands)
+
       return msg.reply(constants.responses.CUSTOM_COMMAND.REGISTERED[msg.language](
         name, this.client.commandPrefix || `<@${msg.client.user.id}> `)
       )
