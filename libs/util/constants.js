@@ -961,6 +961,10 @@ exports.responses = {
       english: "You don't have a name color.",
       spanish: "No tienes un color de nombre."
     },
+    NO_PERMISSION: {
+      english: "I don't have permission to change your name color.",
+      spanish: "No tengo permiso para cambiar el color de tu nombre."
+    },
     REMOVED: {
       english: "Removed name color.",
       spanish: "Quitado color de nombre."
