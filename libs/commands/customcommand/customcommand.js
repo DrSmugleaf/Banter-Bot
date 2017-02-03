@@ -173,16 +173,6 @@ module.exports = class CustomCommand extends commando.Command {
         return msg.reply(constants.responses.CUSTOM_COMMAND.ALREADY_EXISTS[msg.language](name))
       }
 
-      const command = this.command({
-        name: name,
-        type: type,
-        target: target,
-        text: text,
-        video: video,
-        guild: msg.guild
-      })
-      this.client.registry.registerCommand(command)
-
       const commands = msg.guild.settings.get("custom-commands", {})
       commands[name] = {
         name: name,
@@ -191,7 +181,10 @@ module.exports = class CustomCommand extends commando.Command {
         text: text,
         video: video
       }
+
       msg.guild.settings.set("custom-commands", commands)
+      commands[name].guild = msg.guild
+      this.client.registry.registerCommand(commands[name])
 
       return msg.reply(constants.responses.CUSTOM_COMMAND.REGISTERED[msg.language](
         name, this.client.commandPrefix || `<@${msg.client.user.id}> `)
