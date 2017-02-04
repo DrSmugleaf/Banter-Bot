@@ -48,10 +48,6 @@ module.exports = class CustomVoiceCommand extends commando.Command {
     })
   }
 
-  hasPermission(msg) {
-    return msg.member.hasPermission("ADMINISTRATOR")
-  }
-
   async run(msg, args) {
     const name = args.name
     const url = args.url
