@@ -971,6 +971,23 @@ exports.responses = {
     }
   },
 
+  COMMANDO: {
+    ARGUMENT: {
+      INVALID_LABEL: {
+        english: (label) => `You provided an invalid ${label}. Please try again.`,
+        spanish: (label) => `Has proporcionado un ${label} inválido. Por favor inténtalo de nuevo.`
+      },
+      RESPOND_WITH_CANCEL: {
+        english: "Respond with \`cancel\` to cancel the command.",
+        spanish: "Responde con \`cancel\` para cancelar el comando."
+      },
+      WAIT: {
+        english: (time) => `The command will automatically be cancelled in ${time} seconds.`,
+        spanish: (time) => `El commando será automáticamente cancelado en ${time} segundos.`
+      }
+    }
+  },
+
   CUSTOM_COMMAND: {
     ALREADY_EXISTS: {
       english: (name) => `Custom command \`${name}\` already exists.`,

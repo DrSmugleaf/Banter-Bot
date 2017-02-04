@@ -26,20 +26,21 @@ module.exports = class ServerSettings extends commando.Command {
       args: [
         {
           key: "mode",
-          prompt: "What do you want to do?",
+          prompt: "What do you want to do? (clear, get, remove, set)",
           type: "string",
           validate: (mode) => {
             return ["clear", "get", "remove", "set"].includes(mode)
           }
         },
         {
-          key: "settings",
-          prompt: "What settings do you want to apply?",
-          type: "string"
+          key: "key",
+          prompt: "What setting key do you want to act on?",
+          type: "string",
+          default: ""
         },
         {
-          key: "settings2",
-          prompt: "Dummy for mode set (value)",
+          key: "value",
+          prompt: "What value do you want to set for the key?",
           type: "string",
           default: ""
         }
@@ -53,8 +54,8 @@ module.exports = class ServerSettings extends commando.Command {
 
   async run(msg, args) {
     const mode = args.mode
-    const key = args.settings
-    const value = args.settings2
+    var key = args.key
+    var value = args.value
     const guildSettings = msg.guild.settings
 
     switch (mode) {
@@ -63,14 +64,22 @@ module.exports = class ServerSettings extends commando.Command {
       return msg.reply(constants.responses.SERVER_SETTINGS.CLEAR[msg.language])
     }
     case "get": {
+      if(!key) key = await this.args[1].obtainSimple(msg)
+      if(!key) return
       const get = guildSettings.get(key)
       return msg.reply(constants.responses.SERVER_SETTINGS.GET[msg.language](key, get))
     }
     case "remove": {
+      if(!key) key = await this.args[1].obtainSimple(msg)
+      if(!key) return
       guildSettings.remove(key)
       return msg.reply(constants.responses.SERVER_SETTINGS.REMOVE[msg.language](key))
     }
     case "set": {
+      if(!key) key = await this.args[1].obtainSimple(msg)
+      if(!key) return
+      if(!value) value = await this.args[2].obtainSimple(msg)
+      if(!value) return
       guildSettings.set(key, value)
       return msg.reply(constants.responses.SERVER_SETTINGS.SET[msg.language](key, value))
     }
