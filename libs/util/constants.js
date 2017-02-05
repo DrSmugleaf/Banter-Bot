@@ -117,6 +117,38 @@ exports.versions = {
       Arreglado el lenguaje del servidor no aplicándose a miembros que no tenian un lenguaje propio aplicado.
       Arreglado un error al usar !help cuando una canción no esta reproduciéndose.
     `
+  },
+  "5": {
+    english: stripIndents`
+      **ADDED**
+      !roll: Rolls a number from 1 to 100.
+      !custom-text-command: Creates a basic custom command where the bot will answer with the text you told it to.
+      !custom-voice-command: Creates a basic custom command where the bot will join your channel and play the song you told it to.
+      !custom-command-manager: Removes a custom command, admin only.
+      Custom commands are created by using !custom-text-command <new-command-name> <text-to-reply-with> and !custom-voice-command <new-command-name> <youtube-url>.
+
+      **FIXES**
+      Fixed unnecessary arguments in !server-settings command.
+      Fixed error in !color command when the bot doesn't have permission to edit roles.
+      Fixed spaces and special characters in !color's color argument not working.
+      Fixed youtube !play commands never working because of youtube's protocol change.
+      Fixed skipping 2 videos on error, reduced video stutter.
+    `,
+    spanish: stripIndents`
+      **AÑADIDO**
+      !roll: Saca un número del 1 al 100.
+      !custom-text-command: Crea un básico comando personalizado de texto en el que el bot te responderá con el texto que le has dicho.
+      !custom-voice-command: Crea un básico comando personalizado de voz en el que el bot se unirá a tu canal de voz y reproducirá la canción que le has dicho.
+      !custom-command-manager: Borra un comando personalizado, solo admins.
+      Los comandos personalizados son creados usando !custom-text-command <nombre-de-comando-nuevo> <texto-con-el-que-responder> y !custom-voice-command <nombre-de-comando-nuevo> <link-youtube>.
+
+      **ARREGLOS**
+      Arreglado parámetros innecesarios en el comando !server-settings.
+      Arreglado error en el comando !color cuando el bot no tiene permiso para editar roles.
+      Arreglado espacios y carácteres especiales en el parámetro de color del comando !color.
+      Arreglado comando !play nunca funcionando por un cambio de protocolo en youtube.
+      Arreglado saltarse 2 vídeos cuando ocurría un error, reducido tartamudeo de audio.
+    `
   }
 }
 
