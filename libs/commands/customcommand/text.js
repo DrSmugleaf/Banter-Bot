@@ -40,7 +40,7 @@ module.exports = class CustomTextCommand extends commando.Command {
   }
 
   async run(msg, args) {
-    const name = args.name
+    const name = args.name.toLowerCase()
     const text = args.text
 
     if(this.client.registry.commands.get(name)) {

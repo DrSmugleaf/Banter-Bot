@@ -49,7 +49,7 @@ module.exports = class CustomVoiceCommand extends commando.Command {
   }
 
   async run(msg, args) {
-    const name = args.name
+    const name = args.name.toLowerCase()
     const url = args.url
 
     if(this.client.registry.commands.get(name)) {
