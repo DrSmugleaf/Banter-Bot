@@ -973,6 +973,21 @@ exports.responses = {
     }
   },
 
+  BLACKLIST: {
+    BLACKLISTED: {
+      english: (name) => `Blacklisted user \`${name}\`.`,
+      spanish: (name) => `Puesto usuario \`${name}\` en la lista negra.`
+    },
+    CANT_BLACKLIST_SELF: {
+      english: "You can't blacklist yourself!",
+      spanish: "No te puedes poner en la lista negra a ti mismo!"
+    },
+    WHITELISTED: {
+      english: (name) => `Removed user \`${name}\` from the blacklist.`,
+      spanish: (name) => `Quitado usuario \`${name}\` de la lista negra.`
+    }
+  },
+
   CLEAN_MESSAGES: {
     NO_PERMISSION: {
       english: "I don't have permission to delete messages in this channel.",
