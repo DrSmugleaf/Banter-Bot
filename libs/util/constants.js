@@ -126,6 +126,8 @@ exports.versions = {
       !custom-voice-command: Creates a basic custom command where the bot will join your channel and play the song you told it to.
       !custom-command-manager: Removes a custom command, admin only.
       Custom commands are created by using !custom-text-command <new-command-name> <text-to-reply-with> and !custom-voice-command <new-command-name> <youtube-url>.
+      !blacklist: Blocks a member in the server from using any bot commands, admin only.
+      Added !econnreset as an alias for !play.
 
       **FIXES**
       Fixed unnecessary arguments in !server-settings command.
@@ -139,8 +141,10 @@ exports.versions = {
       !roll: Saca un número del 1 al 100.
       !custom-text-command: Crea un básico comando personalizado de texto en el que el bot te responderá con el texto que le has dicho.
       !custom-voice-command: Crea un básico comando personalizado de voz en el que el bot se unirá a tu canal de voz y reproducirá la canción que le has dicho.
-      !custom-command-manager: Borra un comando personalizado, solo admins.
+      !custom-command-manager: Borra un comando personalizado, sólo admins.
       Los comandos personalizados son creados usando !custom-text-command <nombre-de-comando-nuevo> <texto-con-el-que-responder> y !custom-voice-command <nombre-de-comando-nuevo> <link-youtube>.
+      !blacklist: Bloquea a un miembro del servidor de usar cualquier comando del bot, sólo admins.
+      Añadido !econnreset como un alias de !play.
 
       **ARREGLOS**
       Arreglado parámetros innecesarios en el comando !server-settings.
