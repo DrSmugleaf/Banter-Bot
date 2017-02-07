@@ -117,6 +117,42 @@ exports.versions = {
       Arreglado el lenguaje del servidor no aplicándose a miembros que no tenian un lenguaje propio aplicado.
       Arreglado un error al usar !help cuando una canción no esta reproduciéndose.
     `
+  },
+  "5": {
+    english: stripIndents`
+      **ADDED**
+      !roll: Rolls a number from 1 to 100.
+      !custom-text-command: Creates a basic custom command where the bot will answer with the text you told it to.
+      !custom-voice-command: Creates a basic custom command where the bot will join your channel and play the song you told it to.
+      !custom-command-manager: Removes a custom command, admin only.
+      Custom commands are created by using !custom-text-command <new-command-name> <text-to-reply-with> and !custom-voice-command <new-command-name> <youtube-url>.
+      !blacklist: Blocks a member in the server from using any bot commands, admin only.
+      Added !econnreset as an alias for !play.
+
+      **FIXES**
+      Fixed unnecessary arguments in !server-settings command.
+      Fixed error in !color command when the bot doesn't have permission to edit roles.
+      Fixed spaces and special characters in !color's color argument not working.
+      Fixed youtube !play commands never working because of youtube's protocol change.
+      Fixed skipping 2 videos on error, reduced video stutter.
+    `,
+    spanish: stripIndents`
+      **AÑADIDO**
+      !roll: Saca un número del 1 al 100.
+      !custom-text-command: Crea un básico comando personalizado de texto en el que el bot te responderá con el texto que le has dicho.
+      !custom-voice-command: Crea un básico comando personalizado de voz en el que el bot se unirá a tu canal de voz y reproducirá la canción que le has dicho.
+      !custom-command-manager: Borra un comando personalizado, sólo admins.
+      Los comandos personalizados son creados usando !custom-text-command <nombre-de-comando-nuevo> <texto-con-el-que-responder> y !custom-voice-command <nombre-de-comando-nuevo> <link-youtube>.
+      !blacklist: Bloquea a un miembro del servidor de usar cualquier comando del bot, sólo admins.
+      Añadido !econnreset como un alias de !play.
+
+      **ARREGLOS**
+      Arreglado parámetros innecesarios en el comando !server-settings.
+      Arreglado error en el comando !color cuando el bot no tiene permiso para editar roles.
+      Arreglado espacios y carácteres especiales en el parámetro de color del comando !color.
+      Arreglado comando !play nunca funcionando por un cambio de protocolo en youtube.
+      Arreglado saltarse 2 vídeos cuando ocurría un error, reducido tartamudeo de audio.
+    `
   }
 }
 
@@ -941,6 +977,21 @@ exports.responses = {
     }
   },
 
+  BLACKLIST: {
+    BLACKLISTED: {
+      english: (name) => `Blacklisted user \`${name}\`.`,
+      spanish: (name) => `Puesto usuario \`${name}\` en la lista negra.`
+    },
+    CANT_BLACKLIST_SELF: {
+      english: "You can't blacklist yourself!",
+      spanish: "No te puedes poner en la lista negra a ti mismo!"
+    },
+    WHITELISTED: {
+      english: (name) => `Removed user \`${name}\` from the blacklist.`,
+      spanish: (name) => `Quitado usuario \`${name}\` de la lista negra.`
+    }
+  },
+
   CLEAN_MESSAGES: {
     NO_PERMISSION: {
       english: "I don't have permission to delete messages in this channel.",
@@ -961,9 +1012,79 @@ exports.responses = {
       english: "You don't have a name color.",
       spanish: "No tienes un color de nombre."
     },
+    NO_PERMISSION: {
+      english: "I don't have permission to change your name color.",
+      spanish: "No tengo permiso para cambiar el color de tu nombre."
+    },
     REMOVED: {
       english: "Removed name color.",
       spanish: "Quitado color de nombre."
+    }
+  },
+
+  COMMANDO: {
+    ARGUMENT: {
+      INVALID_LABEL: {
+        english: (label) => `You provided an invalid ${label}. Please try again.`,
+        spanish: (label) => `Has proporcionado un ${label} inválido. Por favor inténtalo de nuevo.`
+      },
+      RESPOND_WITH_CANCEL: {
+        english: "Respond with \`cancel\` to cancel the command.",
+        spanish: "Responde con \`cancel\` para cancelar el comando."
+      },
+      WAIT: {
+        english: (time) => `The command will automatically be cancelled in ${time} seconds.`,
+        spanish: (time) => `El commando será automáticamente cancelado en ${time} segundos.`
+      }
+    }
+  },
+
+  CUSTOM_COMMAND: {
+    ALREADY_EXISTS: {
+      english: (name) => `Custom command \`${name}\` already exists.`,
+      spanish: (name) => `Comando personalizado \`${name}\` ya existe.`
+    },
+    CANT_CONNECT: {
+      english: "I can't connect to that voice channel.",
+      spanish: "No puedo conectarme a ese canal de voz."
+    },
+    CANT_SPEAK: {
+      english: "I can't speak in that voice channel.",
+      spanish: "No puedo hablar en ese canal de voz."
+    },
+    CURRENTLY_PLAYING: {
+      english: "A song is currently playing, please wait until it finishes.",
+      spanish: "Una canción se esta reproduciendo actualmente, por favor espere a que termine."
+    },
+    DISPATCHER_ERROR: {
+      english: (name) => `Error playing ${name}`,
+      spanish: (name) => `Error descargando ${name}`
+    },
+    DOESNT_EXIST: {
+      english: (name) => `Custom command \`${name}\` doesn't exist.`,
+      spanish: (name) => `Comando personalizado \`${name}\` no existe.`
+    },
+    NOT_IN_VOICE_CHANNEL: {
+      english: (name) => `Member ${name} isn't currently in a voice channel.`,
+      spanish: (name) => `El miembro ${name} no está actualmente en un canal de voz.`
+    },
+    REGISTERED: {
+      english: (name, commandPrefix) => oneLine`Registered command ${name},
+        use ${commandPrefix}${name} to use it.`,
+      spanish: (name, commandPrefix) => oneLine`Registrado comando ${name},
+        usa ${commandPrefix}${name} para usarlo.`
+    },
+    REMOVED: {
+      english: (name) => `Removed custom command \`${name}\`.`,
+      spanish: (name) => `Quitado comando personalizado \`${name}\`.`
+    },
+    UNREGISTERED: {
+      english: (name) => `Unregistered command ${name}`,
+      spanish: (name) => `Borrado comando ${name}`
+    },
+    YTDL_ERROR: {
+      english: (name) => `Error downloading ${name}`,
+      spanish: (name) => `Error descargando ${name}`
     }
   },
 
@@ -1206,7 +1327,7 @@ exports.responses = {
       },
       PLAY: {
         english: (title) => `Now playing: ${title}.`,
-        spanish: (title) => `Ahora jugando: ${title}.`,
+        spanish: (title) => `Ahora reproduciendo: ${title}.`,
       },
       REPEAT: {
         english: (title) => `Now repeating: ${title}.`,
@@ -1287,5 +1408,5 @@ exports.responses = {
 },
 
 exports.youtube = {
-  STREAMOPTIONS: { seek: 0, volume: 0.25 }
+  STREAM_OPTIONS: { seek: 0, volume: 0.25, passes: 2 }
 }

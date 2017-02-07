@@ -8,13 +8,14 @@ const Discord = require("discord.js")
 require("./libs/extensions/guild").applyToClass(Discord.Guild)
 require("./libs/extensions/member").applyToClass(Discord.GuildMember)
 require("./libs/extensions/message").applyToClass(Discord.Message)
+require("./libs/extensions/argument").applyToClass(Commando.CommandArgument)
 require("./libs/extensions/message").applyToClass(Commando.CommandMessage)
 require("./libs/util")
 const client = new Commando.Client({
   commandPrefix: process.env.NODE_ENV === "dev" ? "!!" : "!",
   invite: "https://discord.gg/yyDWNBr",
   owner: "109067752286715904",
-  unknownCommandResponse: false
+  unknownCommandResponse: process.env.NODE_ENV === "dev"
 })
 const oneLine = require("common-tags").oneLine
 const path = require("path")
@@ -34,6 +35,7 @@ client
       // new AutoChannel(client)
       new Sender(client)
       new VersionAnnouncer(client)
+      client.emit("dbReady")
     }
   })
   .on("ready", () => {
@@ -78,6 +80,7 @@ client.setProvider(
 
 client.registry
   .registerGroup("bridge", "Bridge")
+  .registerGroup("customcommand", "Custom Commands")
   .registerGroup("misc", "Misc")
   .registerGroup("server", "Server")
   .registerGroup("user", "User")

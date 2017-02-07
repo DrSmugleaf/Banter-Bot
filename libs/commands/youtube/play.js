@@ -15,7 +15,7 @@ module.exports = class Play extends commando.Command {
   constructor(client) {
     super(client, {
       name: "play",
-      aliases: ["play"],
+      aliases: ["play", "econnreset"],
       group: "youtube",
       memberName: "play",
       description: "Queue a video to be played.",

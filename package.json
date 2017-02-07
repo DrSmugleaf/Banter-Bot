@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "A Discord bot",
   "engines": {
-    "node": "7.2.1"
+    "node": "7.5.0"
   },
   "main": "banterbot.js",
   "scripts": {
@@ -43,7 +43,7 @@
     "uws": "0.12.0",
     "valid-url": "1.0.9",
     "winston": "2.3.1",
-    "ytdl-core": "0.7.21"
+    "ytdl-core": "0.8.0"
   },
   "devDependencies": {
     "babel-eslint": "latest",

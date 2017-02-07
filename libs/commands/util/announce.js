@@ -43,23 +43,28 @@ module.exports = class Announce extends commando.Command {
   }
 
   sendAnnouncement(msg, guild, text) {
-    guild.defaultChannel.sendMessage(text).catch(e => {
+    const infoChannel = guild.channels.get(guild.settings.get("info-channel", guild.defaultChannel.id))
+    infoChannel.sendMessage(text).catch(e => {
       winston.error(e)
 
-      guild.owner.sendMessage(stripIndents`
-        I couldn't send this announcement to ${guild.name}'s default channel,
-        ${guild.defaultChannel}, a guild you are the owner of.
-        Here is the announcement:
-        ${text}
-      `).catch(e => {
+      guild.defaultChannel.sendMessage(text).catch(e => {
         winston.error(e)
 
-        msg.reply(stripIndents`
-          I couldn't send the announcement to ${guild.name}'s default channel,
-          ${guild.defaultChannel} or to its owner, ${guild.owner}.
+        guild.owner.sendMessage(stripIndents`
+          I couldn't send this announcement to ${guild.name}'s default channel,
+          ${guild.defaultChannel}, a guild you are the owner of.
+          Here is the announcement:
+          ${text}
         `).catch(e => {
           winston.error(e)
-          winston.error("lionThrow")
+
+          msg.reply(stripIndents`
+            I couldn't send the announcement to ${guild.name}'s default channel,
+            ${guild.defaultChannel} or to its owner, ${guild.owner}.
+          `).catch(e => {
+            winston.error(e)
+            winston.error("lionThrow")
+          })
         })
       })
     })

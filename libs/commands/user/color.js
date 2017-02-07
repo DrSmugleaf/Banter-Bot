@@ -29,6 +29,7 @@ module.exports = class Color extends commando.Command {
           type: "string",
           default: "",
           validate: (color) => {
+            color = color.toLowerCase().replace(/ |-|'|\/|/g, "")
             return Boolean(constants.colors.hasOwnProperty(color) ||
               parse(color).hex || color === "")
           }
@@ -79,7 +80,7 @@ module.exports = class Color extends commando.Command {
     if(!msg.channel.permissionsFor(msg.client.user).hasPermission("MANAGE_ROLES_OR_PERMISSIONS")) {
       return msg.reply(constants.responses.COLOR.NO_PERMISSION[msg.language])
     }
-    const color = args.color ? this.parseColor(args.color) : null
+    const color = args.color ? this.parseColor(args.color.toLowerCase().replace(/ |-|'|\/|/g, "")) : null
 
     if(!color) {
       return this.removeColor(msg, color)
