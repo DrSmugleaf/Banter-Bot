@@ -21,9 +21,11 @@ const oneLine = require("common-tags").oneLine
 const path = require("path")
 const PostgreSQLProvider = require("./libs/providers/postgresql")
 const Sender = require("./libs/bridge/sender")
+new Sender(client)
 const token = process.env.NODE_ENV === "dev" ?
   process.env.DISCORD_TOKEN_DEV : process.env.DISCORD_TOKEN
 const VersionAnnouncer = require("./libs/announcer/version")
+new VersionAnnouncer(client)
 // const AutoChannel = require("./libs/autochannel/autochannel")
 const winston = require("winston")
 
@@ -33,8 +35,6 @@ client
   .on("debug", (string) => {
     if(string === "Provider finished initialisation.") {
       // new AutoChannel(client)
-      new Sender(client)
-      new VersionAnnouncer(client)
       client.emit("dbReady")
     }
   })
