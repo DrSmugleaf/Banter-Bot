@@ -32,12 +32,6 @@ const winston = require("winston")
 client
   .on("error", winston.error)
   .on("warn", winston.warn)
-  .on("debug", (string) => {
-    if(string === "Provider finished initialisation.") {
-      // new AutoChannel(client)
-      client.emit("dbReady")
-    }
-  })
   .on("ready", () => {
     winston.info(`Client ready; logged in as ${client.user.username}#${client.user.discriminator} (${client.user.id})`)
   })
@@ -76,6 +70,7 @@ client
 
 client.setProvider(
   new Commando.SQLiteProvider(new PostgreSQLProvider())
+).then(client.emit("dbReady")
 ).catch(winston.error)
 
 client.registry
