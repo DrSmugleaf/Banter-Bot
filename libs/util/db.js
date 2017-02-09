@@ -7,8 +7,7 @@ const stripIndents = require("common-tags").stripIndents
 const winston = require("winston")
 const PGP = require("pg-promise")({
   error: (e) => {
-    if(e.name === "QueryResultError") return
-    return winston.error(e)
+    winston.error(e)
   }
 })
 const pgp = new PGP(process.env.NODE_ENV === "dev" ?
