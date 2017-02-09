@@ -70,8 +70,9 @@ client
 
 client.setProvider(
   new Commando.SQLiteProvider(new PostgreSQLProvider())
-).then(client.emit("dbReady")
-).catch(winston.error)
+).then(() => {
+  client.emit("dbReady")
+}).catch(winston.error)
 
 client.registry
   .registerGroup("bridge", "Bridge")
