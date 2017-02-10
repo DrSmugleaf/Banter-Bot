@@ -153,6 +153,30 @@ exports.versions = {
       Arreglado comando !play nunca funcionando por un cambio de protocolo en youtube.
       Arreglado saltarse 2 vídeos cuando ocurría un error, reducido tartamudeo de audio.
     `
+  },
+  "6": {
+    english: stripIndents`
+      **CHANGES**
+      Made some custom command responses clearer.
+
+      **FIXES**
+      Fixed various errors with database related commands.
+      Fixed error when using !quote when there are no quotes in the list.
+      Fixed !whois only accepting user IDs. It now accepts user names, user mentions and user ids.
+      Fixed custom commands being deleted every time the bot restarted.
+      Fixed youtube !skip votes not resetting when a song ends.
+    `,
+    spanish: stripIndents`
+      **CAMBIOS**
+      Algunas respuestas relacionadas con comandos personalizados son ahora más claras.
+
+      **AREGLOS**
+      Arreglados varios errores relacionados con comandos que accedían la base de datos.
+      Arreglado un error al usar !quote cuando no hay quotes en la lista.
+      Arreglado que !whois sólo aceptara IDs de usuarios. Ahora acepta nombres, menciones de usuarios y IDs de usuarios.
+      Arreglado que los comandos personalizados se borraran al reiniciarse el bot.
+      Arreglado que los votos de youtube !skip no se reinicializaran al terminar una canción.
+    `
   }
 }
 
