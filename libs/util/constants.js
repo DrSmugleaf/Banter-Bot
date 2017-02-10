@@ -1057,8 +1057,8 @@ exports.responses = {
       spanish: "Una canción se esta reproduciendo actualmente, por favor espere a que termine."
     },
     DISPATCHER_ERROR: {
-      english: (name) => `Error playing ${name}`,
-      spanish: (name) => `Error descargando ${name}`
+      english: (name) => `Error playing ${name}.`,
+      spanish: (name) => `Error descargando ${name}.`
     },
     DOESNT_EXIST: {
       english: (name) => `Custom command \`${name}\` doesn't exist.`,
@@ -1069,22 +1069,18 @@ exports.responses = {
       spanish: (name) => `El miembro ${name} no está actualmente en un canal de voz.`
     },
     REGISTERED: {
-      english: (name, commandPrefix) => oneLine`Registered command ${name},
+      english: (name, commandPrefix) => oneLine`Added command ${name},
         use ${commandPrefix}${name} to use it.`,
-      spanish: (name, commandPrefix) => oneLine`Registrado comando ${name},
+      spanish: (name, commandPrefix) => oneLine`Añadido comando ${name},
         usa ${commandPrefix}${name} para usarlo.`
     },
-    REMOVED: {
-      english: (name) => `Removed custom command \`${name}\`.`,
-      spanish: (name) => `Quitado comando personalizado \`${name}\`.`
-    },
     UNREGISTERED: {
-      english: (name) => `Unregistered command ${name}`,
-      spanish: (name) => `Borrado comando ${name}`
+      english: (name) => `Removed custom command \`${name}\`.`,
+      spanish: (name) => `Borrado comando personalizado \`${name}\`.`
     },
     YTDL_ERROR: {
-      english: (name) => `Error downloading ${name}`,
-      spanish: (name) => `Error descargando ${name}`
+      english: (name) => `Error downloading ${name}.`,
+      spanish: (name) => `Error descargando ${name}.`
     }
   },
 
