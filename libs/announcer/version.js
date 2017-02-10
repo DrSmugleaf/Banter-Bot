@@ -9,7 +9,9 @@ const stripIndents = require("common-tags").stripIndents
 module.exports = class Version {
   constructor(client) {
     this.client = client
-    this.checkVersion()
+    this.client.once("dbReady", () => {
+      this.checkVersion()
+    })
   }
 
   checkVersion() {

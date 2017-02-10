@@ -39,6 +39,10 @@ module.exports = class Quote extends commando.Command {
         }
       ]
     })
+
+    this.client.once("dbReady", () => {
+      db.query("CREATE TABLE IF NOT EXISTS quotes (id BIGSERIAL PRIMARY KEY, text TEXT, submitter TEXT)")
+    })
   }
 
   async quoteAdd(msg, text) {

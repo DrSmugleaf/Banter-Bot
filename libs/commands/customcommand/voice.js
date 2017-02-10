@@ -5,7 +5,7 @@
 "use strict"
 const commando = require("discord.js-commando")
 const constants = require("../../util/constants")
-const CustomCommand = require("./base/command")
+const CustomCommandAdmin = require("./admin")
 const Youtube = require("simple-youtube-api")
 const youtube = new Youtube(process.env.GOOGLE_KEY)
 
@@ -56,15 +56,10 @@ module.exports = class CustomVoiceCommand extends commando.Command {
       return msg.reply(constants.responses.CUSTOM_COMMAND.ALREADY_EXISTS[msg.language](name))
     }
 
-    const commands = msg.guild.settings.get("custom-commands", {})
-    commands[name] = {
+    const command = {
       url: url
     }
-
-    msg.guild.settings.set("custom-commands", commands)
-    commands[name].guild = msg.guild
-    const command = CustomCommand(name, commands[name])
-    this.client.registry.registerCommand(command)
+    CustomCommandAdmin.registerCommand(msg.guild, name, command)
 
     return msg.reply(constants.responses.CUSTOM_COMMAND.REGISTERED[msg.language](
       name, this.client.commandPrefix || `<@${msg.client.user.id}> `

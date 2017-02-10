@@ -39,6 +39,12 @@ module.exports = class Skip extends commando.Command {
       return msg.reply(constants.responses.YOUTUBE.SKIP.ALREADY_VOTED[msg.language])
     }
 
+    if(main.dispatcher(msg.guild)) {
+      main.dispatcher(msg.guild).on("end", () => {
+        this.votes[msg.guild.id] = []
+      })
+    }
+
     this.votes[msg.guild.id].push(msg.author.id)
 
     const votes = this.votes[msg.guild.id].length

@@ -15,7 +15,7 @@ module.exports = class WhoIs extends commando.Command {
       group: "util",
       memberName: "whois",
       description: "Get information about a user.",
-      examples: ["whois DrSmugleaf", "whois 109067752286715904"],
+      examples: ["whois DrSmugleaf", "whois @DrSmugleaf#9458", "whois 109067752286715904"],
       guildOnly: true,
       throttling: {
         usages: 2,
@@ -26,15 +26,14 @@ module.exports = class WhoIs extends commando.Command {
           key: "user",
           label: "user",
           prompt: "What user would you like the information of?",
-          type: "string",
-          default: "yourself"
+          type: "member"
         }
       ]
     })
   }
 
   async run(msg, args) {
-    const member = args.user == "yourself" ? msg.guild.member(msg.author) : msg.guild.member(args.user)
+    const member = args.member
 
     if(!member) return msg.reply(`User \`${args.user}\` couldn't be found`)
 

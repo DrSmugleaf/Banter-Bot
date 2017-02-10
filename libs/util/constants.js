@@ -153,6 +153,30 @@ exports.versions = {
       Arreglado comando !play nunca funcionando por un cambio de protocolo en youtube.
       Arreglado saltarse 2 vídeos cuando ocurría un error, reducido tartamudeo de audio.
     `
+  },
+  "6": {
+    english: stripIndents`
+      **CHANGES**
+      Made some custom command responses clearer.
+
+      **FIXES**
+      Fixed various errors with database related commands.
+      Fixed error when using !quote when there are no quotes in the list.
+      Fixed !whois only accepting user IDs. It now also accepts user names and user mentions.
+      Fixed custom commands being deleted every time the bot restarted.
+      Fixed youtube !skip votes not resetting when a song ends.
+    `,
+    spanish: stripIndents`
+      **CAMBIOS**
+      Algunas respuestas relacionadas con los comandos personalizados son ahora más claras.
+
+      **ARREGLOS**
+      Arreglados varios errores relacionados con los comandos que accedían a la base de datos.
+      Arreglado un error al usar !quote cuando no hay quotes en la lista.
+      Arreglado que !whois sólo aceptara IDs de usuarios. Ahora también acepta nombres y menciones de usuarios.
+      Arreglado que los comandos personalizados se borraran al reiniciarse el bot.
+      Arreglado que los votos de youtube !skip no se reinicializaran al terminar una canción.
+    `
   }
 }
 
@@ -1057,8 +1081,8 @@ exports.responses = {
       spanish: "Una canción se esta reproduciendo actualmente, por favor espere a que termine."
     },
     DISPATCHER_ERROR: {
-      english: (name) => `Error playing ${name}`,
-      spanish: (name) => `Error descargando ${name}`
+      english: (name) => `Error playing ${name}.`,
+      spanish: (name) => `Error descargando ${name}.`
     },
     DOESNT_EXIST: {
       english: (name) => `Custom command \`${name}\` doesn't exist.`,
@@ -1069,22 +1093,18 @@ exports.responses = {
       spanish: (name) => `El miembro ${name} no está actualmente en un canal de voz.`
     },
     REGISTERED: {
-      english: (name, commandPrefix) => oneLine`Registered command ${name},
+      english: (name, commandPrefix) => oneLine`Added command ${name},
         use ${commandPrefix}${name} to use it.`,
-      spanish: (name, commandPrefix) => oneLine`Registrado comando ${name},
+      spanish: (name, commandPrefix) => oneLine`Añadido comando ${name},
         usa ${commandPrefix}${name} para usarlo.`
     },
-    REMOVED: {
-      english: (name) => `Removed custom command \`${name}\`.`,
-      spanish: (name) => `Quitado comando personalizado \`${name}\`.`
-    },
     UNREGISTERED: {
-      english: (name) => `Unregistered command ${name}`,
-      spanish: (name) => `Borrado comando ${name}`
+      english: (name) => `Removed custom command \`${name}\`.`,
+      spanish: (name) => `Borrado comando personalizado \`${name}\`.`
     },
     YTDL_ERROR: {
-      english: (name) => `Error downloading ${name}`,
-      spanish: (name) => `Error descargando ${name}`
+      english: (name) => `Error downloading ${name}.`,
+      spanish: (name) => `Error descargando ${name}.`
     }
   },
 

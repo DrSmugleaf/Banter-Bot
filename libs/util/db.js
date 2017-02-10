@@ -7,12 +7,13 @@ const stripIndents = require("common-tags").stripIndents
 const winston = require("winston")
 const PGP = require("pg-promise")({
   error: (e) => {
-    if(e.name === "QueryResultError") return
-    return winston.error(e)
+    winston.error(e)
   }
 })
-const pgp = new PGP(process.env.DATABASE_URL.includes("?ssl=true") ?
-  process.env.DATABASE_URL : process.env.DATABASE_URL + "?ssl=true")
+const pgp = new PGP(process.env.NODE_ENV === "dev" ?
+  process.env.DATABASE_URL_DEV + "?ssl=true" :
+  process.env.DATABASE_URL + "?ssl=true"
+)
 
 class DB {
   constructor() {
