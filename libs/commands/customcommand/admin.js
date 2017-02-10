@@ -43,12 +43,19 @@ module.exports = class CustomCommandAdmin extends commando.Command {
         const commands = guild.settings.get("custom-commands", {})
         for(const customCommand in commands) {
           if(!commands.hasOwnProperty(customCommand)) return
-          commands[customCommand].guild = guild
-          const command = CustomCommand(customCommand, commands[customCommand])
+          const command = CustomCommand(guild, customCommand, commands[customCommand])
           this.client.registry.registerCommand(command)
         }
       })
     })
+  }
+
+  static async registerCommand(guild, name, command) {
+    const commands = await guild.settings.get("custom-commands", {})
+    commands[name] = command
+    guild.settings.set("custom-commands", commands)
+    const customCommand = CustomCommand(guild, name, command)
+    guild.client.registry.registerCommand(customCommand)
   }
 
   hasPermission(msg) {

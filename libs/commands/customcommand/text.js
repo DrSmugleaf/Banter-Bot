@@ -6,6 +6,7 @@
 const commando = require("discord.js-commando")
 const constants = require("../../util/constants")
 const CustomCommand = require("./base/command")
+const CustomCommandAdmin = require("./admin")
 
 module.exports = class CustomTextCommand extends commando.Command {
   constructor(client) {
@@ -47,15 +48,10 @@ module.exports = class CustomTextCommand extends commando.Command {
       return msg.reply(constants.responses.CUSTOM_COMMAND.ALREADY_EXISTS[msg.language](name))
     }
 
-    const commands = msg.guild.settings.get("custom-commands", {})
-    commands[name] = {
+    const command = {
       text: text
     }
-
-    msg.guild.settings.set("custom-commands", commands)
-    commands[name].guild = msg.guild
-    const command = CustomCommand(name, commands[name])
-    this.client.registry.registerCommand(command)
+    CustomCommandAdmin.registerCommand(msg.guild, name, command)
 
     return msg.reply(constants.responses.CUSTOM_COMMAND.REGISTERED[msg.language](
       name, this.client.commandPrefix || `<@${msg.client.user.id}> `

@@ -5,7 +5,7 @@
 "use strict"
 const commando = require("discord.js-commando")
 
-module.exports = (name, command) => class CustomCommand extends commando.Command {
+module.exports = (guild, name, command) => class CustomCommand extends commando.Command {
   constructor(client) {
     super(client, {
       name: name,
@@ -27,13 +27,13 @@ module.exports = (name, command) => class CustomCommand extends commando.Command
       ]
     })
 
-    this.guild = command.guild
+    this.guild = guild
     this.text = command.text
     this.url = command.url
   }
 
   hasPermission(msg) {
-    return msg.guild.id === command.guild.id
+    return msg.guild.id === this.guild.id
   }
 
   async run(msg, args) {
