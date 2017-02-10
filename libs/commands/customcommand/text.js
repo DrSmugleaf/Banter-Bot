@@ -5,7 +5,6 @@
 "use strict"
 const commando = require("discord.js-commando")
 const constants = require("../../util/constants")
-const CustomCommand = require("./base/command")
 const CustomCommandAdmin = require("./admin")
 
 module.exports = class CustomTextCommand extends commando.Command {
