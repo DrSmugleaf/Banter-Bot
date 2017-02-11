@@ -3,10 +3,11 @@
 //
 
 "use strict"
+const BlackjackHand = require("./hand")
 
 module.exports = class BlackjackPlayer {
   constructor(args) {
     this.member = args.member
-    this.hand = new Array()
+    this.hand = new BlackjackHand()
   }
 }
