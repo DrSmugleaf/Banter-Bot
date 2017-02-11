@@ -77,6 +77,7 @@ client.setProvider(
 client.registry
   .registerGroup("bridge", "Bridge")
   .registerGroup("customcommand", "Custom Commands")
+  .registerGroup("minigames", "Minigames")
   .registerGroup("misc", "Misc")
   .registerGroup("server", "Server")
   .registerGroup("user", "User")
