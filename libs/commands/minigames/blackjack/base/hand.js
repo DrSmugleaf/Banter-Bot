@@ -17,4 +17,8 @@ module.exports = class BlackjackHand {
     if(card.name === "Ace") this.ace = true
     return this.score
   }
+
+  reset() {
+    this.cards = new Array()
+  }
 }

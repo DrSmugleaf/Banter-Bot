@@ -24,8 +24,15 @@ module.exports = class BlackjackGame {
     if(this.players.some((player) => {
       return player.member.id === msg.member.id
     })) {
-      
+
     }
+  }
+
+  reset() {
+    this.deck.reset()
+    this.players.forEach((player) => {
+      player.reset()
+    })
   }
 
   async setup(args) {

@@ -11,4 +11,8 @@ module.exports = class BlackjackPlayer {
     this.game = args.game
     this.hand = new BlackjackHand()
   }
+
+  reset() {
+    this.hand.reset()
+  }
 }
