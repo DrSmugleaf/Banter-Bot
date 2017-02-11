@@ -21,6 +21,6 @@ module.exports = class Blackjack extends commando.Command {
 
   async run(msg) {
     const game = new BlackjackGame({ guild: msg.guild, members: [msg.member] })
-    console.log(game.players)
+    console.log(game)
   }
 }

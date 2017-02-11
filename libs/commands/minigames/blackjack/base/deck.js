@@ -44,7 +44,8 @@ module.exports = class BlackjackDeck {
   }
 
   reset() {
-    return this._cards
+    this.cards = this._cards
+    return this.cards
   }
 
   shuffle(array) {
