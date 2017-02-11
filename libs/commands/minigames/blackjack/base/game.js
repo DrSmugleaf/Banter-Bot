@@ -9,9 +9,17 @@ const BlackjackPlayer = require("./player")
 module.exports = class BlackjackGame {
   constructor(args) {
     this.deck = new BlackjackDeck()
-    this.guild = args.guild
     this.players = new Array()
+    this.channel = args.channel
+    this.guild = args.guild
     this.setup(args)
+    this.guild.client.on("message", () => {
+      this.onMessage(msg)
+    })
+  }
+
+  onMessage(msg) {
+
   }
 
   setup(args) {

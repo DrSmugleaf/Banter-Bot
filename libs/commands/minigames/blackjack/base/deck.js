@@ -13,7 +13,7 @@ const Decks = require("require-all")({
 })
 
 module.exports = class BlackjackDeck {
-  constructor(args) {
+  constructor(args = {}) {
     this.name = args.name || "french"
     this.amount = args.decks || 1
     this.decks = Decks
@@ -22,9 +22,11 @@ module.exports = class BlackjackDeck {
   }
 
   deal(player, cards) {
-    const card = this.cards[Math.floor(Math.random() * this.cards.length)]
-    _.pull(this.cards, card)
-    player.hand.add(card)
+    for(var i = 0; i < cards; i++) {
+      const card = this.cards[Math.floor(Math.random() * this.cards.length)]
+      _.pull(this.cards, card)
+      player.hand.add(card)
+    }
     return player.hand
   }
 

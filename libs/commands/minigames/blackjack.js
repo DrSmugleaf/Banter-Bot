@@ -3,10 +3,8 @@
 //
 
 "use strict"
-const main = require("./base/deck")
-const deck = new main({name: "french", decks: 1})
+const BlackjackGame = require("./blackjack/base/game")
 const commando = require("discord.js-commando")
-console.log(deck.cards.length)
 
 module.exports = class Blackjack extends commando.Command {
   constructor(client) {
@@ -16,9 +14,13 @@ module.exports = class Blackjack extends commando.Command {
       group: "minigames",
       memberName: "blackjack",
       description: "Play a game of blackjack.",
-      examples: ["blackjack"]
+      examples: ["blackjack"],
+      guildOnly: true
     })
   }
 
-  async run(msg) {}
+  async run(msg) {
+    const game = new BlackjackGame({ guild: msg.guild, members: [msg.member] })
+    console.log(game.players)
+  }
 }
