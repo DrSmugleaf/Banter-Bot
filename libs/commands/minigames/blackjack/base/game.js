@@ -4,6 +4,7 @@
 
 "use strict"
 const BlackjackDeck = require("./deck")
+const BlackjackPlayer = require("./player")
 
 module.exports = class BlackjackGame {
   constructor(args) {
@@ -15,7 +16,8 @@ module.exports = class BlackjackGame {
 
   setup(args) {
     args.members.forEach((member) => {
-      this.players.push(member)
+      const player = new BlackjackPlayer({ member: member, game: this })
+      this.players.push(player)
     })
   }
 
