@@ -50,7 +50,7 @@ module.exports = class Blacklist extends commando.Command {
     if(msg.member.id === member.id) return msg.reply(constants.CANT_BLACKLIST_SELF[msg.language])
 
     if(blacklist.includes(member.id)) {
-      blacklist = _.without(blacklist, member.id)
+      _.pull(blacklist, member.id)
       msg.guild.settings.set("blacklist", blacklist)
       return msg.reply(constants.WHITELISTED[msg.language](member.displayName))
     } else {

@@ -43,7 +43,7 @@
 //     } else {
 //       if(this.previousGame[id]) {
 //         winston.info(guildGames[this.previousGame[id]])
-//         guildGames[this.previousGame[id]] = _.without(guildGames[presence.game.name], id)
+//         guildGames[this.previousGame[id]] = _.pull(guildGames[presence.game.name], id)
 //         winston.info(guildGames[this.previousGame[id]])
 //       }
 //       this.previousGame[id] = null
