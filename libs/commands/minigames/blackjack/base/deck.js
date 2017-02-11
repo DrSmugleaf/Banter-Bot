@@ -3,6 +3,7 @@
 //
 
 "use strict"
+const _ = require("underscore")
 const path = require("path")
 const Decks = require("require-all")({
   dirname: path.join(__dirname, "decks"),
@@ -18,6 +19,13 @@ module.exports = class BlackjackDeck {
     this.decks = Decks
     this.deck = this.decks[args.name]
     this.cards = this.setup()
+  }
+
+  deal(player, cards) {
+    const card = this.cards[Math.floor(Math.random() * this.cards.length)]
+    _.pull(this.cards, card)
+    player.hand.add(card)
+    return player.hand
   }
 
   setup() {
