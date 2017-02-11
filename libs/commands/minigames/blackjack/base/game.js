@@ -11,7 +11,7 @@ module.exports = class BlackjackGame {
   constructor(args) {
     this.deck = new BlackjackDeck()
     this.players = new Array()
-    this.channel = null
+    this.channel = args.channel
     this.guild = args.guild
     this.setup(args)
     this.guild.client.on("message", (msg) => {
@@ -24,19 +24,17 @@ module.exports = class BlackjackGame {
     if(this.players.some((player) => {
       return player.member.id === msg.member.id
     })) {
-      console.log("message", msg.content)
+      
     }
   }
 
   async setup(args) {
     if(args.guild.member(args.guild.client.user).hasPermission("MANAGE_CHANNELS")) {
       await args.guild.createChannel("Blackjack", "text").then((channel) => {
+        this._channel = args.channel
         this.channel = channel
       }).catch(winston.error)
-    } else {
-      this.channel = args.channel
     }
-    this.channel.sendMessage("test")
 
     args.members.forEach((member) => {
       const player = new BlackjackPlayer({ member: member, game: this })
@@ -48,5 +46,9 @@ module.exports = class BlackjackGame {
     this.players.forEach((player) => {
       this.deck.deal(player, 2)
     })
+  }
+
+  end() {
+    this.channel.delete().catch(winston.error)
   }
 }
