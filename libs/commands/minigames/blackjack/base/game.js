@@ -88,6 +88,9 @@ module.exports = class BlackjackGame {
         player.action = null
         this.deck.deal(player, 1)
         break
+      default:
+        this.removePlayer(player)
+        this.channel.sendMessage(`Removed player ${player.name} for inactivity`)
       }
     })
 
