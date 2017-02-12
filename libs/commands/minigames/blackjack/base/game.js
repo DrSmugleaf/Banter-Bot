@@ -15,7 +15,7 @@ module.exports = class BlackjackGame {
     this.players = new Discord.Collection() // map
     this.channel = args.channel
     this.guild = args.guild
-    this.time = 10 * 1000
+    this.time = 5 * 1000
     this.started = false
     this.guild.client.on("message", (msg) => {
       this.onMessage(msg)
@@ -47,7 +47,7 @@ module.exports = class BlackjackGame {
     if(!msg.member) return
     if(!this.players.get(msg.member.id)) return
     if(this.players.get(msg.member.id).action) return
-    if(!["hit"].includes(msg.content)) return
+    if(!["hit", "stand", "double", "split", "surrender"].includes(msg.content)) return
     if(!this.started) {
       this.started = true
       this.timeout = setTimeout(() => {
@@ -55,18 +55,20 @@ module.exports = class BlackjackGame {
       }, this.time)
     }
 
+    const player = this.players.get(msg.member.id)
     switch(msg.content) {
-    case "draw":
-      this.players.get(msg.member.id).action = "draw"
-      break
     case "hit":
+      if(player.hand.score >= 21) {
+        return msg.reply("You can't draw, score: " + player.hand.score)
+      }
       this.players.get(msg.member.id).action = "hit"
+      break
+    case "stand":
+      this.players.get(msg.member.id).action = "stand"
       break
     }
 
-    if(this.players.every((player) => {
-      return player.action
-    })) {
+    if(this.players.every((player) => player.action)) {
       clearTimeout(this.timeout)
       this.processTurn()
     }
@@ -77,7 +79,7 @@ module.exports = class BlackjackGame {
 
     this.players.forEach((player) => {
       switch(player.action) {
-      case "draw":
+      case "stand":
         break
       case "hit":
         player.action = null
@@ -86,7 +88,21 @@ module.exports = class BlackjackGame {
       }
     })
 
-    if(this.dealer.hand.score < 17) this.deck.deal(this.dealer, 1)
+    if(this.players.every((player) => player.action === "stand")) {
+      while (this.dealer.hand.score < 17) {
+        this.deck.deal(this.dealer, 1)
+      }
+
+      this.players.forEach((player) => {
+        if(this.dealer.hand.score > 21 || player.hand.score > this.dealer.hand.score) {
+          this.channel.sendMessage(player.member.displayName + " wins")
+        } else if(player.hand.score > 21 || player.hand.score < this.dealer.hand.score) {
+          this.channel.sendMessage(this.dealer.member.displayName + " wins")
+        } else {
+          this.channel.sendMessage("tie")
+        }
+      })
+    }
   }
 
   reset() {
@@ -103,6 +119,7 @@ module.exports = class BlackjackGame {
       }).catch(winston.error)
     }
 
+    if(this.dealer.hand.score < 17) this.deck.deal(this.dealer, 1)
     this.next()
   }
 
