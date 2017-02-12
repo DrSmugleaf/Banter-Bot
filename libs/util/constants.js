@@ -1005,17 +1005,20 @@ exports.responses = {
     ADDED_PLAYER: {
       english: (channel) => stripIndents`Added you to a game of blackjack.
       You can play in ${channel}.
-      The actions you can take are \`draw\` and \`hit\`.`,
-      spanish: (channel) => stripIndents`Te he añadido a un juego de blackjack.
+      The actions you can take are \`draw\` and \`hit\`.
+      You can remove yourself at any time by using this command again.`,
+      spanish: (channel) => stripIndents`Te he añadido a una partida de blackjack.
       Puedes jugar en ${channel}.
-      Las acciones que puedes tomar son \`draw\` and \`hit\`.`,
+      Las acciones que puedes tomar son \`draw\` and \`hit\`.
+      Te puedes quitar de la partida en cualquier momento usando este comando de nuevo.`,
     },
     REMOVED_PLAYER: {
       english: "Removed you from a game of blackjack.",
       spanish: "Te he quitado de un juego de blackjack."
     },
     SETUP_GAME: {
-      english: "A game of blackjack has been setup."
+      english: "A game of blackjack has been setup.",
+      spanish: "He iniciado una partida de blackjack."
     }
   },
 

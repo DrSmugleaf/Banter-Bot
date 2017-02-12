@@ -14,6 +14,7 @@ module.exports = class BlackjackGame {
     this.players = new Object()
     this.channel = args.channel
     this.guild = args.guild
+    this.timeout = 10
     this.setup(args)
     this.guild.client.on("message", (msg) => {
       this.onMessage(msg)
@@ -42,9 +43,7 @@ module.exports = class BlackjackGame {
 
   onMessage(msg) {
     if(!msg.member) return
-    if(this.players.some((player) => {
-      return player.member.id === msg.member.id
-    })) {
+    if(this.players[msg.member.id]) {
 
     }
   }
@@ -58,7 +57,7 @@ module.exports = class BlackjackGame {
 
   async setup(args) {
     if(args.guild.member(args.guild.client.user).hasPermission("MANAGE_CHANNELS")) {
-      await args.guild.createChannel("Blackjack", "text").then((channel) => {
+      await args.guild.createChannel("bb-blackjack", "text").then((channel) => {
         this._channel = args.channel
         this.channel = channel
       }).catch(winston.error)

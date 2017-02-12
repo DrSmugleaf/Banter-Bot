@@ -19,6 +19,13 @@ module.exports = class Blackjack extends commando.Command {
       guildOnly: true
     })
 
+    this.client.once("ready", () => {
+      this.client.guilds.forEach((guild) => {
+        const channel = guild.channels.find((channel) => channel.name === "bb-blackjack")
+        if(channel) channel.delete()
+      })
+    })
+
     this.games = new Object()
   }
 
