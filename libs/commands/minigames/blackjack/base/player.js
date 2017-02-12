@@ -34,6 +34,10 @@ module.exports = class BlackjackPlayer {
     this.game.channel.sendMessage(this.member.displayName + " wins")
   }
 
+  getHand() {
+    return this.hand.get()
+  }
+
   reset() {
     this.status = "playing"
     this.hand.reset()

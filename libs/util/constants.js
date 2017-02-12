@@ -1018,7 +1018,7 @@ exports.responses = {
     },
     SETUP_GAME: {
       english: "A game of blackjack has been setup.",
-      spanish: "He iniciado una partida de blackjack."
+      spanish: "Una partida de blackjack ha sido iniciada."
     }
   },
 
