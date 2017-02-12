@@ -33,8 +33,7 @@ module.exports = class Blackjack extends commando.Command {
     var game = this.games[msg.guild.id]
 
     if(!game) {
-      game = new BlackjackGame({ channel: msg.channel, guild: msg.guild, members: [msg.member] })
-      game.setup()
+      game = new BlackjackGame({ channel: msg.channel, guild: msg.guild })
       game.channel.sendMessage(responses.SETUP_GAME[msg.language])
     }
 

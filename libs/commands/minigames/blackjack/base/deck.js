@@ -24,9 +24,10 @@ module.exports = class BlackjackDeck {
   deal(player, cards) {
     for(var i = 0; i < cards; i++) {
       const card = this.cards[Math.floor(Math.random() * this.cards.length)]
-      _.pull(this.cards, card)
+      this.cards = _.without(this.cards, card)
       player.hand.add(card)
     }
+    player.game.channel.sendMessage(`Player ${player.member.displayName} has `)
     return player.hand
   }
 
