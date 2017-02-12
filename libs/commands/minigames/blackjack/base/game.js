@@ -11,7 +11,7 @@ module.exports = class BlackjackGame {
   constructor(args) {
     this.deck = new BlackjackDeck()
     this.dealer = new BlackjackPlayer(args.guild.member(args.guild.client.user))
-    this.players = new Array()
+    this.players = new Object()
     this.channel = args.channel
     this.guild = args.guild
     this.setup(args)
@@ -20,13 +20,23 @@ module.exports = class BlackjackGame {
     })
   }
 
+  addPlayer(member) {
+    if(this.players[member.id]) return false
+    this.players[member.id] = new BlackjackPlayer({ member: member, game: this })
+    return this.players[member.id]
+  }
+
+  removePlayer(member) {
+    if(!this.players[member.id]) return false
+    delete this.players[member.id]
+    return member
+  }
+
   checkWinConditions() {
     this.players.forEach((player) => {
       if(player.score > 21) {
-        player.status = "bust"
-        this.losers.push(player)
-      }
 
+      }
     })
   }
 

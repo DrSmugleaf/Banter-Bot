@@ -1001,6 +1001,24 @@ exports.responses = {
     }
   },
 
+  BLACKJACK: {
+    ADDED_PLAYER: {
+      english: (channel) => stripIndents`Added you to a game of blackjack.
+      You can play in ${channel}.
+      The actions you can take are \`draw\` and \`hit\`.`,
+      spanish: (channel) => stripIndents`Te he añadido a un juego de blackjack.
+      Puedes jugar en ${channel}.
+      Las acciones que puedes tomar son \`draw\` and \`hit\`.`,
+    },
+    REMOVED_PLAYER: {
+      english: "Removed you from a game of blackjack.",
+      spanish: "Te he quitado de un juego de blackjack."
+    },
+    SETUP_GAME: {
+      english: "A game of blackjack has been setup."
+    }
+  },
+
   BLACKLIST: {
     BLACKLISTED: {
       english: (name) => `Blacklisted user \`${name}\`.`,
