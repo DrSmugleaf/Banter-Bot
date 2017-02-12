@@ -20,5 +20,6 @@ module.exports = class BlackjackHand {
 
   reset() {
     this.cards = new Array()
+    this.ace = false
   }
 }

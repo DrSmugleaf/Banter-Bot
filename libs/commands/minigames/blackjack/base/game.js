@@ -10,12 +10,23 @@ const winston = require("winston")
 module.exports = class BlackjackGame {
   constructor(args) {
     this.deck = new BlackjackDeck()
+    this.dealer = new BlackjackPlayer(args.guild.member(args.guild.client.user))
     this.players = new Array()
     this.channel = args.channel
     this.guild = args.guild
     this.setup(args)
     this.guild.client.on("message", (msg) => {
       this.onMessage(msg)
+    })
+  }
+
+  checkWinConditions() {
+    this.players.forEach((player) => {
+      if(player.score > 21) {
+        player.status = "bust"
+        this.losers.push(player)
+      }
+
     })
   }
 
