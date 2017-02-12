@@ -28,7 +28,7 @@ module.exports = class BlackjackDeck {
       player.hand.add(card)
       player.game.channel.sendMessage(`Player ${player.member.displayName} ${card.name}, total: ${player.hand.score}`)
     }
-    return player.hand
+    return player.hand.score
   }
 
   setup() {
@@ -45,6 +45,7 @@ module.exports = class BlackjackDeck {
   }
 
   reset() {
+    this.status = "playing"
     this.cards = this._cards
     return this.cards
   }

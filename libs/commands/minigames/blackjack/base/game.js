@@ -12,20 +12,22 @@ module.exports = class BlackjackGame {
   constructor(args) {
     this.deck = new BlackjackDeck()
     this.dealer = new BlackjackPlayer({ member: args.guild.member(args.guild.client.user), game: this })
-    this.players = new Discord.Collection() // map
+    this.players = new Discord.Collection()
     this.channel = args.channel
     this.guild = args.guild
-    this.time = 5 * 1000
+    this.time = 0.1 * 1000
     this.started = false
     this.guild.client.on("message", (msg) => {
       this.onMessage(msg)
     })
   }
 
-  addPlayer(member) {
+  async addPlayer(member) {
     if(this.players.get(member.id)) return false
-    this.players.set(member.id, new BlackjackPlayer({ member: member, game: this }))
-    this.deck.deal(this.players.get(member.id), 2)
+    const player = new BlackjackPlayer({ member: member, game: this })
+    this.players.set(member.id, player)
+    await this.deck.deal(this.players.get(member.id), 2)
+    if(player.hand.score === 21) player.blackjack()
     return this.players.get(member.id)
   }
 
@@ -45,8 +47,10 @@ module.exports = class BlackjackGame {
 
   onMessage(msg) {
     if(!msg.member) return
-    if(!this.players.get(msg.member.id)) return
-    if(this.players.get(msg.member.id).action) return
+    const player = this.players.get(msg.member.id)
+    if(!player) return
+    if(player.action) return
+    if(!player.status === "playing") return
     if(!["hit", "stand", "double", "split", "surrender"].includes(msg.content)) return
     if(!this.started) {
       this.started = true
@@ -55,16 +59,15 @@ module.exports = class BlackjackGame {
       }, this.time)
     }
 
-    const player = this.players.get(msg.member.id)
     switch(msg.content) {
     case "hit":
       if(player.hand.score >= 21) {
         return msg.reply("You can't draw, score: " + player.hand.score)
       }
-      this.players.get(msg.member.id).action = "hit"
+      player.action = "hit"
       break
     case "stand":
-      this.players.get(msg.member.id).action = "stand"
+      player.action = "stand"
       break
     }
 
@@ -94,12 +97,19 @@ module.exports = class BlackjackGame {
       }
 
       this.players.forEach((player) => {
-        if(this.dealer.hand.score > 21 || player.hand.score > this.dealer.hand.score) {
-          this.channel.sendMessage(player.member.displayName + " wins")
-        } else if(player.hand.score > 21 || player.hand.score < this.dealer.hand.score) {
-          this.channel.sendMessage(this.dealer.member.displayName + " wins")
+        if(this.dealer.hand.score > 21) {
+          return player.win()
+        }
+        if(player.hand.score > 21) {
+          return player.lose()
+        }
+
+        if(player.hand.score > this.dealer.hand.score) {
+          player.win()
+        } else if(player.hand.score < this.dealer.hand.score) {
+          player.lose()
         } else {
-          this.channel.sendMessage("tie")
+          player.tie()
         }
       })
     }
@@ -124,9 +134,10 @@ module.exports = class BlackjackGame {
   }
 
   next() {
-    this.players.forEach((player) => {
+    this.players.forEach(async (player) => {
       player.reset()
-      this.deck.deal(player, 2)
+      await player.deck.deal(player, 2)
+      if(player.hand.score === 21) player.blackjack()
     })
   }
 

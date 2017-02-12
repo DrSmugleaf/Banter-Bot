@@ -10,6 +10,7 @@ module.exports = class BlackjackHand {
     this.cardsSimple = new Array()
     this.score = 0
     this.ace = false
+    this.status = "playing"
   }
 
   add(card) {
