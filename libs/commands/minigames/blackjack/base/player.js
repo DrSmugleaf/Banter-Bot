@@ -7,6 +7,7 @@ const BlackjackHand = require("./hand")
 
 module.exports = class BlackjackPlayer {
   constructor(args) {
+    this.action = null
     this.member = args.member
     this.game = args.game
     this.hand = new BlackjackHand()

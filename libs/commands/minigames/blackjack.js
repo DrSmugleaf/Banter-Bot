@@ -34,10 +34,12 @@ module.exports = class Blackjack extends commando.Command {
 
     if(!game) {
       game = new BlackjackGame({ channel: msg.channel, guild: msg.guild })
+      this.games[msg.guild.id] = game
+      await game.setup()
       game.channel.sendMessage(responses.SETUP_GAME[msg.language])
     }
 
-    if(!game.players[msg.member.id]) {
+    if(!game.players.get(msg.member.id)) {
       game.addPlayer(msg.member)
       msg.reply(responses.ADDED_PLAYER[msg.language](game.channel.name))
     } else {
@@ -45,7 +47,7 @@ module.exports = class Blackjack extends commando.Command {
       msg.reply(responses.REMOVED_PLAYER[msg.language])
     }
 
-    if(game.players.length < 1) {
+    if(game.players.size < 1) {
       delete this.games[msg.guild.id]
     }
   }
