@@ -1012,6 +1012,10 @@ exports.responses = {
       Las acciones que puedes tomar son \`draw\` and \`hit\`.
       Te puedes quitar de la partida en cualquier momento usando este comando de nuevo.`,
     },
+    REMOVED_INACTIVE: {
+      english: (name) => `Removed player ${name} for inactivity.`,
+      spanish: (name) => `Echado jugador ${name} por inactividad.`
+    },
     REMOVED_PLAYER: {
       english: "Removed you from a game of blackjack.",
       spanish: "Te he quitado de un juego de blackjack."

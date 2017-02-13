@@ -5,6 +5,7 @@
 "use strict"
 const BlackjackDeck = require("./deck")
 const BlackjackPlayer = require("./player")
+const responses = require("../../../../util/constants").responses.BLACKJACK
 const Discord = require("discord.js")
 const winston = require("winston")
 
@@ -35,14 +36,6 @@ module.exports = class BlackjackGame {
     if(!this.players.get(member.id)) return false
     this.players.delete(member.id)
     return member
-  }
-
-  checkWinConditions() {
-    this.players.forEach((player) => {
-      if(player.score > 21) {
-
-      }
-    })
   }
 
   onMessage(msg) {
@@ -90,7 +83,7 @@ module.exports = class BlackjackGame {
         break
       default:
         this.removePlayer(player)
-        this.channel.sendMessage(`Removed player ${player.name} for inactivity`)
+        this.channel.sendMessage(responses.REMOVED_INACTIVE[this.guild.language](player.member.displayName))
       }
     })
 
@@ -100,11 +93,11 @@ module.exports = class BlackjackGame {
       }
 
       this.players.forEach((player) => {
-        if(this.dealer.hand.score > 21) {
-          return player.win()
-        }
         if(player.hand.score > 21) {
           return player.lose()
+        }
+        if(this.dealer.hand.score > 21) {
+          return player.win()
         }
 
         if(player.hand.score > this.dealer.hand.score) {
