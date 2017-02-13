@@ -66,8 +66,10 @@ module.exports = class CustomCommandAdmin extends commando.Command {
     const action = args.action
     const commandName = args.command
     const command = this.client.registry.commands.get(commandName)
-    if(!command) return msg.reply(constants.responses.CUSTOM_COMMAND.DOESNT_EXIST[msg.language](commandName))
-    const commands = msg.guild.settings.get("custom-commands")
+    const commands = msg.guild.settings.get("custom-commands", {})
+    if(!command || !commands || !commands[commandName]) {
+      return msg.reply(constants.responses.CUSTOM_COMMAND.DOESNT_EXIST[msg.language](commandName))
+    }
 
     switch (action) {
     case "remove":
