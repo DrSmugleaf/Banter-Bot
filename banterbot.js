@@ -86,3 +86,7 @@ client.registry
   .registerCommandsIn(path.join(__dirname, "libs/commands"))
 
 client.login(token)
+
+module.exports = {
+  client: client
+}
