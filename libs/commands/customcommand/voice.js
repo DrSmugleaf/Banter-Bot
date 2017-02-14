@@ -61,8 +61,9 @@ module.exports = class CustomVoiceCommand extends commando.Command {
     }
     CustomCommandAdmin.registerCommand(msg.guild, name, command)
 
-    return msg.reply(constants.responses.CUSTOM_COMMAND.REGISTERED[msg.language](
-      name, this.client.commandPrefix || `<@${msg.client.user.id}> `
-    ))
+    const commandPrefix = msg.guild.commandPrefix
+    const prefix = commandPrefix ? commandPrefix : commandPrefix === "" ?
+      `<@${msg.client.user.id}>` : msg.client.options.commandPrefix
+    return msg.reply(constants.responses.CUSTOM_COMMAND.REGISTERED[msg.language](prefix + name))
   }
 }

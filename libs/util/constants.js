@@ -1122,10 +1122,8 @@ exports.responses = {
       spanish: (name) => `El miembro ${name} no está actualmente en un canal de voz.`
     },
     REGISTERED: {
-      english: (name, commandPrefix) => oneLine`Added command ${name},
-        use ${commandPrefix}${name} to use it.`,
-      spanish: (name, commandPrefix) => oneLine`Añadido comando ${name},
-        usa ${commandPrefix}${name} para usarlo.`
+      english: (name) => oneLine`Added command ${name}, use ${name} to use it.`,
+      spanish: (name) => oneLine`Añadido comando ${name}, usa ${name} para usarlo.`
     },
     UNREGISTERED: {
       english: (name) => `Removed custom command \`${name}\`.`,
