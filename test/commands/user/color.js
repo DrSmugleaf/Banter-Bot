@@ -6,8 +6,24 @@
 const expect = require("chai").expect
 
 describe("Color", function() {
+
+  before(function() {
+    return global.channel.sendMessage("!!color").then((initialMsg) => {
+      const command = global.client.dispatcher.parseMessage(initialMsg)
+      command.run()
+    })
+  })
+
+  after(function() {
+    return global.channel.sendMessage("!!color").then((initialMsg) => {
+      const command = global.client.dispatcher.parseMessage(initialMsg)
+      command.run()
+    })
+  })
+
   describe("add", function() {
     const color = "#" + ("000000" + Math.random().toString(16).slice(2, 8).toUpperCase()).slice(-6)
+
     it("should return a discord reply with the color that has been set", function() {
       return global.channel.sendMessage(`!!color ${color}`).then((initialMsg) => {
         const command = global.client.dispatcher.parseMessage(initialMsg)
