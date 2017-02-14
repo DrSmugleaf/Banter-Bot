@@ -38,6 +38,16 @@ module.exports = class Color extends commando.Command {
     })
 
     this.roleName = (userid) => `color-${userid}`
+
+    this.client.once("dbReady", () => {
+      this.client.guilds.forEach((guild) => {
+        if(!guild.member(guild.client.user).hasPermission("MANAGE_ROLES_OR_PERMISSIONS")) return
+        const roles = guild.roles.filter((role) => {
+          return role.name.includes("color-") && role.members.size < 1
+        })
+        Promise.all(roles.deleteAll()).catch(() => { return })
+      })
+    })
   }
 
   parseColor(color) {
