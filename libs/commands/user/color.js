@@ -62,16 +62,16 @@ module.exports = class Color extends commando.Command {
       existingRole.edit({ color: color }).then(() => {
         return msg.reply(constants.responses.COLOR.ADDED[msg.language](msg.argString))
       }).catch(winston.error)
+    } else {
+      msg.guild.createRole({
+        name: this.roleName(msg.member.id),
+        color: color,
+        permissions: []
+      }).then(role => {
+        msg.member.addRole(role.id)
+        return msg.reply(constants.responses.COLOR.ADDED[msg.language](msg.argString))
+      }).catch(winston.error)
     }
-
-    msg.guild.createRole({
-      name: this.roleName(msg.member.id),
-      color: color,
-      permissions: []
-    }).then(role => {
-      msg.member.addRole(role.id)
-      return msg.reply(constants.responses.COLOR.ADDED[msg.language](msg.argString))
-    }).catch(winston.error)
   }
 
   removeColor(msg) {
