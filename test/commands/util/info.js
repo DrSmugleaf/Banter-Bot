@@ -17,7 +17,7 @@ describe("Info", function() {
           return msg.content !== "!info" && msg.author.id === global.client.user.id
         }, { maxMatches: 1 }).then((msg) => {
           const reply = msg.first().content.replace(`<@${global.client.user.id}>, `, "")
-          expect(global.constants.responses.INFO["english"]).to.include(reply)
+          expect(global.constants.responses.INFO["english"]).to.equal(reply)
         })
       })
     })
