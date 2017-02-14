@@ -12,7 +12,7 @@ before(function(done) {
   global.client = client
   client.on("dbReady", () => {
     global.guild = client.guilds.get("260158980343463937")
-    global.guild.createChannel("mocha-tests", "text").then((channel) => {
+    global.guild.createChannel("test", "text").then((channel) => {
       global.channel = channel
       done()
     })
