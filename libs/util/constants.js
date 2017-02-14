@@ -1050,8 +1050,8 @@ exports.responses = {
 
   COLOR: {
     ADDED: {
-      english: (hex) => `Added name color\`${hex}\`.`,
-      spanish: (hex) => `Añadido color de nombre\`${hex}\`.`
+      english: (hex) => `Added name color \`${hex}\`.`,
+      spanish: (hex) => `Añadido color de nombre \`${hex}\`.`
     },
     INVALID: {
       english: "Color doesn't exist or invalid code. Format: !color Name(English) / #RRGGBB / (R,G,B).",
