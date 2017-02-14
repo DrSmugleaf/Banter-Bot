@@ -1054,10 +1054,10 @@ exports.responses = {
       spanish: (hex) => `Añadido color de nombre \`${hex}\`.`
     },
     INVALID: {
-      english: "Color doesn't exist or invalid code. Format: !color Name(English) / #RRGGBB / (R,G,B).",
-      spanish: "Color no existe o código inválido. Formato: !color Nombre(Inglés) / #RRGGBB / (R,G,B)."
+      english: (color) => `Color \`${color}\` doesn't exist. Try a name in english or hex string (red, #FF0000).`,
+      spanish: (color) => `Color \`${color}\` no existe. Prueba a usar un nombre en inglés o hex (red, #FF0000).`
     },
-    MISSING: {
+    NO_COLOR_ROLE: {
       english: "You don't have a name color.",
       spanish: "No tienes un color de nombre."
     },

@@ -3,9 +3,10 @@
 //
 
 "use strict"
-const constants = require("../../util/constants")
 const commando = require("discord.js-commando")
+const constants = require("../../util/constants")
 const parse = require("parse-color")
+const responses = require("../../util/constants").responses.COLOR
 const winston = require("winston")
 
 module.exports = class Color extends commando.Command {
@@ -60,7 +61,7 @@ module.exports = class Color extends commando.Command {
 
     if(existingRole) {
       existingRole.edit({ color: color }).then(() => {
-        return msg.reply(constants.responses.COLOR.ADDED[msg.language](msg.argString))
+        return msg.reply(responses.ADDED[msg.language](msg.argString))
       }).catch(winston.error)
     } else {
       msg.guild.createRole({
@@ -69,7 +70,7 @@ module.exports = class Color extends commando.Command {
         permissions: []
       }).then(role => {
         msg.member.addRole(role.id)
-        return msg.reply(constants.responses.COLOR.ADDED[msg.language](msg.argString))
+        return msg.reply(responses.ADDED[msg.language](msg.argString))
       }).catch(winston.error)
     }
   }
@@ -79,23 +80,21 @@ module.exports = class Color extends commando.Command {
 
     if(role) {
       role.delete().then(() => {
-        return msg.reply(constants.responses.COLOR.REMOVED[msg.language])
+        return msg.reply(responses.REMOVED[msg.language])
       })
     } else {
-      return msg.reply(constants.responses.COLOR.MISSING[msg.language])
+      return msg.reply(responses.NO_COLOR_ROLE[msg.language])
     }
   }
 
   async run(msg, args) {
     if(!msg.channel.permissionsFor(msg.client.user).hasPermission("MANAGE_ROLES_OR_PERMISSIONS")) {
-      return msg.reply(constants.responses.COLOR.NO_PERMISSION[msg.language])
+      return msg.reply(responses.COLOR.NO_PERMISSION[msg.language])
     }
-    const color = args.color ? this.parseColor(args.color.toLowerCase().replace(/ |-|'|\/|/g, "")) : null
 
-    if(!color) {
-      return this.removeColor(msg, color)
-    } else {
-      return this.addColor(msg, color)
-    }
+    if(!color) return this.removeColor(msg)
+    const color = args.color ? this.parseColor(args.color.toLowerCase().replace(/ |-|'|\/|/g, "")) : null
+    if(!color) return msg.reply(responses.COLOR.INVALID[msg.language])
+    return this.addColor(msg, color)
   }
 }
