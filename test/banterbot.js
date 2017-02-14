@@ -17,7 +17,11 @@ before(function(done) {
       global.channel = channel
       global.channel.sendTest = function(message) {
         return new Promise(function(resolve) {
-          global.channel.sendMessage(message).then((initialMsg) => {
+          const commandPrefix = global.guild.commandPrefix
+          const prefix = commandPrefix ? commandPrefix : commandPrefix === "" ?
+            `<@${global.client.user.id}>` : global.client.options.commandPrefix
+
+          global.channel.sendMessage(prefix + message).then((initialMsg) => {
             const command = global.client.dispatcher.parseMessage(initialMsg)
             command.run()
 
