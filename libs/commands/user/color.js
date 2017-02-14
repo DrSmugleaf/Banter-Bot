@@ -92,9 +92,12 @@ module.exports = class Color extends commando.Command {
       return msg.reply(responses.COLOR.NO_PERMISSION[msg.language])
     }
 
-    if(!color) return this.removeColor(msg)
-    const color = args.color ? this.parseColor(args.color.toLowerCase().replace(/ |-|'|\/|/g, "")) : null
-    if(!color) return msg.reply(responses.COLOR.INVALID[msg.language])
-    return this.addColor(msg, color)
+    if(!args.color) {
+      return this.removeColor(msg)
+    } else {
+      const color = args.color ? this.parseColor(args.color.toLowerCase().replace(/ |-|'|\/|/g, "")) : null
+      if(!color) return msg.reply(responses.COLOR.INVALID[msg.language])
+      return this.addColor(msg, color)
+    }
   }
 }
