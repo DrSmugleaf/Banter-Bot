@@ -10,10 +10,27 @@ const client = require("../banterbot").client
 before(function(done) {
   global.constants = constants
   global.client = client
+
   client.on("dbReady", () => {
     global.guild = client.guilds.get("260158980343463937")
     global.guild.createChannel("test", "text").then((channel) => {
       global.channel = channel
+      global.channel.sendTest = function(message) {
+        return new Promise(function(resolve) {
+          global.channel.sendMessage(message).then((initialMsg) => {
+            const command = global.client.dispatcher.parseMessage(initialMsg)
+            command.run()
+
+            return global.channel.awaitMessages((m) => {
+              return m.author.id === global.client.user.id && m.id !== initialMsg.id
+            }, { maxMatches: 1 }).then((msg) => {
+              const reply = msg.first().content.replace(`<@${global.client.user.id}>, `, "")
+              resolve(reply)
+            })
+          })
+        })
+      }
+
       done()
     })
   })
