@@ -64,7 +64,7 @@ describe("Color", function() {
           ).hexColor.toUpperCase()
 
           // msg.argString has a space at the beggining
-          expect(reply).to.equal(global.constants.responses.COLOR.ADDED["english"](` ${color}`))
+          expect(reply).to.equal(global.constants.responses.COLOR.EDITED["english"](` ${color}`))
           expect(color).to.equal(roleColor)
         })
       })

@@ -61,7 +61,7 @@ module.exports = class Color extends commando.Command {
 
     if(existingRole) {
       existingRole.edit({ color: color }).then(() => {
-        return msg.reply(responses.ADDED[msg.language](msg.argString))
+        return msg.reply(responses.EDITED[msg.language](msg.argString))
       }).catch(winston.error)
     } else {
       msg.guild.createRole({

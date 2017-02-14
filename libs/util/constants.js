@@ -1053,6 +1053,10 @@ exports.responses = {
       english: (hex) => `Added name color \`${hex}\`.`,
       spanish: (hex) => `Añadido color de nombre \`${hex}\`.`
     },
+    EDITED: {
+      english: (hex) => `Changed your name color to \`${hex}\``,
+      spanish: (hex) => `He cambiado tu color de nombre a \`${hex}\``
+    },
     INVALID: {
       english: (color) => `Color \`${color}\` doesn't exist. Try a name in english or hex string (red, #FF0000).`,
       spanish: (color) => `Color \`${color}\` no existe. Prueba a usar un nombre en inglés o hex (red, #FF0000).`
