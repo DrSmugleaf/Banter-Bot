@@ -9,9 +9,18 @@ const DB = require("../util/db")
 class PostgreSQLProvider extends DB {
   constructor() {
     super()
+
+    this.init()
+  }
+
+  init() {
+    this.run("CREATE TABLE IF NOT EXISTS users (id BIGINT PRIMARY KEY, settings TEXT)")
   }
 
   run(query) {
+    if(query === "CREATE TABLE IF NOT EXISTS settings (guild INTEGER PRIMARY KEY, settings TEXT)") {
+      query = "CREATE TABLE IF NOT EXISTS settings (guild BIGINT PRIMARY KEY, settings TEXT)"
+    }
     return this.pgp.any(query)
   }
 
