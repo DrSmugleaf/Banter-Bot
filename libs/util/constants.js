@@ -1457,3 +1457,19 @@ exports.responses = {
 exports.youtube = {
   STREAM_OPTIONS: { seek: 0, volume: 0.25, passes: 2 }
 }
+
+for(const lang in exports.mslanguages) {
+  const language = exports.mslanguages[lang]
+
+  for(const response in exports.responses) {
+    for(const subresponse in exports.responses[response]) {
+      if(typeof exports.responses[response][subresponse] === "object") {
+        if(!exports.responses[response][subresponse][language]) {
+          exports.responses[response][subresponse][language] = function(...args) {
+            return exports.responses[response][subresponse]["english"](...args)
+          }
+        }
+      }
+    }
+  }
+}
