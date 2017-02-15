@@ -16,7 +16,6 @@ module.exports = class Language extends commando.Command {
       memberName: "language",
       description: "Set your language.",
       examples: ["language spanish", "language french"],
-      guildOnly: true,
       throttling: {
         usages: 2,
         duration: 3
@@ -41,7 +40,8 @@ module.exports = class Language extends commando.Command {
   async run(msg, args) {
     const language = args.language.toLowerCase()
 
-    msg.member.language = constants.mslanguages[language] || language
+    if(msg.guild) msg.member.language = constants.mslanguages[language] || language
+    else msg.author.language = constants.mslanguages[language] || language
 
     return msg.reply(constants.responses.LANGUAGE.SET[msg.language](language))
   }
