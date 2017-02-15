@@ -3,7 +3,7 @@
 //
 
 "use strict"
-const BlackjackGame = require("./blackjack/base/game")
+const BlackjackGame = require("./blackjack/game")
 const commando = require("discord.js-commando")
 const responses = require("../../util/constants").responses.BLACKJACK
 

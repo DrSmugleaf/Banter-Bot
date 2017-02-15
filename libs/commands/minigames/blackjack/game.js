@@ -5,7 +5,7 @@
 "use strict"
 const BlackjackDeck = require("./deck")
 const BlackjackPlayer = require("./player")
-const responses = require("../../../../util/constants").responses.BLACKJACK
+const responses = require("../../../util/constants").responses.BLACKJACK
 const Discord = require("discord.js")
 const winston = require("winston")
 

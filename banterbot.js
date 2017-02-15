@@ -5,10 +5,10 @@
 "use strict"
 const Commando = require("discord.js-commando")
 const Discord = require("discord.js")
-require("./libs/extensions/user").applyToClass(Discord.User)
 require("./libs/extensions/guild").applyToClass(Discord.Guild)
 require("./libs/extensions/member").applyToClass(Discord.GuildMember)
 require("./libs/extensions/message").applyToClass(Discord.Message)
+require("./libs/extensions/user").applyToClass(Discord.User)
 require("./libs/extensions/argument").applyToClass(Commando.CommandArgument)
 require("./libs/extensions/message").applyToClass(Commando.CommandMessage)
 require("./libs/util")
