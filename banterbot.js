@@ -68,9 +68,7 @@ client
   	`)
   })
 
-client.setProvider(
-  new Commando.SQLiteProvider(new PostgreSQLProvider())
-).then(() => {
+client.setProvider(new PostgreSQLProvider()).then(() => {
   client.emit("dbReady")
 }).catch(winston.error)
 
