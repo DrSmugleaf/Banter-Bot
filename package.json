@@ -25,7 +25,6 @@
     "erlpack": "git://github.com/hammerandchisel/erlpack.git#b3c9a6769b347299eb2eed10738c0b3b6cb96cb7",
     "eslint": "3.15.0",
     "express": "4.14.1",
-    "markov": "0.0.7",
     "moment-timezone": "0.5.11",
     "morgan": "1.8.1",
     "mstranslator": "2.1.1",
