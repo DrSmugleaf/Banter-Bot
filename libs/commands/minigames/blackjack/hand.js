@@ -23,7 +23,7 @@ module.exports = class BlackjackHand {
 
   add(card) {
     this.cards.push(card)
-    this.score += card.value
+    this.score = this._score + card.value
     if(card.name === "Ace") this.ace = true
     return this.score
   }
