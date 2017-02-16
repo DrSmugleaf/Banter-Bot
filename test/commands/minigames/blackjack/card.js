@@ -6,7 +6,7 @@
 const Card = require("../../../../libs/commands/minigames/blackjack/card")
 const expect = require("chai").expect
 
-describe("Card", function() {
+describe("Blackjack Card", function() {
   it("should create a new card object", function() {
     const card = new Card({ deck: "french", name: "Ace", value: 11, suit: {
       name: "clubs",
