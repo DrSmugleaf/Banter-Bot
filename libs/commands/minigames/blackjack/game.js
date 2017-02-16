@@ -10,41 +10,50 @@ const Discord = require("discord.js")
 const winston = require("winston")
 
 module.exports = class BlackjackGame {
-  constructor(args) {
+  constructor(msg) {
+    this.channel = msg.channel
+
+    this.guild = msg.guild
+
     this.deck = new BlackjackDeck()
-    this.dealer = new BlackjackPlayer({ member: args.guild.member(args.guild.client.user), game: this })
+
+    this.dealer = new BlackjackPlayer({ member: this.guild.member(this.guild.client.user), game: this })
+
     this.players = new Discord.Collection()
-    this.channel = args.channel
-    this.guild = args.guild
-    this.time = 0.1 * 1000
+
+    this.time = 0.1 * 5000
+
     this.started = false
+
     this.guild.client.on("message", (msg) => {
+      if(!msg.member || msg.channel.id !== this.channel.id) return
       this.onMessage(msg)
     })
+
+    this.setup()
   }
 
-  async addPlayer(member) {
-    if(this.players.get(member.id)) return false
-    const player = new BlackjackPlayer({ member: member, game: this })
-    this.players.set(member.id, player)
-    await this.deck.deal(this.players.get(member.id), 2)
-    if(player.hand.score === 21) player.blackjack()
-    return this.players.get(member.id)
+  async addPlayer(msg) {
+    if(this.players.get(msg.member.id)) return false
+
+    const player = new BlackjackPlayer({ member: msg.member, game: this })
+    this.players.set(msg.member.id, player)
+    msg.reply(responses.ADDED_PLAYER[msg.language](this.channel.name))
+    return this.players.get(msg.member.id)
   }
 
-  removePlayer(member) {
-    if(!this.players.get(member.id)) return false
-    this.players.delete(member.id)
-    return member
+  removePlayer(msg) {
+    if(!this.players.get(msg.member.id)) return false
+
+    this.players.delete(msg.member.id)
+    return msg.member
   }
 
   onMessage(msg) {
-    if(!msg.member) return
     const player = this.players.get(msg.member.id)
-    if(!player) return
-    if(player.action) return
-    if(!player.status === "playing") return
+    if(!player || player.action || player.status !== "playing") return
     if(!["hit", "stand", "double", "split", "surrender"].includes(msg.content)) return
+
     if(!this.started) {
       this.started = true
       this.timeout = setTimeout(() => {
@@ -109,6 +118,8 @@ module.exports = class BlackjackGame {
         }
       })
     }
+
+    this.next()
   }
 
   reset() {
@@ -125,14 +136,15 @@ module.exports = class BlackjackGame {
       }).catch(winston.error)
     }
 
-    if(this.dealer.hand.score < 17) this.deck.deal(this.dealer, 1)
     this.next()
   }
 
   next() {
+    this.deck.deal(this.dealer, 1)
+
     this.players.forEach(async (player) => {
       player.reset()
-      await player.deck.deal(player, 2)
+      await this.deck.deal(player, 2)
       if(player.hand.score === 21) player.blackjack()
     })
   }
