@@ -13,6 +13,7 @@ before(function(done) {
 
   client.on("dbReady", () => {
     global.guild = client.guilds.get("260158980343463937")
+    global.member = global.guild.member(global.guild.client.user)
     global.guild.createChannel("test", "text").then((channel) => {
       global.channel = channel
       global.channel.sendTest = function(message) {
