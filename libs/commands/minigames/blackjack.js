@@ -5,6 +5,7 @@
 "use strict"
 const BlackjackGame = require("./blackjack/game")
 const commando = require("discord.js-commando")
+const responses = require("../../util/constants").responses.BLACKJACK
 
 module.exports = class Blackjack extends commando.Command {
   constructor(client) {
@@ -32,18 +33,16 @@ module.exports = class Blackjack extends commando.Command {
     var game = this.games[msg.guild.id]
 
     if(!game) {
-      game = new BlackjackGame(msg)
+      game = new BlackjackGame(msg).on("end", () => delete this.games[msg.guild.id])
       this.games[msg.guild.id] = game
     }
 
     if(!game.players.get(msg.member.id)) {
-      game.addPlayer(msg)
+      game.addPlayer(msg.member)
+      msg.reply(responses.ADDED_PLAYER[msg.language](game.channel.name))
     } else {
-      game.removePlayer(msg)
-    }
-
-    if(game.players.size < 1) {
-      delete this.games[msg.guild.id]
+      game.removePlayer(msg.member)
+      msg.reply(responses.REMOVED_PLAYER[msg.language])
     }
   }
 }

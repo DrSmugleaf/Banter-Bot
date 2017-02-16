@@ -5,12 +5,15 @@
 "use strict"
 const BlackjackDeck = require("./deck")
 const BlackjackPlayer = require("./player")
+const EventEmitter = require("events").EventEmitter
 const responses = require("../../../util/constants").responses.BLACKJACK
 const Discord = require("discord.js")
 const winston = require("winston")
 
-module.exports = class BlackjackGame {
+module.exports = class BlackjackGame extends EventEmitter {
   constructor(msg) {
+    super()
+
     this.channel = msg.channel
 
     this.guild = msg.guild
@@ -33,20 +36,16 @@ module.exports = class BlackjackGame {
     this.setup()
   }
 
-  async addPlayer(msg) {
-    if(this.players.get(msg.member.id)) return false
-
-    const player = new BlackjackPlayer({ member: msg.member, game: this })
-    this.players.set(msg.member.id, player)
-    msg.reply(responses.ADDED_PLAYER[msg.language](this.channel.name))
-    return this.players.get(msg.member.id)
+  async addPlayer(member) {
+    const player = new BlackjackPlayer({ member: member, game: this })
+    this.players.set(member.id, player)
+    return this.players.get(member.id)
   }
 
-  removePlayer(msg) {
-    if(!this.players.get(msg.member.id)) return false
-
-    this.players.delete(msg.member.id)
-    return msg.member
+  removePlayer(member) {
+    this.players.delete(member.id)
+    if(this.players.size < 1) this.end()
+    return member
   }
 
   onMessage(msg) {
@@ -150,6 +149,6 @@ module.exports = class BlackjackGame {
   }
 
   end() {
-    this.channel.delete().catch(winston.error)
+    this.emit("end")
   }
 }
