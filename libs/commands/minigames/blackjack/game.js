@@ -114,9 +114,9 @@ module.exports = class BlackjackGame extends EventEmitter {
           player.tie()
         }
       })
+    } else {
+      this.next()
     }
-
-    this.next()
   }
 
   reset() {
@@ -133,16 +133,24 @@ module.exports = class BlackjackGame extends EventEmitter {
       }).catch(winston.error)
     }
 
-    this.next()
+    this.start()
   }
 
-  next() {
+  start() {
     this.deck.deal(this.dealer, 1)
 
     this.players.forEach(async (player) => {
       player.reset()
       await this.deck.deal(player, 2)
       if(player.hand.score === 21) player.blackjack()
+    })
+  }
+
+  next() {
+    this.players.forEach((player) => {
+      if(player.action && player.status === "playing") {
+        player.action = null
+      }
     })
   }
 

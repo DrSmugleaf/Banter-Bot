@@ -7,13 +7,17 @@
 module.exports = class BlackjackHand {
   constructor() {
     this.cards = new Array()
-    this.ace = false
+    this.aces = 0
     this.status = "playing"
     this._score = 0
   }
 
   get score() {
-    if(this._score > 21 && this.ace) return this._score - 10
+    if(this._score > 21 && this.aces > 0) {
+      if(!this.aces === 1) return this._score - 10
+      if(!this.aces > 1) return this._score - (10 * this.aces - 1)
+    }
+    if(this._score > 21 && this.aces > 0) return this._score - (10 * this.aces)
     return this._score
   }
 
@@ -24,7 +28,7 @@ module.exports = class BlackjackHand {
   add(card) {
     this.cards.push(card)
     this.score = this._score + card.value
-    if(card.name === "Ace") this.ace = true
+    if(card.name === "Ace") this.aces = true
     return this.score
   }
 
@@ -37,6 +41,6 @@ module.exports = class BlackjackHand {
 
   reset() {
     this.cards = new Array()
-    this.ace = false
+    this.aces = 0
   }
 }
