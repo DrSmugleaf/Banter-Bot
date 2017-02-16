@@ -39,7 +39,7 @@ module.exports = class Blackjack extends commando.Command {
 
     if(!game.players.get(msg.member.id)) {
       game.addPlayer(msg.member)
-      msg.reply(responses.ADDED_PLAYER[msg.language](game.channel.name))
+      msg.reply(responses.ADDED_PLAYER[msg.language](game.channel.id))
     } else {
       game.removePlayer(msg.member)
       msg.reply(responses.REMOVED_PLAYER[msg.language])
