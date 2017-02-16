@@ -32,8 +32,6 @@ module.exports = class BlackjackGame extends EventEmitter {
       if(!msg.member || msg.channel.id !== this.channel.id) return
       this.onMessage(msg)
     })
-
-    this.setup()
   }
 
   async addPlayer(member) {

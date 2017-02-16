@@ -34,6 +34,7 @@ module.exports = class Blackjack extends commando.Command {
 
     if(!game) {
       game = new BlackjackGame(msg).on("end", () => delete this.games[msg.guild.id])
+      await game.setup()
       this.games[msg.guild.id] = game
     }
 
