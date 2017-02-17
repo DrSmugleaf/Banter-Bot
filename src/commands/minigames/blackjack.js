@@ -41,8 +41,6 @@ module.exports = class Blackjack extends commando.Command {
   }
 
   async setupGame(msg) {
-    const game = new BlackjackGame({ dealerID: msg.client.user.id, deck: "french", decks: 1 })
-
     var channel
     if(msg.guild.member(msg.client.user).hasPermission("MANAGE_CHANNELS")) {
       await msg.guild.createChannel("bb-blackjack", "text").then((ch) => {
@@ -51,6 +49,15 @@ module.exports = class Blackjack extends commando.Command {
     } else {
       channel = msg.channel
     }
+
+    const game = new BlackjackGame({ dealerID: msg.client.user.id, deck: "french", decks: 1 })
+      .on("blackjack", (player) => channel.sendMessage(`${player.id} blackjack`))
+      .on("deal", (player, card) => channel.sendMessage(`${player.id}, ${card.name}, ${player.hand.score}`))
+      .on("end", () => channel.delete())
+      .on("lose", (player) => channel.sendMessage(`${player.id} loses`))
+      .on("removedInactive", (player) => channel.sendMessage(`${player.id} removed for inactivity`))
+      .on("tie", (player) => channel.sendMessage(`${player.id} ties`))
+      .on("win", (player) => channel.sendMessage(`${player.id} wins`))
 
     this.games[msg.guild.id] = { game: game, channel: channel }
 

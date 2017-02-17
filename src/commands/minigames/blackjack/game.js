@@ -27,7 +27,7 @@ module.exports = class BlackjackGame extends EventEmitter {
     this.turnStarted = false
 
     this.on("action", () => {
-      if(this.players.every((player) => player.action)) this.processTurn()
+      if(this.players.every((player) => player.action)) return this.processTurn()
       if(this.started) return
       this.started = true
       this.timeout = setTimeout(() => {
@@ -64,7 +64,6 @@ module.exports = class BlackjackGame extends EventEmitter {
       switch(player.action) {
       case "hit":
         this.deck.deal(player, 1)
-        player.action = null
         break
       case "stand":
         break
@@ -76,7 +75,7 @@ module.exports = class BlackjackGame extends EventEmitter {
       if(player.hand.score > 21) return player.lose()
     })
 
-    if(this.players.every((player) => player.status = "lose" || player.action === "stand" )) {
+    if(this.players.every((player) => player.status === "lose" || player.action === "stand" )) {
       while(this.dealer.hand.score < 17) {
         this.deck.deal(this.dealer, 1)
       }
@@ -90,11 +89,12 @@ module.exports = class BlackjackGame extends EventEmitter {
 
       return this.start()
     } else {
-      this.nextTurn()
+      return this.nextTurn()
     }
   }
 
   start() {
+    this.dealer.reset()
     this.deck.deal(this.dealer, 1)
 
     this.players.forEach((player) => {

@@ -1207,11 +1207,11 @@ exports.responses = {
     },
     EMPTY: {
       english: "Quote empty, add text after the command.",
-      spanish: "Quote vacío, a\u00f1ade texto después del comando."
+      spanish: "Quote vacío, añade texto después del comando."
     },
     GET: {
-      english: (number, text) => `Quote #${number}: ${text}.`,
-      spanish: (number, text) => `Quote #${number}: ${text}.`
+      english: (number, text) => `Quote #${number}: ${text}`,
+      spanish: (number, text) => `Quote #${number}: ${text}`
     },
     INVALID: {
       english: "Invalid quote number.",
