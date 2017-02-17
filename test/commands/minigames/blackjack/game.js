@@ -82,10 +82,6 @@ describe("Blackjack Game", function() {
       game._reset()
     })
 
-    it("should have turnStarted be false, instant turn ending", function() {
-      expect(game.turnStarted).to.be.false
-    })
-
     describe("action: hit", function() {
       it("should have turnStarted be false, instant turn ending", function() {
         player.action = "hit"
