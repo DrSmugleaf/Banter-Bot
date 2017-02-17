@@ -8,7 +8,7 @@
   "main": "banterbot.js",
   "scripts": {
     "start": "nodemon banterbot.js",
-    "test": "node --harmony --trace-warnings banterbot.js && mocha --harmony --trace-warnings --recursive --timeout 5000 --bail"
+    "test": "node --harmony --trace-warnings banterbot.js && mocha --harmony --trace-warnings --recursive --timeout 10000 --bail"
   },
   "repository": {
     "type": "git",

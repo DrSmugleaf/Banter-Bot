@@ -41,10 +41,6 @@ before(function(done) {
   })
 })
 
-beforeEach(function(done) {
-  setTimeout(done, 2000)
-})
-
 after(function() {
   return global.channel.delete()
 })
