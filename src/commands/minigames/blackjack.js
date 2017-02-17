@@ -37,6 +37,7 @@ module.exports = class Blackjack extends commando.Command {
     if(msg.channel.id !== game.channel.id) return
     if(!game.hasPlayer(msg.member.id)) return
     if(!["hit", "stand", "double", "split", "surrender"].includes(msg.content)) return
+    if(game.getPlayer(msg.member.id).action) return
 
     game.getPlayer(msg.member.id).action = msg.content
   }
