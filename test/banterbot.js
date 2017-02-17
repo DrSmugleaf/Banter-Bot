@@ -4,7 +4,7 @@
 
 "use strict"
 require("dotenv").config({ path: __dirname + "/../.env" })
-const constants = require("../libs/util/constants")
+const constants = require("../src/util/constants")
 const client = require("../banterbot").client
 
 before(function(done) {

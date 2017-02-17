@@ -3,7 +3,7 @@
 //
 
 // "use strict"
-// const BlackjackDeck = require("../../../../libs/commands/minigames/blackjack/deck")
+// const BlackjackDeck = require("../../../../src/commands/minigames/blackjack/deck")
 // const expect = require("chai").expect
 //
 // describe("Blackjack Deck", function() {
