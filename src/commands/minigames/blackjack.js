@@ -32,12 +32,12 @@ module.exports = class Blackjack extends commando.Command {
   }
 
   onMessage(msg) {
-    const game = this.games[msg.guild.id]
-    if(!game) return
-    if(msg.channel.id !== game.channel.id) return
-    if(!game.hasPlayer(msg.member.id)) return
+    const blackjack = this.games[msg.guild.id]
+    if(!blackjack) return
+    if(msg.channel.id !== blackjack.channel.id) return
+    if(!blackjack.game.hasPlayer(msg.member.id)) return
 
-    game.getPlayer(msg.member.id).action = msg.content
+    blackjack.game.getPlayer(msg.member.id).action = msg.content
   }
 
   async setupGame(msg) {

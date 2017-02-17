@@ -27,10 +27,11 @@ module.exports = class BlackjackGame extends EventEmitter {
     this.turnStarted = false
 
     this.on("action", () => {
-      if(this.started || this.timeout) return
+      if(this.players.every((player) => player.action)) this.processTurn()
+      if(this.started) return
       this.started = true
       this.timeout = setTimeout(() => {
-        this.processTurn
+        this.processTurn()
       }, this.time)
     })
 
@@ -38,7 +39,7 @@ module.exports = class BlackjackGame extends EventEmitter {
   }
 
   addPlayer(id) {
-    const player = new BlackjackPlayer(id)
+    const player = new BlackjackPlayer({ game: this, id: id })
     this.players.set(id, player)
     this.playerCount++
     return player
