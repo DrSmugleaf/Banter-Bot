@@ -44,10 +44,10 @@ module.exports = class BlackjackFrenchDeck {
     ]
   }
 
-  static setup() {
+  setup() {
     var deck = new Array()
     this.suits.forEach((suit) => {
-      this.cards.concat(this._cards(suit))
+      deck = deck.concat(this.cards(suit))
     })
     return deck
   }

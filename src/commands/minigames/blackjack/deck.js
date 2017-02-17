@@ -7,9 +7,9 @@ const _ = require("underscore")
 const path = require("path")
 const Decks = require("require-all")({
   dirname: path.join(__dirname, "decks"),
-  // resolve: function(Controller) {
-  //   return new Controller()
-  // }
+  resolve: function(Controller) {
+    return new Controller()
+  }
 })
 
 module.exports = class BlackjackDeck {
@@ -49,9 +49,9 @@ module.exports = class BlackjackDeck {
     return this.cards
   }
 
-  setup(cards) {
+  setup() {
     for(var i = 0; i < this.amount; i++) {
-      this.cards = this.cards.concat(cards)
+      this.cards = this.cards.concat(this.deck)
     }
 
     this.cards = this.shuffle(this.cards)

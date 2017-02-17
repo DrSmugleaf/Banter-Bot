@@ -7,7 +7,7 @@ const BlackjackHand = require("./hand")
 
 module.exports = class BlackjackPlayer {
   constructor(data) {
-    this.action = null
+    this._action = null
 
     this.id = data.id
 
@@ -16,6 +16,19 @@ module.exports = class BlackjackPlayer {
     this.hand = new BlackjackHand()
 
     this.status = "playing"
+  }
+
+  get action() {
+    return this._action
+  }
+
+  set action(action) {
+    if(!this.status === "playing") return
+    if(!["hit", "stand", "double", "split", "surrender"].includes(action)) return
+    if(this._action) return
+
+    this._action = action
+    this.game.emit("action", this)
   }
 
   blackjack() {

@@ -36,36 +36,36 @@ module.exports = class Blackjack extends commando.Command {
     if(!game) return
     if(msg.channel.id !== game.channel.id) return
     if(!game.hasPlayer(msg.member.id)) return
-    if(!["hit", "stand", "double", "split", "surrender"].includes(msg.content)) return
-    if(game.getPlayer(msg.member.id).action) return
 
     game.getPlayer(msg.member.id).action = msg.content
   }
 
-  async run(msg) {
-    var game = this.games[msg.guild.id]
+  async setupGame(msg) {
+    const game = new BlackjackGame({ dealerID: msg.client.user.id, deck: "french", decks: 1 })
 
-    if(!game) {
-      game = new BlackjackGame({ dealerID: msg.client.user.id, deck: "french", decks: 1 })
-
-      var channel
-      if(msg.guild.member(msg.client.user).hasPermission("MANAGE_CHANNELS")) {
-        await msg.guild.createChannel("bb-blackjack", "text").then((ch) => {
-          channel = ch
-        })
-      } else {
-        channel = msg.channel
-      }
-
-      this.games[msg.guild.id] = { game: game, channel: channel }
+    var channel
+    if(msg.guild.member(msg.client.user).hasPermission("MANAGE_CHANNELS")) {
+      await msg.guild.createChannel("bb-blackjack", "text").then((ch) => {
+        channel = ch
+      })
+    } else {
+      channel = msg.channel
     }
 
-    if(!game.hasPlayer(msg.member.id)) {
-      game.addPlayer(msg.member.id)
-      msg.reply(responses.ADDED_PLAYER[msg.language](channel.name))
+    this.games[msg.guild.id] = { game: game, channel: channel }
+
+    return this.games[msg.guild.id]
+  }
+
+  async run(msg) {
+    var blackjack = this.games[msg.guild.id] || await this.setupGame(msg)
+
+    if(!blackjack.game.hasPlayer(msg.member.id)) {
+      blackjack.game.addPlayer(msg.member.id)
+      msg.reply(responses.ADDED_PLAYER[msg.language](blackjack.channel.id))
     } else {
-      game.removePlayer(msg.member.id)
-      msg.reply(responses.REMOVED_PLAYED[msg.language])
+      blackjack.game.removePlayer(msg.member.id)
+      msg.reply(responses.REMOVED_PLAYER[msg.language])
     }
   }
 }
