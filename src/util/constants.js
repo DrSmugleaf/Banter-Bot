@@ -1013,7 +1013,7 @@ exports.responses = {
       Te puedes quitar de la partida en cualquier momento usando este comando de nuevo.`,
     },
     DEAL: {
-      
+
     },
     REMOVED_INACTIVE: {
       english: (name) => `Removed player ${name} for inactivity.`,
@@ -1382,7 +1382,7 @@ exports.responses = {
       spanish: "No hay ninguna canción puesta o pausada actualmente."
     },
     NOT_IN_VOICE_CHANNEL: {
-      english: "You arent in a voice channel.",
+      english: "You aren't in a voice channel.",
       spanish: "No estás en un canal de voz."
     },
     NOT_SAME_VOICE_CHANNEL: {
