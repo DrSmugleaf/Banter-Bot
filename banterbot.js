@@ -5,13 +5,13 @@
 "use strict"
 const Commando = require("discord.js-commando")
 const Discord = require("discord.js")
-require("./libs/extensions/guild").applyToClass(Discord.Guild)
-require("./libs/extensions/member").applyToClass(Discord.GuildMember)
-require("./libs/extensions/message").applyToClass(Discord.Message)
-require("./libs/extensions/user").applyToClass(Discord.User)
-require("./libs/extensions/argument").applyToClass(Commando.CommandArgument)
-require("./libs/extensions/message").applyToClass(Commando.CommandMessage)
-require("./libs/util")
+require("./src/extensions/guild").applyToClass(Discord.Guild)
+require("./src/extensions/member").applyToClass(Discord.GuildMember)
+require("./src/extensions/message").applyToClass(Discord.Message)
+require("./src/extensions/user").applyToClass(Discord.User)
+require("./src/extensions/argument").applyToClass(Commando.CommandArgument)
+require("./src/extensions/message").applyToClass(Commando.CommandMessage)
+require("./src/util")
 const client = new Commando.Client({
   commandPrefix: process.env.NODE_ENV === "dev" ? "!!" : "!",
   invite: "https://discord.gg/yyDWNBr",
@@ -20,14 +20,14 @@ const client = new Commando.Client({
 })
 const oneLine = require("common-tags").oneLine
 const path = require("path")
-const PostgreSQLProvider = require("./libs/providers/postgresql")
-const Sender = require("./libs/bridge/sender")
+const PostgreSQLProvider = require("./src/providers/postgresql")
+const Sender = require("./src/bridge/sender")
 new Sender(client)
 const token = process.env.NODE_ENV === "dev" ?
   process.env.DISCORD_TOKEN_DEV : process.env.DISCORD_TOKEN
-const VersionAnnouncer = require("./libs/announcer/version")
+const VersionAnnouncer = require("./src/announcer/version")
 new VersionAnnouncer(client)
-// const AutoChannel = require("./libs/autochannel/autochannel")
+// const AutoChannel = require("./src/autochannel/autochannel")
 const winston = require("winston")
 
 client
@@ -82,7 +82,7 @@ client.registry
   .registerGroup("user", "User")
   .registerGroup("youtube", "Youtube")
   .registerDefaults()
-  .registerCommandsIn(path.join(__dirname, "libs/commands"))
+  .registerCommandsIn(path.join(__dirname, "src/commands"))
 
 client.login(token)
 
