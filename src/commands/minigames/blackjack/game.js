@@ -32,8 +32,12 @@ module.exports = class BlackjackGame extends EventEmitter {
     return player
   }
 
-  hasPlayer(id) {
+  getPlayer(id) {
     return this.players.get(id)
+  }
+
+  hasPlayer(id) {
+    return this.players.has(id)
   }
 
   removePlayer(id) {

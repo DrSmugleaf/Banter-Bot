@@ -26,7 +26,19 @@ module.exports = class Blackjack extends commando.Command {
       })
     })
 
+    this.client.on("message", (msg) => this.onMessage(msg))
+
     this.games = new Object()
+  }
+
+  onMessage(msg) {
+    const game = this.games[msg.guild.id]
+    if(!game) return
+    if(msg.channel.id !== game.channel.id) return
+    if(!game.hasPlayer(msg.member.id)) return
+    if(!["hit", "stand", "double", "split", "surrender"].includes(msg.content)) return
+
+    game.getPlayer(msg.member.id).action = msg.content
   }
 
   async run(msg) {
@@ -34,7 +46,6 @@ module.exports = class Blackjack extends commando.Command {
 
     if(!game) {
       game = new BlackjackGame({ dealerID: msg.client.user.id, deck: "french", decks: 1 })
-      this.games[msg.guild.id] = game
 
       var channel
       if(msg.guild.member(msg.client.user).hasPermission("MANAGE_CHANNELS")) {
@@ -44,11 +55,16 @@ module.exports = class Blackjack extends commando.Command {
       } else {
         channel = msg.channel
       }
+
+      this.games[msg.guild.id] = { game: game, channel: channel }
     }
 
     if(!game.hasPlayer(msg.member.id)) {
       game.addPlayer(msg.member.id)
-      msg.reply(responses.ADDED_PLAYER[msg.language])
+      msg.reply(responses.ADDED_PLAYER[msg.language](channel.name))
+    } else {
+      game.removePlayer(msg.member.id)
+      msg.reply(responses.REMOVED_PLAYED[msg.language])
     }
   }
 }
