@@ -13,7 +13,7 @@ const Decks = require("require-all")({
 })
 
 module.exports = class BlackjackDeck {
-  constructor(args = {}) {
+  constructor(args) {
     this.game = args.game
 
     this.name = args.name
