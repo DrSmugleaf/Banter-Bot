@@ -7,46 +7,55 @@ const _ = require("underscore")
 const path = require("path")
 const Decks = require("require-all")({
   dirname: path.join(__dirname, "decks"),
-  resolve: function(Controller) {
-    return new Controller()
-  }
+  // resolve: function(Controller) {
+  //   return new Controller()
+  // }
 })
 
 module.exports = class BlackjackDeck {
   constructor(args = {}) {
-    this.name = args.name || "french"
-    this.amount = args.decks || 1
+    this.game = args.game
+
+    this.name = args.name
+
+    this.amount = args.decks
+
     this.decks = Decks
-    this.deck = this.decks[args.name]
-    this.cards = this.setup()
+
+    this.deck = this.decks[this.name].setup()
+
+    this.cards = new Array()
+
+    this._cards = new Array()
+
+    this.setup()
   }
 
-  deal(player, cards) {
-    for(var i = 0; i < cards; i++) {
+  deal(player, amount) {
+    var cards = new Array()
+    for(var i = 0; i < amount; i++) {
       const card = this.cards[Math.floor(Math.random() * this.cards.length)]
+      cards.push(card)
       this.cards = _.without(this.cards, card)
       player.hand.add(card)
-      player.game.channel.sendMessage(`Player ${player.member.displayName} ${card.name}, total: ${player.hand.score}`)
     }
+
+    this.game.emit("deal", player, cards)
     return player.hand.score
   }
 
-  setup() {
-    if(52 * this.amount > 416) throw new Error("Number of cards in blackjack can't exceed 416")
-
-    const originalDeck = this.decks[this.name].setup()
-    var cards = new Array()
-    for(var i = 0; i < this.amount; i++) {
-      cards = cards.concat(originalDeck)
-    }
-    cards = this.shuffle(cards)
-    this._cards = cards
-    return cards
+  reset() {
+    this.cards = this.shuffle(this._cards)
+    return this.cards
   }
 
-  reset() {
-    this.status = "playing"
-    this.cards = this._cards
+  setup(cards) {
+    for(var i = 0; i < this.amount; i++) {
+      this.cards = this.cards.concat(cards)
+    }
+
+    this.cards = this.shuffle(this.cards)
+    this._cards = this.cards
     return this.cards
   }
 

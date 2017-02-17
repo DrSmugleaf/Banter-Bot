@@ -5,156 +5,95 @@
 "use strict"
 const BlackjackDeck = require("./deck")
 const BlackjackPlayer = require("./player")
-const EventEmitter = require("events").EventEmitter
-const responses = require("../../../util/constants").responses.BLACKJACK
 const Discord = require("discord.js")
-const winston = require("winston")
+const EventEmitter = require("events").EventEmitter
 
 module.exports = class BlackjackGame extends EventEmitter {
-  constructor(msg) {
+  constructor(data) {
     super()
 
-    this.channel = msg.channel
+    this.dealer = new BlackjackPlayer({ id: data.dealerID, game: this })
 
-    this.guild = msg.guild
+    this.deck = new BlackjackDeck({ game: this, name: data.deck, decks: data.decks })
 
-    this.deck = new BlackjackDeck()
-
-    this.dealer = new BlackjackPlayer({ member: this.guild.member(this.guild.client.user), game: this })
+    this.playerCount = 0
 
     this.players = new Discord.Collection()
 
-    this.time = 0.1 * 5000
+    this.timeLimit = 5 * 1000
 
-    this.started = false
-
-    this.guild.client.on("message", (msg) => {
-      if(!msg.member || msg.channel.id !== this.channel.id) return
-      this.onMessage(msg)
-    })
+    this.start()
   }
 
-  async addPlayer(member) {
-    const player = new BlackjackPlayer({ member: member, game: this })
-    this.players.set(member.id, player)
-    return this.players.get(member.id)
+  addPlayer(id) {
+    const player = new BlackjackPlayer(id)
+    this.players.set(id, player)
+    this.playerCount++
+    return player
   }
 
-  removePlayer(member) {
-    this.players.delete(member.id)
-    if(this.players.size < 1) this.end()
-    return member
+  hasPlayer(id) {
+    return this.players.get(id)
   }
 
-  onMessage(msg) {
-    const player = this.players.get(msg.member.id)
-    if(!player || player.action || player.status !== "playing") return
-    if(!["hit", "stand", "double", "split", "surrender"].includes(msg.content)) return
-
-    if(!this.started) {
-      this.started = true
-      this.timeout = setTimeout(() => {
-        this.processTurn()
-      }, this.time)
-    }
-
-    switch(msg.content) {
-    case "hit":
-      if(player.hand.score >= 21) {
-        return msg.reply("You can't draw, score: " + player.hand.score)
-      }
-      player.action = "hit"
-      break
-    case "stand":
-      player.action = "stand"
-      break
-    }
-
-    if(this.players.every((player) => player.action)) {
-      clearTimeout(this.timeout)
-      this.processTurn()
-    }
+  removePlayer(id) {
+    return this.players.delete(id)
   }
 
   processTurn() {
-    this.started = false
+    this.turnStarted = false
 
     this.players.forEach((player) => {
       switch(player.action) {
+      case "hit":
+        this.deck.deal(player, 1)
+        player.action = null
+        break
       case "stand":
         break
-      case "hit":
-        player.action = null
-        this.deck.deal(player, 1)
-        break
       default:
-        this.removePlayer(player)
-        this.channel.sendMessage(responses.REMOVED_INACTIVE[this.guild.language](player.member.displayName))
+        this.removePlayer(player.id)
+        this.emit("removedInactive", player)
       }
+
+      if(player.hand.score > 21) return player.lose()
     })
 
-    if(this.players.every((player) => player.action === "stand")) {
-      while (this.dealer.hand.score < 17) {
+    if(this.players.every((player) => player.status = "lose" || player.action === "stand" )) {
+      while(this.dealer.hand.score < 17) {
         this.deck.deal(this.dealer, 1)
       }
 
       this.players.forEach((player) => {
-        if(player.hand.score > 21) {
-          return player.lose()
-        }
-        if(this.dealer.hand.score > 21) {
-          return player.win()
-        }
-
-        if(player.hand.score > this.dealer.hand.score) {
-          player.win()
-        } else if(player.hand.score < this.dealer.hand.score) {
-          player.lose()
-        } else {
-          player.tie()
-        }
+        if(this.dealer.hand.score > 21) return player.win()
+        if(this.dealer.hand.score > player.hand.score) return player.lose()
+        if(this.dealer.hand.score < player.hand.score) return player.win()
+        return player.tie()
       })
+
+      return this.start()
     } else {
-      this.next()
+      this.nextTurn()
     }
-  }
-
-  reset() {
-    this.deck.reset()
-    this.players.forEach((player) => {
-      player.reset()
-    })
-  }
-
-  async setup() {
-    if(this.guild.member(this.guild.client.user).hasPermission("MANAGE_CHANNELS")) {
-      await this.guild.createChannel("bb-blackjack", "text").then((channel) => {
-        this.channel = channel
-      }).catch(winston.error)
-    }
-
-    this.start()
   }
 
   start() {
     this.deck.deal(this.dealer, 1)
 
-    this.players.forEach(async (player) => {
+    this.players.forEach((player) => {
       player.reset()
-      await this.deck.deal(player, 2)
+      this.deck.deal(player, 2)
       if(player.hand.score === 21) player.blackjack()
     })
   }
 
-  next() {
+  nextTurn() {
     this.players.forEach((player) => {
-      if(player.action && player.status === "playing") {
-        player.action = null
-      }
+      if(player.status === "playing" && player.action !== "stand") player.action = null
     })
   }
 
   end() {
-    this.emit("end")
+    this.emit("end", this)
   }
 }

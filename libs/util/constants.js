@@ -1012,6 +1012,9 @@ exports.responses = {
       Las acciones que puedes tomar son \`draw\` and \`hit\`.
       Te puedes quitar de la partida en cualquier momento usando este comando de nuevo.`,
     },
+    DEAL: {
+      
+    },
     REMOVED_INACTIVE: {
       english: (name) => `Removed player ${name} for inactivity.`,
       spanish: (name) => `Echado jugador ${name} por inactividad.`

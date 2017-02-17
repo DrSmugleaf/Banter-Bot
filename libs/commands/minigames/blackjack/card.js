@@ -5,10 +5,13 @@
 "use strict"
 
 module.exports = class BlackjackCard {
-  constructor(args) {
-    this.deck = args.deck
-    this.name = args.name
-    this.value = args.value
-    this.suit = args.suit
+  constructor(data) {
+    this.deck = data.deck
+
+    this.name = data.name
+
+    this.value = data.value
+    
+    this.suit = data.suit
   }
 }

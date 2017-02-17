@@ -6,39 +6,40 @@
 const BlackjackHand = require("./hand")
 
 module.exports = class BlackjackPlayer {
-  constructor(args) {
+  constructor(data) {
     this.action = null
-    this.member = args.member
-    this.game = args.game
+
+    this.id = data.id
+
+    this.game = data.game
+
     this.hand = new BlackjackHand()
+
     this.status = "playing"
   }
 
   blackjack() {
     this.status = "blackjack"
-    this.game.channel.sendMessage(this.member.displayName + " blackjack")
+    this.game.emit("blackjack", this)
   }
 
   lose() {
-    this.status = "lost"
-    this.game.channel.sendMessage(this.member.displayName + " loses")
+    this.status = "lose"
+    this.game.emit("lose", this)
   }
 
   tie() {
     this.status = "tie"
-    this.game.channel.sendMessage(this.member.displayName + " ties")
+    this.game.emit("tie", this)
   }
 
   win() {
-    this.status = "won"
-    this.game.channel.sendMessage(this.member.displayName + " wins")
-  }
-
-  getHand() {
-    return this.hand.get()
+    this.status = "win"
+    this.game.emit("win", this)
   }
 
   reset() {
+    this.action = null
     this.status = "playing"
     this.hand.reset()
   }

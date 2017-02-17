@@ -7,6 +7,7 @@ const BlackjackCard = require("../card")
 
 module.exports = class BlackjackFrenchDeck {
   constructor() {
+
     this.cards = (suit) => [
       new BlackjackCard({ deck: "french", name: "Ace", value: 11, suit: suit }),
       new BlackjackCard({ deck: "french", name: "2", value: 2, suit: suit }),
@@ -41,13 +42,13 @@ module.exports = class BlackjackFrenchDeck {
         symbol: "♠"
       }
     ]
+  }
 
-    this.setup = () => {
-      var deck = []
-      this.suits.forEach((suit) => {
-        deck = deck.concat(this.cards(suit))
-      })
-      return deck
-    }
+  static setup() {
+    var deck = new Array()
+    this.suits.forEach((suit) => {
+      this.cards.concat(this._cards(suit))
+    })
+    return deck
   }
 }

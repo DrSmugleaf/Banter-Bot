@@ -14,7 +14,7 @@ module.exports = class Blackjack extends commando.Command {
       aliases: ["blackjack"],
       group: "minigames",
       memberName: "blackjack",
-      description: "Play a game of blackjack.",
+      description: "Play a game of Blackjack.",
       examples: ["blackjack"],
       guildOnly: true
     })
@@ -33,17 +33,22 @@ module.exports = class Blackjack extends commando.Command {
     var game = this.games[msg.guild.id]
 
     if(!game) {
-      game = new BlackjackGame(msg).on("end", () => delete this.games[msg.guild.id])
-      await game.setup()
+      game = new BlackjackGame({ dealerID: msg.client.user.id, deck: "french", decks: 1 })
       this.games[msg.guild.id] = game
+
+      var channel
+      if(msg.guild.member(msg.client.user).hasPermission("MANAGE_CHANNELS")) {
+        await msg.guild.createChannel("bb-blackjack", "text").then((ch) => {
+          channel = ch
+        })
+      } else {
+        channel = msg.channel
+      }
     }
 
-    if(!game.players.get(msg.member.id)) {
-      game.addPlayer(msg.member)
-      msg.reply(responses.ADDED_PLAYER[msg.language](game.channel.id))
-    } else {
-      game.removePlayer(msg.member)
-      msg.reply(responses.REMOVED_PLAYER[msg.language])
+    if(!game.hasPlayer(msg.member.id)) {
+      game.addPlayer(msg.member.id)
+      msg.reply(responses.ADDED_PLAYER[msg.language])
     }
   }
 }
