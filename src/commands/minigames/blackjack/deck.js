@@ -38,6 +38,7 @@ module.exports = class BlackjackDeck {
       player.hand.add(card)
       this.game.emit("deal", player, card)
     }
+    if(player.hand.score === 21) player.win()
     return player.hand.score
   }
 
