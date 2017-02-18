@@ -108,7 +108,7 @@ module.exports = class BlackjackGame extends EventEmitter {
   start() {
     this._players.forEach((player) => {
       this.players.set(player.id, player)
-      this._players.delete(player)
+      this._players.delete(player.id)
     })
     this.dealer.reset()
     this.deck.deal(this.dealer, 1)
