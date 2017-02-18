@@ -7,8 +7,13 @@
   },
   "main": "banterbot.js",
   "scripts": {
-    "start": "nodemon banterbot.js",
-    "test": "node --harmony --trace-warnings banterbot.js && mocha --harmony --trace-warnings --recursive --timeout 10000 --bail"
+    "start": "node --harmony --trace-warnings banterbot.js",
+    "start:dev": "nf start --procfile Procfile_dev",
+    "lint": "eslint src",
+    "pretest": "npm run lint",
+    "test": "nf run npm run test:dev",
+    "test:dev": "npm run mocha --silent",
+    "mocha": "mocha --harmony --trace-warnings --recursive --timeout 10000 --bail"
   },
   "repository": {
     "type": "git",
