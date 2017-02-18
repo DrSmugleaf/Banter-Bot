@@ -48,15 +48,15 @@ module.exports = class BlackjackGame extends EventEmitter {
   }
 
   getPlayer(id) {
-    return this.players.get(id)
+    return this.players.get(id) || this._players.get(id)
   }
 
   hasPlayer(id) {
-    return this.players.has(id)
+    return this.players.has(id) || this._players.has(id)
   }
 
   removePlayer(id) {
-    return this.players.delete(id)
+    return this.players.delete(id) || this._players.delete(id)
   }
 
   processTurn() {
