@@ -78,6 +78,7 @@ module.exports = class BlackjackGame extends EventEmitter {
       if(player.hand.score > 21) return player.lose()
     })
 
+    if(this.players.every((player) => player.status === "lose")) return this.start()
     if(this.players.every((player) => player.status === "lose" || player.action === "stand" )) {
       while(this.dealer.hand.score < 17) {
         this.deck.deal(this.dealer, 1)
