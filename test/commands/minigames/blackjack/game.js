@@ -221,7 +221,7 @@ describe("Blackjack Game", function() {
             game.processTurn()
           })
 
-          it("should give 1 card to the first player and kick the second player from the game", function() {
+          it("should give 1 card to the first player", function() {
             expect(player1.hand.cards.length).to.equal(1)
           })
           it("should kick the second player from the game", function() {
@@ -256,6 +256,57 @@ describe("Blackjack Game", function() {
           player2.action = "stand"
           expect(player2.action).to.equal("stand")
           player2.action = null
+        })
+      })
+
+      describe("actions: stand, none", function() {
+
+        beforeEach(function() {
+          player1.action = "stand"
+          player2.action = null
+        })
+
+        it("should start the turn", function() {
+          expect(game.started).to.be.true
+          expect(game.timeout).to.be.ok
+        })
+        it("shouldn't allow the first player's action to be changed afterwards", function() {
+          player1.action = "hit"
+          expect(player1.action).to.equal("stand")
+        })
+        it("shouldn't give cards to the dealer", function() {
+          expect(game.dealer.hand.cards.length).to.equal(0)
+        })
+
+        describe("after turn time limit", function() {
+          it("should end the game with a first player win, loss or tie", function() {
+            var win, lose, tie
+            game
+              .on("win", () => win = true)
+              .on("lose", () => lose = true)
+              .on("tie", () => tie = true)
+
+            game.processTurn()
+            expect(win || lose || tie).to.be.true
+          })
+          it("should kick the second player from the game", function() {
+            game.processTurn()
+            expect(game.getPlayer(global.client.options.owner)).to.be.undefined
+          })
+
+          describe("after round end", function() {
+
+            beforeEach(function() {
+              game.processTurn()
+            })
+
+            it("should give 1 card to the dealer", function() {
+              expect(game.dealer.hand.cards.length).to.equal(1)
+            })
+            it("should give 2 cards to the first player", function() {
+              expect(player1.hand.cards.length).to.equal(2)
+            })
+          })
         })
       })
     })
