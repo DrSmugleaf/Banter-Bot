@@ -32,6 +32,7 @@ module.exports = class BlackjackGame extends EventEmitter {
       this.started = true
       this.timeout = setTimeout(() => {
         this.processTurn()
+        this.timeout = null
       }, this.time)
     })
 
