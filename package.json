@@ -52,7 +52,6 @@
     "babel-eslint": "latest",
     "benchmark": "latest",
     "chai": "latest",
-    "dotenv": "latest",
     "eslint": "latest",
     "foreman": "latest",
     "mocha": "latest",
