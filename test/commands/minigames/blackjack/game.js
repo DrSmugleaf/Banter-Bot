@@ -101,9 +101,10 @@ describe("Blackjack Game", function() {
       })
       it("should end the game with a player win, loss or tie", function() {
         var win, lose, tie
-        game.on("win", () => win = true)
-        game.on("lose", () => lose = true)
-        game.on("tie", () => tie = true)
+        game
+          .on("win", () => win = true)
+          .on("lose", () => lose = true)
+          .on("tie", () => tie = true)
 
         player.action = "stand"
         expect(win || lose || tie).to.be.true
@@ -190,6 +191,42 @@ describe("Blackjack Game", function() {
           expect(player1.action).to.be.null
           expect(game.started).to.be.false
           expect(game.timeout).to.not.be.ok
+        })
+      })
+    })
+
+    describe("2 player actions", function() {
+      describe("actions: hit, none", function() {
+
+        beforeEach(function() {
+          player1.action = "hit"
+          player2.action = null
+        })
+
+        it("should start the turn", function() {
+          expect(game.started).to.be.true
+          expect(game.timeout).to.be.ok
+        })
+        it("shouldn't allow the first player's action to be changed afterwards", function() {
+          player1.action = "stand"
+          expect(player1.action).to.equal("hit")
+        })
+        it("shouldn't give cards to the first player", function() {
+          expect(player1.hand.cards.length).to.equal(0)
+        })
+
+        describe("after turn time limit", function() {
+
+          beforeEach(function() {
+            game.processTurn()
+          })
+
+          it("should give 1 card to the first player and kick the second player from the game", function() {
+            expect(player1.hand.cards.length).to.equal(1)
+          })
+          it("should kick the second player from the game", function() {
+            expect(game.getPlayer(global.client.options.owner)).to.be.undefined
+          })
         })
       })
     })
