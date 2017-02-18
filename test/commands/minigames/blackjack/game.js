@@ -367,6 +367,36 @@ describe("Blackjack Game", function() {
           })
         })
       })
+
+      describe("actions: hit, stand", function() {
+
+        beforeEach(function() {
+          player1.action = "hit"
+          player2.action = "stand"
+        })
+
+        it("should end the turn", function() {
+          expect(game.started).to.be.false
+          expect(game.timeout).to.be.null
+        })
+        it("should make the first player's action be null", function() {
+          expect(player1.action).to.be.null
+        })
+        it("should keep the second player's action as 'stand'", function() {
+          expect(player2.action).to.equal("stand")
+        })
+        it("should allow the first player's action to be changed afterwards", function() {
+          player2.action = null // otherwise the game ends
+          player1.action = "stand"
+          expect(player1.action).to.equal("stand")
+          player1.action = null
+        })
+        it("shouldn't allow the second player's action to be changed afterwards: 'stand'", function() {
+          player2.action = "hit"
+          expect(player2.action).to.equal("stand")
+          player2.action = null
+        })
+      })
     })
   })
 })
