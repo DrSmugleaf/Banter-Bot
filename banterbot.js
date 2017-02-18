@@ -37,7 +37,7 @@ client
     winston.info(`Client ready; logged in as ${client.user.username}#${client.user.discriminator} (${client.user.id})`)
   })
   .on("disconnect", () => { winston.warn("Disconnected!") })
-  .on("reconnect", () => { winston.warn("Reconnecting...") })
+  .on("reconnecting", () => { winston.warn("Reconnecting...") })
   .on("commandError", (cmd, err) => {
     if(err instanceof Commando.FriendlyError) return
     winston.error(`Error in command ${cmd.groupID}:${cmd.memberName}`, err)
