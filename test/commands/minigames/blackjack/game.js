@@ -11,9 +11,13 @@ const expect = require("chai").expect
 
 describe("Blackjack Game", function() {
 
-  var game
+  var game, player
   beforeEach(function() {
-    game = new BlackjackGame({ dealerID: global.client.user.id, deck: "french", decks: 1 })
+    game = new BlackjackGame({
+      dealerID: global.client.user.id, deck: "french", decks: 1, player: global.client.user.id
+    })
+    game.start()
+    player = game.getPlayer(global.client.user.id)
     game._reset()
   })
 
@@ -26,7 +30,7 @@ describe("Blackjack Game", function() {
       expect(game.dealer).to.be.an.instanceof(BlackjackPlayer)
       expect(game.dealer.id).to.equal(global.client.user.id)
       expect(game.deck).to.be.an.instanceof(BlackjackDeck)
-      expect(game.playerCount).to.equal(0)
+      expect(game.playerCount).to.equal(1)
       expect(game.timeLimit).to.be.a("number")
       expect(game.timeout).to.be.null
       expect(game.started).to.be.false
@@ -36,53 +40,42 @@ describe("Blackjack Game", function() {
 
   describe("add player", function() {
     it("should add a player to the game and return its BlackjackPlayer instance", function() {
-      const player = game.addPlayer(global.client.user.id)
+      const player = game.addPlayer(global.client.options.owner)
       expect(game.hasPlayer(global.client.user.id)).to.be.true
-      expect(game.playerCount).to.equal(1)
+      expect(game.playerCount).to.equal(2)
       expect(player).to.be.an.instanceof(BlackjackPlayer)
     })
   })
 
   describe("get player", function() {
-    it("should return undefined if the player doesn't exist", function() {
-      expect(game.getPlayer(global.client.user.id)).to.be.undefined
-    })
-    it("should return the player's BlackjackPlayer instance if it does exist", function() {
-      game.addPlayer(global.client.user.id)
+    it("should return the player's BlackjackPlayer instance if the player exists", function() {
       expect(game.getPlayer(global.client.user.id)).to.be.an.instanceof(BlackjackPlayer)
+    })
+    it("should return undefined if the player doesn't exist", function() {
+      game.removePlayer(global.client.user.id)
+      expect(game.getPlayer(global.client.user.id)).to.be.undefined
     })
   })
 
   describe("has player", function() {
-    it("should return false if the player doesn't exist", function() {
-      expect(game.hasPlayer(global.client.user.id)).to.be.false
-    })
-    it("should return true if the player does exist", function() {
+    it("should return true if the player exists", function() {
       game.addPlayer(global.client.user.id)
       expect(game.hasPlayer(global.client.user.id)).to.be.true
+    })
+    it("should return false if the player doesn't exist", function() {
+      game.removePlayer(global.client.user.id)
+      expect(game.hasPlayer(global.client.user.id)).to.be.false
     })
   })
 
   describe("remove player", function() {
     it("should remove the player from the game", function() {
-      game.addPlayer(global.client.user.id)
       game.removePlayer(global.client.user.id)
       expect(game.hasPlayer(global.client.user.id)).to.be.false
     })
   })
 
   describe("process turn, 1 player", function() {
-
-    var player
-    beforeEach(function() {
-      if(!game.hasPlayer(global.client.user.id)) game.addPlayer(global.client.user.id)
-      player = game.getPlayer(global.client.user.id)
-    })
-
-    afterEach(function() {
-      game._reset()
-    })
-
     describe("action: hit", function() {
       it("should have started be false, instant turn ending", function() {
         player.action = "hit"
@@ -137,10 +130,11 @@ describe("Blackjack Game", function() {
 
     var player1, player2
     beforeEach(function() {
-      if(!game.hasPlayer(global.client.user.id)) game.addPlayer(global.client.user.id)
+      player1 = player
       if(!game.hasPlayer(global.client.options.owner)) game.addPlayer(global.client.options.owner)
-      player1 = game.getPlayer(global.client.user.id)
+      game.start()
       player2 = game.getPlayer(global.client.options.owner)
+      game._reset()
     })
 
     afterEach(function() {
