@@ -31,7 +31,12 @@ module.exports = class Blackjack extends commando.Command {
     this.games = new Object()
   }
 
+  getMember(id) {
+    return this.client.users.get(id)
+  }
+
   onMessage(msg) {
+    if(!msg.guild) return
     const blackjack = this.games[msg.guild.id]
     if(!blackjack) return
     if(msg.channel.id !== blackjack.channel.id) return
@@ -50,22 +55,47 @@ module.exports = class Blackjack extends commando.Command {
       channel = msg.channel
     }
 
-    const game = new BlackjackGame({ dealerID: msg.client.user.id, deck: "french", decks: 1 })
-      .on("blackjack", (player) => channel.sendMessage(`${player.id} blackjack`))
-      .on("deal", (player, card) => channel.sendMessage(`${player.id}, ${card.name}, ${player.hand.score}`))
-      .on("end", () => channel.delete())
-      .on("lose", (player) => channel.sendMessage(`${player.id} loses`))
-      .on("removedInactive", (player) => channel.sendMessage(`${player.id} removed for inactivity`))
-      .on("tie", (player) => channel.sendMessage(`${player.id} ties`))
-      .on("win", (player) => channel.sendMessage(`${player.id} wins`))
+    const game = new BlackjackGame({ dealerID: msg.client.user.id, deck: "french", decks: 1, player: msg.member.id })
+      .on("blackjack", (player) => {
+        const member = this.getMember(player.id)
+        channel.sendMessage(`${member} blackjack`)
+      })
+      .on("deal", (player, card) => {
+        const member = this.getMember(player.id)
+        channel.sendMessage(`${member}, dealt you 1 ${card.name}, total score: ${player.hand.score}`)
+      })
+      .on("end", () => {
+        game.removeAllListeners()
+        delete this.games[msg.guild.id]
+        channel.delete()
+      })
+      .on("lose", (player) => {
+        const member = this.getMember(player.id)
+        channel.sendMessage(`${member} loses`)
+      })
+      .on("removedInactive", (player) => {
+        const member = this.getMember(player.id)
+        channel.sendMessage(`${member} removed for inactivity`)
+        member.sendMessage(`I removed you from a Blackjack game in ${msg.guild}`)
+      })
+      .on("tie", (player) => {
+        const member = this.getMember(player.id)
+        channel.sendMessage(`${member} ties`)
+      })
+      .on("win", (player) => {
+        const member = this.getMember(player.id)
+        channel.sendMessage(`${member} wins`)
+      })
 
     this.games[msg.guild.id] = { game: game, channel: channel }
 
-    return this.games[msg.guild.id]
+    game.start()
+    return msg.reply(responses.ADDED_PLAYER[msg.language](channel.id))
   }
 
   async run(msg) {
-    var blackjack = this.games[msg.guild.id] || await this.setupGame(msg)
+    var blackjack = this.games[msg.guild.id]
+    if(!blackjack) return this.setupGame(msg)
 
     if(!blackjack.game.hasPlayer(msg.member.id)) {
       blackjack.game.addPlayer(msg.member.id)

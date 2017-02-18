@@ -35,7 +35,6 @@ module.exports = class BlackjackGame extends EventEmitter {
       }, this.time)
     })
 
-    this.start()
   }
 
   addPlayer(id) {
