@@ -34,7 +34,7 @@ module.exports = class BlackjackGame extends EventEmitter {
       this.started = true
       this.timeout = setTimeout(() => {
         this.processTurn()
-      }, this.time)
+      }, this.timeLimit)
     })
 
     this.addPlayer(data.player)
