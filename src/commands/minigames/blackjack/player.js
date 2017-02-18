@@ -13,7 +13,7 @@ module.exports = class BlackjackPlayer {
 
     this.game = data.game
 
-    this.hand = new BlackjackHand()
+    this.hand = new BlackjackHand({ game: this.game })
 
     this.status = "playing"
   }

@@ -28,10 +28,13 @@ module.exports = class BlackjackDeck {
 
     this._cards = new Array()
 
+    this.discarded = new Array()
+
     this.setup()
   }
 
   deal(player, amount) {
+    if(this.cards.length < amount) this.cards = this.cards.concat(this.discarded)
     for(var i = 0; i < amount; i++) {
       const card = this.cards[Math.floor(Math.random() * this.cards.length)]
       this.cards = _.without(this.cards, card)

@@ -5,11 +5,13 @@
 "use strict"
 
 module.exports = class BlackjackHand {
-  constructor() {
+  constructor(data) {
+    this.game = data.game
+
     this.cards = new Array()
 
     this.aces = 0
-    
+
     this._score = 0
   }
 
@@ -37,6 +39,7 @@ module.exports = class BlackjackHand {
   }
 
   reset() {
+    this.cards.forEach((card) => this.game.deck.discarded.push(card))
     this.cards = new Array()
     this.aces = 0
     this._score = 0
