@@ -69,9 +69,7 @@ client
   	`)
   })
 
-client.setProvider(new PostgreSQLProvider()).then(() => {
-  client.emit("dbReady")
-}).catch(winston.error)
+client.setProvider(new PostgreSQLProvider()).catch(winston.error)
 
 client.registry
   .registerGroup("autochannel", "Auto Channel")

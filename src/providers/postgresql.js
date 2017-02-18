@@ -25,8 +25,10 @@ class PostgreSQLProvider extends SettingProvider {
   async init(client) {
     this.client = client
 
-    this.guildInit()
-    this.userInit()
+    Promise.all([
+      this.guildInit(),
+      this.userInit()
+    ]).then(() => this.client.emit("dbReady"))
   }
 
   async guildInit() {
