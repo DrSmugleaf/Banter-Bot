@@ -229,6 +229,35 @@ describe("Blackjack Game", function() {
           })
         })
       })
+
+      describe("actions: hit, hit", function() {
+
+        beforeEach(function() {
+          player1.action = "hit"
+          player2.action = "hit"
+        })
+
+        it("should end the turn", function() {
+          expect(game.started).to.be.false
+          expect(game.timeout).to.be.null
+        })
+        it("should give 1 card to each player", function() {
+          expect(player1.hand.cards.length).to.equal(1)
+          expect(player2.hand.cards.length).to.equal(1)
+        })
+        it("should make both player's actions be null", function() {
+          expect(player1.action).to.equal(null)
+          expect(player2.action).to.equal(null)
+        })
+        it("should allow both players actions to be changed afterwards, turn is over", function() {
+          player1.action = "stand"
+          expect(player1.action).to.equal("stand")
+          player1.action = null
+          player2.action = "stand"
+          expect(player2.action).to.equal("stand")
+          player2.action = null
+        })
+      })
     })
   })
 })
