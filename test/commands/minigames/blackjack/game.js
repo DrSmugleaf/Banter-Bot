@@ -29,7 +29,7 @@ describe("Blackjack Game", function() {
       expect(game.playerCount).to.equal(0)
       expect(game.timeLimit).to.be.a("number")
       expect(game.timeout).to.be.null
-      expect(game.turnStarted).to.be.false
+      expect(game.started).to.be.false
       expect(game.listenerCount("action")).to.be.above(0)
     })
   })
@@ -75,7 +75,8 @@ describe("Blackjack Game", function() {
 
     var player
     beforeEach(function() {
-      player = game.addPlayer(global.client.user.id)
+      if(!game.hasPlayer(global.client.user.id)) game.addPlayer(global.client.user.id)
+      player = game.getPlayer(global.client.user.id)
     })
 
     afterEach(function() {
@@ -83,9 +84,9 @@ describe("Blackjack Game", function() {
     })
 
     describe("action: hit", function() {
-      it("should have turnStarted be false, instant turn ending", function() {
+      it("should have started be false, instant turn ending", function() {
         player.action = "hit"
-        expect(game.turnStarted).to.be.false
+        expect(game.started).to.be.false
       })
 
       it("should give 1 card to the player", function() {
@@ -95,9 +96,9 @@ describe("Blackjack Game", function() {
     })
 
     describe("action: stand", function() {
-      it("should have turnStarted be false, instant turn ending", function() {
+      it("should have started be false, instant turn ending", function() {
         player.action = "stand"
-        expect(game.turnStarted).to.be.false
+        expect(game.started).to.be.false
       })
 
       it("should end the game with a player win, loss or tie", function() {
@@ -122,10 +123,10 @@ describe("Blackjack Game", function() {
     })
 
     describe("action: none", function() {
-      it("should have turnStarted be false, instant turn ending", function() {
+      it("should have started be false, instant turn ending", function() {
         player.action = null
         game.processTurn()
-        expect(game.turnStarted).to.be.false
+        expect(game.started).to.be.false
       })
 
       it("should kick the player from the game", function() {
