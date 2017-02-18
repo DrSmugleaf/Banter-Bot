@@ -74,6 +74,7 @@ client.setProvider(new PostgreSQLProvider()).then(() => {
 }).catch(winston.error)
 
 client.registry
+  .registerGroup("autochannel", "Auto Channel")
   .registerGroup("bridge", "Bridge")
   .registerGroup("customcommand", "Custom Commands")
   .registerGroup("minigames", "Minigames")
