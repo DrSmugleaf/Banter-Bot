@@ -88,7 +88,6 @@ describe("Blackjack Game", function() {
         player.action = "hit"
         expect(game.started).to.be.false
       })
-
       it("should give 1 card to the player", function() {
         player.action = "hit"
         expect(player.hand.cards.length).to.equal(1)
@@ -100,7 +99,6 @@ describe("Blackjack Game", function() {
         player.action = "stand"
         expect(game.started).to.be.false
       })
-
       it("should end the game with a player win, loss or tie", function() {
         var win, lose, tie
         game.on("win", () => win = true)
@@ -110,12 +108,10 @@ describe("Blackjack Game", function() {
         player.action = "stand"
         expect(win || lose || tie).to.be.true
       })
-
       it("should give the dealer 1 card", function() {
         player.action = "stand"
         expect(game.dealer.hand.cards.length).to.equal(1)
       })
-
       it("should give the player 2 cards", function() {
         player.action = "stand"
         expect(player.hand.cards.length).to.equal(2)
@@ -128,11 +124,73 @@ describe("Blackjack Game", function() {
         game.processTurn()
         expect(game.started).to.be.false
       })
-
       it("should kick the player from the game", function() {
         player.action = null
         game.processTurn()
         expect(game.hasPlayer(global.client.user.id)).to.be.false
+      })
+    })
+  })
+
+  describe("process turn, 2 players", function() {
+
+    var player1, player2
+    beforeEach(function() {
+      if(!game.hasPlayer(global.client.user.id)) game.addPlayer(global.client.user.id)
+      if(!game.hasPlayer(global.client.options.owner)) game.addPlayer(global.client.options.owner)
+      player1 = game.getPlayer(global.client.user.id)
+      player2 = game.getPlayer(global.client.options.owner)
+    })
+
+    afterEach(function() {
+      game._reset()
+    })
+
+    describe("1 player actions", function() {
+      describe("action: hit", function() {
+
+        beforeEach(function() {
+          player1.action = "hit"
+        })
+
+        it("should start the turn", function() {
+          expect(game.started).to.be.true
+          expect(game.timeout).to.be.ok
+        })
+        it("shouldn't allow the player's action to be changed afterwards", function() {
+          player1.action = "stand"
+          expect(player1.action).to.equal("hit")
+        })
+        it("shouldn't give cards to the player", function() {
+          expect(player1.hand.cards.length).to.equal(0)
+        })
+      })
+
+      describe("action: stand", function() {
+
+        beforeEach(function() {
+          player1.action = "stand"
+        })
+
+        it("should start the turn", function() {
+          expect(game.started).to.be.true
+          expect(game.timeout).to.be.ok
+        })
+        it("shouldn't allow the player's action to be changed afterwards", function() {
+          player1.action = "hit"
+          expect(player1.action).to.equal("stand")
+        })
+        it("shouldn't give cards to the player", function() {
+          expect(player1.hand.cards.length).to.equal(0)
+        })
+      })
+
+      describe("action: none", function() {
+        it("shouldn't start the turn", function() {
+          expect(player1.action).to.be.null
+          expect(game.started).to.be.false
+          expect(game.timeout).to.not.be.ok
+        })
       })
     })
   })
