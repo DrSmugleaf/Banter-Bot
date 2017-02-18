@@ -86,7 +86,7 @@ module.exports = class Quote extends commando.Command {
       parseInt(args.mode, 10) : parseInt(args.id_text, 10)
     const text = args.id_text == "" ? args.mode : args.id_text
 
-    switch(mode) {
+    switch (mode) {
     case "add":
     case "put":
       this.quoteAdd(msg, text)

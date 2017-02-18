@@ -65,7 +65,7 @@ module.exports = class BlackjackGame extends EventEmitter {
 
     this.players.forEach((player) => {
       if(player.status !== "playing") return
-      switch(player.action) {
+      switch (player.action) {
       case "hit":
         this.deck.deal(player, 1)
         break
