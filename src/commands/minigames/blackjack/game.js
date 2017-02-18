@@ -64,6 +64,7 @@ module.exports = class BlackjackGame extends EventEmitter {
     this.timeout = null
 
     this.players.forEach((player) => {
+      if(player.status !== "playing") return
       switch(player.action) {
       case "hit":
         this.deck.deal(player, 1)
@@ -85,6 +86,7 @@ module.exports = class BlackjackGame extends EventEmitter {
       }
 
       this.players.forEach((player) => {
+        if(player.status !== "playing") return
         if(this.dealer.hand.score > 21) return player.win()
         if(this.dealer.hand.score > player.hand.score) return player.lose()
         if(this.dealer.hand.score < player.hand.score) return player.win()
