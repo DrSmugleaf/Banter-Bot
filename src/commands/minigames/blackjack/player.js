@@ -23,7 +23,7 @@ module.exports = class BlackjackPlayer {
   }
 
   set action(action) {
-    if(!action) this._action = action
+    if(!action) return this._action = action
     if(!this.status === "playing") return
     if(!["hit", "stand", "double", "split", "surrender"].includes(action)) return
     if(this._action) return
