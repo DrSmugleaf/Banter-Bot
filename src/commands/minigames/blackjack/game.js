@@ -18,6 +18,8 @@ module.exports = class BlackjackGame extends EventEmitter {
 
     this.playerCount = 0
 
+    this._players = new Discord.Collection()
+
     this.players = new Discord.Collection()
 
     this.timeLimit = 5 * 1000
@@ -35,11 +37,12 @@ module.exports = class BlackjackGame extends EventEmitter {
       }, this.time)
     })
 
+    this.addPlayer(data.player)
   }
 
   addPlayer(id) {
     const player = new BlackjackPlayer({ game: this, id: id })
-    this.players.set(id, player)
+    this._players.set(id, player)
     this.playerCount++
     return player
   }
@@ -102,6 +105,10 @@ module.exports = class BlackjackGame extends EventEmitter {
   }
 
   start() {
+    this._players.forEach((player) => {
+      this.players.set(player.id, player)
+      this._players.delete(player)
+    })
     this.dealer.reset()
     this.deck.deal(this.dealer, 1)
 
