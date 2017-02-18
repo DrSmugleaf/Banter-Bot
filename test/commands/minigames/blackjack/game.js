@@ -246,8 +246,8 @@ describe("Blackjack Game", function() {
           expect(player2.hand.cards.length).to.equal(1)
         })
         it("should make both player's actions be null", function() {
-          expect(player1.action).to.equal(null)
-          expect(player2.action).to.equal(null)
+          expect(player1.action).to.be.null
+          expect(player2.action).to.be.null
         })
         it("should allow both players actions to be changed afterwards, turn is over", function() {
           player1.action = "stand"
@@ -256,6 +256,17 @@ describe("Blackjack Game", function() {
           player2.action = "stand"
           expect(player2.action).to.equal("stand")
           player2.action = null
+        })
+        it("should not end the game", function() {
+          var win, lose, tie
+          game
+            .on("win", () => win = true)
+            .on("lose", () => lose = true)
+            .on("tie", () => tie = true)
+
+          player1.action = "hit"
+          player2.action = "hit"
+          expect(win || lose || tie).to.be.undefined
         })
       })
 
@@ -306,6 +317,53 @@ describe("Blackjack Game", function() {
             it("should give 2 cards to the first player", function() {
               expect(player1.hand.cards.length).to.equal(2)
             })
+          })
+        })
+      })
+
+      describe("actions: stand, stand", function() {
+
+        beforeEach(function() {
+          player1.action = "stand"
+          player2.action = "stand"
+        })
+
+        it("should end the turn", function() {
+          expect(game.started).to.be.false
+          expect(game.timeout).to.be.null
+        })
+        it("should make both player's actions be null", function() {
+          expect(player1.action).to.be.null
+          expect(player2.action).to.be.null
+        })
+        it("should allow both player actions to be changed afterwards, turn is over", function() {
+          player1.action = "hit"
+          expect(player1.action).to.equal("hit")
+          player1.action = null
+          player2.action = "hit"
+          expect(player2.action).to.equal("hit")
+          player2.action = null
+        })
+        it("should end the game with both players winning, losing or tying", function() {
+          var player1end
+          var player2end
+          game
+            .on("win", (player) => player.id === player1.id ? player1end = true : player2end = true)
+            .on("lose", (player) => player.id === player1.id ? player1end = true : player2end = true)
+            .on("tie", (player) => player.id === player1.id ? player1end = true : player2end = true)
+
+          player1.action = "stand"
+          player2.action = "stand"
+          expect(player1end && player2end).to.be.true
+        })
+
+        describe("after round end", function() {
+          it("should give 1 card to the dealer", function() {
+            expect(game.dealer.hand.cards.length).to.equal(1)
+          })
+          it("should give 2 cards to both players", function() {
+            expect(player1.hand.cards.length).to.equal(2)
+            expect(player2.hand.cards.length).to.equal(2)
           })
         })
       })
