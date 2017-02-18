@@ -32,7 +32,6 @@ module.exports = class BlackjackGame extends EventEmitter {
       this.started = true
       this.timeout = setTimeout(() => {
         this.processTurn()
-        this.timeout = null
       }, this.time)
     })
 
@@ -60,6 +59,7 @@ module.exports = class BlackjackGame extends EventEmitter {
 
   processTurn() {
     this.started = false
+    this.timeout = null
 
     this.players.forEach((player) => {
       switch(player.action) {
