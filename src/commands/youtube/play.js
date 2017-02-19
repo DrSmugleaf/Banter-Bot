@@ -32,7 +32,7 @@ module.exports = class Play extends commando.Command {
           type: "string",
           validate: (url) => {
             return youtube.getVideo(url).then((video) => {
-              if(video.durationSeconds() <= 0) return false
+              if(video.durationSeconds <= 0) return false
               return true
             }).catch(() => {
               return false
