@@ -4,7 +4,7 @@
 
 "use strict"
 const commando = require("discord.js-commando")
-const constants = require("../../util/constants")
+const responses = require("../../util/constants").responses.SONG_VOICE_CHANNEL
 
 module.exports = class SongVoiceChannel extends commando.Command {
   constructor(client) {
@@ -42,17 +42,17 @@ module.exports = class SongVoiceChannel extends commando.Command {
     const channel = args.channel
     if(!channel) {
       msg.guild.settings.remove("song-voice-channel")
-      return msg.reply(constants.responses.SONG_VOICE_CHANNEL.REMOVED[msg.language])
+      return msg.reply(responses.REMOVED[msg.language])
     }
     if(channel.type !== "voice") {
-      return msg.reply(constants.responses.SONG_VOICE_CHANNEL.INVALID[msg.language](channel.name))
+      return msg.reply(responses.INVALID[msg.language](channel.name))
     }
 
-    if(!channel.joinable) return msg.reply(constants.responses.SONG_VOICE_CHANNEL.CANT_CONNECT[msg.language](channel.name))
-    if(!channel.speakable) return msg.reply(constants.responses.SONG_VOICE_CHANNEL.CANT_SPEAK[msg.language](channel.name))
+    if(!channel.joinable) return msg.reply(responses.CANT_CONNECT[msg.language](channel.name))
+    if(!channel.speakable) return msg.reply(responses.CANT_SPEAK[msg.language](channel.name))
 
     msg.guild.settings.set("song-voice-channel", channel.id)
 
-    return msg.reply(constants.responses.SONG_VOICE_CHANNEL.SET[msg.language](channel.name))
+    return msg.reply(responses.SET[msg.language](channel.name))
   }
 }

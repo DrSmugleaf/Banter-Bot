@@ -4,7 +4,7 @@
 
 "use strict"
 const commando = require("discord.js-commando")
-const constants = require("../../util/constants")
+const responses = require("../../util/constants").responses
 const winston = require("winston")
 
 module.exports = class Name extends commando.Command {

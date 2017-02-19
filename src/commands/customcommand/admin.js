@@ -4,8 +4,8 @@
 
 "use strict"
 const commando = require("discord.js-commando")
-const constants = require("../../util/constants")
 const CustomCommand = require("./base/command")
+const responses = require("../../util/constants").responses.CUSTOM_COMMAND
 
 module.exports = class CustomCommandAdmin extends commando.Command {
   constructor(client) {
@@ -68,7 +68,7 @@ module.exports = class CustomCommandAdmin extends commando.Command {
     const command = this.client.registry.commands.get(commandName)
     const commands = msg.guild.settings.get("custom-commands", {})
     if(!command || !commands || !commands[commandName]) {
-      return msg.reply(constants.responses.CUSTOM_COMMAND.DOESNT_EXIST[msg.language](commandName))
+      return msg.reply(responses.DOESNT_EXIST[msg.language](commandName))
     }
 
     switch (action) {
@@ -77,7 +77,7 @@ module.exports = class CustomCommandAdmin extends commando.Command {
       delete commands[commandName]
       msg.guild.settings.set(commands)
 
-      return msg.reply(constants.responses.CUSTOM_COMMAND.UNREGISTERED[msg.language](commandName))
+      return msg.reply(responses.UNREGISTERED[msg.language](commandName))
     }
   }
 }

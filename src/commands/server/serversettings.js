@@ -4,7 +4,7 @@
 
 "use strict"
 const commando = require("discord.js-commando")
-const constants = require("../../util/constants")
+const responses = require("../../util/constants").responses.SERVER_SETTINGS
 
 module.exports = class ServerSettings extends commando.Command {
   constructor(client) {
@@ -61,19 +61,19 @@ module.exports = class ServerSettings extends commando.Command {
     switch (mode) {
     case "clear": {
       guildSettings.clear()
-      return msg.reply(constants.responses.SERVER_SETTINGS.CLEAR[msg.language])
+      return msg.reply(responses.CLEAR[msg.language])
     }
     case "get": {
       if(!key) key = await this.args[1].obtainSimple(msg)
       if(!key) return
       const get = guildSettings.get(key)
-      return msg.reply(constants.responses.SERVER_SETTINGS.GET[msg.language](key, get))
+      return msg.reply(responses.GET[msg.language](key, get))
     }
     case "remove": {
       if(!key) key = await this.args[1].obtainSimple(msg)
       if(!key) return
       guildSettings.remove(key)
-      return msg.reply(constants.responses.SERVER_SETTINGS.REMOVE[msg.language](key))
+      return msg.reply(responses.REMOVE[msg.language](key))
     }
     case "set": {
       if(!key) key = await this.args[1].obtainSimple(msg)
@@ -81,7 +81,7 @@ module.exports = class ServerSettings extends commando.Command {
       if(!value) value = await this.args[2].obtainSimple(msg)
       if(!value) return
       guildSettings.set(key, value)
-      return msg.reply(constants.responses.SERVER_SETTINGS.SET[msg.language](key, value))
+      return msg.reply(responses.SET[msg.language](key, value))
     }
     }
   }

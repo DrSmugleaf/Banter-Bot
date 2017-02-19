@@ -4,7 +4,7 @@
 
 "use strict"
 const commando = require("discord.js-commando")
-const constants = require("../../util/constants")
+const responses = require("../../util/constants").responses.INFO_CHANNEL
 
 module.exports = class InfoChannel extends commando.Command {
   constructor(client) {
@@ -39,17 +39,17 @@ module.exports = class InfoChannel extends commando.Command {
     const channel = args.channel
     if(!channel) {
       msg.guild.settings.remove("info-channel")
-      return msg.reply(constants.responses.INFO_CHANNEL.REMOVED[msg.language])
+      return msg.reply(responses.REMOVED[msg.language])
     }
     if(channel.type !== "text") {
-      return msg.reply(constants.responses.INFO_CHANNEL.INVALID[msg.language](channel.name))
+      return msg.reply(responses.INVALID[msg.language](channel.name))
     }
     if(!channel.permissionsFor(msg.guild.member(msg.client.user)).hasPermission("SEND_MESSAGES")) {
-      return msg.reply(constants.responses.INFO_CHANNEL.NO_PERMISSION[msg.language](channel.name))
+      return msg.reply(responses.NO_PERMISSION[msg.language](channel.name))
     }
 
     msg.guild.settings.set("info-channel", channel.id)
 
-    return msg.reply(constants.responses.INFO_CHANNEL.SET[msg.language](channel.name))
+    return msg.reply(responses.SET[msg.language](channel.name))
   }
 }

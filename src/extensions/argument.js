@@ -3,8 +3,8 @@
 //
 
 "use strict"
-const constants = require("../util/constants").responses.COMMANDO.ARGUMENT
 const { oneLine, stripIndents } = require("common-tags")
+const responses = require("../util/constants").responses.COMMANDO.ARGUMENT
 
 class CommandArgumentExtension {
   async obtainSimple(msg) {
@@ -21,18 +21,18 @@ class CommandArgumentExtension {
       msg.promptCount++
 
       await msg.reply(stripIndents`
-        ${!value ? this.prompt : valid ? valid : constants.INVALID_LABEL[msg.language](this.label)}
+        ${!value ? this.prompt : valid ? valid : responses.INVALID_LABEL[msg.language](this.label)}
         ${oneLine`
-          ${constants.RESPOND_WITH_CANCEL[msg.language]}
-          ${wait ? constants.WAIT[msg.language](this.wait) : ""}
+          ${responses.RESPOND_WITH_CANCEL[msg.language]}
+          ${wait ? responses.WAIT[msg.language](this.wait) : ""}
         `}
       `)
 
-      const responses = await msg.channel.awaitMessages(msg2 => msg2.author.id === msg.author.id, {
+      const response = await msg.channel.awaitMessages(msg2 => msg2.author.id === msg.author.id, {
         maxMatches: 1,
         times: wait
       })
-      if(responses && responses.size === 1) value = responses.first().content; else return null
+      if(response && response.size === 1) value = response.first().content; else return null
       if(value.toLowerCase() === "cancel") return null
       valid = await this.validate(value, msg)
     }

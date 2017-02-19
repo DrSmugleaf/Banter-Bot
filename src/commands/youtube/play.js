@@ -4,8 +4,8 @@
 
 "use strict"
 const commando = require("discord.js-commando")
-const constants = require("../../util/constants")
 const main = require("./base/main")
+const responses = require("../../util/constants").responses
 const Song = require("./base/song")
 const winston = require("winston")
 const Youtube = require("simple-youtube-api")
@@ -51,34 +51,34 @@ module.exports = class Play extends commando.Command {
 
   async run(msg, args) {
     if(!main.isMemberInVoiceChannel(msg.member)) {
-      return msg.reply(constants.responses.YOUTUBE.NOT_IN_VOICE_CHANNEL[msg.language])
+      return msg.reply(responses.NOT_IN_VOICE_CHANNEL[msg.language])
     }
 
     if(msg.deletable) msg.delete()
 
     const voiceChannel = msg.member.voiceChannel
     if(!voiceChannel.joinable) {
-      return msg.reply(constants.responses.YOUTUBE.CANT_CONNECT[msg.language](voiceChannel.name))
+      return msg.reply(responses.CANT_CONNECT[msg.language](voiceChannel.name))
     }
     if(!voiceChannel.speakable) {
-      return msg.reply(constants.responses.YOUTUBE.CANT_SPEAK[msg.language](voiceChannel.name))
+      return msg.reply(responses.CANT_SPEAK[msg.language](voiceChannel.name))
     }
 
     const queue = main.queue.get(msg.guild.id) || []
     if(queue.filter((song) => {
       return song.member.id === msg.author.id
     }).length >= 2) {
-      return msg.reply(constants.responses.YOUTUBE.TOO_MANY_SONGS[msg.language])
+      return msg.reply(responses.TOO_MANY_SONGS[msg.language])
     }
 
     const url = args.url
     youtube.getVideo(url).then((video) => {
       const song = new Song(msg, args, video)
       main.addToQueue(msg.guild, song)
-      return msg.reply(constants.responses.YOUTUBE.PLAY[msg.language](video.title))
+      return msg.reply(responses.PLAY[msg.language](video.title))
     }).catch(e => {
       winston.error(e)
-      return msg.reply(constants.responses.YOUTUBE.ERROR[msg.language])
+      return msg.reply(responses.ERROR[msg.language])
     })
   }
 }

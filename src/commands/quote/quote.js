@@ -4,9 +4,9 @@
 
 "use strict"
 const commando = require("discord.js-commando")
-const constants = require("../../util/constants")
 const DB = require("../../util/db.js")
 const db = new DB()
+const responses = require("../../util/constants").responses.QUOTE
 const winston = require("winston")
 
 module.exports = class Quote extends commando.Command {
@@ -46,11 +46,11 @@ module.exports = class Quote extends commando.Command {
   }
 
   async quoteAdd(msg, text) {
-    if(!text) return msg.reply(constants.responses.QUOTE.EMPTY[msg.language])
+    if(!text) return msg.reply(responses.EMPTY[msg.language])
     db.query("INSERT INTO quotes (text, submitter) VALUES ($1::text, $2::text) RETURNING id",
       [text, msg.author.username], "one"
     ).then(data => {
-      return msg.reply(constants.responses.QUOTE.ADDED[msg.language](data.id))
+      return msg.reply(responses.ADDED[msg.language](data.id))
     }).catch(winston.error)
   }
 
@@ -59,10 +59,10 @@ module.exports = class Quote extends commando.Command {
       [id], "one"
     ).then(data => {
       db.cleanTable("quotes")
-      return msg.reply(constants.responses.QUOTE.REMOVED[msg.language](data.id))
+      return msg.reply(responses.REMOVED[msg.language](data.id))
     }).catch(e => {
       winston.error(e)
-      return msg.reply(constants.responses.QUOTE.INVALID[msg.language])
+      return msg.reply(responses.INVALID[msg.language])
     })
   }
 
@@ -72,10 +72,10 @@ module.exports = class Quote extends commando.Command {
     const values = id ? [id] : null
 
     db.query(query, values, "one").then(data => {
-      return msg.reply(constants.responses.QUOTE.GET[msg.language](data.id, data.text))
+      return msg.reply(responses.GET[msg.language](data.id, data.text))
     }).catch(e => {
       winston.error(e)
-      return msg.reply(constants.responses.QUOTE.MISSING[msg.language])
+      return msg.reply(responses.MISSING[msg.language])
     })
   }
 

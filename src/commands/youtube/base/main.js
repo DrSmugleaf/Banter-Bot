@@ -5,6 +5,7 @@
 "use strict"
 const constants = require("../../../util/constants")
 const Discord = require("discord.js")
+const responses = constants.responses
 const winston = require("winston")
 const ytdl = require("ytdl-core")
 
@@ -132,17 +133,17 @@ module.exports = {
     const next = queue[0]
     if(!this.isMemberInVoiceChannel(next.member)) {
       next.textChannel.sendMessage(
-        constants.responses.YOUTUBE.LEFT_VOICE[next.message.language]
+        responses.LEFT_VOICE[next.message.language]
       )
       return this.playNext(guild)
     }
 
     if(!next.voiceChannel.joinable) {
-      next.textChannel.sendMessage(constants.responses.YOUTUBE.CANT_CONNECT_ANYMORE[next.message.language](next.channel.name))
+      next.textChannel.sendMessage(responses.CANT_CONNECT_ANYMORE[next.message.language](next.channel.name))
       return this.playNext(guild)
     }
     if(!next.voiceChannel.speakable) {
-      next.textChannel.sendMessage(constants.responses.YOUTUBE.CANT_SPEAK_ANYMORE[next.message.language](next.channel.name))
+      next.textChannel.sendMessage(responses.CANT_SPEAK_ANYMORE[next.message.language](next.channel.name))
       return this.playNext(guild)
     }
 
@@ -150,7 +151,7 @@ module.exports = {
       const stream = ytdl(next.url, { filter: "audioonly" }).on("error", (e) => {
         winston.error(e)
         return next.textChannel.sendMessage(
-          constants.responses.YOUTUBE.NEXT.DISPATCHER_ERROR[next.message.language](next.video.title)
+          responses.NEXT.DISPATCHER_ERROR[next.message.language](next.video.title)
         )
       })
 
@@ -166,23 +167,23 @@ module.exports = {
         queue.shift()
         this.playNext(guild)
         return next.textChannel.sendMessage(
-          constants.responses.YOUTUBE.NEXT.DISPATCHER_ERROR[next.message.language](next.video.title)
+          responses.NEXT.DISPATCHER_ERROR[next.message.language](next.video.title)
         )
       })
 
       if(next.repeat && !next.repeated) {
         return next.textChannel.sendMessage(
-          constants.responses.YOUTUBE.NEXT.REPEAT[next.message.language](next.video.title)
+          responses.NEXT.REPEAT[next.message.language](next.video.title)
         )
       } else if(!next.repeated) {
         return next.textChannel.sendMessage(
-          constants.responses.YOUTUBE.NEXT.PLAY[next.message.language](next.video.title)
+          responses.NEXT.PLAY[next.message.language](next.video.title)
         )
       }
     }).catch(e => {
       winston.error(e)
       next.textChannel.sendMessage(
-        constants.responses.YOUTUBE.NEXT.ERROR[next.message.language](next.video.title)
+        responses.NEXT.ERROR[next.message.language](next.video.title)
       )
       return this.playNext(guild)
     })

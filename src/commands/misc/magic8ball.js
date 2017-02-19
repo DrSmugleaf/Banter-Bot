@@ -4,7 +4,7 @@
 
 "use strict"
 const commando = require("discord.js-commando")
-const constants = require("../../util/constants")
+const responses = require("../../util/constants").responses.MAGIC8BALL
 
 module.exports = class Magic8Ball extends commando.Command {
   constructor(client) {
@@ -31,8 +31,8 @@ module.exports = class Magic8Ball extends commando.Command {
   }
 
   async run(msg) {
-    const answer = constants.responses.MAGIC8BALL[msg.language][Math.floor(
-      Math.random() * constants.responses.MAGIC8BALL[msg.language].length
+    const answer = responses[msg.language][Math.floor(
+      Math.random() * responses[msg.language].length
     )]
     return msg.reply(answer)
   }

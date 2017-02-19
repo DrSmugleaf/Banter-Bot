@@ -5,7 +5,7 @@
 "use strict"
 const _ = require("underscore")
 const commando = require("discord.js-commando")
-const constants = require("../../util/constants").responses.BLACKLIST
+const responses = require("../../util/constants").responses.responses.BLACKLIST
 
 module.exports = class Blacklist extends commando.Command {
   constructor(client) {
@@ -47,16 +47,16 @@ module.exports = class Blacklist extends commando.Command {
     const member = args.member
     var blacklist = msg.guild.settings.get("blacklist", [])
 
-    if(msg.member.id === member.id) return msg.reply(constants.CANT_BLACKLIST_SELF[msg.language])
+    if(msg.member.id === member.id) return msg.reply(responses.CANT_BLACKLIST_SELF[msg.language])
 
     if(blacklist.includes(member.id)) {
       blacklist = _.without(blacklist, member.id)
       msg.guild.settings.set("blacklist", blacklist)
-      return msg.reply(constants.WHITELISTED[msg.language](member.displayName))
+      return msg.reply(responses.WHITELISTED[msg.language](member.displayName))
     } else {
       blacklist.push(member.id)
       msg.guild.settings.set("blacklist", blacklist)
-      return msg.reply(constants.BLACKLISTED[msg.language](member.displayName))
+      return msg.reply(responses.BLACKLISTED[msg.language](member.displayName))
     }
   }
 }

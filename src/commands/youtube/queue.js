@@ -4,8 +4,8 @@
 
 "use strict"
 const commando = require("discord.js-commando")
-const constants = require("../../util/constants")
 const main = require("./base/main")
+const responses = require("../../util/constants").responses
 
 module.exports = class Queue extends commando.Command {
   constructor(client) {
@@ -26,11 +26,11 @@ module.exports = class Queue extends commando.Command {
 
   async run(msg) {
     if(main.isQueueEmpty(msg.guild)) {
-      return msg.reply(constants.responses.YOUTUBE.EMPTY_QUEUE[msg.language])
+      return msg.reply(responses.EMPTY_QUEUE[msg.language])
     }
 
     const queue = main.queue.get(msg.guild.id)
 
-    return msg.reply(constants.responses.YOUTUBE.QUEUE[msg.language](queue.length))
+    return msg.reply(responses.QUEUE[msg.language](queue.length))
   }
 }
