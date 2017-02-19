@@ -25,6 +25,10 @@ module.exports = class AutoChannel {
       if(oldMember.voiceChannel === newMember.voiceChannel) return
       this.updateChannels(newMember.guild)
     })
+
+    this.client.on("guildCreate", (guild) => {
+      setTimeout(() => this.updateGuild(guild), 5000)
+    })
   }
 
   threshold(guild) {
