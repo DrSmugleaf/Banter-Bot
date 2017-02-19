@@ -179,7 +179,7 @@ class PostgreSQLProvider extends SettingProvider {
 
   async clear(unit) {
     if(unit instanceof Discord.Guild) {
-      const guild = this.constructor.getGuildID(guild)
+      const guild = this.constructor.getGuildID(unit)
       if(!this.guildSettings.has(guild)) return
       this.guildSettings.delete(guild)
       await this.db.query(
