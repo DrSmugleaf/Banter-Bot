@@ -40,7 +40,6 @@ module.exports = class AutoChannel {
     if(oldPresence && oldPresence.game) {
       var oldGame = games.get(oldPresence.game.name) || new Array()
       oldGame = _.without(oldGame, newMember.id)
-      oldGame.set(oldPresence.game.name, oldGame)
       games.set(oldPresence.game.name, oldGame)
     }
 
