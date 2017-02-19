@@ -31,7 +31,8 @@ module.exports = class Play extends commando.Command {
           prompt: "What video do you want to queue?",
           type: "string",
           validate: (url) => {
-            return youtube.getVideo(url).then(() => {
+            return youtube.getVideo(url).then((info) => {
+              if(Object.values(info.duration).reduce((a, b) => a + b) === 0) return false
               return true
             }).catch(() => {
               return false
