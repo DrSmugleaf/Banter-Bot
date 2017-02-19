@@ -62,6 +62,7 @@ module.exports = class BlackjackGame extends EventEmitter {
   processTurn() {
     this.started = false
     clearTimeout(this.timeout)
+    this.timeout = null
 
     this.players.forEach((player) => {
       if(player.status !== "playing") return
