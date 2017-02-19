@@ -38,7 +38,9 @@ module.exports = class AutoChannelCommand extends commando.Command {
       ]
     })
 
-    new AutoChannel(this.client)
+    this.client.on("dbReady", () => {
+      new AutoChannel(this.client)
+    })
   }
 
   hasPermission(msg) {
