@@ -27,7 +27,6 @@ const token = process.env.NODE_ENV === "dev" ?
   process.env.DISCORD_TOKEN_DEV : process.env.DISCORD_TOKEN
 const VersionAnnouncer = require("./src/announcer/version")
 new VersionAnnouncer(client)
-// const AutoChannel = require("./src/autochannel/autochannel")
 const winston = require("winston")
 
 client
