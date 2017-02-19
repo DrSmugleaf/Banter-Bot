@@ -4,7 +4,7 @@
 
 "use strict"
 const commando = require("discord.js-commando")
-const constants = require("../../util/constants")
+const responses = require("../../util/constants").responses.YOUTUBE
 const main = require("./base/main")
 
 module.exports = class Skip extends commando.Command {
@@ -27,17 +27,10 @@ module.exports = class Skip extends commando.Command {
   }
 
   async run(msg) {
-    if(!main.isPlaying(msg.guild)) {
-      return msg.reply(constants.responses.YOUTUBE.NO_CURRENTLY_PLAYING[msg.language])
-    }
-    if(!main.isSameVoiceChannel(msg.member)) {
-      return msg.reply(constants.responses.YOUTUBE.NOT_SAME_VOICE_CHANNEL[msg.language])
-    }
-
+    if(!main.isPlaying(msg.guild)) return msg.reply(responses.NO_CURRENTLY_PLAYING[msg.language])
+    if(!main.isSameVoiceChannel(msg.member)) return msg.reply(responses.NOT_SAME_VOICE_CHANNEL[msg.language])
     if(!this.votes[msg.guild.id]) this.votes[msg.guild.id] = []
-    if(this.votes[msg.guild.id].includes(msg.author.id)) {
-      return msg.reply(constants.responses.YOUTUBE.SKIP.ALREADY_VOTED[msg.language])
-    }
+    if(this.votes[msg.guild.id].includes(msg.author.id)) return msg.reply(responses.SKIP.ALREADY_VOTED[msg.language])
 
     if(main.dispatcher(msg.guild)) {
       main.dispatcher(msg.guild).on("end", () => {
@@ -55,9 +48,9 @@ module.exports = class Skip extends commando.Command {
     if(this.votes[msg.guild.id].length >= total / 2) {
       this.votes[msg.guild.id] = []
       main.dispatcher(msg.guild).end("skip")
-      return msg.channel.send(constants.responses.YOUTUBE.SKIP.SUCCESS[msg.language](votes, total))
+      return msg.channel.sendMessage(responses.SKIP.SUCCESS[msg.language](votes, total))
     } else {
-      return msg.channel.send(constants.responses.YOUTUBE.SKIP.FAIL[msg.language](votes, total))
+      return msg.channel.sendMessage(responses.SKIP.FAIL[msg.language](votes, total))
     }
   }
 }
