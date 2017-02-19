@@ -48,7 +48,9 @@ module.exports = class Skip extends commando.Command {
     this.votes[msg.guild.id].push(msg.author.id)
 
     const votes = this.votes[msg.guild.id].length
-    const total = msg.guild.voiceConnection.channel.members.size - 1
+    const total = msg.guild.voiceConnection.channel.members.filter((member) => {
+      return !member.user.bot
+    }).size
 
     if(this.votes[msg.guild.id].length >= total / 2) {
       this.votes[msg.guild.id] = []
