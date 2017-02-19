@@ -251,17 +251,6 @@ describe("Blackjack Game", function() {
           expect(player2.action).to.equal("stand")
           player2.action = null
         })
-        it("should not end the game", function() {
-          var win, lose, tie
-          game
-            .on("win", () => win = true)
-            .on("lose", () => lose = true)
-            .on("tie", () => tie = true)
-
-          player1.action = "hit"
-          player2.action = "hit"
-          expect(win || lose || tie).to.be.undefined
-        })
       })
 
       describe("actions: stand, none", function() {
