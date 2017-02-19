@@ -73,8 +73,6 @@ module.exports = class AutoChannel {
       const gameName = channel.name.replace("BB-", "")
       return channel.name.includes("BB-") && channel.type === "voice" &&
         games.has(gameName) && games.get(gameName).length < 2
-    }).forEach((channel) => {
-      channel.delete()
-    })
+    }).deleteAll()
   }
 }
