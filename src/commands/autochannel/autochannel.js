@@ -11,7 +11,10 @@ module.exports = class AutoChannelCommand extends commando.Command {
   constructor(client) {
     super(client, {
       name: "autochannel",
-      aliases: ["autochannel", "autoch", "auto-channel", "auto-ch"],
+      aliases: [
+        "autochannel", "autoch", "auto-channel", "auto-ch",
+        "automaticchannel", "automaticch", "automatic-channel", "automatic-ch"
+      ],
       group: "autochannel",
       memberName: "autochannel",
       description: "Configure the automatic creation of voice and text channels depending on the games being played in your server.",
