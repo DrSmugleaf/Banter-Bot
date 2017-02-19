@@ -5,6 +5,7 @@
 "use strict"
 const AutoChannel = require("./base/autochannel")
 const commando = require("discord.js-commando")
+const responses = require("../../util/constants").responses.AUTO_CHANNEL
 
 module.exports = class AutoChannelCommand extends commando.Command {
   constructor(client) {
@@ -56,15 +57,16 @@ module.exports = class AutoChannelCommand extends commando.Command {
     case "disable":
       settings.enabled = false
       msg.guild.settings.set("auto-channel", settings)
-      break
+      return msg.reply(responses.DISABLED[msg.language])
     case "enable":
       settings.enabled = true
       msg.guild.settings.set("auto-channel", settings)
-      break
+      return msg.reply(responses.ENABLED[msg.language])
     case "threshold":
       if(!threshold) threshold = await this.args[1].obtainSimple(msg)
       settings.threshold = threshold
       msg.guild.settings.set("auto-channel", settings)
+      return msg.reply(responses.SET_THRESHOLD[msg.language](threshold))
     }
   }
 }

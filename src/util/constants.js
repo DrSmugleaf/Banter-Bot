@@ -990,6 +990,21 @@ exports.mslanguages = {
 }
 
 exports.responses = {
+  AUTO_CHANNEL: {
+    DISABLED: {
+      english: "Disabled automatic channels in this server.",
+      spanish: "Desactivados canales automáticos en este servidor."
+    },
+    ENABLED: {
+      english: "Enabled automatic channels in this server.",
+      spanish: "Activados canales automáticos en este servidor."
+    },
+    SET_THRESHOLD: {
+      english: (threshold) => `Set the automatic channel creation threshold in this server to \`${threshold}\` players.`,
+      spanish: (threshold) => `Configurado el umbral de creación automática de canales en este servidor a \`${threshold}\` jugadores.`
+    }
+  },
+
   AVATAR: {
     INVALID: {
       english: (url) => `${url} is an invalid image.`,
