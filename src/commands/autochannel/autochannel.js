@@ -49,7 +49,7 @@ module.exports = class AutoChannelCommand extends commando.Command {
 
   async run(msg, args) {
     const mode = args.mode
-    const threshold = args.threshold
+    var threshold = args.threshold
     const settings = msg.guild.settings.get("auto-channel", {})
 
     switch (mode) {
@@ -62,6 +62,7 @@ module.exports = class AutoChannelCommand extends commando.Command {
       msg.guild.settings.set("auto-channel", settings)
       break
     case "threshold":
+      if(!threshold) threshold = await this.args[1].obtainSimple(msg)
       settings.threshold = threshold
       msg.guild.settings.set("auto-channel", settings)
     }
