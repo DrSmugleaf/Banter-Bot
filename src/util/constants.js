@@ -1043,6 +1043,10 @@ exports.responses = {
       english: "Enabled automatic channels in this server.",
       spanish: "Activados canales automáticos en este servidor."
     },
+    UPDATED: {
+      english: "Updated channels for this server.",
+      spanish: "Actualizados los canales de este servidor"
+    },
     SET_THRESHOLD: {
       english: (threshold) => `Set the automatic channel creation threshold in this server to \`${threshold}\` players.`,
       spanish: (threshold) => `Configurado el umbral de creación automática de canales en este servidor a \`${threshold}\` jugadores.`

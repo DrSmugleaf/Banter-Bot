@@ -58,6 +58,17 @@ module.exports = class AutoChannel {
     this.guilds.set(newMember.guild.id, games)
   }
 
+  updateGuild(guild) {
+    guild.fetchMembers().then(() => {
+      this.guilds.delete(guild.id)
+      guild.presences.forEach((presence, id) => {
+        const member = guild.member(id)
+        this.processPresence(null, member)
+      })
+      this.updateChannels(guild)
+    })
+  }
+
   updateChannels(guild) {
     if(guild.settings.get("auto-channel", {}).enabled === false) return
 
