@@ -48,13 +48,8 @@ module.exports = class SongVoiceChannel extends commando.Command {
       return msg.reply(constants.responses.SONG_VOICE_CHANNEL.INVALID[msg.language](channel.name))
     }
 
-    const selfPermissions = channel.permissionsFor(msg.guild.member(msg.client.user))
-    if(!selfPermissions.hasPermission("CONNECT")) {
-      return msg.reply(constants.responses.SONG_VOICE_CHANNEL.CANT_CONNECT[msg.language](channel.name))
-    }
-    if(!selfPermissions.hasPermission("SPEAK")) {
-      return msg.reply(constants.responses.SONG_VOICE_CHANNEL.CANT_SPEAK[msg.language](channel.name))
-    }
+    if(!channel.joinable) return msg.reply(constants.responses.SONG_VOICE_CHANNEL.CANT_CONNECT[msg.language](channel.name))
+    if(!channel.speakable) return msg.reply(constants.responses.SONG_VOICE_CHANNEL.CANT_SPEAK[msg.language](channel.name))
 
     msg.guild.settings.set("song-voice-channel", channel.id)
 

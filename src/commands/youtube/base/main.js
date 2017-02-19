@@ -137,17 +137,13 @@ module.exports = {
       return this.playNext(guild)
     }
 
-    const voicePermissions = next.voiceChannel.permissionsFor(guild.client.user)
-    if(!voicePermissions.hasPermission("CONNECT")) {
-      next.textChannel.sendMessage(
-        constants.responses.YOUTUBE.CANT_CONNECT_ANYMORE[next.message.language]
-      )
+    if(!next.voiceChannel.joinable) {
+      next.textChannel.sendMessage(constants.responses.YOUTUBE.CANT_CONNECT_ANYMORE[next.message.language])
       return this.playNext(guild)
     }
-    if(!voicePermissions.hasPermission("SPEAK")) {
-      next.textChannel.sendMessage(
-        constants.responses.YOUTUBE.CANT_SPEAK_ANYMORE[next.message.language]
-      )
+    if(!next.voiceChannel.speakable) {
+      next.textChannel.sendMessage(constants.responses.YOUTUBE.CANT_SPEAK_ANYMORE[next.message.language])
+      return this.playNext(guild)
     }
 
     this.joinVoice(next.voiceChannel).then(voiceConnection => {
