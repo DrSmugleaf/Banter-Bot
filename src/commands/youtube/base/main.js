@@ -138,11 +138,11 @@ module.exports = {
     }
 
     if(!next.voiceChannel.joinable) {
-      next.textChannel.sendMessage(constants.responses.YOUTUBE.CANT_CONNECT_ANYMORE[next.message.language])
+      next.textChannel.sendMessage(constants.responses.YOUTUBE.CANT_CONNECT_ANYMORE[next.message.language](next.channel.name))
       return this.playNext(guild)
     }
     if(!next.voiceChannel.speakable) {
-      next.textChannel.sendMessage(constants.responses.YOUTUBE.CANT_SPEAK_ANYMORE[next.message.language])
+      next.textChannel.sendMessage(constants.responses.YOUTUBE.CANT_SPEAK_ANYMORE[next.message.language](next.channel.name))
       return this.playNext(guild)
     }
 

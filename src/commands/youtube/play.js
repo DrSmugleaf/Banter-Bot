@@ -56,11 +56,12 @@ module.exports = class Play extends commando.Command {
 
     if(msg.deletable) msg.delete()
 
-    if(!msg.member.voiceChannel.joinable) {
-      return msg.reply(constants.responses.YOUTUBE.CANT_CONNECT[msg.language])
+    const voiceChannel = msg.member.voiceChannel
+    if(!voiceChannel.joinable) {
+      return msg.reply(constants.responses.YOUTUBE.CANT_CONNECT[msg.language](voiceChannel.name))
     }
-    if(!msg.member.voiceChannel.speakable) {
-      return msg.reply(constants.responses.YOUTUBE.CANT_SPEAK[msg.language])
+    if(!voiceChannel.speakable) {
+      return msg.reply(constants.responses.YOUTUBE.CANT_SPEAK[msg.language](voiceChannel.name))
     }
 
     const queue = main.queue.get(msg.guild.id) || []

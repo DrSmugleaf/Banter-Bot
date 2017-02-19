@@ -1339,20 +1339,20 @@ exports.responses = {
 
   YOUTUBE: {
     CANT_CONNECT: {
-      english: "I can't connect to your voice channel.",
-      spanish: "No puedo conectarme a tu canal de voz."
+      english: (channel) => `I can't connect to \`${channel}\`.`,
+      spanish: (channel) => `No puedo conectarme a \`${channel}\`.`
     },
     CANT_CONNECT_ANYMORE: {
-      english: "I can't connect to your voice channel anymore, skipping song.",
-      spanish: "Ya no puedo conectarme a tu canal de voz, omitiendo canción."
+      english: (channel) => `I can't connect to \`${channel}\` anymore, skipping song.`,
+      spanish: (channel) => `Ya no puedo conectarme a \`${channel}\`, omitiendo canción.`
     },
     CANT_SPEAK: {
-      english: "I can't speak in your voice channel.",
-      spanish: "No puedo hablar en tu canal de voz."
+      english: (channel) => `I can't speak in \`${channel}\`.`,
+      spanish: (channel) => `No puedo hablar en \`${channel}\`.`
     },
     CANT_SPEAK_ANYMORE: {
-      english: "I can't speak in your voice channel anymore, skipping song.",
-      spanish: "Ya no puedo hablar en tu canal de voz, omitiendo canción."
+      english: (channel) => `I can't speak in \`${channel}\` anymore, skipping song.`,
+      spanish: (channel) => `Ya no puedo hablar en \`${channel}\`, omitiendo canción.`
     },
     EMPTY_QUEUE: {
       english: "There are no songs in the queue.",
