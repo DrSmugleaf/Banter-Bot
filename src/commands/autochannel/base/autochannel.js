@@ -72,7 +72,7 @@ module.exports = class AutoChannel {
     guild.channels.filter((channel) => {
       const gameName = channel.name.replace("BB-", "")
       return channel.name.includes("BB-") && channel.type === "voice" &&
-        games[gameName] && games[gameName].length < 2
+        games.has(gameName) && games.get(gameName).length < 2
     }).forEach((channel) => {
       channel.delete()
     })
