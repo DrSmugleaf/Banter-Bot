@@ -13,11 +13,7 @@ module.exports = class AutoChannel {
     this.guilds = new Discord.Collection()
 
     this.client.guilds.forEach((guild) => {
-      guild.presences.forEach((presence, id) => {
-        const member = guild.member(id)
-        this.processPresence(null, member)
-      })
-      this.updateChannels(guild)
+      this.updateGuild(guild)
     })
 
     this.client.on("presenceUpdate", (oldMember, newMember) => {
