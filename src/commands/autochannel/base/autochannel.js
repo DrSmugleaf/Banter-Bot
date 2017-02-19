@@ -12,12 +12,14 @@ module.exports = class AutoChannel {
 
     this.guilds = new Discord.Collection()
 
-    this.client.guilds.forEach((guild) => {
-      guild.presences.forEach((presence, id) => {
-        const member = guild.member(id)
-        this.processPresence(null, member)
+    this.client.on("dbReady", () => {
+      this.client.guilds.forEach((guild) => {
+        guild.presences.forEach((presence, id) => {
+          const member = guild.member(id)
+          this.processPresence(null, member)
+        })
+        this.updateChannels(guild)
       })
-      this.updateChannels(guild)
     })
 
     this.client.on("presenceUpdate", (oldMember, newMember) => {
@@ -33,6 +35,7 @@ module.exports = class AutoChannel {
 
   processPresence(oldMember, newMember) {
     if(!newMember.guild.member(newMember.client.user).hasPermission("MANAGE_CHANNELS")) return
+    if(newMember.guild.settings.get("auto-channel", {}).enabled === false) return
 
     const games = this.guilds.get(newMember.guild.id) || new Discord.Collection()
 
@@ -54,6 +57,8 @@ module.exports = class AutoChannel {
   }
 
   updateChannels(guild) {
+    if(guild.settings.get("auto-channel", {}).enabled === false) return
+
     const games = this.guilds.get(guild.id) || new Discord.Collection()
 
     games.forEach((game, name) => {

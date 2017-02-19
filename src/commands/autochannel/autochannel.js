@@ -23,18 +23,22 @@ module.exports = class AutoChannelCommand extends commando.Command {
       args: [
         {
           key: "mode",
-          prompt: "What do you want to do?",
+          prompt: "What do you want to do? (disable, enable)",
           type: "string",
           validate: (value) => {
-
+            return ["disable", "enable"].includes(value)
           }
+        },
+        {
+          key: "threshold",
+          prompt: "What do you want to set the channel creation/deletion threshold to?",
+          type: "integer",
+          default: ""
         }
       ]
     })
 
-    this.client.once("dbReady", () => {
-      new AutoChannel(this.client)
-    })
+    new AutoChannel(this.client)
   }
 
   hasPermission(msg) {
@@ -43,6 +47,16 @@ module.exports = class AutoChannelCommand extends commando.Command {
 
   async run(msg, args) {
     const mode = args.mode
+    const settings = msg.guild.settings.get("auto-channel", {})
 
+    switch (mode) {
+    case "disable":
+      settings.enabled = false
+      msg.guild.settings.set("auto-channel", settings)
+      break
+    case "enable":
+      settings.enabled = true
+      msg.guild.settings.set("auto-channel", settings)
+    }
   }
 }
