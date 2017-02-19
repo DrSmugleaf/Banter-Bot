@@ -31,6 +31,10 @@ module.exports = class AutoChannel {
     })
   }
 
+  threshold(guild) {
+    return guild.settings.get("auto-channel", {}).threshold || 2
+  }
+
   processPresence(oldMember, newMember) {
     if(!newMember.guild.member(newMember.client.user).hasPermission("MANAGE_CHANNELS")) return
     if(newMember.guild.settings.get("auto-channel", {}).enabled === false) return
@@ -60,7 +64,7 @@ module.exports = class AutoChannel {
     const games = this.guilds.get(guild.id) || new Discord.Collection()
 
     games.forEach((game, name) => {
-      if(game.length >= 2 && !guild.channels.exists((channel) => {
+      if(game.length >= this.threshold(guild) && !guild.channels.exists((channel) => {
         return channel.name === `BB-${name}` && channel.type === "voice"
       })) {
         guild.createChannel(`BB-${name}`, "voice")
@@ -70,7 +74,7 @@ module.exports = class AutoChannel {
     guild.channels.filter((channel) => {
       const gameName = channel.name.replace("BB-", "")
       return channel.name.includes("BB-") && channel.type === "voice" &&
-        games.has(gameName) && games.get(gameName).length < 2
+        games.has(gameName) && games.get(gameName).length < this.threshold(guild)
     }).deleteAll()
   }
 }
