@@ -177,6 +177,50 @@ exports.versions = {
       Arreglado que los comandos personalizados se borraran al reiniciarse el bot.
       Arreglado que los votos de youtube !skip no se reinicializaran al terminar una canción.
     `
+  },
+  "7": {
+    english: stripIndents`
+      **ADDED**
+      The bot now removes unused color roles it created.
+      !language can now be used outside of servers, and will set your user language.
+      Automatic channels. :clap:
+      !auto-channel:
+
+      **REMOVED**
+      !markov command.
+
+      **FIXES**
+      Fixed an error that sometimes happened when using !help.
+      Fixed an error when trying to remove a custom command that exists in another server.
+      Fixed !color duplicating the colored role of an user when editing it.
+      Fixed !color responses being unclear, added new responses.
+      Fixed custom command creation sometimes not displaying the correct command prefix to use.
+      Fixed an error when the bot tries to respond in a language it doesn't have a response for, it will now default to english.
+      Fixed !skip counting bots aside than itself for the total vote count.
+      Fixed !play accepting youtube livestreams that would instantly end, it no longer accepts livestreams.
+      Fixed the bot sometimes incorrectly detecting whether or not it can or can't join or speak in a voice channel, improved responses when it can't.
+    `,
+    spanish: stripIndents`
+      **AÑADIDO**
+      El bot ahora elimina roles de color no usados que él mismo ha creado.
+      !language ahora puede ser usado fuera de servidores, y establecerá tu idioma de usuario.
+      Canales automáticos. :clap:
+      !auto-channel:
+
+      **QUITADO**
+      Comando !markov.
+
+      **FIXES**
+      Arreglado un error que ocurría a veces al usar !help.
+      Arreglado un error al intentar quitar un comando personalizado que existía en otro servidor.
+      Arreglado que !color duplicara el role de color de un usuario al editarlo.
+      Arreglado que las respuestas de !color no fueran claras, añadidas nuevas respuestas.
+      Arreglado que la creación de comandos personalizados no te dijera a veces el prefijo correcto que usar.
+      Arreglado un error cuando el bot intentaba responder en un lenguaje para el que no tiene una respuesta, ahora por defecto responderá en inglés.
+      Arreglado que !skip contara otros bots aparte de si mismo al recontar los votos totales.
+      Arreglado que !play aceptara transmisiones en vivo que se terminaban inmediatamente, ahora no acepta transmisiones en vivo.
+      Arreglado que el bot a veces detectara incorrectamente si puede o no unirse o hablar en un canal de voz, mejoradas las respuestas cuando no puede hacerlo.
+    `
   }
 }
 
