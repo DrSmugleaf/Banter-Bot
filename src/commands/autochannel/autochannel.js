@@ -40,7 +40,7 @@ module.exports = class AutoChannelCommand extends commando.Command {
     })
 
     this.client.on("dbReady", () => {
-      new AutoChannel(this.client)
+      this.autoChannel = new AutoChannel(this.client)
     })
   }
 
@@ -67,6 +67,7 @@ module.exports = class AutoChannelCommand extends commando.Command {
       if(!threshold) return
       settings.threshold = threshold
       msg.guild.settings.set("auto-channel", settings)
+      this.autoChannel.updateChannels(msg.guild)
       return msg.reply(responses.SET_THRESHOLD[msg.language](threshold))
     }
   }
