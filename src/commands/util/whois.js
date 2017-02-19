@@ -4,7 +4,7 @@
 
 "use strict"
 const commando = require("discord.js-commando")
-const responses = require("../../util/constants").responses
+const responses = require("../../util/constants").responses.WHOIS
 const moment = require("moment-timezone")
 
 module.exports = class WhoIs extends commando.Command {
@@ -45,6 +45,6 @@ module.exports = class WhoIs extends commando.Command {
       "MMMM Do YYYY, HH:MM:SS zZ"
     )
 
-    return msg.reply(constants.responses.WHOIS[msg.language](user, member, joined, created))
+    return msg.reply(responses[msg.language](user, member, joined, created))
   }
 }

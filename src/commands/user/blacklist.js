@@ -5,7 +5,7 @@
 "use strict"
 const _ = require("underscore")
 const commando = require("discord.js-commando")
-const responses = require("../../util/constants").responses.responses.BLACKLIST
+const responses = require("../../util/constants").responses.BLACKLIST
 
 module.exports = class Blacklist extends commando.Command {
   constructor(client) {

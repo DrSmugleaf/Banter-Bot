@@ -4,7 +4,7 @@
 
 "use strict"
 const commando = require("discord.js-commando")
-const responses = require("../../util/constants").responses
+const responses = require("../../util/constants").responses.AVATAR
 const winston = require("winston")
 
 module.exports = class Avatar extends commando.Command {
@@ -39,10 +39,10 @@ module.exports = class Avatar extends commando.Command {
     const url = args.url
 
     msg.client.user.setAvatar(url).then(() => {
-      return msg.reply(constants.responses.AVATAR.SET[msg.language](url))
+      return msg.reply(responses.SET[msg.language](url))
     }).catch(e => {
       winston.error(e)
-      return msg.reply(constants.responses.AVATAR.INVALID[msg.language](url))
+      return msg.reply(responses.INVALID[msg.language](url))
     })
   }
 }

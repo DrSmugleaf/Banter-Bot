@@ -4,7 +4,7 @@
 
 "use strict"
 const commando = require("discord.js-commando")
-const responses = require("../../util/constants").responses
+const responses = require("../../util/constants").responses.INFO
 
 module.exports = class Info extends commando.Command {
   constructor(client) {
@@ -23,7 +23,7 @@ module.exports = class Info extends commando.Command {
   }
 
   async run(msg) {
-    const answer = constants.responses.INFO[msg.language]
+    const answer = responses[msg.language]
 
     return msg.reply(answer)
   }
