@@ -14,7 +14,7 @@ module.exports = class BlackjackGame extends EventEmitter {
 
     this.dealer = new BlackjackPlayer({ id: data.dealerID, game: this })
 
-    this.deck = new BlackjackDeck({ game: this, name: data.deck, decks: data.decks })
+    this.deck = new BlackjackDeck({ decks: data.decks, game: this, name: data.deck })
 
     this.playerCount = 0
 
@@ -131,12 +131,16 @@ module.exports = class BlackjackGame extends EventEmitter {
       this.deck.deal(player, 2, { silent: true })
       if(player.hand.score === 21) player.blackjack()
     })
+
+    this.emit("start", this)
   }
 
   nextTurn() {
     this.players.forEach((player) => {
       if(player.status === "playing" && player.action !== "stand") player.action = null
     })
+
+    this.emit("nextTurn", this)
   }
 
   end() {

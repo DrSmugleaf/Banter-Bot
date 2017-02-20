@@ -73,10 +73,32 @@ module.exports = class Blackjack extends commando.Command {
         const member = this.getMember(player.id)
         channel.sendMessage(`${member} loses`)
       })
+      .on("nextTurn", (game) => {
+
+      })
       .on("removedInactive", (player) => {
         const member = this.getMember(player.id)
         channel.sendMessage(`${member} removed for inactivity`)
         member.sendMessage(`I removed you from a Blackjack game in ${msg.guild}`)
+      })
+      .on("start", (game) => {
+        var response = "Dealer's hand:\n"
+        game.dealer.hand.cards.forEach((card) => {
+          response = response.concat(`${card.suit.symbol}${card.name}`)
+        })
+        response = response.concat(`. Total: ${game.dealer.hand.score}\n`)
+
+        game.players.forEach((player) => {
+          if(player.status !== "playing") return
+          const member = this.getMember(player.id)
+          response = response.concat(`${member.username}'s hand:\n'`)
+          player.hand.cards.forEach((card) => {
+            response = response.concat(`${card.suit.symbol}${card.name}`)
+          })
+          response = response.concat(`. Total: ${player.hand.score}. Actions you can take: ${player.availableActions.join(", ")}\n`)
+        })
+
+        channel.sendMessage(response)
       })
       .on("tie", (player) => {
         const member = this.getMember(player.id)
