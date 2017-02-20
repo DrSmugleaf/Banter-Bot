@@ -22,12 +22,6 @@ describe("Color", function() {
         expect(reply).to.equal(global.constants.responses.COLOR.ADDED["english"](` ${color}`))
       })
     })
-    it("should set the color of the bot with a role named 'color-userID'", function() {
-      const roleColor = global.guild.member(global.guild.client.user).roles.find(
-        "name", `color-${global.client.user.id}`
-      ).hexColor.toUpperCase()
-      expect(color).to.equal(roleColor)
-    })
   })
 
   describe("edit", function() {
