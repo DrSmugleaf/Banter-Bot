@@ -42,7 +42,7 @@ module.exports = class CustomCommandAdmin extends commando.Command {
       this.client.guilds.forEach((guild) => {
         const commands = guild.settings.get("custom-commands", {})
         for(const customCommand in commands) {
-          if(!commands.hasOwnProperty(customCommand)) return
+          if(!commands.hasOwnProperty(customCommand)) continue
           const command = CustomCommand(guild, customCommand, commands[customCommand])
           this.client.registry.registerCommand(command)
         }
