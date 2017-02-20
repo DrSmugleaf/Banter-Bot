@@ -38,6 +38,7 @@ module.exports = class BlackjackPlayer {
 
     actions.push("hit")
     actions.push("stand")
+    actions.push("double")
     if(this.hand.cards.length === 2 && this.hand.cards[0].value === this.hand.cards[1].value) {
       actions.push("split")
     }

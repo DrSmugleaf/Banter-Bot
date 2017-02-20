@@ -73,7 +73,7 @@ module.exports = class Blackjack extends commando.Command {
         const member = this.getMember(player.id)
         channel.sendMessage(`${member} loses`)
       })
-      .on("nextTurn", (game) => {
+      .on("nextTurn", () => {
 
       })
       .on("removedInactive", (player) => {
