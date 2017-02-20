@@ -26,13 +26,24 @@ module.exports = class BlackjackPlayer {
 
   set action(action) {
     if(!action) return this._action = action
-    if(this.status !== "playing") return
-    if(!["hit", "stand", "double", "split", "surrender"].includes(action)) return
-    if(this._action) return
-    if(action === "surrender" && this.hand.cards.length !== 2) return
+    if(!this.availableActions.includes(action)) return
 
     this._action = action
     this.game.emit("action", this)
+  }
+
+  get availableActions() {
+    if(this.status !== "playing" || this._action) return null
+
+    const actions = new Array()
+    actions.push("hit")
+    actions.push("stand")
+    if(this.hand.cards.length === 2 &&this.hand.cards[0].value === this.hand.cards[1].value) {
+      actions.push("split")
+    }
+    if(this.hand.cards.length === 2) actions.push("surrender")
+
+    return actions
   }
 
   blackjack() {
