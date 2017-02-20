@@ -91,7 +91,7 @@ module.exports = class Blackjack extends commando.Command {
         game.players.forEach((player) => {
           if(player.status !== "playing") return
           const member = this.getMember(player.id)
-          response = response.concat(`${member.username}'s hand:\n'`)
+          response = response.concat(`${member.username}'s hand:\n`)
           player.hand.cards.forEach((card) => {
             response = response.concat(`${card.suit.symbol}${card.name}`)
           })
