@@ -124,11 +124,11 @@ module.exports = class BlackjackGame extends EventEmitter {
       this._players.delete(player.id)
     })
     this.dealer.reset()
-    this.deck.deal(this.dealer, 1)
+    this.deck.deal(this.dealer, 1, { silent: true })
 
     this.players.forEach((player) => {
       player.reset()
-      this.deck.deal(player, 2)
+      this.deck.deal(player, 2, { silent: true })
       if(player.hand.score === 21) player.blackjack()
     })
   }

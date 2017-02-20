@@ -33,13 +33,13 @@ module.exports = class BlackjackDeck {
     this.setup()
   }
 
-  deal(player, amount) {
+  deal(player, amount, data = {}) {
     if(this.cards.length < amount) this.cards = this.cards.concat(this.discarded)
     for(var i = 0; i < amount; i++) {
       const card = this.cards[Math.floor(Math.random() * this.cards.length)]
       this.cards = _.without(this.cards, card)
       player.hand.add(card)
-      this.game.emit("deal", player, card)
+      if(!data.silent) this.game.emit("deal", player, card)
     }
     return player.hand.score
   }
