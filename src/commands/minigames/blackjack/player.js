@@ -9,6 +9,8 @@ module.exports = class BlackjackPlayer {
   constructor(data) {
     this._action = null
 
+    this.bet = 0
+
     this.id = data.id
 
     this.game = data.game
@@ -27,6 +29,7 @@ module.exports = class BlackjackPlayer {
     if(!this.status === "playing") return
     if(!["hit", "stand", "double", "split", "surrender"].includes(action)) return
     if(this._action) return
+    if(action === "surrender" && this.hand.cards.length !== 2) return
 
     this._action = action
     this.game.emit("action", this)
@@ -50,6 +53,11 @@ module.exports = class BlackjackPlayer {
   win() {
     this.status = "win"
     this.game.emit("win", this)
+  }
+
+  surrender() {
+    this.status = "lose"
+    this.game.emit("surrender", this)
   }
 
   reset() {

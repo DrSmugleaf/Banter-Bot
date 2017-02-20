@@ -73,8 +73,13 @@ module.exports = class BlackjackGame extends EventEmitter {
       case "stand":
         break
       case "double":
+        this.bet *= 2
         this.deck.deal(player, 1)
         player._action = "stand"
+        break
+      case "surrender":
+        player.bet /= 2
+        player.surrender()
         break
       default:
         this.removePlayer(player.id)
