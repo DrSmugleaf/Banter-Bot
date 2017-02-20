@@ -17,6 +17,7 @@ class PostgreSQLProvider extends SettingProvider {
     Object.defineProperty(this, "client", { value: null, writable: true })
 
     this.guildSettings = new Map()
+
     this.guildListeners = new Map()
 
     this.userSettings = new Map()
