@@ -22,19 +22,8 @@ module.exports = class BlackjackGame extends EventEmitter {
 
     this.players = new Discord.Collection()
 
-    this.timeLimit = 5 * 1000
-
-    this.timeout = null
-
-    this.started = false
-
     this.on("action", () => {
       if(this.players.every((player) => player.action)) return this.processTurn()
-      if(this.started) return
-      this.started = true
-      this.timeout = setTimeout(() => {
-        this.processTurn()
-      }, this.timeLimit)
     })
 
     this.addPlayer(data.player)
@@ -62,9 +51,6 @@ module.exports = class BlackjackGame extends EventEmitter {
   }
 
   processTurn() {
-    this.started = false
-    clearTimeout(this.timeout)
-    this.timeout = null
 
     this.players.forEach((player) => {
       if(player.status !== "playing") return
