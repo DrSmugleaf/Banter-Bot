@@ -1068,11 +1068,9 @@ exports.responses = {
     ADDED_PLAYER: {
       english: (channel) => stripIndents`Added you to a game of blackjack.
       You can play in <#${channel}>.
-      The actions you can take are \`draw\` and \`hit\`.
       You can remove yourself from the game at any time by using this command again.`,
       spanish: (channel) => stripIndents`Te he añadido a una partida de blackjack.
       Puedes jugar en <#${channel}>.
-      Las acciones que puedes tomar son \`draw\` and \`hit\`.
       Te puedes quitar de la partida en cualquier momento usando este comando de nuevo.`,
     },
     DEAL: {
