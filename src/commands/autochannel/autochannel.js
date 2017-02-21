@@ -27,10 +27,10 @@ module.exports = class AutoChannelCommand extends commando.Command {
       args: [
         {
           key: "mode",
-          prompt: "What do you want to do? (disable, enable, threshold)",
+          prompt: "What do you want to do? (disable, enable, update, threshold)",
           type: "string",
           validate: (value) => {
-            return ["disable", "enable", "update", "threshold"].includes(value)
+            return ["disable", "enable", "update", "threshold"].includes(value.toLowerCase())
           }
         },
         {
@@ -52,7 +52,7 @@ module.exports = class AutoChannelCommand extends commando.Command {
   }
 
   async run(msg, args) {
-    const mode = args.mode
+    const mode = args.mode.toLowerCase()
     var threshold = args.threshold
     const settings = msg.guild.settings.get("auto-channel", {})
 
