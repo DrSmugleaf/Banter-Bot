@@ -184,7 +184,7 @@ exports.versions = {
       The bot now removes unused color roles it created.
       !language can now be used outside of servers, and will set your user language.
       Automatic channels. :clap:
-      !auto-channel:
+      !auto-channel: Used with parameters disable, enable, update or threshold.
 
       **REMOVED**
       !markov command.
@@ -205,7 +205,7 @@ exports.versions = {
       El bot ahora elimina roles de color no usados que él mismo ha creado.
       !language ahora puede ser usado fuera de servidores, y establecerá tu idioma de usuario.
       Canales automáticos. :clap:
-      !auto-channel:
+      !auto-channel: Se usa con los paramétros disable, enable, update o threshold.
 
       **QUITADO**
       Comando !markov.
