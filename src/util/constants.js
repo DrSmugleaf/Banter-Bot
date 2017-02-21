@@ -1093,6 +1093,10 @@ exports.responses = {
         english: "You need to specify a player to vote kick.",
         spanish: "Necesitas especificar un jugador a quien echar por votos."
       },
+      NOT_PLAYING: {
+        english: (name) => `${name} isn't playing Blackjack.`,
+        spanish: (name) => `${name} no esta jugando Blackjack.`
+      },
       SUCCESS: {
         english: (name) => `Kicked player ${name} from this round of Blackjack.`,
         spanish: (name) => `Echado jugador ${name} de esta ronda de Blackjack.`

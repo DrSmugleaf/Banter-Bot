@@ -48,6 +48,7 @@ module.exports = class Blackjack extends commando.Command {
       const parsedMember = this.client.registry.types.get("member").parse(member, msg)
       console.log(parsedMember)
       if(!parsedMember) return msg.reply(responses.KICK.INVALID_MEMBER[msg.language])
+      if(!blackjack.game.hasPlayer(parsedMember.id)) return msg.reply(responses.KICK.NOT_PLAYING[msg.language](parsedMember.displayName))
 
       if(!blackjack.kickVotes[parsedMember]) blackjack.kickVotes[parsedMember] = new Array()
 
