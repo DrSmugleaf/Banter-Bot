@@ -1066,23 +1066,45 @@ exports.responses = {
 
   BLACKJACK: {
     ADDED_PLAYER: {
-      english: (channel) => stripIndents`Added you to a game of blackjack.
+      english: (channel) => stripIndents`Added you to a game of Blackjack.
       You can play in <#${channel}>.
       You can remove yourself from the game at any time by using this command again.`,
-      spanish: (channel) => stripIndents`Te he añadido a una partida de blackjack.
+      spanish: (channel) => stripIndents`Te he añadido a una partida de Blackjack.
       Puedes jugar en <#${channel}>.
       Te puedes quitar de la partida en cualquier momento usando este comando de nuevo.`,
     },
     DEAL: {
 
     },
+    KICK: {
+      ALREADY_VOTED: {
+        english: (name) => `You already voted to kick ${name}.`,
+        spanish: (name) => `Ya has votado para echar a ${name}.`
+      },
+      FAIL: {
+        english: (votes, total, name) => `${votes} out of ${total} players want to kick ${name} from this round of Blackjack.`,
+        spanish: (votes, total, name) => `${votes} de ${total} jugadores quieren echar a ${name} de esta ronda de Blackjack.`
+      },
+      INVALID_MEMBER: {
+        english: "Invalid player.",
+        spanish: "Jugador inválido."
+      },
+      NO_MEMBER_SPECIFIED: {
+        english: "You need to specify a player to vote kick.",
+        spanish: "Necesitas especificar un jugador a quien echar por votos."
+      },
+      SUCCESS: {
+        english: (name) => `Kicked player ${name} from this round of Blackjack.`,
+        spanish: (name) => `Echado jugador ${name} de esta ronda de Blackjack.`
+      }
+    },
     REMOVED_INACTIVE: {
       english: (name) => `Removed player ${name} for inactivity.`,
       spanish: (name) => `Echado jugador ${name} por inactividad.`
     },
     REMOVED_PLAYER: {
-      english: "Removed you from a game of blackjack.",
-      spanish: "Te he quitado de un juego de blackjack."
+      english: "Removed you from a game of Blackjack.",
+      spanish: "Te he quitado de un juego de Blackjack."
     }
   },
 
