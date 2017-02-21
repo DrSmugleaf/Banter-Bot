@@ -71,12 +71,13 @@ client
 client.setProvider(new PostgreSQLProvider()).catch(winston.error)
 
 client.registry
+  .registerGroup("admintools", "Admin Tools")
   .registerGroup("autochannel", "Auto Channel")
+  .registerGroup("bottools", "Bot Tools")
   .registerGroup("bridge", "Bridge")
   .registerGroup("customcommand", "Custom Commands")
   .registerGroup("minigames", "Minigames")
   .registerGroup("misc", "Misc")
-  .registerGroup("server", "Server")
   .registerGroup("user", "User")
   .registerGroup("youtube", "Youtube")
   .registerDefaults()

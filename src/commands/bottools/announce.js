@@ -12,7 +12,7 @@ module.exports = class Announce extends commando.Command {
     super(client, {
       name: "announce",
       aliases: ["announce", "announcement"],
-      group: "util",
+      group: "bottools",
       memberName: "announce",
       description: "Announce a message to a server, list of servers or all servers",
       examples: ["announce all Doom is upon us"],

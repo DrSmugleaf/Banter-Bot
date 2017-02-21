@@ -18,7 +18,7 @@ module.exports = class CleanMessages extends commando.Command {
         "clear-messages", "clearmessages", "clearmsgs", "clear-msgs",
         "delete-messages", "deletemessages", "deletemsgs", "delete-msgs"
       ],
-      group: "server",
+      group: "admintools",
       memberName: "clean-messages",
       description: "Delete the messages of a channel forever.",
       examples: ["clean-messages"],

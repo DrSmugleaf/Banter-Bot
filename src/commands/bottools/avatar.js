@@ -12,7 +12,7 @@ module.exports = class Avatar extends commando.Command {
     super(client, {
       name: "avatar",
       aliases: ["avatar", "image"],
-      group: "util",
+      group: "bottools",
       memberName: "avatar",
       description: "Change the bot's image.",
       examples: ["avatar http://i.imgur.com/DJcsFvt.png"],

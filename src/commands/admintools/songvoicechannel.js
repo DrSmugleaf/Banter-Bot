@@ -14,7 +14,7 @@ module.exports = class SongVoiceChannel extends commando.Command {
         "song-voice-channel", "songvoicechannel",
         "voice-song-channel", "voicesongchannel",
       ],
-      group: "server",
+      group: "admintools",
       memberName: "song-voice-channel",
       description: "Set the server's song channel for the bot.",
       examples: ["song-voice-channel none", "song-voice-channel music", "song-voice-channel songs"],

@@ -16,7 +16,7 @@ module.exports = class Blacklist extends commando.Command {
         "mute", "mute-user", "muteuser",
         "mute-member", "mutemember"
       ],
-      group: "user",
+      group: "admintools",
       memberName: "blacklist",
       description: "Blacklist a member from using any bot commands, or unblacklist a blacklisted member.",
       examples: ["blacklist DrSmugleaf", "blacklist @DrSmugleaf#9458", "blacklist 109067752286715904"],

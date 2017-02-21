@@ -12,7 +12,7 @@ module.exports = class Name extends commando.Command {
     super(client, {
       name: "name",
       aliases: ["alias", "name", "nick", "nickname"],
-      group: "util",
+      group: "bottools",
       memberName: "name",
       description: "Change the bot's name.",
       examples: ["name Banter Bot"],

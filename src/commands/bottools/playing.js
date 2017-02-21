@@ -12,7 +12,7 @@ module.exports = class Playing extends commando.Command {
     super(client, {
       name: "playing",
       aliases: ["playing"],
-      group: "util",
+      group: "bottools",
       memberName: "playing",
       description: "Change the bot's playing status.",
       examples: ["playing Overwatch", "playing"],

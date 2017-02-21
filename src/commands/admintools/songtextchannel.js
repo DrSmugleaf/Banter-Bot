@@ -4,17 +4,20 @@
 
 "use strict"
 const commando = require("discord.js-commando")
-const responses = require("../../util/constants").responses.INFO_CHANNEL
+const responses = require("../../util/constants").responses.SONG_TEXT_CHANNEL
 
-module.exports = class InfoChannel extends commando.Command {
+module.exports = class SongTextChannel extends commando.Command {
   constructor(client) {
     super(client, {
-      name: "info-channel",
-      aliases: ["info-channel", "infochannel"],
-      group: "server",
-      memberName: "info-channel",
-      description: "Set the server's info channel for the bot.",
-      examples: ["info-channel info", "info-channel bots"],
+      name: "song-text-channel",
+      aliases: [
+        "song-text-channel", "songtextchannel",
+        "text-song-channel", "textsongchannel",
+      ],
+      group: "admintools",
+      memberName: "song-text-channel",
+      description: "Set the server's song channel for the bot.",
+      examples: ["song-text-channel none", "song-text-channel songs", "song-text-channel videos"],
       guildOnly: true,
       throttling: {
         usages: 2,
@@ -23,7 +26,7 @@ module.exports = class InfoChannel extends commando.Command {
       args: [
         {
           key: "channel",
-          prompt: "What channel do you want to set as the info channel?",
+          prompt: "What channel do you want to set as the song text channel?",
           type: "channel",
           default: ""
         }
@@ -38,17 +41,18 @@ module.exports = class InfoChannel extends commando.Command {
   async run(msg, args) {
     const channel = args.channel
     if(!channel) {
-      msg.guild.settings.remove("info-channel")
+      msg.guild.settings.remove("song-text-channel")
       return msg.reply(responses.REMOVED[msg.language])
     }
     if(channel.type !== "text") {
       return msg.reply(responses.INVALID[msg.language](channel.name))
     }
+
     if(!channel.permissionsFor(msg.guild.member(msg.client.user)).hasPermission("SEND_MESSAGES")) {
       return msg.reply(responses.NO_PERMISSION[msg.language](channel.name))
     }
 
-    msg.guild.settings.set("info-channel", channel.id)
+    msg.guild.settings.set("song-text-channel", channel.id)
 
     return msg.reply(responses.SET[msg.language](channel.name))
   }

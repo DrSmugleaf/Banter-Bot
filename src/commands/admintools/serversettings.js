@@ -14,7 +14,7 @@ module.exports = class ServerSettings extends commando.Command {
         "server-settings", "serversettings",
         "guild-settings", "guildsettings"
       ],
-      group: "server",
+      group: "admintools",
       memberName: "server-settings",
       description: "Modifies this server's settings",
       examples: ["server-settings"],
