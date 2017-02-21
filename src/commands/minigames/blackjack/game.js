@@ -79,6 +79,9 @@ module.exports = class BlackjackGame extends EventEmitter {
         this.deck.deal(player, 1)
         player._action = "stand"
         break
+      case "split":
+
+        break
       case "surrender":
         player.bet /= 2
         player.surrender()
@@ -92,7 +95,9 @@ module.exports = class BlackjackGame extends EventEmitter {
     })
 
     if(this.players.every((player) => player.status !== "playing")) return this.start()
-    if(this.players.every((player) => player.status !== "playing" || player.action === "stand" )) {
+    if(this.players.every((player) => {
+      return player.status !== "playing" || player.action === "stand" || player.hand.score === 21
+    })) {
       while(this.dealer.hand.score < 17) {
         this.deck.deal(this.dealer, 1)
       }
