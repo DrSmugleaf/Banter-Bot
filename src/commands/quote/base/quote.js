@@ -62,16 +62,10 @@ module.exports = class Quote {
   }
 
   get(data) {
-    const query = data.id ? "SELECT * FROM quotes WHERE id=$1::bigint AND guild=$2::bigint" :
-      "SELECT * FROM quotes WHERE guild=$1::bigint OFFSET random() * (SELECT count(*)-1 FROM quotes) LIMIT 1"
-    const values = data.id ? [data.id, data.guild] : [data.guild]
+    const quotes = this.quotes.get(data.guild)
 
-    return new Promise(function(resolve, reject) {
-      this.db.query(query, values, "one").then((data) => resolve(data)).catch((e) => {
-        winston.error(e)
-        reject(e)
-      })
-    })
+    if(data.id) return quotes.find((quote) => { return quote.id === data.id })
+    return quotes[Math.floor(Math.random() * quotes.length)]
   }
 
   has(data) {
