@@ -49,7 +49,7 @@ module.exports = class ServerSettings extends commando.Command {
   }
 
   hasPermission(msg) {
-    return msg.author.id === this.client.options.owner
+    return this.client.isOwner(msg.author.id)
   }
 
   async run(msg, args) {
