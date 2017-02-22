@@ -186,6 +186,9 @@ exports.versions = {
       Automatic channels. :clap:
       !auto-channel: Used with parameters disable, enable, update or threshold.
 
+      **CHANGES**
+      Changed how quotes are organized. They are now separated by server.
+
       **REMOVED**
       !markov command.
 
@@ -199,6 +202,12 @@ exports.versions = {
       Fixed !skip counting bots aside than itself for the total vote count.
       Fixed !play accepting youtube livestreams that would instantly end, it no longer accepts livestreams.
       Fixed the bot sometimes incorrectly detecting whether or not it can or can't join or speak in a voice channel, improved responses when it can't.
+      Fixed quotes disorganizing themselves every so often.
+      Fixed quotes having the wrong id or skipping ids when adding them after deleting another.
+      Fixed some errors when a quote doesn't exist and improved all responses related to quotes.
+      Fixed the bot not telling the difference between there being no quotes and a specific quote not existing.
+      Fixed everyone being able to delete any quotes. Only administrators and the submitter of the quote are now able to remove a quote, and only if it is from that server.
+      Fixed quote modes that weren't written fully in lowercase not working.
     `,
     spanish: stripIndents`
       **AÑADIDO**
@@ -206,6 +215,9 @@ exports.versions = {
       !language ahora puede ser usado fuera de servidores, y establecerá tu idioma de usuario.
       Canales automáticos. :clap:
       !auto-channel: Se usa con los paramétros disable, enable, update o threshold.
+
+      **CAMBIOS**
+      Cambiado como los quotes están organizados. Ahora están separados por servidor.
 
       **QUITADO**
       Comando !markov.
@@ -220,6 +232,12 @@ exports.versions = {
       Arreglado que !skip contara otros bots aparte de si mismo al recontar los votos totales.
       Arreglado que !play aceptara transmisiones en vivo que se terminaban inmediatamente, ahora no acepta transmisiones en vivo.
       Arreglado que el bot a veces detectara incorrectamente si puede o no unirse o hablar en un canal de voz, mejoradas las respuestas cuando no puede hacerlo.
+      Arreglado que los quotes se desorganizaran de vez en cuando.
+      Arreglado que los quotes tuvieran un ID erróneo al añadirlos después de borrar otro.
+      Arreglados algunos errores cuando un quote no existe y mejoradas todas las respuestas relacionadas con los quotes.
+      Arreglado que el bot no supiera la diferencia entre que no hubieran quotes y que no existiera un quote específico.
+      Arreglado que todos pudieran borrar quotes. Ahora sólo administradores y el remitente del quote podrán borrar un quote, y sólo si es de ese servidor.
+      Arreglado que los modos de quote fueran inválidos si no estaban escritos en minúscula.
     `
   }
 }
