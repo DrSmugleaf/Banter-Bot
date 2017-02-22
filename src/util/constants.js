@@ -1134,7 +1134,7 @@ exports.responses = {
     },
     NATURAL_BLACKJACK: {
       english: (name) => `${name} gets a natural Blackjack!`,
-      spanish: (name) => `${name} consigue un Blackjack natural!`
+      spanish: (name) => `¡${name} consigue un Blackjack natural!`
     },
     REMOVED_PLAYER: {
       english: "Removed you from a game of Blackjack.",
@@ -1146,7 +1146,7 @@ exports.responses = {
     },
     WIN: {
       english: (name) => `${name} wins!`,
-      spanish: (name) => `${name} gana!`
+      spanish: (name) => `¡${name} gana!`
     }
   },
 
