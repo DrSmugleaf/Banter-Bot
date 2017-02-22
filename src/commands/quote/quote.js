@@ -54,14 +54,15 @@ module.exports = class QuoteCommand extends commando.Command {
       null : args.id_text == "" ?
       parseInt(args.mode, 10) : parseInt(args.id_text, 10)
     const text = args.id_text == "" ? args.mode : args.id_text
+    var parameters
 
     switch (mode) {
     case "add":
     case "put":
       if(!text) return msg.reply(responses.EMPTY[msg.language])
-      this.quote.add(
-        { text: text, submitter: msg.author.username, guild: msg.guild.id }
-      ).then(() => {
+
+      parameters = { text: text, submitter: msg.author.id, guild: msg.guild.id }
+      this.quote.add(parameters).then(() => {
         return msg.reply(responses.ADDED[msg.language])
       }).catch((e) => {
         winston.info(e)
@@ -72,20 +73,29 @@ module.exports = class QuoteCommand extends commando.Command {
     case "delete":
     case "rem":
     case "remove":
-      if(!this.quote.has({ id: id, guild: msg.guild.id })) return msg.reply(responses.MISSING[msg.language])
-      return this.quote.delete({ id: id, guild: msg.guild.id }).then(() => {
+      parameters = { id: id, guild: msg.guild.id }
+      if(!this.quote.has(parameters)) return msg.reply(responses.MISSING[msg.language])
+      if(!this.quote.get(parameters).submitter === msg.author.id) {
+        return msg.reply(responses.NO_PERMISSION)
+      }
+
+      this.quote.delete(parameters).then(() => {
         return msg.reply(responses.REMOVED[msg.language](id))
       }).catch(() => {
         return msg.reply(responses.ERROR[msg.language])
       })
+      break
     case "find":
     case "get": {
-      if(id && !this.quote.has({ id: id, guild: msg.guild.id })) return msg.reply(responses.MISSING[msg.language])
-      const quote = this.quote.get({ id: id, guild: msg.guild.id })
-      return msg.reply(responses.GET[msg.language](quote.id, quote.text))
+      parameters = { id: id, guild: msg.guild.id }
+      if(id && !this.quote.has(parameters)) return msg.reply(responses.MISSING[msg.language])
+
+      const quote = this.quote.get(parameters)
+      msg.reply(responses.GET[msg.language](quote.id, quote.text))
+      break
     }
     default:
-      return msg.reply(`Mode \`${mode}\` doesn't exist`)
+      return msg.reply(responses.NO_MODE[msg.language](mode))
     }
   }
 }

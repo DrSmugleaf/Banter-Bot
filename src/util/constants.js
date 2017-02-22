@@ -1308,6 +1308,14 @@ exports.responses = {
       english: "That quote doesn't exist.",
       spanish: "Ese quote no existe."
     },
+    NO_MODE: {
+      english: (mode) => `Mode \`${mode}\` doesn't exist`,
+      spanish: (mode) => `Modo \`${mode}\` no existe`
+    },
+    NO_PERMISSION: {
+      english: "You don't have permission to remove that quote.",
+      spanish: "No tienes permiso para eliminar ese quote."
+    },
     REMOVED: {
       english: (number) => `Quote #${number} removed.`,
       spanish: (number) => `Quote #${number} eliminado.`
