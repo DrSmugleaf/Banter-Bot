@@ -29,6 +29,7 @@ module.exports = class QuoteCommand extends commando.Command {
           type: "string",
           default: "",
           parse: (mode) => {
+            mode = mode.toLowerCase()
             if(["add", "put"].includes(mode)) return "add"
             if(["del", "delete", "rem", "remove"].includes(mode)) return "delete"
             if(["find", "get"].includes(mode)) return "get"
