@@ -41,22 +41,22 @@ module.exports = class Quote extends commando.Command {
     })
 
     this.client.once("dbReady", () => {
-      db.query("CREATE TABLE IF NOT EXISTS quotes (id BIGSERIAL PRIMARY KEY, text TEXT, submitter TEXT)")
+      db.query("CREATE TABLE IF NOT EXISTS quotes (id BIGSERIAL PRIMARY KEY, text TEXT, submitter TEXT, guild BIGINT)")
     })
   }
 
   async quoteAdd(msg, text) {
     if(!text) return msg.reply(responses.EMPTY[msg.language])
-    db.query("INSERT INTO quotes (text, submitter) VALUES ($1::text, $2::text) RETURNING id",
-      [text, msg.author.username], "one"
+    db.query("INSERT INTO quotes (text, submitter, guild) VALUES ($1::text, $2::text, $3::bigint) RETURNING id",
+      [text, msg.author.username, msg.guild.id], "one"
     ).then(data => {
       return msg.reply(responses.ADDED[msg.language](data.id))
     }).catch(winston.error)
   }
 
   async quoteDel(msg, id) {
-    db.query("DELETE FROM quotes WHERE id=$1::int RETURNING id",
-      [id], "one"
+    db.query("DELETE FROM quotes WHERE id=$1::int AND guild=$2::bigint RETURNING id",
+      [id, msg.guild.id], "one"
     ).then(data => {
       db.cleanTable("quotes")
       return msg.reply(responses.REMOVED[msg.language](data.id))
@@ -67,9 +67,9 @@ module.exports = class Quote extends commando.Command {
   }
 
   async quoteGet(msg, id) {
-    const query = id ? "SELECT * FROM quotes WHERE id=$1::int" :
-    "SELECT id, text, submitter FROM quotes OFFSET random() * (SELECT count(*)-1 FROM quotes) LIMIT 1"
-    const values = id ? [id] : null
+    const query = id ? "SELECT * FROM quotes WHERE id=$1::int AND guild=$2::bigint" :
+    "SELECT id, text, submitter FROM quotes WHERE guild=$1::bigint OFFSET random() * (SELECT count(*)-1 FROM quotes) LIMIT 1"
+    const values = id ? [id, msg.guild.id] : [msg.guild.id]
 
     db.query(query, values, "one").then(data => {
       return msg.reply(responses.GET[msg.language](data.id, data.text))
