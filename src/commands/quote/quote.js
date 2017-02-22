@@ -4,8 +4,6 @@
 
 "use strict"
 const commando = require("discord.js-commando")
-const DB = require("../../util/db.js")
-const db = new DB()
 const Quote = require("./base/quote")
 const responses = require("../../util/constants").responses.QUOTE
 const winston = require("winston")
