@@ -78,7 +78,7 @@ module.exports = class QuoteCommand extends commando.Command {
     case "delete":
       parameters = { id: id, guild: msg.guild.id }
       if(!this.quote.has(parameters)) return msg.reply(responses.MISSING[msg.language])
-      if(!this.quote.get(parameters).submitter === msg.author.id) {
+      if(this.quote.get(parameters).submitter !== msg.author.id && !msg.member.hasPermission("ADMINISTRATOR")) {
         return msg.reply(responses.NO_PERMISSION[msg.language](id))
       }
 
