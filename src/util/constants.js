@@ -1093,7 +1093,14 @@ exports.responses = {
       Te puedes quitar de la partida en cualquier momento usando este comando de nuevo.`,
     },
     DEAL: {
-
+      english: (name, suit, card, total, actions) => stripIndents`
+        ${name}, dealt you ${suit}${card}. Total score: ${total}.
+        Actions you can take: ${actions}
+      `,
+      spanish: (name, suit, card, total, actions) => stripIndents`
+        ${name}, te he repartido ${suit}${card}. Puntuación total: ${total}.
+        Actions you can take: ${actions}
+      `
     },
     KICK: {
       ALREADY_VOTED: {
@@ -1121,13 +1128,25 @@ exports.responses = {
         spanish: (name) => `Echado jugador ${name} de esta ronda de Blackjack.`
       }
     },
-    REMOVED_INACTIVE: {
-      english: (name) => `Removed player ${name} for inactivity.`,
-      spanish: (name) => `Echado jugador ${name} por inactividad.`
+    LOSE: {
+      english: (name) => `${name} loses.`,
+      spanish: (name) => `${name} pierde.`
+    },
+    NATURAL_BLACKJACK: {
+      english: (name) => `${name} gets a natural Blackjack!`,
+      spanish: (name) => `${name} consigue un Blackjack natural!`
     },
     REMOVED_PLAYER: {
       english: "Removed you from a game of Blackjack.",
       spanish: "Te he quitado de un juego de Blackjack."
+    },
+    TIE: {
+      english: (name) => `${name} ties with the dealer.`,
+      spanish: (name) => `${name} empata con el crupier.`
+    },
+    WIN: {
+      english: (name) => `${name} wins!`,
+      spanish: (name) => `${name} gana!`
     }
   },
 

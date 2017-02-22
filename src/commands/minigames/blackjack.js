@@ -83,11 +83,13 @@ module.exports = class Blackjack extends commando.Command {
     const game = new BlackjackGame({ dealerID: msg.client.user.id, deck: "french", decks: 1, player: msg.member.id })
       .on("blackjack", (player) => {
         const member = this.getMember(player.id)
-        channel.sendMessage(`${member} blackjack`)
+        channel.sendMessage(responses.NATURAL_BLACKJACK[member.language](member))
       })
       .on("deal", (player, card) => {
         const member = this.getMember(player.id)
-        channel.sendMessage(`${member}, dealt you 1 ${card.name}, total score: ${player.hand.score}`)
+        channel.sendMessage(responses.DEAL[member.language](
+          member, card.suit, card.name, player.hand.score, player.availableActions
+        ))
       })
       .on("end", () => {
         game.removeAllListeners()
@@ -96,15 +98,10 @@ module.exports = class Blackjack extends commando.Command {
       })
       .on("lose", (player) => {
         const member = this.getMember(player.id)
-        channel.sendMessage(`${member} loses`)
+        channel.sendMessage(responses.LOSE[member.language](member))
       })
       .on("nextTurn", () => {
 
-      })
-      .on("removedInactive", (player) => {
-        const member = this.getMember(player.id)
-        channel.sendMessage(`${member} removed for inactivity`)
-        member.sendMessage(`I removed you from a Blackjack game in ${msg.guild}`)
       })
       .on("start", (game) => {
         var response = "Dealer's hand:\n"
