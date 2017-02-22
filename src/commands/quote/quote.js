@@ -63,7 +63,6 @@ module.exports = class QuoteCommand extends commando.Command {
 
     switch (mode) {
     case "add":
-    case "put":
       if(!text) return msg.reply(responses.NO_TEXT[msg.language])
 
       parameters = { text: text, submitter: msg.author.id, guild: msg.guild.id }
@@ -74,10 +73,7 @@ module.exports = class QuoteCommand extends commando.Command {
         return msg.reply(responses.ERROR[msg.language])
       })
       break
-    case "del":
     case "delete":
-    case "rem":
-    case "remove":
       parameters = { id: id, guild: msg.guild.id }
       if(!this.quote.has(parameters)) return msg.reply(responses.MISSING[msg.language])
       if(!this.quote.get(parameters).submitter === msg.author.id) {
@@ -90,7 +86,6 @@ module.exports = class QuoteCommand extends commando.Command {
         return msg.reply(responses.ERROR[msg.language])
       })
       break
-    case "find":
     case "get": {
       parameters = { id: id, guild: msg.guild.id }
       if(this.quote.empty(msg.guild.id)) return msg.reply(responses.MISSING[msg.language])
