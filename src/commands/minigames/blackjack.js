@@ -123,11 +123,11 @@ module.exports = class Blackjack extends commando.Command {
       })
       .on("tie", (player) => {
         const member = this.getMember(player.id)
-        channel.sendMessage(`${member} ties`)
+        channel.sendMessage(responses.TIE[msg.language](member))
       })
       .on("win", (player) => {
         const member = this.getMember(player.id)
-        channel.sendMessage(`${member} wins`)
+        channel.sendMessage(responses.WIN[msg.language](member))
       })
 
     this.games[msg.guild.id] = { game: game, channel: channel, kickVotes: {} }

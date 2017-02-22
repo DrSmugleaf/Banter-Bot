@@ -1157,7 +1157,7 @@ exports.responses = {
     },
     CANT_BLACKLIST_SELF: {
       english: "You can't blacklist yourself!",
-      spanish: "No te puedes poner en la lista negra a ti mismo!"
+      spanish: "¡No te puedes poner en la lista negra a ti mismo!"
     },
     WHITELISTED: {
       english: (name) => `Removed user \`${name}\` from the blacklist.`,
