@@ -34,7 +34,7 @@ module.exports = class Quote {
     const that = this
     return new Promise(function(resolve, reject) {
       that.db.query(
-        "INSERT INTO quotes (text, submitter, guild) VALUES ($1::text, $2::text, $3::bigint)",
+        "INSERT INTO quotes (text, submitter, guild) VALUES ($1::text, $2::bigint, $3::bigint)",
         [data.text, data.submitter, data.guild]
       ).then((data) => {
         const quotes = that.quotes.get(data.guild) || new Array()
@@ -68,7 +68,7 @@ module.exports = class Quote {
   }
 
   empty(guild) {
-    return this.quotes.has(guild)
+    return !this.quotes.has(guild)
   }
 
   get(data) {
