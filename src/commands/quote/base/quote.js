@@ -17,6 +17,8 @@ module.exports = class Quote {
   }
 
   async init() {
+    this.quotes = new Map()
+
     await this.db.query("CREATE TABLE IF NOT EXISTS quotes (id BIGSERIAL PRIMARY KEY, text TEXT, submitter BIGINT, guild BIGINT)")
 
     const rows = await this.db.query("SELECT id as realid, text, CAST(submitter as TEXT) as submitter, CAST(guild as TEXT) as guild FROM quotes")
