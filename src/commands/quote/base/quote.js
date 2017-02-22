@@ -34,14 +34,15 @@ module.exports = class Quote {
     const that = this
     return new Promise(function(resolve, reject) {
       that.db.query(
-        "INSERT INTO quotes (text, submitter, guild) VALUES ($1::text, $2::bigint, $3::bigint)",
-        [data.text, data.submitter, data.guild]
-      ).then((data) => {
-        const quotes = that.quotes.get(data.guild) || new Array()
-        const id = quotes[quotes.length - 1] ? quotes[quotes.length - 1].id : 1
-        data.id = id
-        quotes.push(data)
-        that.quotes.set(data.guild, quotes)
+        "INSERT INTO quotes (text, submitter, guild) VALUES ($1::text, $2::bigint, $3::bigint) RETURNING id as realid, text, CAST(submitter as TEXT), CAST(guild as TEXT)",
+        [data.text, data.submitter, data.guild],
+        "one"
+      ).then((res) => {
+        const quotes = that.quotes.get(res.guild) || new Array()
+        const id = quotes[quotes.length - 1] ? quotes[quotes.length - 1].id + 1 : 1
+        res.id = id
+        quotes.push(res)
+        that.quotes.set(res.guild, quotes)
         resolve(id)
       }).catch((e) => {
         winston.error(e)
