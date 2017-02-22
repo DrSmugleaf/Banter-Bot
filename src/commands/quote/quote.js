@@ -29,7 +29,13 @@ module.exports = class QuoteCommand extends commando.Command {
           key: "mode",
           prompt: "Add, delete or get a quote",
           type: "string",
-          default: "get"
+          default: "",
+          parse: (mode) => {
+            if(["add", "put"].includes(mode)) return "add"
+            if(["del", "delete", "rem", "remove"].includes(mode)) return "delete"
+            if(["find", "get"].includes(mode)) return "get"
+            return "get"
+          }
         },
         {
           key: "id_text",
@@ -49,11 +55,9 @@ module.exports = class QuoteCommand extends commando.Command {
   }
 
   async run(msg, args) {
-    const mode = args.id_text == "" ? "get" : args.mode
-    const id = args.mode == "" ?
-      null : args.id_text == "" ?
-      parseInt(args.mode, 10) : parseInt(args.id_text, 10)
-    const text = args.id_text == "" ? args.mode : args.id_text
+    const mode = this.args[0].parse(args.mode)
+    const id = parseInt(args.mode, 10) || parseInt(args.id_text, 10) || null
+    const text = args.id_text
     var parameters
 
     switch (mode) {
