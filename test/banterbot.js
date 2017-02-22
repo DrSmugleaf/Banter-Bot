@@ -3,8 +3,9 @@
 //
 
 "use strict"
-const constants = require("../src/util/constants")
 const client = require("../banterbot").client
+const commando = require("discord.js-commando")
+const constants = require("../src/util/constants")
 
 before(function(done) {
   global.constants = constants
@@ -23,6 +24,7 @@ before(function(done) {
 
           global.channel.sendMessage(prefix + message).then((initialMsg) => {
             const command = global.client.dispatcher.parseMessage(initialMsg)
+            command.command.throttling = null
             command.run()
 
             return global.channel.awaitMessages((m) => {
