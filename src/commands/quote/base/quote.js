@@ -18,10 +18,12 @@ module.exports = class Quote {
   async init() {
     await this.db.query("CREATE TABLE IF NOT EXISTS quotes (id BIGSERIAL PRIMARY KEY, text TEXT, submitter TEXT, guild BIGINT)")
 
-    const rows = await this.db.query("SELECT id, text, submitter, CAST(guild as TEXT) as guild FROM quotes")
-    for(const row of rows) {
+    const rows = await this.db.query("SELECT id as realid, text, submitter, CAST(guild as TEXT) as guild FROM quotes")
+    for(var row of rows) {
       const guild = row.guild
       const quotes = this.quotes.get(guild) || new Array()
+      const id = quotes[quotes.length - 1] ? quotes[quotes.length - 1].id + 1 : 1
+      row.id = id
       quotes.push(row)
       this.quotes.set(guild, quotes)
     }
@@ -35,6 +37,8 @@ module.exports = class Quote {
         [data.text, data.submitter, data.guild]
       ).then((data) => {
         const quotes = that.quotes.get(data.guild) || new Array()
+        const id = quotes[quotes.length - 1] ? quotes[quotes.length - 1].id : 1
+        data.id = id
         quotes.push(data)
         that.quotes.set(data.guild, quotes)
         resolve()
