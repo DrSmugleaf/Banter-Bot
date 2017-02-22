@@ -32,7 +32,9 @@ module.exports = class QuoteCommand extends commando.Command {
             if(["add", "put"].includes(mode)) return "add"
             if(["del", "delete", "rem", "remove"].includes(mode)) return "delete"
             if(["find", "get"].includes(mode)) return "get"
-            return "get"
+            if(!mode) return "get"
+            if(!isNaN(mode)) return mode
+            return mode
           }
         },
         {
@@ -53,7 +55,7 @@ module.exports = class QuoteCommand extends commando.Command {
   }
 
   async run(msg, args) {
-    const mode = this.args[0].parse(args.mode)
+    const mode = args.id_text ? this.args[0].parse(args.mode) : "get"
     const id = parseInt(args.mode, 10) || parseInt(args.id_text, 10) || null
     const text = args.id_text
     var parameters
