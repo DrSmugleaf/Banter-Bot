@@ -13,7 +13,7 @@ require("./src/extensions/argument").applyToClass(Commando.CommandArgument)
 require("./src/extensions/message").applyToClass(Commando.CommandMessage)
 require("./src/util")
 const client = new Commando.Client({
-  commandPrefix: process.env.NODE_ENV === "dev" ? "!!" : "!",
+  commandPrefix: process.env.TRAVIS === "true" ? "!!!" : process.env.NODE_ENV === "dev" ? "!!" : "!",
   invite: "https://discord.gg/yyDWNBr",
   owner: "109067752286715904",
   unknownCommandResponse: process.env.NODE_ENV === "dev"
