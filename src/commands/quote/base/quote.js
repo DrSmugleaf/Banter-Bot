@@ -28,15 +28,15 @@ module.exports = class Quote {
   }
 
   add(data) {
+    const that = this
     return new Promise(function(resolve, reject) {
-      this.db.query(
+      that.db.query(
         "INSERT INTO quotes (text, submitter, guild) VALUES ($1::text, $2::text, $3::bigint)",
-        [data.text, data.submitter, data.guild],
-        "one"
+        [data.text, data.submitter, data.guild]
       ).then((data) => {
-        const quotes = this.quotes.get(data.guild) || new Array()
+        const quotes = that.quotes.get(data.guild) || new Array()
         quotes.push(data)
-        this.quotes.set(data.guild, quotes)
+        that.quotes.set(data.guild, quotes)
         resolve()
       }).catch((e) => {
         winston.error(e)
