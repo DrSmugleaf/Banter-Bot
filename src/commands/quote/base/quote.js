@@ -65,7 +65,9 @@ module.exports = class Quote {
     })
   }
 
-  async has() {
-
+  has(data) {
+    return Boolean(this.quotes.get(data.guild).find((quote) => {
+      return quote.id === data.id
+    }))
   }
 }
