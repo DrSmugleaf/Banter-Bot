@@ -4,7 +4,6 @@
 
 "use strict"
 const client = require("../banterbot").client
-const commando = require("discord.js-commando")
 const constants = require("../src/util/constants")
 
 before(function(done) {

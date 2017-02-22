@@ -65,6 +65,10 @@ module.exports = class Quote {
     })
   }
 
+  empty(guild) {
+    return this.quotes.has(guild)
+  }
+
   get(data) {
     const quotes = this.quotes.get(data.guild)
 
