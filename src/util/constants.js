@@ -225,6 +225,7 @@ exports.versions = {
 }
 
 exports.defaultoptions = {
+  invite: "https://discord.gg/yyDWNBr",
   name: "Banter Bot"
 }
 
@@ -1208,8 +1209,8 @@ exports.responses = {
       spanish: (name) => `El miembro ${name} no está actualmente en un canal de voz.`
     },
     REGISTERED: {
-      english: (name) => oneLine`Added command ${name}, use ${name} to use it.`,
-      spanish: (name) => oneLine`Añadido comando ${name}, usa ${name} para usarlo.`
+      english: (name) => oneLine`Added command ${name}, use \`${name}\` to use it.`,
+      spanish: (name) => oneLine`Añadido comando ${name}, usa \`${name}\` para usarlo.`
     },
     UNREGISTERED: {
       english: (name) => `Removed custom command \`${name}\`.`,
@@ -1270,16 +1271,6 @@ exports.responses = {
     }
   },
 
-  MISSING_COMMAND: {
-    english: (command) => `the command ${command} doesn't exist.`,
-    spanish: (command) => `el comando ${command} no existe.`
-  },
-
-  NOT_A_SERVER: {
-    english: "Use the command in a server chat.",
-    spanish: "Usa el comando en el chat de un servidor."
-  },
-
   PLAYING: {
     SET: {
       english: (name) => `Changed the bot's game to ${name}.`,
@@ -1289,35 +1280,39 @@ exports.responses = {
 
   QUOTE: {
     ADDED: {
-      english: (number) => `Quote #${number} added.`,
-      spanish: (number) => `Quote #${number} añadido.`
+      english: (number, command) => `Quote #${number} added, use \`${command} ${number}\` to see it.`,
+      spanish: (number, command) => `Quote #${number} añadido, usa \`${command} ${number}\` para verlo.`
     },
     EMPTY: {
-      english: "Quote empty, add text after the command.",
-      spanish: "Quote vacío, añade texto después del comando."
+      english: (command) => `There are no quotes, add some by using \`${command} <text>\`.`,
+      spanish: (command) => `No hay quotes en la lista, añade algunos usando \`${command} <texto>\`.`
     },
     ERROR: {
-      english: "Unexpected error occurred while managing quotes.",
-      spanish: "Se produjo un error al gestionar los quotes."
+      english: `Error occurred while managing quotes, please try again or contact the owner in ${exports.defaultoptions.invite}.`,
+      spanish: `Se produjo un error al gestionar los quotes, por favor inténtelo de nuevo o contacta con el dueño en ${exports.defaultoptions.invite}.`
     },
     GET: {
       english: (number, text) => `Quote #${number}: ${text}`,
       spanish: (number, text) => `Quote #${number}: ${text}`
     },
     MISSING: {
-      english: "That quote doesn't exist.",
-      spanish: "Ese quote no existe."
+      english: (number) => `Quote #${number} doesn't exist.`,
+      spanish: (number) => `Quote #${number} no existe.`
     },
     NO_MODE: {
-      english: (mode) => `Mode \`${mode}\` doesn't exist`,
-      spanish: (mode) => `Modo \`${mode}\` no existe`
+      english: (mode) => `Mode \`${mode}\` doesn't exist.`,
+      spanish: (mode) => `Modo \`${mode}\` no existe.`
     },
     NO_PERMISSION: {
-      english: "You don't have permission to remove that quote.",
-      spanish: "No tienes permiso para eliminar ese quote."
+      english: (number) => `You don't have permission to remove quote #${number}.`,
+      spanish: (number) => `No tienes permiso para eliminar quote #${number}.`
+    },
+    NO_TEXT: {
+      english: "Quote empty, add text after the command.",
+      spanish: "Quote vacío, añade texto después del comando."
     },
     REMOVED: {
-      english: (number) => `Quote #${number} removed.`,
+      english: (number) => `Removed quote #${number}.`,
       spanish: (number) => `Quote #${number} eliminado.`
     }
   },

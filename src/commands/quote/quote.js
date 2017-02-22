@@ -57,15 +57,18 @@ module.exports = class QuoteCommand extends commando.Command {
     const id = parseInt(args.mode, 10) || parseInt(args.id_text, 10) || null
     const text = args.id_text
     var parameters
+    const commandPrefix = msg.guild.commandPrefix
+    const prefix = commandPrefix ? commandPrefix : commandPrefix === "" ?
+      `<@${msg.client.user.id}>` : msg.client.options.commandPrefix
 
     switch (mode) {
     case "add":
     case "put":
-      if(!text) return msg.reply(responses.EMPTY[msg.language])
+      if(!text) return msg.reply(responses.NO_TEXT[msg.language])
 
       parameters = { text: text, submitter: msg.author.id, guild: msg.guild.id }
-      this.quote.add(parameters).then(() => {
-        return msg.reply(responses.ADDED[msg.language])
+      this.quote.add(parameters).then((id) => {
+        return msg.reply(responses.ADDED[msg.language](id, `${prefix}quote`))
       }).catch((e) => {
         winston.info(e)
         return msg.reply(responses.ERROR[msg.language])
@@ -78,7 +81,7 @@ module.exports = class QuoteCommand extends commando.Command {
       parameters = { id: id, guild: msg.guild.id }
       if(!this.quote.has(parameters)) return msg.reply(responses.MISSING[msg.language])
       if(!this.quote.get(parameters).submitter === msg.author.id) {
-        return msg.reply(responses.NO_PERMISSION)
+        return msg.reply(responses.NO_PERMISSION[msg.language](id))
       }
 
       this.quote.delete(parameters).then(() => {
@@ -90,6 +93,7 @@ module.exports = class QuoteCommand extends commando.Command {
     case "find":
     case "get": {
       parameters = { id: id, guild: msg.guild.id }
+      if(this.quote.empty(msg.guild.id)) return msg.reply(responses.MISSING[msg.language])
       if(id && !this.quote.has(parameters)) return msg.reply(responses.MISSING[msg.language])
 
       const quote = this.quote.get(parameters)
