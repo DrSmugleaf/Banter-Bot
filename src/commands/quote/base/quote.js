@@ -5,7 +5,6 @@
 "use strict"
 const _ = require("underscore")
 const DB = require("../../../util/db.js")
-const winston = require("winston")
 
 module.exports = class Quote {
   constructor(client) {
@@ -47,7 +46,6 @@ module.exports = class Quote {
         that.quotes.set(res.guild, quotes)
         resolve(id)
       }).catch((e) => {
-        winston.error(e)
         reject(e)
       })
     })
@@ -57,14 +55,14 @@ module.exports = class Quote {
     var quotes = this.quotes.get(data.guild)
     const quote = quotes.find((quote) => { return quote.id === data.id })
 
+    const that = this
     return new Promise(function(resolve, reject) {
       if(!quote) reject()
-      this.db.query("DELETE FROM quotes WHERE id=$1::bigint", [quote.id], "one").then(() => {
+      that.db.query("DELETE FROM quotes WHERE id=$1::bigint", [quote.realid]).then(() => {
         quotes = _.without(quotes, quote)
-        this.quotes.set(data.guild, quotes)
+        that.quotes.set(data.guild, quotes)
         resolve()
       }).catch((e) => {
-        winston.error(e)
         reject(e)
       })
     })
