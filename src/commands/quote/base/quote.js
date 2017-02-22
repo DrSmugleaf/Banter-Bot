@@ -42,7 +42,7 @@ module.exports = class Quote {
         data.id = id
         quotes.push(data)
         that.quotes.set(data.guild, quotes)
-        resolve()
+        resolve(id)
       }).catch((e) => {
         winston.error(e)
         reject(e)
