@@ -16,9 +16,9 @@ module.exports = class Quote {
   }
 
   async init() {
-    await this.db.query("CREATE TABLE IF NOT EXISTS quotes (id BIGSERIAL PRIMARY KEY, text TEXT, submitter TEXT, guild BIGINT)")
+    await this.db.query("CREATE TABLE IF NOT EXISTS quotes (id BIGSERIAL PRIMARY KEY, text TEXT, submitter BIGINT, guild BIGINT)")
 
-    const rows = await this.db.query("SELECT id as realid, text, submitter, CAST(guild as TEXT) as guild FROM quotes")
+    const rows = await this.db.query("SELECT id as realid, text, CAST(submitter as TEXT) as submitter, CAST(guild as TEXT) as guild FROM quotes")
     for(var row of rows) {
       const guild = row.guild
       const quotes = this.quotes.get(guild) || new Array()
