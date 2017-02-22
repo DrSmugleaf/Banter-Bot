@@ -38,7 +38,10 @@ module.exports = class Quote {
         quotes.push(data)
         this.quotes.set(data.guild, quotes)
         resolve()
-      }).catch(reject)
+      }).catch((e) => {
+        winston.error(e)
+        reject(e)
+      })
     })
   }
 
@@ -51,7 +54,10 @@ module.exports = class Quote {
       if(!quote) reject()
       this.db.query("DELETE FROM quotes WHERE id=$1::bigint", [quote.id], "one").then(() => {
         resolve()
-      }).catch(reject)
+      }).catch((e) => {
+        winston.error(e)
+        reject(e)
+      })
     })
   }
 
@@ -61,7 +67,10 @@ module.exports = class Quote {
     const values = data.id ? [data.id, data.guild] : [data.guild]
 
     return new Promise(function(resolve, reject) {
-      this.db.query(query, values, "one").then((data) => resolve(data)).catch(reject)
+      this.db.query(query, values, "one").then((data) => resolve(data)).catch((e) => {
+        winston.error(e)
+        reject(e)
+      })
     })
   }
 
