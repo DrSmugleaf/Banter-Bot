@@ -3,6 +3,7 @@
 //
 
 "use strict"
+const _ = require("underscore")
 const DB = require("../../../util/db.js")
 const winston = require("winston")
 
@@ -50,13 +51,14 @@ module.exports = class Quote {
   }
 
   delete(data) {
-    const quote = this.quotes.get(data.guild).find((quote) => {
-      return quote.id === data.id
-    })
+    var quotes = this.quotes.get(data.guild)
+    const quote = quotes.find((quote) => { return quote.id === data.id })
 
     return new Promise(function(resolve, reject) {
       if(!quote) reject()
       this.db.query("DELETE FROM quotes WHERE id=$1::bigint", [quote.id], "one").then(() => {
+        quotes = _.without(quotes, quote)
+        this.quotes.set(data.guild, quotes)
         resolve()
       }).catch((e) => {
         winston.error(e)
