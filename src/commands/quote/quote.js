@@ -6,10 +6,11 @@
 const commando = require("discord.js-commando")
 const DB = require("../../util/db.js")
 const db = new DB()
+const Quote = require("./base/quote")
 const responses = require("../../util/constants").responses.QUOTE
 const winston = require("winston")
 
-module.exports = class Quote extends commando.Command {
+module.exports = class QuoteCommand extends commando.Command {
   constructor(client) {
     super(client, {
       name: "quote",
@@ -40,42 +41,10 @@ module.exports = class Quote extends commando.Command {
       ]
     })
 
-    this.client.once("dbReady", () => {
-      db.query("CREATE TABLE IF NOT EXISTS quotes (id BIGSERIAL PRIMARY KEY, text TEXT, submitter TEXT, guild BIGINT)")
-    })
-  }
-
-  async quoteAdd(msg, text) {
-    if(!text) return msg.reply(responses.EMPTY[msg.language])
-    db.query("INSERT INTO quotes (text, submitter, guild) VALUES ($1::text, $2::text, $3::bigint) RETURNING id",
-      [text, msg.author.username, msg.guild.id], "one"
-    ).then(data => {
-      return msg.reply(responses.ADDED[msg.language](data.id))
-    }).catch(winston.error)
-  }
-
-  async quoteDel(msg, id) {
-    db.query("DELETE FROM quotes WHERE id=$1::int AND guild=$2::bigint RETURNING id",
-      [id, msg.guild.id], "one"
-    ).then(data => {
-      db.cleanTable("quotes")
-      return msg.reply(responses.REMOVED[msg.language](data.id))
-    }).catch(e => {
-      winston.error(e)
-      return msg.reply(responses.INVALID[msg.language])
-    })
-  }
-
-  async quoteGet(msg, id) {
-    const query = id ? "SELECT * FROM quotes WHERE id=$1::int AND guild=$2::bigint" :
-    "SELECT id, text, submitter FROM quotes WHERE guild=$1::bigint OFFSET random() * (SELECT count(*)-1 FROM quotes) LIMIT 1"
-    const values = id ? [id, msg.guild.id] : [msg.guild.id]
-
-    db.query(query, values, "one").then(data => {
-      return msg.reply(responses.GET[msg.language](data.id, data.text))
-    }).catch(e => {
-      winston.error(e)
-      return msg.reply(responses.MISSING[msg.language])
+    this.client.once("dbReady", async () => {
+      const quote = new Quote(this.client)
+      await quote.init()
+      this.quote = quote
     })
   }
 
@@ -89,18 +58,32 @@ module.exports = class Quote extends commando.Command {
     switch (mode) {
     case "add":
     case "put":
-      this.quoteAdd(msg, text)
+      if(!text) return msg.reply(responses.EMPTY[msg.language])
+      this.quote.add(
+        { text: text, submitter: msg.author.username, guild: msg.guild.id }
+      ).then(() => {
+        return msg.reply(responses.ADDED[msg.language])
+      }).catch((e) => {
+        winston.info(e)
+        return msg.reply(responses.ERROR[msg.language])
+      })
       break
     case "del":
     case "delete":
     case "rem":
     case "remove":
-      this.quoteDel(msg, id)
-      break
+      if(!this.quote.has({ id: id, guild: msg.guild.id })) return msg.reply(responses.MISSING[msg.language])
+      return this.quote.delete({ id: id, guild: msg.guild.id }).then(() => {
+        return msg.reply(responses.REMOVED[msg.language](id))
+      }).catch(() => {
+        return msg.reply(responses.ERROR[msg.language])
+      })
     case "find":
-    case "get":
-      this.quoteGet(msg, id)
-      break
+    case "get": {
+      if(id && !this.quote.has({ id: id, guild: msg.guild.id })) return msg.reply(responses.MISSING[msg.language])
+      const quote = this.quote.get({ id: id, guild: msg.guild.id })
+      return msg.reply(responses.GET[msg.language](quote.id, quote.text))
+    }
     default:
       return msg.reply(`Mode \`${mode}\` doesn't exist`)
     }

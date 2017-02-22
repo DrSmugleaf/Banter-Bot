@@ -1296,13 +1296,13 @@ exports.responses = {
       english: "Quote empty, add text after the command.",
       spanish: "Quote vacío, añade texto después del comando."
     },
+    ERROR: {
+      english: "Unexpected error occurred while managing quotes.",
+      spanish: "Se produjo un error al gestionar los quotes."
+    },
     GET: {
       english: (number, text) => `Quote #${number}: ${text}`,
       spanish: (number, text) => `Quote #${number}: ${text}`
-    },
-    INVALID: {
-      english: "Invalid quote number.",
-      spanish: "Número de quote inválido."
     },
     MISSING: {
       english: "That quote doesn't exist.",
