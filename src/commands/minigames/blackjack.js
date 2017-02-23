@@ -41,31 +41,8 @@ module.exports = class Blackjack extends commando.Command {
     if(!blackjack) return
     if(msg.channel.id !== blackjack.channel.id) return
     if(!blackjack.game.hasPlayer(msg.member.id)) return
-    if(msg.content.split(" ")[0] === "kick") {
-      const member = msg.content.split(" ")[1]
-      if(!member) return msg.reply(responses.KICK.NO_MEMBER_SPECIFIED[msg.language])
 
-      const parsedMember = this.client.registry.types.get("member").parse(member, msg)
-      console.log(parsedMember)
-      if(!parsedMember) return msg.reply(responses.KICK.INVALID_MEMBER[msg.language])
-      if(!blackjack.game.hasPlayer(parsedMember.id)) return msg.reply(responses.KICK.NOT_PLAYING[msg.language](parsedMember.displayName))
-
-      if(!blackjack.kickVotes[parsedMember]) blackjack.kickVotes[parsedMember] = new Array()
-
-      const kickVotes = blackjack.kickVotes[parsedMember]
-      if(kickVotes.includes(msg.member.id)) {
-        return msg.reply(responses.KICK.ALREADY_VOTED[msg.language](parsedMember.displayName))
-      }
-      kickVotes.push(msg.member.id)
-
-      if(kickVotes.length > blackjack.game.playerCount / 2) {
-        blackjack.kickVotes[parsedMember] = new Array()
-        blackjack.game.removePlayer(parsedMember.id)
-        return msg.reply(responses.KICK.SUCCESS[msg.language](parsedMember.displayName, blackjack.game.playerCount))
-      } else {
-        return msg.reply(responses.KICK.FAIL[msg.language](parsedMember.displayName, blackjack.game.playerCount))
-      }
-    }
+    if(msg.content.split(" ")[0] === "kick") return this.voteKick(msg)
 
     blackjack.game.getPlayer(msg.member.id).action = msg.content
   }
@@ -134,6 +111,32 @@ module.exports = class Blackjack extends commando.Command {
 
     game.start()
     return msg.reply(responses.ADDED_PLAYER[msg.language](channel.id))
+  }
+
+  voteKick(msg) {
+    const blackjack = this.games[msg.guild.id]
+    const member = msg.content.split(" ")[1]
+    if(!member) return msg.reply(responses.KICK.NO_MEMBER_SPECIFIED[msg.language])
+
+    const parsedMember = this.client.registry.types.get("member").parse(member, msg)
+    if(!parsedMember) return msg.reply(responses.KICK.INVALID_MEMBER[msg.language])
+    if(!blackjack.game.hasPlayer(parsedMember.id)) return msg.reply(responses.KICK.NOT_PLAYING[msg.language](parsedMember.displayName))
+
+    if(!blackjack.kickVotes[parsedMember]) blackjack.kickVotes[parsedMember] = new Array()
+
+    const kickVotes = blackjack.kickVotes[parsedMember]
+    if(kickVotes.includes(msg.member.id)) {
+      return msg.reply(responses.KICK.ALREADY_VOTED[msg.language](parsedMember.displayName))
+    }
+    kickVotes.push(msg.member.id)
+
+    if(kickVotes.length > blackjack.game.playerCount / 2) {
+      blackjack.kickVotes[parsedMember] = new Array()
+      blackjack.game.removePlayer(parsedMember.id)
+      return msg.reply(responses.KICK.SUCCESS[msg.language](parsedMember.displayName, blackjack.game.playerCount))
+    } else {
+      return msg.reply(responses.KICK.FAIL[msg.language](parsedMember.displayName, blackjack.game.playerCount))
+    }
   }
 
   async run(msg) {
