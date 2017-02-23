@@ -1348,6 +1348,10 @@ exports.responses = {
       english: "Quote empty, add text after the command.",
       spanish: "Quote vacío, añade texto después del comando."
     },
+    NOT_READY: {
+      english: "Quotes aren't ready yet in this server, please wait a few more seconds and try again.",
+      spanish: "Los quotes no estan listos todavía en este servidor, por favor espera unos segundos mas"
+    },
     REMOVED: {
       english: (number) => `Removed quote #${number}.`,
       spanish: (number) => `Quote #${number} eliminado.`

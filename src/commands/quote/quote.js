@@ -52,10 +52,12 @@ module.exports = class QuoteCommand extends commando.Command {
       const quote = new Quote(this.client)
       await quote.init()
       this.quote = quote
+      this.ready = true
     })
   }
 
   async run(msg, args) {
+    if(!this.ready) return msg.reply(responses.NOT_READY[msg.language])
     const mode = args.id_text ? this.args[0].parse(args.mode) : "get"
     const id = parseInt(args.mode, 10) || parseInt(args.id_text, 10) || null
     const text = args.id_text
