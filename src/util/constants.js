@@ -1150,6 +1150,21 @@ exports.responses = {
     }
   },
 
+  BLACKJACK_ADMIN: {
+    ENDED_GAME: {
+      english: (channel) => `Ended a Blackjack game in ${channel}.`,
+      spanish: (channel) => `Terminada una partida de Blackjack en ${channel}.`
+    },
+    KICKED_PLAYER: {
+      english: (player) => `Kicked player ${player} from a game of Blackjack.`,
+      spanish: (player) => `Echado jugador ${player} de una partida de Blackjack.`
+    },
+    NO_GAMES: {
+      english: "No games of Blackjack are being played in this server.",
+      spanish: "Ninguna partida de Blackjack esta siendo jugada en este servidor."
+    }
+  },
+
   BLACKLIST: {
     BLACKLISTED: {
       english: (name) => `Blacklisted user \`${name}\`.`,
