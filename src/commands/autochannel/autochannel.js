@@ -18,7 +18,10 @@ module.exports = class AutoChannelCommand extends commando.Command {
       group: "autochannel",
       memberName: "autochannel",
       description: "Configure the automatic creation of voice and text channels depending on the games being played in your server.",
-      examples: ["autochannel"],
+      examples: [
+        "autochannel disable", "autochannel enable", "autochannel update",
+        "autochannel threshold 5"
+      ],
       guildOnly: true,
       throttling: {
         usages: 2,
