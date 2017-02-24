@@ -6,7 +6,7 @@
 const commando = require("discord.js-commando")
 const responses = require("../../util/constants").responses.INFO
 
-module.exports = class Info extends commando.Command {
+module.exports = class InfoCommand extends commando.Command {
   constructor(client) {
     super(client, {
       name: "info",

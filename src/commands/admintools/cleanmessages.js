@@ -9,7 +9,7 @@ const { oneLine, stripIndents } = require("common-tags")
 const responses = require("../../util/constants").responses.CLEAN_MESSAGES
 const winston = require("winston")
 
-module.exports = class CleanMessages extends commando.Command {
+module.exports = class CleanMessagesCommand extends commando.Command {
   constructor(client) {
     super(client, {
       name: "clean-messages",

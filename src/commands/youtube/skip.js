@@ -7,7 +7,7 @@ const commando = require("discord.js-commando")
 const responses = require("../../util/constants").responses.YOUTUBE
 const main = require("./base/main")
 
-module.exports = class Skip extends commando.Command {
+module.exports = class SkipCommand extends commando.Command {
   constructor(client) {
     super(client, {
       name: "skip",

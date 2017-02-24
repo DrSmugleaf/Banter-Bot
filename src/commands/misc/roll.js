@@ -5,7 +5,7 @@
 "use strict"
 const commando = require("discord.js-commando")
 
-module.exports = class Roll extends commando.Command {
+module.exports = class RollCommand extends commando.Command {
   constructor(client) {
     super(client, {
       name: "roll",

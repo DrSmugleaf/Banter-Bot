@@ -7,7 +7,7 @@ const commando = require("discord.js-commando")
 const constants = require("../../util/constants")
 const ObjectUtil = require("../../util/objectutil")
 
-module.exports = class Language extends commando.Command {
+module.exports = class LanguageCommand extends commando.Command {
   constructor(client) {
     super(client, {
       name: "language",

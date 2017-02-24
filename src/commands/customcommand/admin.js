@@ -7,7 +7,7 @@ const commando = require("discord.js-commando")
 const CustomCommand = require("./base/command")
 const responses = require("../../util/constants").responses.CUSTOM_COMMAND
 
-module.exports = class CustomCommandAdmin extends commando.Command {
+module.exports = class CustomCommandAdminCommand extends commando.Command {
   constructor(client) {
     super(client, {
       name: "custom-command-manager",

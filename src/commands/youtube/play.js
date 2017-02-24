@@ -11,7 +11,7 @@ const winston = require("winston")
 const Youtube = require("simple-youtube-api")
 const youtube = new Youtube(process.env.GOOGLE_KEY)
 
-module.exports = class Play extends commando.Command {
+module.exports = class PlayCommand extends commando.Command {
   constructor(client) {
     super(client, {
       name: "play",

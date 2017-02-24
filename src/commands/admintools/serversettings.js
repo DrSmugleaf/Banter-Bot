@@ -6,7 +6,7 @@
 const commando = require("discord.js-commando")
 const responses = require("../../util/constants").responses.SERVER_SETTINGS
 
-module.exports = class ServerSettings extends commando.Command {
+module.exports = class ServerSettingsCommand extends commando.Command {
   constructor(client) {
     super(client, {
       name: "server-settings",

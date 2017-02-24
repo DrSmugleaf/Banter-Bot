@@ -7,7 +7,7 @@ const commando = require("discord.js-commando")
 const stripIndents = require("common-tags").stripIndents
 const winston = require("winston")
 
-module.exports = class Announce extends commando.Command {
+module.exports = class AnnounceCommand extends commando.Command {
   constructor(client) {
     super(client, {
       name: "announce",

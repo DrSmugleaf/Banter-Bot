@@ -7,7 +7,7 @@ const commando = require("discord.js-commando")
 const main = require("./base/main")
 const responses = require("../../util/constants").responses
 
-module.exports = class StopAll extends commando.Command {
+module.exports = class StopAllCommand extends commando.Command {
   constructor(client) {
     super(client, {
       name: "stop-all",

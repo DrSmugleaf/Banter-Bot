@@ -7,7 +7,7 @@ const commando = require("discord.js-commando")
 const responses = require("../../util/constants").responses.WHOIS
 const moment = require("moment-timezone")
 
-module.exports = class WhoIs extends commando.Command {
+module.exports = class WhoIsCommand extends commando.Command {
   constructor(client) {
     super(client, {
       name: "whois",

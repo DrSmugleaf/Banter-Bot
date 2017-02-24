@@ -9,7 +9,7 @@ const responses = require("../../util/constants").responses.CUSTOM_COMMAND
 const Youtube = require("simple-youtube-api")
 const youtube = new Youtube(process.env.GOOGLE_KEY)
 
-module.exports = class CustomVoiceCommand extends commando.Command {
+module.exports = class CustomVoiceCommandCommand extends commando.Command {
   constructor(client) {
     super(client, {
       name: "custom-voice-command",

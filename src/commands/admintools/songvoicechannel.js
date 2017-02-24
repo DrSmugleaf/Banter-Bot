@@ -6,7 +6,7 @@
 const commando = require("discord.js-commando")
 const responses = require("../../util/constants").responses.SONG_VOICE_CHANNEL
 
-module.exports = class SongVoiceChannel extends commando.Command {
+module.exports = class SongVoiceChannelCommand extends commando.Command {
   constructor(client) {
     super(client, {
       name: "song-voice-channel",

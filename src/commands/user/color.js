@@ -9,7 +9,7 @@ const parse = require("parse-color")
 const responses = require("../../util/constants").responses.COLOR
 const winston = require("winston")
 
-module.exports = class Color extends commando.Command {
+module.exports = class ColorCommand extends commando.Command {
   constructor(client) {
     super(client, {
       name: "color",
