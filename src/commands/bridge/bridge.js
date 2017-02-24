@@ -3,6 +3,7 @@
 //
 
 "use strict"
+const _ = require("underscore")
 const Bridge = require("./base/bridge")
 const commando = require("discord.js-commando")
 const constants = require("../../util/constants")
@@ -41,6 +42,23 @@ module.exports = class BridgeCommand extends commando.Command {
                   ObjectUtil.hasValue(constants.mslanguages, language)
               )
             })
+          },
+          parse: (pairs) => {
+            pairs = pairs.split(" ")
+            const parsedPairs = new Array()
+
+            pairs.forEach((pair) => {
+              const channelName = pair.split(":")[0]
+              var language = pair.split(":")[1].toLowerCase()
+
+              if(!constants.mslanguages.hasOwnProperty(language)) {
+                language = _.invert(constants.mslanguages)[language]
+              }
+
+              parsedPairs.push(`${channelName}:${language}`)
+            })
+
+            return parsedPairs
           }
         }
       ]
@@ -59,15 +77,15 @@ module.exports = class BridgeCommand extends commando.Command {
   async run(msg, args) {
     if(!this.ready) return msg.reply(responses.NOT_READY[msg.language])
     const bridged = msg.guild.settings.get("bridged", {})
-    const channelsToBridge = args.channelsToBridge.split(" ")
+    const channelsToBridge = args.channelsToBridge
 
-    channelsToBridge.forEach(function(channel) {
+    channelsToBridge.forEach((channel) => {
       const channelName = channel.replace(/:\w*/g, "")
       const channelID = msg.guild.channels.find("name", channelName).id
       const channelLanguage = channel.replace(/\w*:/g, "")
       const otherChannels = []
 
-      channelsToBridge.forEach(function(subChannel) {
+      channelsToBridge.forEach((subChannel) => {
         if(channel == subChannel) return
         const subchannelName = subChannel.replace(/:\w*/g, "")
         const subchannelID = msg.guild.channels.find("name", subchannelName).id

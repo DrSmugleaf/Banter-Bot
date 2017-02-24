@@ -35,9 +35,9 @@ client
   })
   .on("disconnect", () => { winston.warn("Disconnected!") })
   .on("reconnecting", () => { winston.warn("Reconnecting...") })
-  .on("commandError", (cmd, err) => {
-    if(err instanceof Commando.FriendlyError) return
-    winston.error(`Error in command ${cmd.groupID}:${cmd.memberName}`, err)
+  .on("commandError", (cmd, e) => {
+    if(e instanceof Commando.FriendlyError) return
+    winston.error(`Error in command ${cmd.groupID}:${cmd.memberName}`, e)
   })
   .on("commandBlocked", (msg, reason) => {
     winston.info(oneLine`
