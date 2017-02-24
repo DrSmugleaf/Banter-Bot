@@ -1180,6 +1180,12 @@ exports.responses = {
     }
   },
 
+  BRIDGE: {
+    TRANSLATE: {
+      english: (name, translation) => `**${name}**: ${translation}`
+    }
+  },
+
   CLEAN_MESSAGES: {
     NO_PERMISSION: {
       english: "I don't have permission to delete messages in this channel.",

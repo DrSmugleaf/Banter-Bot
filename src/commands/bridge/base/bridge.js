@@ -1,40 +1,42 @@
 //
-// Copyright (c) 2016-2017 DrSmugleaf
+// Copyright (c) 2017 DrSmugleaf
 //
 
 "use strict"
-const MsTranslator = require("mstranslator")
-const mstranslator = new MsTranslator({
+const responses = require("../../../util/constants").responses.BRIDGE
+const Translator = require("mstranslator")
+const translator = new Translator({
   client_id: process.env.MICROSOFT_KEY,
   client_secret: process.env.MICROSOFT_SECRET
 }, true)
 const winston = require("winston")
 
-module.exports = class Sender {
-  constructor(discord) {
-    this.discord = discord
+module.exports = class Bridge {
+  constructor(client) {
+    this.client = client
 
-    this.discord.on("message", (msg) => this.onMessage(msg))
+    this.client.on("message", (msg) => this.onMessage(msg))
   }
 
   onMessage(msg) {
     if(!msg.guild || msg.author.bot) return
 
     const settings = msg.guild.settings.get("bridged", {})
-
     if(settings && settings[msg.channel.id]) {
+
       const channel = settings[msg.channel.id]
+      channel.connectedchannels.forEach((subChannel) => {
 
-      channel.connectedchannels.forEach(subChannel => {
         const discordSubChannel = msg.guild.channels.get(subChannel)
-
-        mstranslator.translate({
+        translator.translate({
           text: msg.cleanContent,
           from: channel.language,
           to: settings[subChannel].language
         }, function(e, translation) {
           if(e) return winston.error(e)
-          return discordSubChannel.sendMessage(`**${msg.member.displayName}**: ${translation}`)
+          return discordSubChannel.sendMessage(responses.TRANSLATE[msg.language](
+            msg.member.displayName, translation
+          ))
         })
       })
     }

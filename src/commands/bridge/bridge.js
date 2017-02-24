@@ -3,11 +3,12 @@
 //
 
 "use strict"
+const Bridge = require("./base/bridge")
 const commando = require("discord.js-commando")
 const constants = require("../../util/constants")
 const ObjectUtil = require("../../util/objectutil")
 
-module.exports = class Bridge extends commando.Command {
+module.exports = class BridgeCommand extends commando.Command {
   constructor(client) {
     super(client, {
       name: "bridge",
@@ -42,6 +43,10 @@ module.exports = class Bridge extends commando.Command {
           }
         }
       ]
+    })
+
+    this.client.once("dbReady", () => {
+      this.bridge = new Bridge(this.client)
     })
   }
 
