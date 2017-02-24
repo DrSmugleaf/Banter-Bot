@@ -11,7 +11,10 @@ module.exports = class Blackjack extends commando.Command {
   constructor(client) {
     super(client, {
       name: "blackjack",
-      aliases: ["blackjack"],
+      aliases: [
+        "blackjack", "juan", "juanaco", "spirit-roar", "spiritroar",
+        "alexei-grinko", "alexeigrinko"
+      ],
       group: "minigames",
       memberName: "blackjack",
       description: "Play a game of Blackjack.",
