@@ -225,4 +225,66 @@ describe("Blackjack Game", function() {
       })
     })
   })
+
+  describe("start", function() {
+
+    beforeEach(function() {
+      game.players.set(player.id, player)
+      game._players.delete(player.id)
+      game.start()
+    })
+
+    it("should deal 1 card to the dealer", function() {
+      expect(game.dealer.hand.cards).to.have.lengthOf(1)
+    })
+    it("should deal 2 cards to the player", function() {
+      expect(player.hand.cards).to.have.lengthOf(2)
+    })
+    it("should start a new game", function() {
+      expect(start).to.be.true
+    })
+  })
+
+  describe("nextTurn", function() {
+    describe("action: stand", function() {
+
+      beforeEach(function() {
+        player.action = "stand"
+        game.nextTurn()
+      })
+
+      it("should set the player's action to null", function() {
+        expect(player.action).to.be.null
+      })
+      it("should start a new turn", function() {
+        expect(nextTurn).to.be.true
+      })
+      it("and then it should start a new game", function() {
+        expect(start).to.be.true
+      })
+    })
+
+    describe("action: none", function() {
+
+      beforeEach(function() {
+        game.nextTurn()
+      })
+
+      it("shouldn't change the player's action", function() {
+        expect(player.action).to.be.null
+      })
+      it("should start a new turn", function() {
+        expect(nextTurn).to.be.true
+      })
+      it("shouldn't start a new game", function() {
+        expect(start).to.be.undefined
+      })
+    })
+  })
+
+  describe("end", function() {
+    it("should end the game", function() {
+      expect(end).to.be.true
+    })
+  })
 })
