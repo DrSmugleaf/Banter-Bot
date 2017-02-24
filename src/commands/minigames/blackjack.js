@@ -47,12 +47,17 @@ module.exports = class BlackjackCommand extends commando.Command {
 
     const pseudoCommand = msg.content.split(" ")[0]
     switch(pseudoCommand) {
-    case "kick":
-    case "echar":
-      return this.voteKick(msg)
+    case "action":
+    case "actions":
+    case "accion":
+    case "acciones":
+      return msg.reply(responses.AVAILABLE_ACTIONS[msg.language](blackjack.game.getPlayer(msg.member.id).availableActions.join(", ")))
     case "help":
     case "ayuda":
       return msg.author.sendMessage(responses.HELP[msg.language])
+    case "kick":
+    case "echar":
+      return this.voteKick(msg)
     }
 
     blackjack.game.getPlayer(msg.member.id).action = msg.content

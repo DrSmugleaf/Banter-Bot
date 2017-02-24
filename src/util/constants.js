@@ -1110,6 +1110,10 @@ exports.responses = {
       Puedes jugar en <#${channel}>.
       Te puedes quitar de la partida en cualquier momento usando este comando de nuevo.`,
     },
+    AVAILABLE_ACTIONS: {
+      english: (actions) => `Your available actions are \`${actions}\`.`,
+      spanish: (actions) => `Tus acciones disponibles son \`${actions}\`.`
+    },
     DEAL: {
       english: (name, suit, card, total, actions) => stripIndents`
         ${name}, dealt you ${suit}${card}. Total score: ${total}.
