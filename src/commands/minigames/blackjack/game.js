@@ -51,7 +51,6 @@ module.exports = class BlackjackGame extends EventEmitter {
   }
 
   processTurn() {
-
     this.players.forEach((player) => {
       if(player.status !== "playing") return
       switch (player.action) {

@@ -1152,7 +1152,7 @@ exports.responses = {
 
   BLACKJACK_ADMIN: {
     ENDED_GAME: {
-      english: (channel) => `Ended a Blackjack game in ${channel}.`,
+      english: (channel) => `Ended a game of Blackjack in ${channel}.`,
       spanish: (channel) => `Terminada una partida de Blackjack en ${channel}.`
     },
     KICKED_PLAYER: {
