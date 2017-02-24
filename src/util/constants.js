@@ -1140,7 +1140,7 @@ exports.responses = {
 
       Double doubles your bet, deals you a card and sets you to 'stand' for the rest of that game.
 
-      Split can only be used when you have 2 of the same card, and it splits your hand into two with those cards.
+      Split can only be used if your first 2 cards have the same value, and it splits your hand into two with those cards.
 
       Surrender halves your bet and makes you instantly lose that game.
       `,
@@ -1159,7 +1159,7 @@ exports.responses = {
 
       Double dobla tu apuesta, roba una carta y establece tu acción como 'stand' para el resto de esa partida.
 
-      Split solo puede ser usado si tienes 2 de la misma carta, y divide tu mano en 2 con esas cartas.
+      Split solo puede ser usado si tus 2 primeras cartas tienen el mismo valor, y divide tu mano en 2 con esas cartas.
 
       Surrender reduce en la mitad tu apuesta y hace que pierdas instantáneamente esa partida.
       `

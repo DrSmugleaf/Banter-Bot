@@ -51,9 +51,15 @@ module.exports = class BlackjackCommand extends commando.Command {
     case "actions":
     case "accion":
     case "acciones":
-      return msg.reply(responses.AVAILABLE_ACTIONS[msg.language](blackjack.game.getPlayer(msg.member.id).availableActions.join(", ")))
+      return msg.reply(responses.AVAILABLE_ACTIONS[msg.language](
+        blackjack.game.getPlayer(msg.member.id).availableActions.join(", ")
+      ))
     case "help":
+    case "rules":
+    case "rule":
     case "ayuda":
+    case "reglas":
+    case "regla":
       return msg.author.sendMessage(responses.HELP[msg.language])
     case "kick":
     case "echar":
