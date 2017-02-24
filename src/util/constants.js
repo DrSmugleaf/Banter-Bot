@@ -185,14 +185,17 @@ exports.versions = {
       !language can now be used outside of servers, and will set your user language.
       Automatic channels. :clap:
       !auto-channel: Used with parameters disable, enable, update or threshold.
+      Blackjack.
+      !blackjack:
+      !blackjack-admin:
 
-      **CHANGES**
+      **CHANGED**
       Changed how quotes are organized. They are now separated by server.
 
       **REMOVED**
       !markov command.
 
-      **FIXES**
+      **FIXED**
       Fixed an error that sometimes happened when using !help.
       Fixed an error when trying to remove a custom command that exists in another server.
       Fixed !color duplicating the colored role of an user when editing it.
@@ -208,6 +211,9 @@ exports.versions = {
       Fixed the bot not telling the difference between there being no quotes and a specific quote not existing.
       Fixed everyone being able to delete any quotes. Only administrators and the submitter of the quote are now able to remove a quote, and only if it is from that server.
       Fixed quote modes that weren't written fully in lowercase not working.
+      Fixed errors where some commands (!quote, !bridge y !custom-command-admin) would be used before they were fully loaded, resulting in crashes or weird behavior.
+      Fixed bridge translations displaying the member's username instead of the member's nickname.
+      Fixed !bridge only responding in english and fixed that the response was terrible.
     `,
     spanish: stripIndents`
       **AÑADIDO**
@@ -215,14 +221,17 @@ exports.versions = {
       !language ahora puede ser usado fuera de servidores, y establecerá tu idioma de usuario.
       Canales automáticos. :clap:
       !auto-channel: Se usa con los paramétros disable, enable, update o threshold.
+      Blackjack.
+      !blackjack:
+      !blackjack-admin:
 
-      **CAMBIOS**
+      **CAMBIADO**
       Cambiado como los quotes están organizados. Ahora están separados por servidor.
 
       **QUITADO**
       Comando !markov.
 
-      **FIXES**
+      **ARREGLADO**
       Arreglado un error que ocurría a veces al usar !help.
       Arreglado un error al intentar quitar un comando personalizado que existía en otro servidor.
       Arreglado que !color duplicara el role de color de un usuario al editarlo.
@@ -238,6 +247,9 @@ exports.versions = {
       Arreglado que el bot no supiera la diferencia entre que no hubieran quotes y que no existiera un quote específico.
       Arreglado que todos pudieran borrar quotes. Ahora sólo administradores y el remitente del quote podrán borrar un quote, y sólo si es de ese servidor.
       Arreglado que los modos de quote fueran inválidos si no estaban escritos en minúscula.
+      Arreglados errores en los que algunos comandos (!quote, !bridge y !custom-command-admin) eran usados antes de que estuvieran listos, resultando en comportamientos extraños.
+      Arreglado que las traducciones de bridge mostraran el nombre de usuario del miembro en vez de el mote.
+      Arreglado que !bridge solo respondiera en inglés y que la respuesta fuera terrible.
     `
   }
 }
