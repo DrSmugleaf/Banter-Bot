@@ -7,6 +7,7 @@ const Bridge = require("./base/bridge")
 const commando = require("discord.js-commando")
 const constants = require("../../util/constants")
 const ObjectUtil = require("../../util/objectutil")
+const responses = constants.responses.BRIDGE
 
 module.exports = class BridgeCommand extends commando.Command {
   constructor(client) {
@@ -81,6 +82,6 @@ module.exports = class BridgeCommand extends commando.Command {
     })
 
     msg.guild.settings.set("bridged", bridged)
-    return msg.reply(`Bridged channels ${channelsToBridge.join(", ")}`)
+    return msg.reply(responses.BRIDGED[msg.language](channelsToBridge.join(", ")))
   }
 }

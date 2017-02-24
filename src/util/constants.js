@@ -1181,6 +1181,16 @@ exports.responses = {
   },
 
   BRIDGE: {
+    BRIDGED: {
+      english: (channels) => oneLine`
+        Linked together channels \`${channels}\`.
+        Messages sent to those channels will be translated and sent between them.
+      `,
+      spanish: (channels) => oneLine`
+        Juntados canales \`${channels}\`.
+        Los mensajes mandados a través de esos canales serán traducidos y enviados entre ellos.
+      `
+    },
     TRANSLATE: {
       english: (name, translation) => `**${name}**: ${translation}`
     }
