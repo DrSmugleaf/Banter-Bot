@@ -47,6 +47,7 @@ module.exports = class CustomCommandAdmin extends commando.Command {
           this.client.registry.registerCommand(command)
         }
       })
+      this.ready = true
     })
   }
 
@@ -63,6 +64,7 @@ module.exports = class CustomCommandAdmin extends commando.Command {
   }
 
   async run(msg, args) {
+    if(!this.ready) return msg.reply(responses.NOT_READY[msg.language])
     const action = args.action
     const commandName = args.command
     const command = this.client.registry.commands.get(commandName)

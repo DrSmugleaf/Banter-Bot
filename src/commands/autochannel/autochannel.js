@@ -47,6 +47,7 @@ module.exports = class AutoChannelCommand extends commando.Command {
 
     this.client.once("dbReady", () => {
       this.autoChannel = new AutoChannel(this.client)
+      this.ready = true
     })
   }
 
@@ -55,6 +56,7 @@ module.exports = class AutoChannelCommand extends commando.Command {
   }
 
   async run(msg, args) {
+    if(!this.ready) return msg.reply(responses.NOT_READY[msg.language])
     const mode = args.mode.toLowerCase()
     var threshold = args.threshold
     const settings = msg.guild.settings.get("auto-channel", {})

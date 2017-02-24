@@ -48,6 +48,7 @@ module.exports = class BridgeCommand extends commando.Command {
 
     this.client.once("dbReady", () => {
       this.bridge = new Bridge(this.client)
+      this.ready = true
     })
   }
 
@@ -56,6 +57,7 @@ module.exports = class BridgeCommand extends commando.Command {
   }
 
   async run(msg, args) {
+    if(!this.ready) return msg.reply(responses.NOT_READY[msg.language])
     const bridged = msg.guild.settings.get("bridged", {})
     const channelsToBridge = args.channelsToBridge.split(" ")
 

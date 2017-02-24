@@ -46,7 +46,7 @@ exports.versions = {
       !version: Enseña los cambios de una versión especifica.
 
       **CAMBIOS**
-      !color ahora es compatible con mas variantes de formatos de colores.
+      !color ahora es compatible con más variantes de formatos de colores.
       !info ahora enseña el link de invitación al servidor de soporte.
       !stop y !pause solo pueden ser usados por usuarios con el permiso para silenciar a otros.
       !play ahora borra el mensaje del comando si puede, para reducir desorden.
@@ -94,7 +94,7 @@ exports.versions = {
       El bot ahora te responderá en el idioma de tu elección (!language language) o el idioma del servidor (!server-language language).
 
       **QUITADO**
-      Quitado canales automáticos de voz cuando dos o más personas estan jugando al mismo juego. Se añadirá de nuevo en una proxima actualización.
+      Quitado canales automáticos de voz cuando dos o más personas están jugando al mismo juego. Se añadirá de nuevo en una proxima actualización.
       Quitado comando !search porque ya está obsoleto con el modo de búsqueda implementado por Discord.
 
       **CAMBIOS**
@@ -1062,6 +1062,10 @@ exports.responses = {
       english: "Enabled automatic channels in this server.",
       spanish: "Activados canales automáticos en este servidor."
     },
+    NOT_READY: {
+      english: "Automatic channels aren't ready yet in this server, please wait a few more seconds and try again.",
+      spanish: "Los canales automáticos no están listos todavía en este servidor, por favor espera unos segundos más e inténtalo de nuevo."
+    },
     UPDATED: {
       english: "Updated channels for this server.",
       spanish: "Actualizados los canales de este servidor"
@@ -1191,6 +1195,10 @@ exports.responses = {
         Los mensajes mandados a través de esos canales serán traducidos y enviados entre ellos.
       `
     },
+    NOT_READY: {
+      english: "Channel linking isn't ready yet in this server, please wait a few more seconds and try again.",
+      spanish: "El enlace de canales no está listo todavía en este servidor, por favor espera unos segundos más e inténtalo de nuevo."
+    },
     TRANSLATE: {
       english: (name, translation) => `**${name}**: ${translation}`
     }
@@ -1275,6 +1283,10 @@ exports.responses = {
     NOT_IN_VOICE_CHANNEL: {
       english: (name) => `Member ${name} isn't currently in a voice channel.`,
       spanish: (name) => `El miembro ${name} no está actualmente en un canal de voz.`
+    },
+    NOT_READY: {
+      english: "Custom commands aren't ready yet in this server, please wait a few more seconds and try again.",
+      spanish: "Los comandos personalizados no están listos todavía en este servidor, por favor espera unos segundos más e inténtalo de nuevo."
     },
     REGISTERED: {
       english: (name) => oneLine`Added command ${name}, use \`${name}\` to use it.`,
@@ -1381,7 +1393,7 @@ exports.responses = {
     },
     NOT_READY: {
       english: "Quotes aren't ready yet in this server, please wait a few more seconds and try again.",
-      spanish: "Los quotes no estan listos todavía en este servidor, por favor espera unos segundos mas"
+      spanish: "Los quotes no están listos todavía en este servidor, por favor espera unos segundos más e inténtalo de nuevo"
     },
     REMOVED: {
       english: (number) => `Removed quote #${number}.`,
