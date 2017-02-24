@@ -68,7 +68,7 @@ module.exports = class BlackjackPlayer {
   }
 
   surrender() {
-    this.status = "lose"
+    this.status = "surrender"
     this.game.emit("surrender", this)
   }
 
