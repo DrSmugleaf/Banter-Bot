@@ -214,6 +214,7 @@ exports.versions = {
       Fixed errors where some commands (!quote, !bridge y !custom-command-admin) would be used before they were fully loaded, resulting in crashes or weird behavior.
       Fixed bridge translations displaying the member's username instead of the member's nickname.
       Fixed !bridge only responding in english and fixed that the response was terrible.
+      Fixed bridge message sending not working when using long language names in the command (english instead of en).
     `,
     spanish: stripIndents`
       **AÑADIDO**
@@ -250,6 +251,7 @@ exports.versions = {
       Arreglados errores en los que algunos comandos (!quote, !bridge y !custom-command-admin) eran usados antes de que estuvieran listos, resultando en comportamientos extraños.
       Arreglado que las traducciones de bridge mostraran el nombre de usuario del miembro en vez de el mote.
       Arreglado que !bridge solo respondiera en inglés y que la respuesta fuera terrible.
+      Arreglado que el envío de mensajes de bridge no funcionara al usar nombres de idioma largos (english en vez de en).
     `
   }
 }
