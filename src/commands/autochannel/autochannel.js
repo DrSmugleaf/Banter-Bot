@@ -45,7 +45,7 @@ module.exports = class AutoChannelCommand extends commando.Command {
       ]
     })
 
-    this.client.on("dbReady", () => {
+    this.client.once("dbReady", () => {
       this.autoChannel = new AutoChannel(this.client)
     })
   }

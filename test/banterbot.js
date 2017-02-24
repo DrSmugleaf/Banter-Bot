@@ -10,7 +10,7 @@ before(function(done) {
   global.constants = constants
   global.client = client
 
-  client.on("dbReady", () => {
+  client.once("dbReady", () => {
     global.guild = client.guilds.get("260158980343463937")
     global.member = global.guild.member(global.guild.client.user)
     global.guild.createChannel("test", "text").then((channel) => {
