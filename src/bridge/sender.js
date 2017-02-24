@@ -34,7 +34,7 @@ module.exports = class Sender {
           to: settings[subChannel].language
         }, function(e, translation) {
           if(e) return winston.error(e)
-          return discordSubChannel.sendMessage(`**${msg.author.username}**: ${translation}`)
+          return discordSubChannel.sendMessage(`**${msg.member.displayName}**: ${translation}`)
         })
       })
     }
