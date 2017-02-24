@@ -9,15 +9,33 @@ const BlackjackPlayer = require("../../../../src/commands/minigames/blackjack/pl
 
 describe("Blackjack Game", function() {
 
-  var game, deal
+  var game, player, lose, tie, win, surrender, start, nextTurn, end, removedInactive, deal
   beforeEach(function() {
+    lose = undefined
+    tie = undefined
+    win = undefined
+    surrender = undefined
+    start = undefined
+    nextTurn = undefined
+    removedInactive = undefined
     deal = new Array()
     game = new BlackjackGame({
       dealerID: global.client.user.id, deck: "french", decks: 1, player: global.client.user.id
     }).on("deal", (player, card) => {
       if(!player.action) return
       deal.push({ player: player, card: card })
-    })
+    }).on("lose", () => lose = true)
+      .on("tie", () => tie = true)
+      .on("win", () => win = true)
+      .on("surrender", () => surrender = true)
+      .on("start", () => start = true)
+      .on("nextTurn", () => nextTurn = true)
+      .on("end", () => end = true)
+      .on("removedInactive", () => removedInactive = true)
+
+    player = game.getPlayer(global.client.user.id)
+    game.players.set(player.id, player)
+    game._players.delete(player.id)
   })
 
   describe("addPlayer", function() {
@@ -64,9 +82,7 @@ describe("Blackjack Game", function() {
 
   describe("removePlayer", function() {
 
-    var end
     beforeEach(function() {
-      game.on("end", () => end = true)
       game.addPlayer(global.client.options.owner)
       game.removePlayer(global.client.user.id)
     })
@@ -84,35 +100,7 @@ describe("Blackjack Game", function() {
   })
 
   describe("processTurn", function() {
-
-    var lose, tie, win, surrender, start, nextTurn, removedInactive
-    beforeEach(function() {
-      lose = undefined
-      tie = undefined
-      win = undefined
-      surrender = undefined
-      start = undefined
-      nextTurn = undefined
-      removedInactive = undefined
-      game
-        .on("lose", () => lose = true)
-        .on("tie", () => tie = true)
-        .on("win", () => win = true)
-        .on("surrender", () => surrender = true)
-        .on("start", () => start = true)
-        .on("nextTurn", () => nextTurn = true)
-        .on("removedInactive", () => removedInactive = true)
-    })
-
     describe("1 player", function() {
-
-      var player
-      beforeEach(function() {
-        player = game.getPlayer(global.client.user.id)
-        game.players.set(player.id, player)
-        game._players.delete(player.id)
-      })
-
       describe("action: hit", function() {
 
         beforeEach(function() {
@@ -120,7 +108,7 @@ describe("Blackjack Game", function() {
         })
 
         it("should deal 1 card to the player", function() {
-          expect(player.hand.cards.length).to.equal(1)
+          expect(player.hand.cards).to.have.lengthOf(1)
         })
         it("shouldn't result in a player loss, tie or victory", function() {
           expect(lose || tie || win).to.be.undefined
