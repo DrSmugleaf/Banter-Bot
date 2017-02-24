@@ -1120,6 +1120,46 @@ exports.responses = {
         Actions you can take: ${actions}
       `
     },
+    HELP: {
+      english: stripIndents`In a game of Blackjack, the objective is to reach the highest score that is equal to or under 21. If at any point you go above 21 points, you lose that round.
+
+      Every numeric card has the same point value as its number, Aces are worth either 1 or 11 points, and face cards (Jack, Queen, King) are worth 10 points.
+
+      After settling for your point amount, the dealer will draw until their score is equal to or above 17 points. After that your score is compared with the dealer's, if any score is above 21, that person loses. Otherwise, the highest score wins.
+
+      Every turn you will be able to take a set of actions depending on your situation:
+      hit, stand, double, split and surrender.
+
+      Hit draws one card.
+
+      Stand deals no cards and settles for your point and bet amounts.
+
+      Double doubles your bet, deals you a card and sets you to 'stand' for the rest of that game.
+
+      Split can only be used when you have 2 of the same card, and it splits your hand into two with those cards.
+
+      Surrender halves your bet and makes you instantly lose that game.
+      `,
+      spanish: stripIndents`En una partida de Blackjack, el objetivo es alcanzar la puntuación más alta que sea igual o menor a 21. Si en cualquier momento tu puntuación llega a ser más de 21, pierdes esa ronda.
+
+      Cada carta numérica tiene el mismo valor que su numero, los Ases valen 1 o 11 puntos, y las figuras (Valet, Dame y Roi) valen 10 puntos.
+
+      Después de asentar tu puntuación, el crupier robará cartas hasta que su puntuación sea igual o mayor a 17 puntos. Después, tu puntuación es comparada con la del crupier, si una de las dos puntuaciones sobrepasa 21 puntos, esa persona pierde. De lo contrario, la puntuación mas alta gana.
+
+      Cada turno tendrás disponibles diferentes acciones según tu situación:
+      hit, stand, double, split y surrender.
+
+      Hit roba una carta.
+
+      Stand no roba ninguna carta y asienta tu puntuación y apuesta.
+
+      Double dobla tu apuesta, roba una carta y establece tu acción como 'stand' para el resto de esa partida.
+
+      Split solo puede ser usado si tienes 2 de la misma carta, y divide tu mano en 2 con esas cartas.
+
+      Surrender reduce en la mitad tu apuesta y hace que pierdas instantáneamente esa partida.
+      `
+    },
     KICK: {
       ALREADY_VOTED: {
         english: (name) => `You already voted to kick ${name}.`,

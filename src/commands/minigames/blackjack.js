@@ -45,7 +45,15 @@ module.exports = class BlackjackCommand extends commando.Command {
     if(msg.channel.id !== blackjack.channel.id) return
     if(!blackjack.game.hasPlayer(msg.member.id)) return
 
-    if(msg.content.split(" ")[0] === "kick") return this.voteKick(msg)
+    const pseudoCommand = msg.content.split(" ")[0]
+    switch(pseudoCommand) {
+    case "kick":
+    case "echar":
+      return this.voteKick(msg)
+    case "help":
+    case "ayuda":
+      return msg.author.sendMessage(responses.HELP[msg.language])
+    }
 
     blackjack.game.getPlayer(msg.member.id).action = msg.content
   }
