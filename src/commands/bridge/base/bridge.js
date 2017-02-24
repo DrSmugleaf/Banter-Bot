@@ -34,7 +34,7 @@ module.exports = class Bridge {
           to: settings[subChannel].language
         }, function(e, translation) {
           if(e) return winston.error(e)
-          return discordSubChannel.sendMessage(responses.TRANSLATE[msg.language](
+          return discordSubChannel.sendMessage(responses.TRANSLATE(
             msg.member.displayName, translation
           ))
         })

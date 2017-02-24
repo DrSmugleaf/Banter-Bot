@@ -1199,9 +1199,7 @@ exports.responses = {
       english: "Channel linking isn't ready yet in this server, please wait a few more seconds and try again.",
       spanish: "El enlace de canales no está listo todavía en este servidor, por favor espera unos segundos más e inténtalo de nuevo."
     },
-    TRANSLATE: {
-      english: (name, translation) => `**${name}**: ${translation}`
-    }
+    TRANSLATE: (name, translation) => `**${name}**: ${translation}`,
   },
 
   CLEAN_MESSAGES: {
