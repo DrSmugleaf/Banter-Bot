@@ -36,10 +36,10 @@ module.exports = class BlackjackCommand extends commando.Command {
 
   onMessage(msg) {
     if(!msg.guild) return
-    const blackjack = this.games[msg.guild.id]
-    if(!blackjack) return
-    if(msg.channel.id !== blackjack.channel.id) return
-    if(!blackjack.game.hasPlayer(msg.member.id)) return
+    const game = this.games[msg.guild.id]
+    if(!game) return
+    if(msg.channel.id !== game.channel.id) return
+    if(!game.hasPlayer(msg.member.id)) return
 
     const pseudoCommand = msg.content.split(" ")[0]
     switch(pseudoCommand) {
@@ -48,7 +48,7 @@ module.exports = class BlackjackCommand extends commando.Command {
     case "accion":
     case "acciones":
       return msg.reply(responses.AVAILABLE_ACTIONS[msg.language](
-        blackjack.game.getPlayer(msg.member.id).availableActions.join(", ")
+        game.getPlayer(msg.member.id).availableActions.join(", ")
       ))
     case "help":
     case "rules":
@@ -62,32 +62,44 @@ module.exports = class BlackjackCommand extends commando.Command {
       return this.voteKick(msg)
     }
 
-    blackjack.game.getPlayer(msg.member.id).hands.find((hand) => {
+    game.getPlayer(msg.member.id).hands.find((hand) => {
       return !hand.action
     }).action = msg.content
+  }
+
+  parseHands(game) {
+    const language = game.guild.language
+    var response = responses.START.DEALER_HAND[language]
+    game.dealer.hands[0].cards.forEach((card) => {
+      response = response.concat(responses.START.CARD[language](card.suit.symbol, card.name))
+    })
+    response = response.concat(responses.START.DEALER_TOTAL[language](game.dealer.hands[0].score))
+
+    game.players.forEach((player) => {
+      const member = game.guild.member(player.id)
+      player.hands.forEach((hand) => {
+        if(hand.status === "blackjack") return game.channel.sendMessage(responses.NATURAL_BLACKJACK[language](member))
+        response = response.concat(responses.START.PLAYER_HAND[language](member.displayName))
+        hand.cards.forEach((card) => {
+          response = response.concat(responses.START.CARD[language](card.suit.symbol, card.name))
+        })
+        response = response.concat(responses.START.PLAYER_TOTAL[language](hand.score, hand.availableActions.join(", ")))
+      })
+    })
+
+    return response
   }
 
   async setupGame(msg) {
     var channel
     if(msg.guild.member(msg.client.user).hasPermission("MANAGE_CHANNELS")) {
-      await msg.guild.createChannel("bb-blackjack", "text").then((ch) => {
-        channel = ch
-      })
+      await msg.guild.createChannel("bb-blackjack", "text").then((ch) => channel = ch)
     } else {
       channel = msg.channel
     }
 
     const language = msg.guild.language
     const game = new BlackjackGame({ dealerID: msg.client.user.id, deck: "french", decks: 1, player: msg.member.id })
-      .on("deal", (hand, card) => {
-        if(game.dealer.id === hand.player.id) return channel.sendMessage(
-          responses.DEALER_DEAL[language](card.suit.symbol, card.name, hand.score)
-        )
-        const member = msg.guild.member(hand.player.id)
-        channel.sendMessage(responses.DEAL[language](
-          member, card.suit.symbol, card.name, hand.score, hand.availableActions
-        ))
-      })
       .on("end", () => {
         game.removeAllListeners()
         delete this.games[msg.guild.id]
@@ -98,27 +110,11 @@ module.exports = class BlackjackCommand extends commando.Command {
         channel.sendMessage(responses.LOSE[language](member))
       })
       .on("nextTurn", () => {
-
+        const response = this.parseHands(this.games[msg.guild.id])
+        channel.sendMessage(response)
       })
       .on("start", (game) => {
-        var response = responses.START.DEALER_HAND[language]
-        game.dealer.hands[0].cards.forEach((card) => {
-          response = response.concat(responses.START.CARD[language](card.suit.symbol, card.name))
-        })
-        response = response.concat(responses.START.DEALER_TOTAL[language](game.dealer.hands[0].score))
-
-        game.players.forEach((player) => {
-          const member = msg.guild.member(player.id)
-          player.hands.forEach((hand) => {
-            if(hand.status === "blackjack") return channel.sendMessage(responses.NATURAL_BLACKJACK[language](member))
-            response = response.concat(responses.START.PLAYER_HAND[language](member.displayName))
-            hand.cards.forEach((card) => {
-              response = response.concat(responses.START.CARD[language](card.suit.symbol, card.name))
-            })
-            response = response.concat(responses.START.PLAYER_TOTAL[language](hand.score, hand.availableActions.join(", ")))
-          })
-        })
-
+        const response = this.parseHands(this.games[msg.guild.id])
         if(game.players.every((player) => player.hands[0].status === "blackjack")) return
         channel.sendMessage(response)
       })
@@ -135,7 +131,10 @@ module.exports = class BlackjackCommand extends commando.Command {
         channel.sendMessage(responses.WIN[language](member))
       })
 
-    this.games[msg.guild.id] = { game: game, channel: channel, kickVotes: {} }
+    game.channel = channel
+    game.guild = msg.guild
+    game.kickVotes = {}
+    this.games[msg.guild.id] = game
 
     game.start()
     return msg.reply(responses.ADDED_PLAYER[language](channel.id))
@@ -168,14 +167,14 @@ module.exports = class BlackjackCommand extends commando.Command {
   }
 
   async run(msg) {
-    var blackjack = this.games[msg.guild.id]
-    if(!blackjack) return this.setupGame(msg)
+    var game = this.games[msg.guild.id]
+    if(!game) return this.setupGame(msg)
 
-    if(!blackjack.game.hasPlayer(msg.member.id)) {
-      blackjack.game.addPlayer(msg.member.id)
-      msg.reply(responses.ADDED_PLAYER[msg.language](blackjack.channel.id))
+    if(!game.hasPlayer(msg.member.id)) {
+      game.addPlayer(msg.member.id)
+      msg.reply(responses.ADDED_PLAYER[msg.language](game.channel.id))
     } else {
-      blackjack.game.removePlayer(msg.member.id)
+      game.removePlayer(msg.member.id)
       msg.reply(responses.REMOVED_PLAYER[msg.language])
     }
   }
