@@ -23,7 +23,13 @@ module.exports = class BlackjackGame extends EventEmitter {
     this.players = new Discord.Collection()
 
     this.on("action", () => {
-      if(this.players.every((player) => player.action)) return this.processTurn()
+      if(this.players.every((player) => {
+        return player.hands.every((hand) => {
+          return hand.action
+        })
+      })) {
+        return this.processTurn()
+      }
     })
 
     this.addPlayer(data.player)
@@ -52,47 +58,55 @@ module.exports = class BlackjackGame extends EventEmitter {
 
   processTurn() {
     this.players.forEach((player) => {
-      if(player.status !== "playing") return
-      switch (player.action) {
-      case "hit":
-        this.deck.deal(player, 1)
-        break
-      case "stand":
-        break
-      case "double":
-        this.bet *= 2
-        this.deck.deal(player, 1)
-        player._action = "stand"
-        break
-      case "split":
+      player.hands.forEach((hand) => {
+        if(hand.status !== "playing") return
+        switch (hand.action) {
+        case "hit":
+          this.deck.deal(hand, 1)
+          break
+        case "stand":
+          break
+        case "double":
+          this.bet *= 2
+          this.deck.deal(hand, 1)
+          hand._action = "stand"
+          break
+        case "split":
 
-        break
-      case "surrender":
-        player.bet /= 2
-        player.surrender()
-        break
-      default:
-        this.removePlayer(player.id)
-        this.emit("removedInactive", player)
-      }
+          break
+        case "surrender":
+          hand.bet /= 2
+          hand.surrender()
+          break
+        }
 
-      if(player.hand.score > 21) return player.lose()
+        if(hand.score > 21) return hand.lose()
+      })
     })
 
-    if(this.players.every((player) => player.status !== "playing")) return this.start()
     if(this.players.every((player) => {
-      return player.status !== "playing" || player.action === "stand" || player.hand.score === 21
+      return player.hands.every((hand) => {
+        return hand.status !== "playing"
+      })
+    })) return this.start()
+
+    if(this.players.every((player) => {
+      return player.hands.every((hand) => {
+        return hand.status !== "playing" || hand.action === "stand" || hand.score === 21
+      })
     })) {
-      while(this.dealer.hand.score < 17) {
-        this.deck.deal(this.dealer, 1)
+      while(this.dealer.hands[0].score < 17) {
+        this.deck.deal(this.dealer.hands[0], 1)
       }
 
       this.players.forEach((player) => {
-        if(player.status !== "playing") return
-        if(this.dealer.hand.score > 21) return player.win()
-        if(this.dealer.hand.score > player.hand.score) return player.lose()
-        if(this.dealer.hand.score < player.hand.score) return player.win()
-        return player.tie()
+        player.hands.forEach((hand) => {
+          if(hand.status !== "playing") return
+          if(this.dealer.hands[0].score > 21) return hand.win()
+          if(this.dealer.hands[0].score > hand.score) return hand.lose()
+          if(this.dealer.hands[0].score < hand.score) return hand.win()
+          return hand.tie()
+        })
       })
 
       return this.start()
@@ -115,12 +129,12 @@ module.exports = class BlackjackGame extends EventEmitter {
       this._players.delete(player.id)
     })
     this.dealer.reset()
-    this.deck.deal(this.dealer, 1, { silent: true })
+    this.deck.deal(this.dealer.hands[0], 1, { silent: true })
 
     this.players.forEach((player) => {
       player.reset()
-      this.deck.deal(player, 2, { silent: true })
-      if(player.hand.score === 21) player.blackjack()
+      this.deck.deal(player.hands[0], 2, { silent: true })
+      if(player.hands[0].score === 21) player.hands[0].blackjack()
     })
 
     this.emit("start", this)

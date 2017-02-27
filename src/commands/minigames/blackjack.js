@@ -80,14 +80,14 @@ module.exports = class BlackjackCommand extends commando.Command {
     }
 
     const game = new BlackjackGame({ dealerID: msg.client.user.id, deck: "french", decks: 1, player: msg.member.id })
-      .on("blackjack", (player) => {
-        const member = this.getMember(player.id)
+      .on("blackjack", (hand) => {
+        const member = this.getMember(hand.player.id)
         channel.sendMessage(responses.NATURAL_BLACKJACK[member.language](member))
       })
-      .on("deal", (player, card) => {
-        const member = this.getMember(player.id)
+      .on("deal", (hand, card) => {
+        const member = this.getMember(hand.player.id)
         channel.sendMessage(responses.DEAL[member.language](
-          member, card.suit, card.name, player.hand.score, player.availableActions
+          member, card.suit, card.name, hand.score, hand.availableActions
         ))
       })
       .on("end", () => {
@@ -95,8 +95,8 @@ module.exports = class BlackjackCommand extends commando.Command {
         delete this.games[msg.guild.id]
         channel.delete()
       })
-      .on("lose", (player) => {
-        const member = this.getMember(player.id)
+      .on("lose", (hand) => {
+        const member = this.getMember(hand.player.id)
         channel.sendMessage(responses.LOSE[member.language](member))
       })
       .on("nextTurn", () => {
@@ -104,28 +104,34 @@ module.exports = class BlackjackCommand extends commando.Command {
       })
       .on("start", (game) => {
         var response = "Dealer's hand:\n"
-        game.dealer.hand.cards.forEach((card) => {
+        game.dealer.hands[0].cards.forEach((card) => {
           response = response.concat(`${card.suit.symbol}${card.name}`)
         })
-        response = response.concat(`. Total: ${game.dealer.hand.score}\n`)
+        response = response.concat(`. Total: ${game.dealer.hands[0].score}\n`)
 
         game.players.forEach((player) => {
           const member = this.getMember(player.id)
           response = response.concat(`${member.username}'s hand:\n`)
-          player.hand.cards.forEach((card) => {
-            response = response.concat(`${card.suit.symbol}${card.name}`)
+          player.hands.forEach((hand) => {
+            hand.cards.forEach((card) => {
+              response = response.concat(`${card.suit.symbol}${card.name}`)
+            })
+            response = response.concat(`. Total: ${hand.score}. Actions you can take: ${hand.availableActions.join(", ")}\n`)
           })
-          response = response.concat(`. Total: ${player.hand.score}. Actions you can take: ${player.availableActions.join(", ")}\n`)
         })
 
         channel.sendMessage(response)
       })
-      .on("tie", (player) => {
-        const member = this.getMember(player.id)
+      .on("surrender", (hand) => {
+        const member = this.getMember(hand.player.id)
+        channel.sendMessage(responses.SURRENDER[msg.language](member))
+      })
+      .on("tie", (hand) => {
+        const member = this.getMember(hand.player.id)
         channel.sendMessage(responses.TIE[msg.language](member))
       })
-      .on("win", (player) => {
-        const member = this.getMember(player.id)
+      .on("win", (hand) => {
+        const member = this.getMember(hand.player.id)
         channel.sendMessage(responses.WIN[msg.language](member))
       })
 

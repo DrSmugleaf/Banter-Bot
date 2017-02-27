@@ -9,7 +9,7 @@ const BlackjackPlayer = require("../../../../src/commands/minigames/blackjack/pl
 
 describe("Blackjack Game", function() {
 
-  var game, player, lose, tie, win, surrender, start, nextTurn, end, removedInactive, deal
+  var game, player, lose, tie, win, surrender, start, nextTurn, end, deal
   beforeEach(function() {
     lose = undefined
     tie = undefined
@@ -17,13 +17,12 @@ describe("Blackjack Game", function() {
     surrender = undefined
     start = undefined
     nextTurn = undefined
-    removedInactive = undefined
     deal = new Array()
     game = new BlackjackGame({
       dealerID: global.client.user.id, deck: "french", decks: 1, player: global.client.user.id
-    }).on("deal", (player, card) => {
-      if(!player.action) return
-      deal.push({ player: player, card: card })
+    }).on("deal", (hand, card) => {
+      if(!hand.action) return
+      deal.push({ hand: hand, card: card })
     }).on("lose", () => lose = true)
       .on("tie", () => tie = true)
       .on("win", () => win = true)
@@ -31,7 +30,6 @@ describe("Blackjack Game", function() {
       .on("start", () => start = true)
       .on("nextTurn", () => nextTurn = true)
       .on("end", () => end = true)
-      .on("removedInactive", () => removedInactive = true)
 
     player = game.getPlayer(global.client.user.id)
     game.players.set(player.id, player)
@@ -104,11 +102,11 @@ describe("Blackjack Game", function() {
       describe("action: hit", function() {
 
         beforeEach(function() {
-          player.action = "hit"
+          player.hands[0].action = "hit"
         })
 
         it("should deal 1 card to the player", function() {
-          expect(player.hand.cards).to.have.lengthOf(1)
+          expect(player.hands[0].cards).to.have.lengthOf(1)
         })
         it("shouldn't result in a player loss, tie or victory", function() {
           expect(lose || tie || win).to.be.undefined
@@ -124,7 +122,7 @@ describe("Blackjack Game", function() {
       describe("action: stand", function() {
 
         beforeEach(function() {
-          player.action = "stand"
+          player.hands[0].action = "stand"
         })
 
         it("should deal no cards to the player", function() {
@@ -144,7 +142,7 @@ describe("Blackjack Game", function() {
       describe("action: double", function() {
 
         beforeEach(function() {
-          player.action = "double"
+          player.hands[0].action = "double"
         })
 
         it("should double the player's bet")
@@ -165,7 +163,7 @@ describe("Blackjack Game", function() {
       describe("action: split", function() {
 
         beforeEach(function() {
-          player.action = "split"
+          player.hands[0].action = "split"
         })
 
         it("should split the player's hand into two")
@@ -176,11 +174,11 @@ describe("Blackjack Game", function() {
         describe("not 2 cards", function() {
 
           beforeEach(function() {
-            player.action = "surrender"
+            player.hands[0].action = "surrender"
           })
 
-          it("shouldn't change the player's action", function() {
-            expect(player.action).to.be.null
+          it("shouldn't change the hand's action", function() {
+            expect(player.hands[0].action).to.be.null
           })
           it("shouldn't result in a player loss, tie or victory", function() {
             expect(lose || tie || win).to.be.undefined
@@ -196,8 +194,8 @@ describe("Blackjack Game", function() {
         describe("2 cards", function() {
 
           beforeEach(function() {
-            game.deck.deal(player, 2)
-            player.action = "surrender"
+            game.deck.deal(player.hands[0], 2)
+            player.hands[0].action = "surrender"
           })
 
           it("should halve the player's bet")
@@ -218,10 +216,6 @@ describe("Blackjack Game", function() {
         beforeEach(function() {
           game.processTurn()
         })
-
-        it("should remove the player from the game for inactivity", function() {
-          expect(removedInactive).to.be.true
-        })
       })
     })
   })
@@ -235,10 +229,10 @@ describe("Blackjack Game", function() {
     })
 
     it("should deal 1 card to the dealer", function() {
-      expect(game.dealer.hand.cards).to.have.lengthOf(1)
+      expect(game.dealer.hands[0].cards).to.have.lengthOf(1)
     })
     it("should deal 2 cards to the player", function() {
-      expect(player.hand.cards).to.have.lengthOf(2)
+      expect(player.hands[0].cards).to.have.lengthOf(2)
     })
     it("should start a new game", function() {
       expect(start).to.be.true
@@ -249,12 +243,12 @@ describe("Blackjack Game", function() {
     describe("action: stand", function() {
 
       beforeEach(function() {
-        player.action = "stand"
+        player.hands[0].action = "stand"
         game.nextTurn()
       })
 
       it("should set the player's action to null", function() {
-        expect(player.action).to.be.null
+        expect(player.hands[0].action).to.be.null
       })
       it("should start a new turn", function() {
         expect(nextTurn).to.be.true
@@ -271,7 +265,7 @@ describe("Blackjack Game", function() {
       })
 
       it("shouldn't change the player's action", function() {
-        expect(player.action).to.be.null
+        expect(player.hands[0].action).to.be.null
       })
       it("should start a new turn", function() {
         expect(nextTurn).to.be.true
