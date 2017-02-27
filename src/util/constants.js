@@ -1114,6 +1114,10 @@ exports.responses = {
       english: (actions) => `Your available actions are \`${actions}\`.`,
       spanish: (actions) => `Tus acciones disponibles son \`${actions}\`.`
     },
+    CARD: {
+      english: (symbol, name) => `${symbol}${name}`,
+      spanish: (symbol, name) => `${symbol}${name}`
+    },
     DEAL: {
       english: (name, symbol, card, total, actions) => stripIndents`
         ${name}, dealt you ${symbol}${card}. Total score: ${total}.
@@ -1132,6 +1136,10 @@ exports.responses = {
         El crupier roba ${symbol}${card}.
         Puntuación total: ${total}.
       `
+    },
+    DEALER_HAND: {
+      english: "Dealer's hand:\n",
+      spanish: "Mano del crupier:\n"
     },
     HELP: {
       english: stripIndents`In a game of Blackjack, the objective is to reach the highest score that is equal to or under 21. If at any point you go above 21 points, you lose that round.
@@ -1207,27 +1215,17 @@ exports.responses = {
       english: (name) => `${name} gets a natural Blackjack!`,
       spanish: (name) => `¡${name} consigue un Blackjack natural!`
     },
+    PLAYER_HAND: {
+      english: (name) => `${name}'s hand:\n`,
+      spanish: (name) => `Mano de ${name}:\n`
+    },
+    PLAYER_TOTAL: {
+      english: (score, actions) => `. Total: ${score}. ${actions ? `Actions you can take: ${actions}.` : ""}\n`,
+      spanish: (score, actions) => `. Total: ${score}. ${actions ? `Acciones que puedes tomar: ${actions}.` : ""}\n`
+    },
     REMOVED_PLAYER: {
       english: "Removed you from a game of Blackjack.",
       spanish: "Te he quitado de un juego de Blackjack."
-    },
-    START: {
-      CARD: {
-        english: (symbol, name) => `${symbol}${name}`,
-        spanish: (symbol, name) => `${symbol}${name}`
-      },
-      DEALER_HAND: {
-        english: "Dealer's hand:\n",
-        spanish: "Mano del crupier:\n"
-      },
-      PLAYER_HAND: {
-        english: (name) => `${name}'s hand:\n`,
-        spanish: (name) => `Mano de ${name}:\n`
-      },
-      PLAYER_TOTAL: {
-        english: (score, actions) => `. Total: ${score}. ${actions ? `Actions you can take: ${actions}.` : ""}\n`,
-        spanish: (score, actions) => `. Total: ${score}. ${actions ? `Acciones que puedes tomar: ${actions}.` : ""}\n`
-      }
     },
     TIE: {
       english: (name) => `${name} ties with the dealer.`,
