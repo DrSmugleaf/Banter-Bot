@@ -147,7 +147,9 @@ module.exports = class BlackjackGame extends EventEmitter {
 
   nextTurn() {
     this.players.forEach((player) => {
-      if(player.status === "playing" && player.action !== "stand") player.action = null
+      player.hands.forEach((hand) => {
+        if(hand.status === "playing" && hand.status !== "stand") hand.action = null
+      })
     })
 
     this.emit("nextTurn", this)
