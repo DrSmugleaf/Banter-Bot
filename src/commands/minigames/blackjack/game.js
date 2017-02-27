@@ -143,6 +143,9 @@ module.exports = class BlackjackGame extends EventEmitter {
     })
 
     this.emit("start", this)
+    if(this.players.every((player) => {
+      return player.hands[0].status === "blackjack"
+    })) return this.start()
   }
 
   nextTurn() {
