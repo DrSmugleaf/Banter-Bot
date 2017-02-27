@@ -1229,8 +1229,14 @@ exports.responses = {
         spanish: (name) => `Mano de ${name}:\n`
       },
       PLAYER_TOTAL: {
-        english: (score, actions) => `. Total: ${score}. Actions you can take: ${actions}.\n`,
-        spanish: (score, actions) => `. Total: ${score}. Acciones que puedes tomar: ${actions}.\n`
+        english: (score, actions) => oneLine`
+          . Total: ${score}.
+          ${actions ? `Actions you can take: ${actions}.\n` : ""}
+        `,
+        spanish: (score, actions) => oneLine`
+          . Total: ${score}.
+          ${actions ? `Acciones que puedes tomar: ${actions}.\n` : ""}
+        `
       }
     },
     TIE: {

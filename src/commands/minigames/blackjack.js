@@ -5,6 +5,7 @@
 "use strict"
 const BlackjackGame = require("./blackjack/game")
 const commando = require("discord.js-commando")
+const oneLine = require("common-tags").oneLine
 const responses = require("../../util/constants").responses.BLACKJACK
 
 module.exports = class BlackjackCommand extends commando.Command {
@@ -67,6 +68,25 @@ module.exports = class BlackjackCommand extends commando.Command {
     }).action = msg.content
   }
 
+  parseCards(game, hand) {
+    const language = game.guild.language
+    var response = new String()
+    hand.cards.forEach((card) => {
+      response = response.concat(responses.START.CARD[language](card.suit.symbol, card.name))
+    })
+    return response
+  }
+
+  parseHand(game, hand, member) {
+    const language = game.guild.language
+    var response = new String()
+    if(hand.status === "blackjack") return responses.NATURAL_BLACKJACK[language](member)
+    response = response.concat(responses.START.PLAYER_HAND[language](member.displayName))
+    response = response.concat(this.parseCards(game, hand))
+    response = response.concat(responses.START.PLAYER_TOTAL[language](hand.score, hand.availableActions.join(", ")))
+    return response
+  }
+
   parseHands(game) {
     const language = game.guild.language
     var response = responses.START.DEALER_HAND[language]
@@ -78,15 +98,9 @@ module.exports = class BlackjackCommand extends commando.Command {
     game.players.forEach((player) => {
       const member = game.guild.member(player.id)
       player.hands.forEach((hand) => {
-        if(hand.status === "blackjack") return responses.NATURAL_BLACKJACK[language](member)
-        response = response.concat(responses.START.PLAYER_HAND[language](member.displayName))
-        hand.cards.forEach((card) => {
-          response = response.concat(responses.START.CARD[language](card.suit.symbol, card.name))
-        })
-        response = response.concat(responses.START.PLAYER_TOTAL[language](hand.score, hand.availableActions.join(", ")))
+        response = response.concat(this.parseHand(game, hand, member))
       })
     })
-
     return response
   }
 
@@ -107,7 +121,9 @@ module.exports = class BlackjackCommand extends commando.Command {
       })
       .on("lose", (hand) => {
         const member = msg.guild.member(hand.player.id)
-        channel.sendMessage(responses.LOSE[language](member))
+        var lose = responses.LOSE[language](member)
+        var cards = this.parseHand(hand.game, hand, member)
+        channel.sendMessage(oneLine`${lose} ${cards}`)
       })
       .on("nextTurn", () => {
         const response = this.parseHands(this.games[msg.guild.id])
@@ -120,15 +136,21 @@ module.exports = class BlackjackCommand extends commando.Command {
       })
       .on("surrender", (hand) => {
         const member = msg.guild.member(hand.player.id)
-        channel.sendMessage(responses.SURRENDER[language](member))
+        var surrender = responses.SURRENDER[language](member)
+        var cards = this.parseHand(hand.game, hand, member)
+        channel.sendMessage(oneLine`${surrender} ${cards}`)
       })
       .on("tie", (hand) => {
         const member = msg.guild.member(hand.player.id)
-        channel.sendMessage(responses.TIE[language](member))
+        var tie = responses.TIE[language](member)
+        var cards = this.parseHand(hand.game, hand, member)
+        channel.sendMessage(oneLine`${tie} ${cards}`)
       })
       .on("win", (hand) => {
         const member = msg.guild.member(hand.player.id)
-        channel.sendMessage(responses.WIN[language](member))
+        var win = responses.WIN[language](member)
+        var cards = this.parseHand(hand.game, hand, member)
+        channel.sendMessage(oneLine`${win} ${cards}`)
       })
 
     game.channel = channel
