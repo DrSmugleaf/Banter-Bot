@@ -4,6 +4,7 @@
 
 "use strict"
 const BlackjackDeck = require("./deck")
+const BlackjackHand = require("./hand")
 const BlackjackPlayer = require("./player")
 const Discord = require("discord.js")
 const EventEmitter = require("events").EventEmitter
@@ -67,13 +68,17 @@ module.exports = class BlackjackGame extends EventEmitter {
         case "stand":
           break
         case "double":
-          this.bet *= 2
+          hand.bet *= 2
           this.deck.deal(hand, 1)
           hand._action = "stand"
           break
-        case "split":
-
+        case "split": {
+          const splitHand = new BlackjackHand({ player: this })
+          splitHand.cards.push(hand.cards[0])
+          hand.cards.shift()
+          player.hands.push(splitHand)
           break
+        }
         case "surrender":
           hand.bet /= 2
           hand.surrender()

@@ -66,7 +66,9 @@ module.exports = class BlackjackCommand extends commando.Command {
       return this.voteKick(msg)
     }
 
-    blackjack.game.getPlayer(msg.member.id).action = msg.content
+    blackjack.game.getPlayer(msg.member.id).hands.find((hand) => {
+      return !hand.action
+    }).action = msg.content
   }
 
   async setupGame(msg) {

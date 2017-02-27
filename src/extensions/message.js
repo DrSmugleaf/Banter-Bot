@@ -6,10 +6,7 @@
 
 class MessageExtension {
   get language() {
-    return this.member && this.member.language ? this.member.language :
-      this.guild && this.guild.language ? this.guild.language :
-      this.author && this.author.language ? this.author.language :
-      "english"
+    return this.member && this.member.language ? this.member.language : this.author.language
   }
 
   static applyToClass(target) {

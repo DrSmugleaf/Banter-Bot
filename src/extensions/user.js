@@ -11,7 +11,7 @@ class AuthorExtension {
       const userSettings = this.settings.get("language")
       this._language = userSettings ? userSettings.language : null
     }
-    return this._language
+    return this._language || "english"
   }
 
   set language(language) {
