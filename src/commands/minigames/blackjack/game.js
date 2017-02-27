@@ -103,6 +103,7 @@ module.exports = class BlackjackGame extends EventEmitter {
       while(this.dealer.hands[0].score < 17) {
         this.deck.deal(this.dealer.hands[0], 1)
       }
+      this.emit("endRound", this.dealer.hands[0])
 
       this.players.forEach((player) => {
         player.hands.forEach((hand) => {

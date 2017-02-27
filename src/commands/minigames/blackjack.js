@@ -77,24 +77,19 @@ module.exports = class BlackjackCommand extends commando.Command {
     return response
   }
 
-  parseHand(game, hand, member) {
+  parseHand(game, hand, member, data = {}) {
     const language = game.guild.language
+    const handResponse = data.dealer ? responses.START.DEALER_HAND[language] : responses.START.PLAYER_HAND[language](member.displayName)
     var response = new String()
     if(hand.status === "blackjack") return responses.NATURAL_BLACKJACK[language](member)
-    response = response.concat(responses.START.PLAYER_HAND[language](member.displayName))
+    response = response.concat(handResponse)
     response = response.concat(this.parseCards(game, hand))
-    response = response.concat(responses.START.PLAYER_TOTAL[language](hand.score, hand.availableActions.join(", ")))
+    response = response.concat(responses.START.PLAYER_TOTAL[language](hand.score, data.dealer ? null : hand.availableActions.join(", ")))
     return response
   }
 
   parseHands(game) {
-    const language = game.guild.language
-    var response = responses.START.DEALER_HAND[language]
-    game.dealer.hands[0].cards.forEach((card) => {
-      response = response.concat(responses.START.CARD[language](card.suit.symbol, card.name))
-    })
-    response = response.concat(responses.START.DEALER_TOTAL[language](game.dealer.hands[0].score))
-
+    var response = this.parseHand(game, game.dealer.hands[0], null, { dealer: true })
     game.players.forEach((player) => {
       const member = game.guild.member(player.id)
       player.hands.forEach((hand) => {
@@ -118,6 +113,9 @@ module.exports = class BlackjackCommand extends commando.Command {
         game.removeAllListeners()
         delete this.games[msg.guild.id]
         channel.delete()
+      })
+      .on("endRound", (hand) => {
+        channel.sendMessage(oneLine`${this.parseHand(hand.game, hand, null, { dealer: true })}`)
       })
       .on("lose", (hand) => {
         const member = msg.guild.member(hand.player.id)

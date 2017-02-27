@@ -1220,23 +1220,13 @@ exports.responses = {
         english: "Dealer's hand:\n",
         spanish: "Mano del crupier:\n"
       },
-      DEALER_TOTAL: {
-        english: (score) => `. Total: ${score}\n`,
-        spanish: (score) => `. Total: ${score}\n`
-      },
       PLAYER_HAND: {
         english: (name) => `${name}'s hand:\n`,
         spanish: (name) => `Mano de ${name}:\n`
       },
       PLAYER_TOTAL: {
-        english: (score, actions) => oneLine`
-          . Total: ${score}.
-          ${actions ? `Actions you can take: ${actions}.\n` : ""}
-        `,
-        spanish: (score, actions) => oneLine`
-          . Total: ${score}.
-          ${actions ? `Acciones que puedes tomar: ${actions}.\n` : ""}
-        `
+        english: (score, actions) => `. Total: ${score}. ${actions ? `Actions you can take: ${actions}.` : ""}\n`,
+        spanish: (score, actions) => `. Total: ${score}. ${actions ? `Acciones que puedes tomar: ${actions}.` : ""}\n`
       }
     },
     TIE: {
