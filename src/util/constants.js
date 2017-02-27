@@ -1115,13 +1115,22 @@ exports.responses = {
       spanish: (actions) => `Tus acciones disponibles son \`${actions}\`.`
     },
     DEAL: {
-      english: (name, suit, card, total, actions) => stripIndents`
-        ${name}, dealt you ${suit}${card}. Total score: ${total}.
+      english: (name, symbol, card, total, actions) => stripIndents`
+        ${name}, dealt you ${symbol}${card}. Total score: ${total}.
         Actions you can take: ${actions}
       `,
-      spanish: (name, suit, card, total, actions) => stripIndents`
-        ${name}, te he repartido ${suit}${card}. Puntuación total: ${total}.
+      spanish: (name, symbol, card, total, actions) => stripIndents`
+        ${name}, te he repartido ${symbol}${card}. Puntuación total: ${total}.
         Actions you can take: ${actions}
+      `
+    },
+    DEALER_DEAL: {
+      english: (symbol, card, total) => stripIndents`
+        The dealer draws ${symbol}${card}. Total score: ${total}.
+      `,
+      spanish: (symbol, card, total) => stripIndents`
+        El crupier roba ${symbol}${card}.
+        Puntuación total: ${total}.
       `
     },
     HELP: {
@@ -1201,6 +1210,28 @@ exports.responses = {
     REMOVED_PLAYER: {
       english: "Removed you from a game of Blackjack.",
       spanish: "Te he quitado de un juego de Blackjack."
+    },
+    START: {
+      CARD: {
+        english: (symbol, name) => `${symbol}${name}`,
+        spanish: (symbol, name) => `${symbol}${name}`
+      },
+      DEALER_HAND: {
+        english: "Dealer's hand:\n",
+        spanish: "Mano del crupier:\n"
+      },
+      DEALER_TOTAL: {
+        english: (score) => `. Total: ${score}\n`,
+        spanish: (score) => `. Total: ${score}\n`
+      },
+      PLAYER_HAND: {
+        english: (name) => `${name}'s hand:\n`,
+        spanish: (name) => `Mano de ${name}:\n`
+      },
+      PLAYER_TOTAL: {
+        english: (score, actions) => `. Total: ${score}. Actions you can take: ${actions}.\n`,
+        spanish: (score, actions) => `. Total: ${score}. Acciones que puedes tomar: ${actions}.\n`
+      }
     },
     TIE: {
       english: (name) => `${name} ties with the dealer.`,

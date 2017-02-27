@@ -34,10 +34,6 @@ module.exports = class BlackjackCommand extends commando.Command {
     this.games = new Object()
   }
 
-  getMember(id) {
-    return this.client.users.get(id)
-  }
-
   onMessage(msg) {
     if(!msg.guild) return
     const blackjack = this.games[msg.guild.id]
@@ -81,15 +77,15 @@ module.exports = class BlackjackCommand extends commando.Command {
       channel = msg.channel
     }
 
+    const language = msg.guild.language
     const game = new BlackjackGame({ dealerID: msg.client.user.id, deck: "french", decks: 1, player: msg.member.id })
-      .on("blackjack", (hand) => {
-        const member = this.getMember(hand.player.id)
-        channel.sendMessage(responses.NATURAL_BLACKJACK[member.language](member))
-      })
       .on("deal", (hand, card) => {
-        const member = this.getMember(hand.player.id)
-        channel.sendMessage(responses.DEAL[member.language](
-          member, card.suit, card.name, hand.score, hand.availableActions
+        if(game.dealer.id === hand.player.id) return channel.sendMessage(
+          responses.DEALER_DEAL[language](card.suit.symbol, card.name, hand.score)
+        )
+        const member = msg.guild.member(hand.player.id)
+        channel.sendMessage(responses.DEAL[language](
+          member, card.suit.symbol, card.name, hand.score, hand.availableActions
         ))
       })
       .on("end", () => {
@@ -98,49 +94,51 @@ module.exports = class BlackjackCommand extends commando.Command {
         channel.delete()
       })
       .on("lose", (hand) => {
-        const member = this.getMember(hand.player.id)
-        channel.sendMessage(responses.LOSE[member.language](member))
+        const member = msg.guild.member(hand.player.id)
+        channel.sendMessage(responses.LOSE[language](member))
       })
       .on("nextTurn", () => {
 
       })
       .on("start", (game) => {
-        var response = "Dealer's hand:\n"
+        var response = responses.START.DEALER_HAND[language]
         game.dealer.hands[0].cards.forEach((card) => {
-          response = response.concat(`${card.suit.symbol}${card.name}`)
+          response = response.concat(responses.START.CARD[language](card.suit.symbol, card.name))
         })
-        response = response.concat(`. Total: ${game.dealer.hands[0].score}\n`)
+        response = response.concat(responses.START.DEALER_TOTAL[language](game.dealer.hands[0].score))
 
         game.players.forEach((player) => {
-          const member = this.getMember(player.id)
-          response = response.concat(`${member.username}'s hand:\n`)
+          console.log(player.id)
+          const member = msg.guild.member(player.id)
+          console.log(member)
+          response = response.concat(responses.START.PLAYER_HAND[language](member.displayName))
           player.hands.forEach((hand) => {
+            if(hand.status === "blackjack") return channel.sendMessage(responses.NATURAL_BLACKJACK[language](member))
             hand.cards.forEach((card) => {
-              response = response.concat(`${card.suit.symbol}${card.name}`)
+              response = response.concat(responses.START.CARD[language](card.suit.symbol, card.name))
             })
-            response = response.concat(`. Total: ${hand.score}. Actions you can take: ${hand.availableActions.join(", ")}\n`)
+            response = response.concat(responses.START.PLAYER_TOTAL[language](hand.score, hand.availableActions.join(", ")))
           })
         })
-
         channel.sendMessage(response)
       })
       .on("surrender", (hand) => {
-        const member = this.getMember(hand.player.id)
-        channel.sendMessage(responses.SURRENDER[msg.language](member))
+        const member = msg.guild.member(hand.player.id)
+        channel.sendMessage(responses.SURRENDER[language](member))
       })
       .on("tie", (hand) => {
-        const member = this.getMember(hand.player.id)
-        channel.sendMessage(responses.TIE[msg.language](member))
+        const member = msg.guild.member(hand.player.id)
+        channel.sendMessage(responses.TIE[language](member))
       })
       .on("win", (hand) => {
-        const member = this.getMember(hand.player.id)
-        channel.sendMessage(responses.WIN[msg.language](member))
+        const member = msg.guild.member(hand.player.id)
+        channel.sendMessage(responses.WIN[language](member))
       })
 
     this.games[msg.guild.id] = { game: game, channel: channel, kickVotes: {} }
 
     game.start()
-    return msg.reply(responses.ADDED_PLAYER[msg.language](channel.id))
+    return msg.reply(responses.ADDED_PLAYER[language](channel.id))
   }
 
   voteKick(msg) {
