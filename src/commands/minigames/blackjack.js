@@ -78,7 +78,7 @@ module.exports = class BlackjackCommand extends commando.Command {
     game.players.forEach((player) => {
       const member = game.guild.member(player.id)
       player.hands.forEach((hand) => {
-        if(hand.status === "blackjack") return game.channel.sendMessage(responses.NATURAL_BLACKJACK[language](member))
+        if(hand.status === "blackjack") return responses.NATURAL_BLACKJACK[language](member)
         response = response.concat(responses.START.PLAYER_HAND[language](member.displayName))
         hand.cards.forEach((card) => {
           response = response.concat(responses.START.CARD[language](card.suit.symbol, card.name))
