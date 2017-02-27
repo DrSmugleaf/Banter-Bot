@@ -3,7 +3,7 @@
 //
 
 "use strict"
-const DB = require("./libs/util/db")
+const DB = require("./src/util/db")
 const db = new DB()
 const express = require("express")
 const logger = require("morgan")
