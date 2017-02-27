@@ -80,12 +80,11 @@ module.exports = class BlackjackCommand extends commando.Command {
   parseHand(game, hand, member, data = {}) {
     const language = game.guild.language
     const handResponse = data.dealer ? responses.START.DEALER_HAND[language] : responses.START.PLAYER_HAND[language](member.displayName)
-    var response = new String()
     if(hand.status === "blackjack") return responses.NATURAL_BLACKJACK[language](member)
-    response = response.concat(handResponse)
-    response = response.concat(this.parseCards(game, hand))
-    response = response.concat(responses.START.PLAYER_TOTAL[language](hand.score, data.dealer ? null : hand.availableActions.join(", ")))
-    return response
+    return ""
+      .concat(handResponse)
+      .concat(this.parseCards(game, hand))
+      .concat(responses.START.PLAYER_TOTAL[language](hand.score, data.dealer ? null : hand.availableActions.join(", ")))
   }
 
   parseHands(game) {
