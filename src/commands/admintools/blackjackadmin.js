@@ -26,8 +26,13 @@ module.exports = class BlackjackCommand extends commando.Command {
           prompt: "What do you want to do? (end, kick)",
           type: "string",
           validate: (value) => {
-            return ["end", "kick"].includes(value.toLowerCase())
+            return ["channel", "end", "kick"].includes(value.toLowerCase())
           }
+        },
+        {
+          key: "channel",
+          prompt: "What channel do you want to move this game of Blackjack to?",
+          type: "channel"
         },
         {
           key: "member",
@@ -51,14 +56,22 @@ module.exports = class BlackjackCommand extends commando.Command {
     const blackjack = this.blackjack.games[msg.guild.id]
     if(!blackjack) return msg.reply(responses.NO_GAMES[msg.language])
     const mode = args.mode
+    var channel = args.channel
     var member = args.member
 
     switch (mode) {
+    case "channel":
+      if(!channel) channel = await this.args[1].obtainSimple(msg)
+      if(!channel) return
+      if(channel.type !== "text") return msg.reply(responses.NOT_TEXT_CHANNEL[msg.language](channel.name))
+      blackjack.channel.sendMessage(responses.MOVED_CHANNEL[msg.language](channel.id, msg.member.id))
+      blackjack.channel = channel
+      return msg.reply(responses.MOVED_CHANNEL_REPLY[msg.language](channel.id))
     case "end":
       blackjack.end()
       return msg.reply(responses.ENDED_GAME[msg.language](blackjack.channel.name))
     case "kick":
-      if(!member) member = await this.args[1].obtainSimple(msg)
+      if(!member) member = await this.args[2].obtainSimple(msg)
       if(!member) return
       if(!blackjack.hasPlayer(member.id)) return msg.reply(responses.NO_PLAYER[msg.language](member.displayName))
       blackjack.removePlayer(member.id)

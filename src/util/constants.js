@@ -1288,6 +1288,24 @@ exports.responses = {
       english: (name) => `${name} isn't playing Blackjack.`,
       spanish: (name) => `${name} no está jugando Blackjack.`
     },
+    NOT_TEXT_CHANNEL: {
+      english: (name) => `${name} isn't a text channel.`,
+      spanish: (name) => `${name} no es un canal de texto.`
+    },
+    MOVED_CHANNEL: {
+      english: (channelID, memberID) => oneLine`
+        This game of Blackjack has been moved to channel <#${channelID}> by <@${memberID}>.
+        You can keep playing there.
+      `,
+      spanish: (channelID, memberID) => oneLine`
+        Esta partida de Blackjack ha sido movida al canal <#${channelID}> por <@${memberID}>.
+        Podéis seguir jugando allí.
+      `
+    },
+    MOVED_CHANNEL_REPLY: {
+      english: (channelID) => `Moved the current game of Blackjack to <#${channelID}>.`,
+      spanish: (channelID) => `Movida la partida de Blackjack actual a <#${channelID}>.`
+    }
   },
 
   BLACKLIST: {
