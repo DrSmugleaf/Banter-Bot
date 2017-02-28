@@ -39,6 +39,7 @@ module.exports = class BlackjackCommand extends commando.Command {
 
   onChannelDelete(channel) {
     const game = this.games[channel.guild.id]
+    if(!game) return
     if(!game._channel) {
       game.removeAllListeners()
       delete this.games[channel.guild.id]
