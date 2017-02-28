@@ -43,29 +43,19 @@ module.exports = class BlackjackCommand extends commando.Command {
     if(!game.hasPlayer(msg.member.id)) return
 
     const pseudoCommand = msg.content.split(" ")[0]
-    switch(pseudoCommand) {
-    case "action":
-    case "actions":
-    case "accion":
-    case "acciones":
+    if(responses.ALIASES.ACTION[msg.language].includes(pseudoCommand)) {
       return msg.reply(responses.AVAILABLE_ACTIONS[msg.language](
         game.getPlayer(msg.member.id).availableActions.join(", ")
       ))
-    case "help":
-    case "rules":
-    case "rule":
-    case "ayuda":
-    case "reglas":
-    case "regla":
+    } else if(responses.ALIASES.HELP[msg.language].includes(pseudoCommand)) {
       return msg.author.sendMessage(responses.HELP[msg.language])
-    case "kick":
-    case "echar":
+    } else if(responses.ALIASES.KICK[msg.language].includes(pseudoCommand)) {
       return this.voteKick(msg)
+    } else {
+      game.getPlayer(msg.member.id).hands.find((hand) => {
+        return !hand.action
+      }).action = msg.content
     }
-
-    game.getPlayer(msg.member.id).hands.find((hand) => {
-      return !hand.action
-    }).action = msg.content
   }
 
   parseCards(game, hand) {

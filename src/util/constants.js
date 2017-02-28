@@ -1110,6 +1110,20 @@ exports.responses = {
       Puedes jugar en <#${channel}>.
       Te puedes quitar de la partida en cualquier momento usando este comando de nuevo.`,
     },
+    ALIASES: {
+      ACTION: {
+        english: ["action", "actions"],
+        spanish: ["accion", "acciones"]
+      },
+      HELP: {
+        english: ["help", "rules", "rule"],
+        spanish: ["ayuda", "reglas", "regla"],
+      },
+      KICK: {
+        english: ["kick"],
+        spanish: ["echar"]
+      }
+    },
     AVAILABLE_ACTIONS: {
       english: (actions) => `Your available actions are \`${actions}\`.`,
       spanish: (actions) => `Tus acciones disponibles son \`${actions}\`.`
