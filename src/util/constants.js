@@ -1070,23 +1070,23 @@ exports.responses = {
   AUTO_CHANNEL: {
     DISABLED: {
       english: "Disabled automatic channels in this server.",
-      spanish: "Desactivados canales automáticos en este servidor."
+      spanish: "Los canales automáticos han sido desactivados en este servidor."
     },
     ENABLED: {
       english: "Enabled automatic channels in this server.",
-      spanish: "Activados canales automáticos en este servidor."
+      spanish: "Los canales automáticos han sido activados en este servidor."
     },
     NOT_READY: {
       english: "Automatic channels aren't ready yet in this server, please wait a few more seconds and try again.",
-      spanish: "Los canales automáticos no están listos todavía en este servidor, por favor espera unos segundos más e inténtalo de nuevo."
+      spanish: "Los canales automáticos no están listos todavía para servidor, por favor espera unos segundos más e inténtalo de nuevo."
     },
     UPDATED: {
       english: "Updated channels for this server.",
-      spanish: "Actualizados los canales de este servidor"
+      spanish: "Los canales automáticos han sido actualizados para este servidor"
     },
     SET_THRESHOLD: {
       english: (threshold) => `Set the automatic channel creation threshold in this server to \`${threshold}\` players.`,
-      spanish: (threshold) => `Configurado el umbral de creación automática de canales en este servidor a \`${threshold}\` jugadores.`
+      spanish: (threshold) => `El umbral de creación automática de canales ha sido establecido en este servidor a \`${threshold}\` jugadores.`
     }
   },
 
@@ -1097,7 +1097,133 @@ exports.responses = {
     },
     SET: {
       english: (url) => `Changed the bot's image to ${url}.`,
-      spanish: (url) => `Cambiado la imagen del bot a ${url}.`
+      spanish: (url) => `La imágen del bot ha sido cambiada a ${url}.`
+    }
+  },
+
+  BLACKJACK: {
+    ADDED_PLAYER: {
+      english: (channel) => stripIndents`Added you to a game of Blackjack.
+      You can play in <#${channel}>.
+      You can remove yourself from the game at any time by using this command again.`,
+      spanish: (channel) => stripIndents`Has sido añadido a una partida de Blackjack.
+      Puedes jugar en <#${channel}>.
+      Puedes abandonar la partida en cualquier momento usando este comando de nuevo.`,
+    },
+    AVAILABLE_ACTIONS: {
+      english: (actions) => `Your available actions are \`${actions}\`.`,
+      spanish: (actions) => `Tus acciones disponibles son \`${actions}\`.`
+    },
+    DEAL: {
+      english: (name, suit, card, total, actions) => stripIndents`
+        ${name}, dealt you ${suit}${card}. Total score: ${total}.
+        Actions you can take: ${actions}
+      `,
+      spanish: (name, suit, card, total, actions) => stripIndents`
+        ${name}, te he repartido ${suit}${card}. Puntuación total: ${total}.
+        Acciones que puedes tomar: ${actions}
+      `
+    },
+    HELP: {
+      english: stripIndents`In a game of Blackjack, the objective is to reach the highest score that is equal to or under 21. If at any point you go above 21 points, you lose that round.
+
+      Every numeric card has the same point value as its number, Aces are worth either 1 or 11 points, and face cards (Jack, Queen, King) are worth 10 points.
+
+      After settling for your point amount, the dealer will draw until their score is equal to or above 17 points. After that your score is compared with the dealer's, if any score is above 21, that person loses. Otherwise, the highest score wins.
+
+      Every turn you will be able to take a set of actions depending on your situation:
+      hit, stand, double, split and surrender.
+
+      Hit draws one card.
+
+      Stand deals no cards and settles for your point and bet amounts.
+
+      Double doubles your bet, deals you a card and sets you to 'stand' for the rest of that game.
+
+      Split can only be used if your first 2 cards have the same value, and it splits your hand into two with those cards.
+
+      Surrender halves your bet and makes you instantly lose that game.
+      `,
+      spanish: stripIndents`En una partida de Blackjack, el objetivo es alcanzar la puntuación más alta que sea igual o menor a 21. Si en cualquier momento tu puntuación llega a ser mayor a 21, pierdes esa ronda.
+
+      Cada carta numérica tiene el mismo valor que su numero, los Ases valen 1 o 11 puntos, y las figuras (Valet, Dame y Roi) valen 10 puntos.
+
+      Después de asentar tu puntuación, el crupier robará cartas hasta que su puntuación sea igual o mayor a 17 puntos. Después, tu puntuación es comparada con la del crupier, si una de las dos puntuaciones sobrepasa 21 puntos, esa persona pierde. De lo contrario, la puntuación mas alta gana.
+
+      Cada turno tendrás disponibles diferentes acciones según tu situación:
+      hit, stand, double, split y surrender.
+
+      Hit roba una carta.
+
+      Stand no roba ninguna carta, pero asienta tu puntuación y tu apuesta.
+
+      Double dobla tu apuesta, roba una carta y hace que hagas "stand" durante el resto de la partida.
+
+      Split solo puede ser usado si tus 2 primeras cartas tienen el mismo valor, y hace divide tu mano en dos distintas con esas cartas.
+
+      Surrender reduce en la mitad tu apuesta y hace que pierdas instantáneamente esa partida.
+      `
+    },
+    KICK: {
+      ALREADY_VOTED: {
+        english: (name) => `You already voted to kick ${name}.`,
+        spanish: (name) => `Ya has votado para echar a ${name}.`
+      },
+      FAIL: {
+        english: (votes, total, name) => `${votes} out of ${total} players want to kick ${name} from this round of Blackjack.`,
+        spanish: (votes, total, name) => `${votes} de ${total} jugadores quieren echar a ${name} de esta ronda de Blackjack.`
+      },
+      INVALID_MEMBER: {
+        english: "Invalid player.",
+        spanish: "Jugador inválido."
+      },
+      NO_MEMBER_SPECIFIED: {
+        english: "You need to specify a player to vote kick.",
+        spanish: "Necesitas especificar un jugador a quien echar por votos."
+      },
+      NOT_PLAYING: {
+        english: (name) => `${name} isn't playing Blackjack.`,
+        spanish: (name) => `${name} no esta jugando Blackjack.`
+      },
+      SUCCESS: {
+        english: (name) => `Kicked player ${name} from this round of Blackjack.`,
+        spanish: (name) => `Echado jugador ${name} de esta ronda de Blackjack.`
+      }
+    },
+    LOSE: {
+      english: (name) => `${name} loses.`,
+      spanish: (name) => `${name} pierde.`
+    },
+    NATURAL_BLACKJACK: {
+      english: (name) => `${name} gets a natural Blackjack!`,
+      spanish: (name) => `¡${name} consigue un Blackjack natural!`
+    },
+    REMOVED_PLAYER: {
+      english: "Removed you from a game of Blackjack.",
+      spanish: "Te he quitado de un juego de Blackjack."
+    },
+    TIE: {
+      english: (name) => `${name} ties with the dealer.`,
+      spanish: (name) => `${name} ha empatado con el crupier.`
+    },
+    WIN: {
+      english: (name) => `${name} wins!`,
+      spanish: (name) => `¡${name} gana!`
+    }
+  },
+
+  BLACKJACK_ADMIN: {
+    ENDED_GAME: {
+      english: (channel) => `Ended a game of Blackjack in ${channel}.`,
+      spanish: (channel) => `Una partida de Blackjack ha finalizado en ${channel}.`
+    },
+    KICKED_PLAYER: {
+      english: (player) => `Kicked player ${player} from a game of Blackjack.`,
+      spanish: (player) => `El jugador ${player} ha sido echado de una partida de Blackjack.`
+    },
+    NO_GAMES: {
+      english: "No games of Blackjack are being played in this server.",
+      spanish: "Ninguna partida de Blackjack esta siendo jugada en este servidor."
     }
   },
 
@@ -1311,11 +1437,11 @@ exports.responses = {
   BLACKLIST: {
     BLACKLISTED: {
       english: (name) => `Blacklisted user \`${name}\`.`,
-      spanish: (name) => `Puesto usuario \`${name}\` en la lista negra.`
+      spanish: (name) => `Añadido usuario \`${name}\` a la lista negra.`
     },
     CANT_BLACKLIST_SELF: {
       english: "You can't blacklist yourself!",
-      spanish: "¡No te puedes poner en la lista negra a ti mismo!"
+      spanish: "¡No te puedes añadir a la lista negra a ti mismo!"
     },
     WHITELISTED: {
       english: (name) => `Removed user \`${name}\` from the blacklist.`,
@@ -1336,7 +1462,7 @@ exports.responses = {
     },
     NOT_READY: {
       english: "Channel linking isn't ready yet in this server, please wait a few more seconds and try again.",
-      spanish: "El enlace de canales no está listo todavía en este servidor, por favor espera unos segundos más e inténtalo de nuevo."
+      spanish: "El enlace de canales no está listo todavía para este servidor, por favor espera unos segundos más e inténtalo de nuevo."
     },
     TRANSLATE: (name, translation) => `**${name}**: ${translation}`,
   },
@@ -1351,6 +1477,17 @@ exports.responses = {
   COLOR: {
     ADDED: {
       english: (hex) => `Added name color \`${hex}\`.`,
+<<<<<<< HEAD:libs/util/constants.js
+      spanish: (hex) => `Añadido color \`${hex}\` para tú nombre.`
+    },
+    EDITED: {
+      english: (hex) => `Changed your name color to \`${hex}\``,
+      spanish: (hex) => `El color de tu nombre ha sido cambiado a \`${hex}\``
+    },
+    INVALID: {
+      english: (color) => `Color \`${color}\` doesn't exist. Try a name in english or hex string (red, #FF0000).`,
+      spanish: (color) => `El color \`${color}\` no existe. Prueba a usar un nombre en inglés o hex (red, #FF0000).`
+=======
       spanish: (hex) => `Añadido color de nombre \`${hex}\`.`
     },
     EDITED: {
@@ -1363,7 +1500,7 @@ exports.responses = {
     },
     NO_COLOR_ROLE: {
       english: "You don't have a name color.",
-      spanish: "No tienes un color de nombre."
+      spanish: "No tienes un color en tú nombre."
     },
     NO_PERMISSION: {
       english: "I don't have permission to change your name color.",
@@ -1379,7 +1516,7 @@ exports.responses = {
     ARGUMENT: {
       INVALID_LABEL: {
         english: (label) => `You provided an invalid ${label}. Please try again.`,
-        spanish: (label) => `Has proporcionado un ${label} inválido. Por favor inténtalo de nuevo.`
+        spanish: (label) => `Has proporcionado un ${label} inválido. Por favor, inténtalo de nuevo.`
       },
       RESPOND_WITH_CANCEL: {
         english: "Respond with \`cancel\` to cancel the command.",
@@ -1387,7 +1524,7 @@ exports.responses = {
       },
       WAIT: {
         english: (time) => `The command will automatically be cancelled in ${time} seconds.`,
-        spanish: (time) => `El commando será automáticamente cancelado en ${time} segundos.`
+        spanish: (time) => `El commando será cancelado aútomaticamente en ${time} segundos.`
       }
     }
   },
@@ -1395,7 +1532,7 @@ exports.responses = {
   CUSTOM_COMMAND: {
     ALREADY_EXISTS: {
       english: (name) => `Custom command \`${name}\` already exists.`,
-      spanish: (name) => `Comando personalizado \`${name}\` ya existe.`
+      spanish: (name) => `El comando personalizado \`${name}\` ya existe.`
     },
     CANT_CONNECT: {
       english: "I can't connect to that voice channel.",
@@ -1407,7 +1544,7 @@ exports.responses = {
     },
     CURRENTLY_PLAYING: {
       english: "A song is currently playing, please wait until it finishes.",
-      spanish: "Una canción se esta reproduciendo actualmente, por favor espere a que termine."
+      spanish: "Una canción está siendo reproducida actualmente, por favor espere a que termine."
     },
     DISPATCHER_ERROR: {
       english: (name) => `Error playing ${name}.`,
@@ -1415,7 +1552,7 @@ exports.responses = {
     },
     DOESNT_EXIST: {
       english: (name) => `Custom command \`${name}\` doesn't exist.`,
-      spanish: (name) => `Comando personalizado \`${name}\` no existe.`
+      spanish: (name) => `El comando personalizado \`${name}\` no existe.`
     },
     NOT_IN_VOICE_CHANNEL: {
       english: (name) => `Member ${name} isn't currently in a voice channel.`,
@@ -1423,15 +1560,15 @@ exports.responses = {
     },
     NOT_READY: {
       english: "Custom commands aren't ready yet in this server, please wait a few more seconds and try again.",
-      spanish: "Los comandos personalizados no están listos todavía en este servidor, por favor espera unos segundos más e inténtalo de nuevo."
+      spanish: "Los comandos personalizados no están listos todavía para este servidor, por favor espera unos segundos más e inténtalo de nuevo."
     },
     REGISTERED: {
       english: (name) => oneLine`Added command ${name}, use \`${name}\` to use it.`,
-      spanish: (name) => oneLine`Añadido comando ${name}, usa \`${name}\` para usarlo.`
+      spanish: (name) => oneLine`Añadido el comando ${name}, utiliza \`${name}\` para usarlo.`
     },
     UNREGISTERED: {
       english: (name) => `Removed custom command \`${name}\`.`,
-      spanish: (name) => `Borrado comando personalizado \`${name}\`.`
+      spanish: (name) => `Borrado el comando personalizado \`${name}\`.`
     },
     YTDL_ERROR: {
       english: (name) => `Error downloading ${name}.`,
@@ -1461,7 +1598,7 @@ exports.responses = {
     },
     REMOVED: {
       english: "Removed server's info channel.",
-      spanish: "Quitado el canal de información del servidor."
+      spanish: "El canal de información del servidor ha sido borrado."
     },
     SET: {
       english: (channel) => `Set ${channel} as this server's info channel.`,
@@ -1472,33 +1609,34 @@ exports.responses = {
   LANGUAGE: {
     SET: {
       english: (language) => `Set your language to ${language}.`,
-      spanish: (language) => `Asignado tu lenguaje a ${language}.`
+      spanish: (language) => `Tu lenguage ha sido asignado como ${language}.`
     }
   },
 
   MAGIC8BALL: {
     english: ["It is certain.", "It is decidedly so.", "Without a doubt.", "Yes, definitely.", "You may rely on it.", "As I see it, yes.", "Most likely.", "Outlook good.", "Yes.", "Signs point to yes.", "Reply hazy try again.", "Ask again later.", "Better not tell you now.", "Cannot predict now.", "Concentrate and ask again.", "Don't count on it.", "My reply is no.", "My sources say no.", "Outlook not so good.", "Very doubtful."],
-    spanish: ["En mi opinión, sí.", "Es cierto.", "Es decididamente así.", "Probablemente.", "Buen pronóstico.", "Todo apunta a que sí.", "Sin duda.", "Sí.", "Sí - definitivamente.", "Debes confiar en ello.", "Respuesta vaga, vuelve a intentarlo.", "Pregunta en otro momento.", "Será mejor que no te lo diga ahora.", "No puedo predecirlo ahora.", "Concéntrate y vuelve a preguntar.", "No cuentes con ello.", "Mi respuesta es no.", "Mis fuentes me dicen que no.", "Las perspectivas no son buenas.", "Muy dudoso."]
+<<<<<<< HEAD:libs/util/constants.js
+    spanish: ["En mi opinión, sí.", "Es cierto.", "Definitivamente, es así.", "Probablemente.", "Buen pronóstico.", "Todo apunta a que sí.", "Sin duda.", "Sí.", "Sí - definitivamente.", "Debes confiar en ello.", "Respuesta vaga, vuelve a intentarlo.", "Pregunta en otro momento.", "Será mejor que no te lo diga ahora.", "No puedo predecirlo ahora.", "Concéntrate y vuelve a preguntar.", "No cuentes con ello.", "Mi respuesta es no.", "Mis fuentes me dicen que no.", "Las perspectivas no son buenas.", "Muy dudoso."]
   },
 
   NAME: {
     SET: {
       english: (name) => `Changed the bot's username to ${name}.`,
-      spanish: (name) => `Cambiado el nombre del bot a ${name}.`
+      spanish: (name) => `El nombre del bot ha sido cambiado a ${name}.`
     }
   },
 
   PLAYING: {
     SET: {
       english: (name) => `Changed the bot's game to ${name}.`,
-      spanish: (name) => `Cambiado el nombre del bot a ${name}.`
+      spanish: (name) => `Cambiado el juego del bot a ${name}.`
     }
   },
 
   QUOTE: {
     ADDED: {
       english: (number, command) => `Quote #${number} added, use \`${command} ${number}\` to see it.`,
-      spanish: (number, command) => `Quote #${number} añadido, usa \`${command} ${number}\` para verlo.`
+      spanish: (number, command) => `Quote #${number} añadido, utiliza \`${command} ${number}\` para verlo.`
     },
     EMPTY: {
       english: (command) => `There are no quotes, add some by using \`${command} <text>\`.`,
@@ -1506,7 +1644,7 @@ exports.responses = {
     },
     ERROR: {
       english: `Error occurred while managing quotes, please try again or contact the owner in ${exports.defaultoptions.invite}.`,
-      spanish: `Se produjo un error al gestionar los quotes, por favor inténtelo de nuevo o contacta con el dueño en ${exports.defaultoptions.invite}.`
+      spanish: `Se ha producido un error al gestionar los quotes, por favor inténtelo de nuevo o contacta con el dueño en ${exports.defaultoptions.invite}.`
     },
     GET: {
       english: (number, text) => `Quote #${number}: ${text}`,
@@ -1514,11 +1652,11 @@ exports.responses = {
     },
     MISSING: {
       english: (number) => `Quote #${number} doesn't exist.`,
-      spanish: (number) => `Quote #${number} no existe.`
+      spanish: (number) => `El quote #${number} no existe.`
     },
     NO_MODE: {
       english: (mode) => `Mode \`${mode}\` doesn't exist.`,
-      spanish: (mode) => `Modo \`${mode}\` no existe.`
+      spanish: (mode) => `El modo \`${mode}\` no existe.`
     },
     NO_PERMISSION: {
       english: (number) => `You don't have permission to remove quote #${number}.`,
@@ -1530,25 +1668,25 @@ exports.responses = {
     },
     NOT_READY: {
       english: "Quotes aren't ready yet in this server, please wait a few more seconds and try again.",
-      spanish: "Los quotes no están listos todavía en este servidor, por favor espera unos segundos más e inténtalo de nuevo"
+      spanish: "Los quotes no están listos todavía para este servidor, por favor espera unos segundos más e inténtalo de nuevo"
     },
     REMOVED: {
       english: (number) => `Removed quote #${number}.`,
-      spanish: (number) => `Quote #${number} eliminado.`
+      spanish: (number) => `El quote #${number} ha sido eliminado.`
     }
   },
 
   SERVER_LANGUAGE: {
     SET: {
       english: (language) => `Set the server language to ${language}.`,
-      spanish: (language) => `Asignado el lenguaje del servidor a ${language}.`
+      spanish: (language) => `El lenguaje del servidor ha sido asignado como ${language}.`
     }
   },
 
   SERVER_SETTINGS: {
     CLEAR: {
       english: "Cleared settings for this server.",
-      spanish: "Limpiadas las opciones de este servidor."
+      spanish: "Las opciones del servidor han sido limpiadas."
     },
     GET: {
       english: (key, value) => `Settings for \`${key}\`: \`${value}\`.`,
@@ -1579,7 +1717,7 @@ exports.responses = {
     },
     SET: {
       english: (channel) => `Set ${channel} as this server's song text channel.`,
-      spanish: (channel) => `Asignado ${channel} como el canal de texto de canciones de este servidor.`
+      spanish: (channel) => `El canal de texto de canciones de este servidor ha sido asignado como ${channel}`
     }
   },
 
@@ -1602,7 +1740,7 @@ exports.responses = {
     },
     SET: {
       english: (channel) => `Set ${channel} as this server's song voice channel.`,
-      spanish: (channel) => `Asignado ${channel} como el canal de voz de canciones de este servidor.`
+      spanish: (channel) => `El canal de voz de canciones de este servidor ha sido asignado como ${channel}`
     }
   },
 
@@ -1621,12 +1759,12 @@ exports.responses = {
     `,
     spanish: (user, member, joined, created) => stripIndents`
       Información sobre **${user.username}#${user.discriminator}** (ID: ${user.id})
-      **❯ Detalles de Miembro**
+      **❯ Detalles sobre el Miembro**
       ${member.nickname !== null ? ` • Apodo: ${member.nickname}` : " • Ningún Apodo"}
        • Roles: ${member.roles.map(roles => `\`${roles.name}\``).join(", ")}
        • Se unió en: ${joined}
 
-      **❯ Detalles de Usuario**
+      **❯ Detalles del Usuario**
        • Se creó en: ${created}${user.bot ? "\n • Es una cuenta bot" : ""}
        • Estado: ${user.presence.status}
        • Juego: ${user.presence.game ? user.presence.game.name : "Ninguno"}
@@ -1682,7 +1820,7 @@ exports.responses = {
     },
     NO_CURRENTLY_PLAYING: {
       english: "There is no currently playing song.",
-      spanish: "No hay ninguna canción puesta."
+      spanish: "No hay ninguna canción en reproducción."
     },
     NO_PAUSED: {
       english: "There is no currently paused song.",
@@ -1690,11 +1828,11 @@ exports.responses = {
     },
     NO_PLAYING: {
       english: "There is no currently playing or paused song.",
-      spanish: "No hay ninguna canción puesta o pausada actualmente."
+      spanish: "No hay ninguna canción reproduciendose o pausada actualmente."
     },
     NOT_IN_VOICE_CHANNEL: {
       english: "You aren't in a voice channel.",
-      spanish: "No estás en un canal de voz."
+      spanish: "No estás en ningún canal de voz."
     },
     NOT_SAME_VOICE_CHANNEL: {
       english: "You aren't in the same voice channel.",
@@ -1706,7 +1844,7 @@ exports.responses = {
     },
     PLAY: {
       english: (title) => `Added ${title} to the queue.`,
-      spanish: (title) => `Añadido ${title} a la cola.`
+      spanish: (title) => `${title} ha sido añadido a la cola.`
     },
     QUEUE: {
       english: (length) => `There are ${length} songs in the queue.`,
@@ -1714,7 +1852,7 @@ exports.responses = {
     },
     RESUME: {
       english: "Resumed the current video.",
-      spanish: "Vídeo reanudado."
+      spanish: "El vídeo ha sido reanudado."
     },
     SKIP: {
       ALREADY_VOTED: {
@@ -1736,7 +1874,7 @@ exports.responses = {
     },
     STOP: {
       english: "Stopped the current video.",
-      spanish: "Parado el vídeo actual."
+      spanish: "El vídeo actual ha sido parado."
     },
     STOP_ALL: {
       english: "Stopped and removed all videos from the queue.",
