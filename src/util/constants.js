@@ -1263,7 +1263,11 @@ exports.responses = {
     NO_GAMES: {
       english: "No games of Blackjack are being played in this server.",
       spanish: "Ninguna partida de Blackjack esta siendo jugada en este servidor."
-    }
+    },
+    NO_PLAYER: {
+      english: (name) => `${name} isn't playing Blackjack.`,
+      spanish: (name) => `${name} no está jugando Blackjack.`
+    },
   },
 
   BLACKLIST: {
