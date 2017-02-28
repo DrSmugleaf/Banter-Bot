@@ -99,7 +99,7 @@ module.exports = class BlackjackCommand extends commando.Command {
       .on("end", () => {
         game.removeAllListeners()
         delete this.games[msg.guild.id]
-        channel.delete()
+        if(game.guild.channels.has(channel.id)) channel.delete()
       })
       .on("endRound", (hand) => {
         channel.sendMessage(oneLine`${this.parseHand(hand.game, hand, null, { dealer: true })}`)
