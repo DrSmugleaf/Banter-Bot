@@ -32,7 +32,33 @@ module.exports = class BlackjackCommand extends commando.Command {
 
     this.client.on("message", (msg) => this.onMessage(msg))
 
+    this.client.on("channelDelete", (channel) => this.onChannelDelete(channel))
+
     this.games = new Object()
+  }
+
+  onChannelDelete(channel) {
+    const game = this.games[channel.guild.id]
+    if(!game._channel) {
+      game.removeAllListeners()
+      delete this.games[channel.guild.id]
+      return game.players.forEach((player) => {
+        game.guild.member(player.id).sendMessage(
+          responses.CHANNEL_REMOVED_GAME_ENDED[channel.guild.language](channel.name, channel.guild.name)
+        )
+      })
+    } else if(game.channel.id === channel.id) {
+      game.channel = game._channel
+      game._channel = null
+      var response = ""
+      game.players.forEach((player) => {
+        response = response.concat(`${game.guild.member(player.id)}, `)
+      })
+      response = response.concat(
+        responses.CHANNEL_REMOVED[channel.guild.language](channel.name, channel.guild.name)
+      )
+      return game.channel.sendMessage(response)
+    }
   }
 
   onMessage(msg) {
@@ -87,9 +113,12 @@ module.exports = class BlackjackCommand extends commando.Command {
   }
 
   async setupGame(msg) {
-    var channel
+    var channel, _channel
     if(msg.guild.member(msg.client.user).hasPermission("MANAGE_CHANNELS")) {
-      await msg.guild.createChannel("bb-blackjack", "text").then((ch) => channel = ch)
+      await msg.guild.createChannel("bb-blackjack", "text").then((ch) => {
+        channel = ch
+        _channel = msg.channel
+      })
     } else {
       channel = msg.channel
     }
@@ -102,42 +131,43 @@ module.exports = class BlackjackCommand extends commando.Command {
         if(game.guild.channels.has(channel.id)) channel.delete()
       })
       .on("endRound", (hand) => {
-        channel.sendMessage(oneLine`${this.parseHand(hand.game, hand, null, { dealer: true })}`)
+        game.channel.sendMessage(oneLine`${this.parseHand(hand.game, hand, null, { dealer: true })}`)
       })
       .on("lose", (hand) => {
         const member = msg.guild.member(hand.player.id)
         var lose = responses.LOSE[language](member)
         var cards = this.parseHand(hand.game, hand, member)
-        channel.sendMessage(oneLine`${lose} ${cards}`)
+        game.channel.sendMessage(oneLine`${lose} ${cards}`)
       })
       .on("nextTurn", () => {
         const response = this.parseHands(this.games[msg.guild.id])
-        channel.sendMessage(response)
+        game.channel.sendMessage(response)
       })
       .on("start", (game) => {
         const response = this.parseHands(this.games[msg.guild.id])
         if(game.players.every((player) => player.hands[0].status === "blackjack")) return
-        channel.sendMessage(response)
+        game.channel.sendMessage(response)
       })
       .on("surrender", (hand) => {
         const member = msg.guild.member(hand.player.id)
         var surrender = responses.SURRENDER[language](member)
         var cards = this.parseHand(hand.game, hand, member)
-        channel.sendMessage(oneLine`${surrender} ${cards}`)
+        game.channel.sendMessage(oneLine`${surrender} ${cards}`)
       })
       .on("tie", (hand) => {
         const member = msg.guild.member(hand.player.id)
         var tie = responses.TIE[language](member)
         var cards = this.parseHand(hand.game, hand, member)
-        channel.sendMessage(oneLine`${tie} ${cards}`)
+        game.channel.sendMessage(oneLine`${tie} ${cards}`)
       })
       .on("win", (hand) => {
         const member = msg.guild.member(hand.player.id)
         var win = responses.WIN[language](member)
         var cards = this.parseHand(hand.game, hand, member)
-        channel.sendMessage(oneLine`${win} ${cards}`)
+        game.channel.sendMessage(oneLine`${win} ${cards}`)
       })
 
+    game._channel = _channel
     game.channel = channel
     game.guild = msg.guild
     game.kickVotes = {}
@@ -179,10 +209,10 @@ module.exports = class BlackjackCommand extends commando.Command {
 
     if(!game.hasPlayer(msg.member.id)) {
       game.addPlayer(msg.member.id)
-      msg.reply(responses.ADDED_PLAYER[msg.language](game.channel.id))
+      return msg.reply(responses.ADDED_PLAYER[msg.language](game.channel.id))
     } else {
       game.removePlayer(msg.member.id)
-      msg.reply(responses.REMOVED_PLAYER[msg.language])
+      return msg.reply(responses.REMOVED_PLAYER[msg.language])
     }
   }
 }

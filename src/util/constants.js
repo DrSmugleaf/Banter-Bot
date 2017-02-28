@@ -1113,7 +1113,7 @@ exports.responses = {
     ALIASES: {
       ACTION: {
         english: ["action", "actions"],
-        spanish: ["accion", "acciones"]
+        spanish: ["accion", "acción", "acciones"]
       },
       HELP: {
         english: ["help", "rules", "rule"],
@@ -1131,6 +1131,26 @@ exports.responses = {
     CARD: {
       english: (symbol, name) => `${symbol}${name}`,
       spanish: (symbol, name) => `${symbol}${name}`
+    },
+    CHANNEL_REMOVED: {
+      english: (name) => oneLine`
+        Channel ${name} was deleted by someone or something.
+        You can continue playing in this channel.
+        `,
+      spanish: (name) => oneLine`
+        Canal ${name} ha sido eliminado por alguien o algo.
+        Podéis seguir jugando en este canal.
+      `
+    },
+    CHANNEL_REMOVED_GAME_ENDED: {
+      english: (channel, guild) => oneLine`
+        Channel ${channel} in ${guild} was deleted by someone or something.
+        You can start a new game to keep playing Blackjack.
+      `,
+      spanish: (channel, guild) => oneLine`
+        El Canal ${channel} en el servidor ${guild} ha sido eliminado por alguien o algo.
+        Puedes empezar una nueva partida para seguir jugando Blackjack.
+      `
     },
     DEAL: {
       english: (name, symbol, card, total, actions) => stripIndents`
