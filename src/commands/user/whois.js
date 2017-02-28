@@ -11,11 +11,11 @@ module.exports = class WhoIsCommand extends commando.Command {
   constructor(client) {
     super(client, {
       name: "whois",
-      aliases: ["nsa", "user", "user-info", "userinfo", "whois"],
+      aliases: ["nsa", "user", "user-info", "userinfo", "who", "whois"],
       group: "util",
       memberName: "whois",
       description: "Get information about a user.",
-      examples: ["whois DrSmugleaf", "whois @DrSmugleaf#9458", "whois 109067752286715904"],
+      examples: ["who DrSmugleaf", "whois @DrSmugleaf#9458", "whois 109067752286715904"],
       guildOnly: true,
       throttling: {
         usages: 2,
