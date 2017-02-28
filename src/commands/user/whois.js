@@ -23,9 +23,9 @@ module.exports = class WhoIsCommand extends commando.Command {
       },
       args: [
         {
-          key: "user",
+          key: "member",
           label: "user",
-          prompt: "What user would you like the information of?",
+          prompt: "What member would you like the information of?",
           type: "member"
         }
       ]
@@ -34,9 +34,6 @@ module.exports = class WhoIsCommand extends commando.Command {
 
   async run(msg, args) {
     const member = args.member
-
-    if(!member) return msg.reply(`User \`${args.user}\` couldn't be found`)
-
     const user = member.user
     const joined = moment.tz(member.joinedAt, process.env.TZ).format(
       "MMMM Do YYYY, HH:MM:SS zZ"
