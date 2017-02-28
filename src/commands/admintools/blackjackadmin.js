@@ -55,12 +55,12 @@ module.exports = class BlackjackCommand extends commando.Command {
 
     switch (mode) {
     case "end":
-      blackjack.game.end()
+      blackjack.end()
       return msg.reply(responses.ENDED_GAME[msg.language](blackjack.channel.name))
     case "kick":
       if(!member) member = await this.args[1].obtainSimple(msg)
       if(!member) return
-      blackjack.game.removePlayer(member.id)
+      blackjack.removePlayer(member.id)
       return msg.reply(responses.KICKED_PLAYER[msg.language](member.displayName))
     }
   }
