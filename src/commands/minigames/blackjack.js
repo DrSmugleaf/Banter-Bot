@@ -40,15 +40,8 @@ module.exports = class BlackjackCommand extends commando.Command {
   onChannelDelete(channel) {
     const game = this.games[channel.guild.id]
     if(!game) return
-    if(!game._channel) {
-      game.removeAllListeners()
-      delete this.games[channel.guild.id]
-      return game.players.forEach((player) => {
-        game.guild.member(player.id).sendMessage(
-          responses.CHANNEL_REMOVED_GAME_ENDED[channel.guild.language](channel.name, channel.guild.name)
-        )
-      })
-    } else if(game.channel.id === channel.id) {
+    if(game._channel && channel.id === game._channel.id) game._channel = null
+    if(game.channel.id === channel.id && game._channel && game._channel.id !== game.channel.id) {
       game.channel = game._channel
       game._channel = null
       var response = ""
@@ -59,6 +52,14 @@ module.exports = class BlackjackCommand extends commando.Command {
         responses.CHANNEL_REMOVED[channel.guild.language](channel.name, channel.guild.name)
       )
       return game.channel.sendMessage(response)
+    } else if(game.channel.id === channel.id && !game._channel) {
+      game.removeAllListeners()
+      delete this.games[channel.guild.id]
+      return game.players.forEach((player) => {
+        game.guild.member(player.id).sendMessage(
+          responses.CHANNEL_REMOVED_GAME_ENDED[channel.guild.language](channel.name, channel.guild.name)
+        )
+      })
     }
   }
 
