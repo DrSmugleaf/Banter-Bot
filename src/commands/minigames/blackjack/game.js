@@ -52,6 +52,7 @@ module.exports = class BlackjackGame extends EventEmitter {
   }
 
   removePlayer(id) {
+    if(!this.hasPlayer(id)) return false
     this.playerCount--
     if(this.playerCount < 1) this.end()
     return this.players.delete(id) || this._players.delete(id)
