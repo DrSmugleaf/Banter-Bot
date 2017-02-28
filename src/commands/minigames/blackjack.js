@@ -52,9 +52,7 @@ module.exports = class BlackjackCommand extends commando.Command {
     } else if(responses.ALIASES.KICK[msg.language].includes(pseudoCommand)) {
       return this.voteKick(msg)
     } else {
-      game.getPlayer(msg.member.id).hands.find((hand) => {
-        return !hand.action
-      }).action = msg.content
+      game.getPlayer(msg.member.id).hands.find((hand) => !hand.action).action = msg.content
     }
   }
 
