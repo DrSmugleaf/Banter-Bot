@@ -5,9 +5,9 @@
   "engines": {
     "node": "7.5.0"
   },
-  "main": "banterbot.js",
+  "main": "src/banterbot.js",
   "scripts": {
-    "start": "node --harmony --trace-warnings banterbot.js",
+    "start": "node --harmony --trace-warnings src/banterbot.js",
     "start:dev": "nf start --procfile Procfile_dev",
     "lint": "eslint src",
     "pretest": "npm run lint",

@@ -3,7 +3,7 @@
 //
 
 "use strict"
-const client = require("../banterbot").client
+const client = require("../src/banterbot").client
 const constants = require("../src/util/constants")
 
 before(function(done) {
