@@ -24,7 +24,7 @@ module.exports = class Version {
         const infoChannel = guild.channels.get(guild.settings.get("info-channel", guild.defaultChannel.id))
         infoChannel.sendMessage(stripIndents`@everyone
           ${constants.versions[version + 1][guild.language]}
-        `)
+        `, { split: true })
       })
       this.client.settings.set("version", version + 1)
     }
