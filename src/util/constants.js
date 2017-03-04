@@ -1261,6 +1261,10 @@ exports.responses = {
       english: "Removed you from a game of Blackjack.",
       spanish: "Te he quitado de un juego de Blackjack."
     },
+    SURRENDER: {
+      english: (name) => `${name} surrenders.`,
+      spanish: (name) => `${name} se rinde.`
+    },
     TIE: {
       english: (name) => `${name} ties with the dealer.`,
       spanish: (name) => `${name} empata con el crupier.`
