@@ -90,11 +90,9 @@ module.exports = class BlackjackGame extends EventEmitter {
       })
     })
 
-    if(this.players.every((player) => {
-      return player.hands.every((hand) => {
-        return hand.status !== "playing"
-      })
-    })) return this.start()
+    if(this.players.every((player) => player.hands.every((hand) => hand.status !== "playing"))) {
+      return this.start()
+    }
 
     if(this.players.every((player) => {
       return player.hands.every((hand) => {
