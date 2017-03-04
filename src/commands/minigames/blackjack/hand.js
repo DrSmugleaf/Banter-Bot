@@ -72,7 +72,7 @@ module.exports = class BlackjackHand {
   }
 
   get score() {
-    var tempScore = this._score
+    var tempScore = this.cards.reduce((sum, card) => sum + card.value, 0)
     var tempAces = this.aces
 
     while(tempScore > 21 && tempAces > 0) {
@@ -83,13 +83,8 @@ module.exports = class BlackjackHand {
     return tempScore
   }
 
-  set score(value) {
-    this._score = value
-  }
-
   add(card) {
     this.cards.push(card)
-    this.score = this._score + card.value
     if(card.name === "Ace") this.aces++
     return this.score
   }
