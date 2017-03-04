@@ -186,7 +186,7 @@ exports.versions = {
       Automatic channels. :clap:
       !auto-channel: Used with parameters disable, enable, update or threshold, only usable by members with permission to manage channels.
       Blackjack.
-      !blackjack: Used alone to enter or exit a game of Blackjack.
+      !blackjack: Used by itself to enter or exit a game of Blackjack.
       !blackjack-admin: Used with parameters channel, end or kick, admin only.
 
       **CHANGED**
@@ -216,6 +216,7 @@ exports.versions = {
       Fixed !bridge only responding in english and fixed that the response was terrible.
       Fixed bridge message sending not working when using long language names in the command (english instead of en).
       Fixed !whois never working.
+      Fixed that administrators could !blacklist someone with an equal or higher rank than them. The server owner can still blacklist anyone other than himself.
     `,
     spanish: stripIndents`
       **AÑADIDO**
@@ -224,7 +225,7 @@ exports.versions = {
       Canales automáticos. :clap:
       !auto-channel: Se usa con los parámetros disable, enable, update o threshold, solo para miembros con permiso para administrar canales.
       Blackjack.
-      !blackjack: Usado solo para entrar o salir de una partida de Blackjack.
+      !blackjack: Usado sólo para entrar o salir de una partida de Blackjack.
       !blackjack-admin: Se usa con los parámetros channel, end o kick, solo admins.
 
       **CAMBIADO**
@@ -254,6 +255,7 @@ exports.versions = {
       Arreglado que !bridge solo respondiera en inglés y que la respuesta fuera terrible.
       Arreglado que el envío de mensajes de bridge no funcionara al usar nombres de idioma largos (english en vez de en).
       Arreglado que !whois nunca funcionara.
+      Arreglado que los administradores pudieran usar !blacklist con alguien que tuviera un rango igual o mayor. El dueño del servidor sigue pudiendo hacer !blacklist hacia cualquiera excepto hacia sí mismo.
     `
   }
 }
