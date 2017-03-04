@@ -113,7 +113,7 @@ class PostgreSQLProvider extends SettingProvider {
   }
 
   async set(unit, key, val) {
-    if(unit instanceof Discord.Guild) {
+    if(unit instanceof Discord.Guild || unit === null) {
       const guild = this.constructor.getGuildID(unit)
       let settings = this.guildSettings.get(guild)
       if(!settings) {
@@ -149,7 +149,7 @@ class PostgreSQLProvider extends SettingProvider {
   }
 
   async remove(unit, key) {
-    if(unit instanceof Discord.Guild) {
+    if(unit instanceof Discord.Guild || unit === null) {
       const guild = this.constructor.getGuildID(unit)
       const settings = this.guildSettings.get(guild)
       if(!settings || typeof settings[key] === "undefined") return undefined
@@ -179,7 +179,7 @@ class PostgreSQLProvider extends SettingProvider {
   }
 
   async clear(unit) {
-    if(unit instanceof Discord.Guild) {
+    if(unit instanceof Discord.Guild || unit === null) {
       const guild = this.constructor.getGuildID(unit)
       if(!this.guildSettings.has(guild)) return
       this.guildSettings.delete(guild)
