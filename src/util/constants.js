@@ -1106,9 +1106,13 @@ exports.responses = {
   BLACKJACK: {
     ADDED_PLAYER: {
       english: (channel) => stripIndents`Added you to a game of Blackjack.
+      If you don't know how to play Blackjack, type \`help\` in <#${channel}>.
+      You can also type \`actions\` to see your available actions and \`kick\` to kick someone.
       You can play in <#${channel}>.
       You can remove yourself from the game at any time by using this command again.`,
       spanish: (channel) => stripIndents`Te he añadido a una partida de Blackjack.
+      Si no sabes jugar, escribe \`ayuda\` en <#${channel}>.
+      También puedes escribir \`acciones\` para ver tus acciones disponibles o \`echar\` para echar a alguien.
       Puedes jugar en <#${channel}>.
       Te puedes quitar de la partida en cualquier momento usando este comando de nuevo.`,
     },
