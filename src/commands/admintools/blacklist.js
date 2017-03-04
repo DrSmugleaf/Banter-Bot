@@ -28,7 +28,7 @@ module.exports = class BlacklistCommand extends commando.Command {
       args: [
         {
           key: "member",
-          prompt: "Which member do you want to blacklist?",
+          prompt: "Which member do you want to add to or remove from the blacklist?",
           type: "member"
         }
       ]
@@ -48,11 +48,15 @@ module.exports = class BlacklistCommand extends commando.Command {
     var blacklist = msg.guild.settings.get("blacklist", [])
 
     if(msg.member.id === member.id) return msg.reply(responses.CANT_BLACKLIST_SELF[msg.language])
+    if(
+      msg.member.id !== msg.guild.ownerID && 
+      msg.member.highestRole.comparePositionTo(member.highestRole) <= 0
+    ) return msg.reply(responses.LOWER_RANK_POSITION[msg.language])
 
     if(blacklist.includes(member.id)) {
       blacklist = _.without(blacklist, member.id)
       msg.guild.settings.set("blacklist", blacklist)
-      return msg.reply(responses.WHITELISTED[msg.language](member.displayName))
+      return msg.reply(responses.UNBLACKLISTED[msg.language](member.displayName))
     } else {
       blacklist.push(member.id)
       msg.guild.settings.set("blacklist", blacklist)

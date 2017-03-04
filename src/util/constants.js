@@ -1316,14 +1316,18 @@ exports.responses = {
 
   BLACKLIST: {
     BLACKLISTED: {
-      english: (name) => `Blacklisted user \`${name}\`.`,
-      spanish: (name) => `Puesto usuario \`${name}\` en la lista negra.`
+      english: (name) => `Added user \`${name}\` to the blacklist.`,
+      spanish: (name) => `Añadido usuario \`${name}\` en la lista negra.`
     },
     CANT_BLACKLIST_SELF: {
       english: "You can't blacklist yourself!",
       spanish: "¡No te puedes poner en la lista negra a ti mismo!"
     },
-    WHITELISTED: {
+    LOWER_RANK_POSITION: {
+      english: "You can't blacklist someone with an equal or higher rank than you.",
+      spanish: "No puedes poner en la lista negra a alguien con el mismo o más rango que tú."
+    },
+    UNBLACKLISTED: {
       english: (name) => `Removed user \`${name}\` from the blacklist.`,
       spanish: (name) => `Quitado usuario \`${name}\` de la lista negra.`
     }
