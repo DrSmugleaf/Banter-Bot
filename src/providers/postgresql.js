@@ -101,7 +101,7 @@ class PostgreSQLProvider extends SettingProvider {
 
   get(unit, key, defVal) {
     var settings
-    if(unit instanceof Discord.Guild) {
+    if(unit instanceof Discord.Guild || unit === null) {
       settings = this.guildSettings.get(this.constructor.getGuildID(unit))
     } else if(unit instanceof Discord.GuildMember || unit instanceof Discord.User) {
       settings = this.userSettings.get(this.getUserID(unit))
