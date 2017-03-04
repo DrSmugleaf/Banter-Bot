@@ -1,2 +1,2 @@
-web: node --trace-warnings web.js
-worker: node --harmony --trace-warnings banterbot.js
+web: node --harmony --trace-warnings web.js
+worker: node --harmony --trace-warnings src/banterbot.js
