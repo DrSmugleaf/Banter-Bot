@@ -7,12 +7,11 @@
   },
   "main": "src/banterbot.js",
   "scripts": {
-    "start": "node --harmony --trace-warnings src/banterbot.js",
+    "start": "nf start --procfile Procfile",
     "start:dev": "nf start --procfile Procfile_dev",
     "lint": "eslint src",
     "pretest": "npm run lint",
-    "test": "nf run npm run test:dev",
-    "test:dev": "npm run mocha",
+    "test": "nf run npm run mocha",
     "mocha": "mocha --harmony --trace-warnings --recursive --timeout 10000 --bail"
   },
   "repository": {
