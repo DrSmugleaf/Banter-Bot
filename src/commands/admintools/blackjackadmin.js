@@ -23,7 +23,7 @@ module.exports = class BlackjackCommand extends commando.Command {
       args: [
         {
           key: "mode",
-          prompt: "What do you want to do? (end, kick)",
+          prompt: "What do you want to do? (channel, end, kick)",
           type: "string",
           validate: (value) => {
             return ["channel", "end", "kick"].includes(value.toLowerCase())
