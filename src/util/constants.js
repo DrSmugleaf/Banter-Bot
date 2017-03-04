@@ -184,10 +184,10 @@ exports.versions = {
       The bot now removes unused color roles it created.
       !language can now be used outside of servers, and will set your user language.
       Automatic channels. :clap:
-      !auto-channel: Used with parameters disable, enable, update or threshold.
+      !auto-channel: Used with parameters disable, enable, update or threshold, only usable by members with permission to manage channels.
       Blackjack.
-      !blackjack:
-      !blackjack-admin:
+      !blackjack: Used alone to enter or exit a game of Blackjack.
+      !blackjack-admin: Used with parameters channel, end or kick, admin only.
 
       **CHANGED**
       Changed how quotes are organized. They are now separated by server.
@@ -215,16 +215,17 @@ exports.versions = {
       Fixed bridge translations displaying the member's username instead of the member's nickname.
       Fixed !bridge only responding in english and fixed that the response was terrible.
       Fixed bridge message sending not working when using long language names in the command (english instead of en).
+      Fixed !whois never working.
     `,
     spanish: stripIndents`
       **AÑADIDO**
       El bot ahora elimina roles de color no usados que él mismo ha creado.
       !language ahora puede ser usado fuera de servidores, y establecerá tu idioma de usuario.
       Canales automáticos. :clap:
-      !auto-channel: Se usa con los paramétros disable, enable, update o threshold.
+      !auto-channel: Se usa con los parámetros disable, enable, update o threshold, solo para miembros con permiso para administrar canales.
       Blackjack.
-      !blackjack:
-      !blackjack-admin:
+      !blackjack: Usado solo para entrar o salir de una partida de Blackjack.
+      !blackjack-admin: Se usa con los parámetros channel, end o kick, solo admins.
 
       **CAMBIADO**
       Cambiado como los quotes están organizados. Ahora están separados por servidor.
@@ -252,6 +253,7 @@ exports.versions = {
       Arreglado que las traducciones de bridge mostraran el nombre de usuario del miembro en vez de el mote.
       Arreglado que !bridge solo respondiera en inglés y que la respuesta fuera terrible.
       Arreglado que el envío de mensajes de bridge no funcionara al usar nombres de idioma largos (english en vez de en).
+      Arreglado que !whois nunca funcionara.
     `
   }
 }
