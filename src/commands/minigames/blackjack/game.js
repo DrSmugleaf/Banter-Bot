@@ -74,7 +74,7 @@ module.exports = class BlackjackGame extends EventEmitter {
           hand._action = "stand"
           break
         case "split": {
-          const splitHand = new BlackjackHand({ player: this })
+          const splitHand = new BlackjackHand({ player: player })
           splitHand.cards.push(hand.cards[0])
           hand.cards.shift()
           player.hands.push(splitHand)
