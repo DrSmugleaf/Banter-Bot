@@ -5,7 +5,7 @@
 "use strict"
 const constants = require("../../../util/constants")
 const Discord = require("discord.js")
-const responses = constants.responses
+const responses = constants.responses.YOUTUBE
 const winston = require("winston")
 const ytdl = require("ytdl-core")
 

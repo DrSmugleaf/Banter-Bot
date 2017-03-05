@@ -5,7 +5,7 @@
 "use strict"
 const commando = require("discord.js-commando")
 const main = require("./base/main")
-const responses = require("../../util/constants").responses
+const responses = require("../../util/constants").responses.YOUTUBE
 const Song = require("./base/song")
 const winston = require("winston")
 const Youtube = require("simple-youtube-api")

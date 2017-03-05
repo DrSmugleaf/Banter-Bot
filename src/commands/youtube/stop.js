@@ -5,7 +5,7 @@
 "use strict"
 const commando = require("discord.js-commando")
 const main = require("./base/main")
-const responses = require("../../util/constants").responses
+const responses = require("../../util/constants").responses.YOUTUBE
 
 module.exports = class StopCommand extends commando.Command {
   constructor(client) {
