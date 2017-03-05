@@ -5,7 +5,7 @@
 "use strict"
 const commando = require("discord.js-commando")
 const main = require("./base/main")
-const responses = require("../../util/constants").responses
+const responses = require("../../util/constants").responses.YOUTUBE
 
 module.exports = class StopCommand extends commando.Command {
   constructor(client) {
@@ -28,7 +28,8 @@ module.exports = class StopCommand extends commando.Command {
     if(!msg.member) return
     var song = main.queue.get(msg.guild.id)
     if(song) song = song[0]
-    return msg.member.hasPermission("MUTE_MEMBERS") || msg.member.id === song.member.id
+    return msg.member.hasPermission("MUTE_MEMBERS") ||
+      (song && song.msg.member.id && msg.member.id === song.msg.member.id)
   }
 
   async run(msg) {

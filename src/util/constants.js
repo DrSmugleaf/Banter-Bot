@@ -257,6 +257,28 @@ exports.versions = {
       Arreglado que !whois nunca funcionara.
       Arreglado que los administradores pudieran usar !blacklist con alguien que tuviera un rango igual o mayor. El dueño del servidor sigue pudiendo hacer !blacklist hacia cualquiera excepto hacia sí mismo.
     `
+  },
+  "8": {
+    english: stripIndents`
+      **CHANGES**
+      Changed Blackjack help response to include spanish action names and a clearer split explanation.
+
+      **FIXED**
+      Fixed youtube commands responses.
+      Fixed Blackjack vote kick.
+      Fixed a Blackjack crash when someone tried to take an action after joining before a round passed.
+      Fixed !help never working.
+    `,
+    spanish: stripIndents`
+      **CAMBIOS**
+      Cambiada la respuesta de ayuda de Blackjack para que incluya los nombres de las acciones en español y una explicación de dividir más clara.
+
+      **FIXED**
+      Arregladas las respuestas de los comandos de youtube.
+      Arreglado echar por votos en Blackjack.
+      Arreglado un crash en Blackjack cuando alguien intentaba tomar una acción después de unirse antes de dejar pasar una ronda.
+      Arreglado que !help nunca funcionara.
+    `
   }
 }
 
@@ -1136,6 +1158,10 @@ exports.responses = {
       english: (actions) => `Your available actions are \`${actions}\`.`,
       spanish: (actions) => `Tus acciones disponibles son \`${actions}\`.`
     },
+    CANT_KICK_DEALER: {
+      english: "Nice try.",
+      spanish: "Buen intento."
+    },
     CARD: {
       english: (symbol, name) => `${symbol}${name}`,
       spanish: (symbol, name) => `${symbol}${name}`
@@ -1199,18 +1225,18 @@ exports.responses = {
 
       Double doubles your bet, deals you a card and sets you to 'stand' for the rest of that game.
 
-      Split can only be used if your first 2 cards have the same value, and it splits your hand into two with those cards.
+      Split can only be used if your first 2 cards have the same value, and it splits your hand into two separate hands each with one of those cards.
 
       Surrender halves your bet and makes you instantly lose that game.
       `,
       spanish: stripIndents`En una partida de Blackjack, el objetivo es alcanzar la puntuación más alta que sea igual o menor a 21. Si en cualquier momento tu puntuación llega a ser más de 21, pierdes esa ronda.
 
-      Cada carta numérica tiene el mismo valor que su numero, los Ases valen 1 o 11 puntos, y las figuras (Valet, Dame y Roi) valen 10 puntos.
+      Cada carta numérica tiene el mismo valor que su número, los Ases valen 1 o 11 puntos, y las figuras (Valet, Dame y Roi) valen 10 puntos.
 
       Después de asentar tu puntuación, el crupier robará cartas hasta que su puntuación sea igual o mayor a 17 puntos. Después, tu puntuación es comparada con la del crupier, si una de las dos puntuaciones sobrepasa 21 puntos, esa persona pierde. De lo contrario, la puntuación mas alta gana.
 
       Cada turno tendrás disponibles diferentes acciones según tu situación:
-      hit, stand, double, split y surrender.
+      hit(pedir), stand(plantarse), double(doblar), split(dividir) y surrender(rendirse).
 
       Hit roba una carta.
 
@@ -1218,7 +1244,7 @@ exports.responses = {
 
       Double dobla tu apuesta, roba una carta y establece tu acción como 'stand' para el resto de esa partida.
 
-      Split solo puede ser usado si tus 2 primeras cartas tienen el mismo valor, y divide tu mano en 2 con esas cartas.
+      Split solo puede ser usado si tus 2 primeras cartas tienen el mismo valor, y divide tu mano en 2 manos separadas cada una con una de esas cartas.
 
       Surrender reduce en la mitad tu apuesta y hace que pierdas instantáneamente esa partida.
       `
@@ -1256,6 +1282,10 @@ exports.responses = {
     NATURAL_BLACKJACK: {
       english: (name) => `${name} gets a natural Blackjack!`,
       spanish: (name) => `¡${name} consigue un Blackjack natural!`
+    },
+    NOT_PLAYING_YET: {
+      english: "You aren't playing yet, wait until this round finishes or vote kick inactive players.",
+      spanish: "Aún no estás jugando, espera a que esta ronda termine o vota para echar a los jugadores inactivos."
     },
     PLAYER_HAND: {
       english: (name) => `${name}'s hand:\n`,

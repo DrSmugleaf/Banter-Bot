@@ -72,6 +72,7 @@ module.exports = class BlackjackCommand extends commando.Command {
 
     const pseudoCommand = msg.content.split(" ")[0]
     if(responses.ALIASES.ACTION[msg.language].includes(pseudoCommand)) {
+      if(!game.isPlayerPlaying(msg.member.id)) return msg.reply(responses.NOT_PLAYING_YET[msg.language])
       return msg.reply(responses.AVAILABLE_ACTIONS[msg.language](
         game.getPlayer(msg.member.id).availableActions.join(", ")
       ))
@@ -80,6 +81,7 @@ module.exports = class BlackjackCommand extends commando.Command {
     } else if(responses.ALIASES.KICK[msg.language].includes(pseudoCommand)) {
       return this.voteKick(msg)
     } else {
+      if(!game.isPlayerPlaying(msg.member.id)) return msg.reply(responses.NOT_PLAYING_YET[msg.language])
       game.getPlayer(msg.member.id).hands.find((hand) => !hand.action).action = msg.content
     }
   }
@@ -180,28 +182,29 @@ module.exports = class BlackjackCommand extends commando.Command {
   }
 
   voteKick(msg) {
-    const blackjack = this.games[msg.guild.id]
+    const game = this.games[msg.guild.id]
     const member = msg.content.split(" ")[1]
     if(!member) return msg.reply(responses.KICK.NO_MEMBER_SPECIFIED[msg.language])
 
     const parsedMember = this.client.registry.types.get("member").parse(member, msg)
     if(!parsedMember) return msg.reply(responses.KICK.INVALID_MEMBER[msg.language])
-    if(!blackjack.game.hasPlayer(parsedMember.id)) return msg.reply(responses.KICK.NOT_PLAYING[msg.language](parsedMember.displayName))
+    if(this.client.user.id === parsedMember.id) return msg.reply(responses.CANT_KICK_DEALER[msg.language])
+    if(!game.hasPlayer(parsedMember.id)) return msg.reply(responses.KICK.NOT_PLAYING[msg.language](parsedMember.displayName))
 
-    if(!blackjack.kickVotes[parsedMember]) blackjack.kickVotes[parsedMember] = new Array()
+    if(!game.kickVotes[parsedMember]) game.kickVotes[parsedMember] = new Array()
 
-    const kickVotes = blackjack.kickVotes[parsedMember]
+    const kickVotes = game.kickVotes[parsedMember]
     if(kickVotes.includes(msg.member.id)) {
       return msg.reply(responses.KICK.ALREADY_VOTED[msg.language](parsedMember.displayName))
     }
     kickVotes.push(msg.member.id)
 
-    if(kickVotes.length > blackjack.game.playerCount / 2) {
-      blackjack.kickVotes[parsedMember] = new Array()
-      blackjack.game.removePlayer(parsedMember.id)
-      return msg.reply(responses.KICK.SUCCESS[msg.language](parsedMember.displayName, blackjack.game.playerCount))
+    if(kickVotes.length > game.playerCount / 2) {
+      kickVotes[parsedMember] = new Array()
+      game.removePlayer(parsedMember.id)
+      return msg.reply(responses.KICK.SUCCESS[msg.language](parsedMember.displayName, game.playerCount))
     } else {
-      return msg.reply(responses.KICK.FAIL[msg.language](parsedMember.displayName, blackjack.game.playerCount))
+      return msg.reply(responses.KICK.FAIL[msg.language](parsedMember.displayName, game.playerCount))
     }
   }
 
