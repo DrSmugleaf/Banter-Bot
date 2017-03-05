@@ -257,6 +257,28 @@ exports.versions = {
       Arreglado que !whois nunca funcionara.
       Arreglado que los administradores pudieran usar !blacklist con alguien que tuviera un rango igual o mayor. El dueño del servidor sigue pudiendo hacer !blacklist hacia cualquiera excepto hacia sí mismo.
     `
+  },
+  "8": {
+    english: stripIndents`
+      **CHANGES**
+      Changed Blackjack help response to include spanish action names and a clearer split explanation.
+
+      **FIXED**
+      Fixed youtube commands responses.
+      Fixed Blackjack vote kick.
+      Fixed a Blackjack crash when someone tried to take an action after joining before a round passed.
+      Fixed !help never working.
+    `,
+    spanish: stripIndents`
+      **CAMBIOS**
+      Cambiada la respuesta de ayuda de Blackjack para que incluya los nombres de las acciones en español y una explicación de dividir más clara.
+
+      **FIXED**
+      Arregladas las respuestas de los comandos de youtube.
+      Arreglado echar por votos en Blackjack.
+      Arreglado un crash en Blackjack cuando alguien intentaba tomar una acción después de unirse antes de dejar pasar una ronda.
+      Arreglado que !help nunca funcionara.
+    `
   }
 }
 
