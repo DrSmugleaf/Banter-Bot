@@ -1199,18 +1199,18 @@ exports.responses = {
 
       Double doubles your bet, deals you a card and sets you to 'stand' for the rest of that game.
 
-      Split can only be used if your first 2 cards have the same value, and it splits your hand into two with those cards.
+      Split can only be used if your first 2 cards have the same value, and it splits your hand into two separate hands each with one of those cards.
 
       Surrender halves your bet and makes you instantly lose that game.
       `,
       spanish: stripIndents`En una partida de Blackjack, el objetivo es alcanzar la puntuación más alta que sea igual o menor a 21. Si en cualquier momento tu puntuación llega a ser más de 21, pierdes esa ronda.
 
-      Cada carta numérica tiene el mismo valor que su numero, los Ases valen 1 o 11 puntos, y las figuras (Valet, Dame y Roi) valen 10 puntos.
+      Cada carta numérica tiene el mismo valor que su número, los Ases valen 1 o 11 puntos, y las figuras (Valet, Dame y Roi) valen 10 puntos.
 
       Después de asentar tu puntuación, el crupier robará cartas hasta que su puntuación sea igual o mayor a 17 puntos. Después, tu puntuación es comparada con la del crupier, si una de las dos puntuaciones sobrepasa 21 puntos, esa persona pierde. De lo contrario, la puntuación mas alta gana.
 
       Cada turno tendrás disponibles diferentes acciones según tu situación:
-      hit, stand, double, split y surrender.
+      hit(pedir), stand(plantarse), double(doblar), split(dividir) y surrender(rendirse).
 
       Hit roba una carta.
 
@@ -1218,7 +1218,7 @@ exports.responses = {
 
       Double dobla tu apuesta, roba una carta y establece tu acción como 'stand' para el resto de esa partida.
 
-      Split solo puede ser usado si tus 2 primeras cartas tienen el mismo valor, y divide tu mano en 2 con esas cartas.
+      Split solo puede ser usado si tus 2 primeras cartas tienen el mismo valor, y divide tu mano en 2 manos separadas cada una con una de esas cartas.
 
       Surrender reduce en la mitad tu apuesta y hace que pierdas instantáneamente esa partida.
       `
