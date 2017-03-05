@@ -72,6 +72,7 @@ module.exports = class BlackjackCommand extends commando.Command {
 
     const pseudoCommand = msg.content.split(" ")[0]
     if(responses.ALIASES.ACTION[msg.language].includes(pseudoCommand)) {
+      if(!game.isPlayerPlaying(msg.member.id)) return msg.reply(responses.NOT_PLAYING_YET[msg.language])
       return msg.reply(responses.AVAILABLE_ACTIONS[msg.language](
         game.getPlayer(msg.member.id).availableActions.join(", ")
       ))
@@ -80,6 +81,7 @@ module.exports = class BlackjackCommand extends commando.Command {
     } else if(responses.ALIASES.KICK[msg.language].includes(pseudoCommand)) {
       return this.voteKick(msg)
     } else {
+      if(!game.isPlayerPlaying(msg.member.id)) return msg.reply(responses.NOT_PLAYING_YET[msg.language])
       game.getPlayer(msg.member.id).hands.find((hand) => !hand.action).action = msg.content
     }
   }

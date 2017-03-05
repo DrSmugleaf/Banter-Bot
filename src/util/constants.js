@@ -1257,6 +1257,10 @@ exports.responses = {
       english: (name) => `${name} gets a natural Blackjack!`,
       spanish: (name) => `¡${name} consigue un Blackjack natural!`
     },
+    NOT_PLAYING_YET: {
+      english: "You aren't playing yet, wait until this round finishes or vote kick inactive players.",
+      spanish: "Aún no estás jugando, espera a que esta ronda termine o vota para echar a los jugadores inactivos."
+    },
     PLAYER_HAND: {
       english: (name) => `${name}'s hand:\n`,
       spanish: (name) => `Mano de ${name}:\n`
