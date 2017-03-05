@@ -1136,6 +1136,10 @@ exports.responses = {
       english: (actions) => `Your available actions are \`${actions}\`.`,
       spanish: (actions) => `Tus acciones disponibles son \`${actions}\`.`
     },
+    CANT_KICK_DEALER: {
+      english: "Nice try.",
+      spanish: "Buen intento."
+    },
     CARD: {
       english: (symbol, name) => `${symbol}${name}`,
       spanish: (symbol, name) => `${symbol}${name}`
