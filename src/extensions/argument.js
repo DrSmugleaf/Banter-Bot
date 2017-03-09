@@ -7,12 +7,11 @@ const { oneLine, stripIndents } = require("common-tags")
 const responses = require("../util/constants").responses.COMMANDO.ARGUMENT
 
 class CommandArgumentExtension {
-  async obtainSimple(msg) {
-    let value
+  async promptUser(msg, value, client, type) {
     if(this.infinite) return this.obtainInfinite(msg, value)
 
     const wait = this.wait > 0 && this.wait !== Infinity ? this.wait * 1000 : undefined
-    let valid = false
+    let valid = value ? await this.validate(value, msg) : false
     let attempts = 0
 
     while(!valid || typeof valid === "string") {
@@ -34,15 +33,15 @@ class CommandArgumentExtension {
       })
       if(response && response.size === 1) value = response.first().content; else return null
       if(value.toLowerCase() === "cancel") return null
-      valid = await this.validate(value, msg)
+      valid = type ? await client.registry.types.get(type).validate(value, msg) : await this.validate(value.msg)
     }
 
-    return this.parse(value, msg)
+    return type ? client.registry.types.get(type).parse(value, msg) : this.parse(value, msg)
   }
 
   static applyToClass(target) {
     for(const prop of [
-      "obtainSimple"
+      "promptUser"
     ]) {
       Object.defineProperty(target.prototype, prop, Object.getOwnPropertyDescriptor(this.prototype, prop))
     }

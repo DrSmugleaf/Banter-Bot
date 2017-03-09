@@ -273,11 +273,29 @@ exports.versions = {
       **CAMBIOS**
       Cambiada la respuesta de ayuda de Blackjack para que incluya los nombres de las acciones en español y una explicación de dividir más clara.
 
-      **FIXED**
+      **ARREGLADO**
       Arregladas las respuestas de los comandos de youtube.
       Arreglado echar por votos en Blackjack.
       Arreglado un crash en Blackjack cuando alguien intentaba tomar una acción después de unirse antes de dejar pasar una ronda.
       Arreglado que !help nunca funcionara.
+    `
+  },
+  "9": {
+    english: stripIndents`
+      **FIXED**
+      Fixed !stop. :thumbsup:
+      Fixed Blackjack vote kick and its responses.
+      Fixed being able to vote kick one's self in Blackjack.
+      Fixed some spanish Blackjack responses being in english.
+      Fixed !blackjack-admin not taking parameters properly.
+    `,
+    spanish: stripIndents`
+      **AREGLADO**
+      Arreglado !stop. :thumbsup:
+      Arreglado echar por votos en Blackjack y sus respuestas.
+      Arreglado que pudieras votar para echarte a ti mismo en Blackjack.
+      Arreglado que algunas respuestas de Blackjack en español estuvieran en inglés.
+      Arreglado que !blackjack-admin no recibiera los parámetros correctamente.
     `
   }
 }
@@ -1182,7 +1200,7 @@ exports.responses = {
         You can start a new game to keep playing Blackjack.
       `,
       spanish: (channel, guild) => oneLine`
-        El Canal ${channel} en el servidor ${guild} ha sido eliminado por alguien o algo.
+        El canal ${channel} en el servidor ${guild} ha sido eliminado por alguien o algo.
         Puedes empezar una nueva partida para seguir jugando Blackjack.
       `
     },
@@ -1193,7 +1211,7 @@ exports.responses = {
       `,
       spanish: (name, symbol, card, total, actions) => stripIndents`
         ${name}, te he repartido ${symbol}${card}. Puntuación total: ${total}.
-        Actions you can take: ${actions}
+        Acciones que puedes tomar: ${actions}
       `
     },
     DEALER_DEAL: {
@@ -1201,8 +1219,7 @@ exports.responses = {
         The dealer draws ${symbol}${card}. Total score: ${total}.
       `,
       spanish: (symbol, card, total) => stripIndents`
-        El crupier roba ${symbol}${card}.
-        Puntuación total: ${total}.
+        El crupier roba ${symbol}${card}. Puntuación total: ${total}.
       `
     },
     DEALER_HAND: {
@@ -1253,6 +1270,10 @@ exports.responses = {
       ALREADY_VOTED: {
         english: (name) => `You already voted to kick ${name}.`,
         spanish: (name) => `Ya has votado para echar a ${name}.`
+      },
+      CANT_KICK_SELF: {
+        english: "You can't kick yourself!",
+        spanish: "¡No te puedes echar a ti mismo!"
       },
       FAIL: {
         english: (votes, total, name) => `${votes} out of ${total} players want to kick ${name} from this round of Blackjack.`,
