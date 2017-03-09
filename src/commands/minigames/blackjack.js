@@ -190,6 +190,7 @@ module.exports = class BlackjackCommand extends commando.Command {
     if(!parsedMember) return msg.reply(responses.KICK.INVALID_MEMBER[msg.language])
     if(this.client.user.id === parsedMember.id) return msg.reply(responses.CANT_KICK_DEALER[msg.language])
     if(!game.hasPlayer(parsedMember.id)) return msg.reply(responses.KICK.NOT_PLAYING[msg.language](parsedMember.displayName))
+    if(msg.member.id === parsedMember.id) return msg.reply(responses.KICK.CANT_KICK_SELF[msg.language])
 
     if(!game.kickVotes[parsedMember]) game.kickVotes[parsedMember] = []
     if(game.kickVotes[parsedMember].includes(msg.author.id)) return msg.reply(responses.KICK.ALREADY_VOTED[msg.language](parsedMember.displayName))

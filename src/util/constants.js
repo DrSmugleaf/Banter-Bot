@@ -1254,6 +1254,10 @@ exports.responses = {
         english: (name) => `You already voted to kick ${name}.`,
         spanish: (name) => `Ya has votado para echar a ${name}.`
       },
+      CANT_KICK_SELF: {
+        english: "You can't kick yourself!",
+        spanish: "¡No te puedes echar a ti mismo!"
+      },
       FAIL: {
         english: (votes, total, name) => `${votes} out of ${total} players want to kick ${name} from this round of Blackjack.`,
         spanish: (votes, total, name) => `${votes} de ${total} jugadores quieren echar a ${name} de esta ronda de Blackjack.`
