@@ -74,7 +74,7 @@ module.exports = class AutoChannelCommand extends commando.Command {
       this.autoChannel.updateGuild(msg.guild)
       return msg.reply(responses.UPDATED[msg.language])
     case "threshold":
-      if(!threshold) threshold = await this.args[1].obtainSimple(msg)
+      if(!threshold) threshold = await this.args[1].promptUser(msg)
       if(!threshold) return
       settings.threshold = threshold
       msg.guild.settings.set("auto-channel", settings)

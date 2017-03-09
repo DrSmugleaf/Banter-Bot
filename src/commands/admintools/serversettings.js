@@ -64,21 +64,21 @@ module.exports = class ServerSettingsCommand extends commando.Command {
       return msg.reply(responses.CLEAR[msg.language])
     }
     case "get": {
-      if(!key) key = await this.args[1].obtainSimple(msg)
+      if(!key) key = await this.args[1].promptUser(msg)
       if(!key) return
       const get = guildSettings.get(key)
       return msg.reply(responses.GET[msg.language](key, get))
     }
     case "remove": {
-      if(!key) key = await this.args[1].obtainSimple(msg)
+      if(!key) key = await this.args[1].promptUser(msg)
       if(!key) return
       guildSettings.remove(key)
       return msg.reply(responses.REMOVE[msg.language](key))
     }
     case "set": {
-      if(!key) key = await this.args[1].obtainSimple(msg)
+      if(!key) key = await this.args[1].promptUser(msg)
       if(!key) return
-      if(!value) value = await this.args[2].obtainSimple(msg)
+      if(!value) value = await this.args[2].promptUser(msg)
       if(!value) return
       guildSettings.set(key, value)
       return msg.reply(responses.SET[msg.language](key, value))
