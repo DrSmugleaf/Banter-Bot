@@ -1182,7 +1182,7 @@ exports.responses = {
         You can start a new game to keep playing Blackjack.
       `,
       spanish: (channel, guild) => oneLine`
-        El Canal ${channel} en el servidor ${guild} ha sido eliminado por alguien o algo.
+        El canal ${channel} en el servidor ${guild} ha sido eliminado por alguien o algo.
         Puedes empezar una nueva partida para seguir jugando Blackjack.
       `
     },
@@ -1193,7 +1193,7 @@ exports.responses = {
       `,
       spanish: (name, symbol, card, total, actions) => stripIndents`
         ${name}, te he repartido ${symbol}${card}. Puntuación total: ${total}.
-        Actions you can take: ${actions}
+        Acciones que puedes tomar: ${actions}
       `
     },
     DEALER_DEAL: {
@@ -1201,8 +1201,7 @@ exports.responses = {
         The dealer draws ${symbol}${card}. Total score: ${total}.
       `,
       spanish: (symbol, card, total) => stripIndents`
-        El crupier roba ${symbol}${card}.
-        Puntuación total: ${total}.
+        El crupier roba ${symbol}${card}. Puntuación total: ${total}.
       `
     },
     DEALER_HAND: {
