@@ -273,11 +273,29 @@ exports.versions = {
       **CAMBIOS**
       Cambiada la respuesta de ayuda de Blackjack para que incluya los nombres de las acciones en español y una explicación de dividir más clara.
 
-      **FIXED**
+      **ARREGLADO**
       Arregladas las respuestas de los comandos de youtube.
       Arreglado echar por votos en Blackjack.
       Arreglado un crash en Blackjack cuando alguien intentaba tomar una acción después de unirse antes de dejar pasar una ronda.
       Arreglado que !help nunca funcionara.
+    `
+  },
+  "9": {
+    english: stripIndents`
+      **FIXED**
+      Fixed !stop. :thumbsup:
+      Fixed Blackjack vote kick and its responses.
+      Fixed being able to vote kick one's self in Blackjack.
+      Fixed some spanish Blackjack responses being in english.
+      Fixed !blackjack-admin not taking parameters properly.
+    `,
+    spanish: stripIndents`
+      **AREGLADO**
+      Arreglado !stop. :thumbsup:
+      Arreglado echar por votos en Blackjack y sus respuestas.
+      Arreglado que pudieras votar para echarte a ti mismo en Blackjack.
+      Arreglado que algunas respuestas de Blackjack en español estuvieran en inglés.
+      Arreglado que !blackjack-admin no recibiera los parámetros correctamente.
     `
   }
 }
