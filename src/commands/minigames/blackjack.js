@@ -191,20 +191,20 @@ module.exports = class BlackjackCommand extends commando.Command {
     if(this.client.user.id === parsedMember.id) return msg.reply(responses.CANT_KICK_DEALER[msg.language])
     if(!game.hasPlayer(parsedMember.id)) return msg.reply(responses.KICK.NOT_PLAYING[msg.language](parsedMember.displayName))
 
-    if(!game.kickVotes[parsedMember]) game.kickVotes[parsedMember] = new Array()
+    if(!game.kickVotes[parsedMember]) game.kickVotes[parsedMember] = []
+    if(game.kickVotes[parsedMember].includes(msg.author.id)) return msg.reply(responses.KICK.ALREADY_VOTED[msg.language](parsedMember.displayName))
 
-    const kickVotes = game.kickVotes[parsedMember]
-    if(kickVotes.includes(msg.member.id)) {
-      return msg.reply(responses.KICK.ALREADY_VOTED[msg.language](parsedMember.displayName))
-    }
-    kickVotes.push(msg.member.id)
+    game.kickVotes[parsedMember].push(msg.author.id)
 
-    if(kickVotes.length > game.playerCount / 2) {
-      kickVotes[parsedMember] = new Array()
+    const votes = game.kickVotes[parsedMember].length
+    const total = game.playerCount
+
+    if(votes > total / 2) {
+      game.kickVotes[parsedMember] = []
       game.removePlayer(parsedMember.id)
-      return msg.reply(responses.KICK.SUCCESS[msg.language](parsedMember.displayName, game.playerCount))
+      return msg.reply(responses.KICK.SUCCESS[msg.language](parsedMember.displayName))
     } else {
-      return msg.reply(responses.KICK.FAIL[msg.language](parsedMember.displayName, game.playerCount))
+      return msg.reply(responses.KICK.FAIL[msg.language](votes, total, parsedMember.displayName))
     }
   }
 
