@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "EVE Online freighting service",
   "engines": {
-    "node": "7.5.0"
+    "node": "7.7.2"
   },
   "main": "src/banterbot.js",
   "scripts": {
