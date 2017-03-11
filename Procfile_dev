@@ -1,0 +1,1 @@
+worker: nodemon --harmony --trace-warnings src/banterbot.js
