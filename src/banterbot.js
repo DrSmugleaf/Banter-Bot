@@ -3,6 +3,7 @@
 //
 
 "use strict"
+require("checkenv").check()
 const Commando = require("discord.js-commando")
 const Discord = require("discord.js")
 require("./extensions/guild").applyToClass(Discord.Guild)
