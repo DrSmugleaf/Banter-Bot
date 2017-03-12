@@ -1,0 +1,32 @@
+//
+// Copyright (c) 2017 DrSmugleaf
+//
+
+doctype html
+html(lang="en")
+  head
+    include ../partials/header
+  body
+    nav.navbar.navbar-inverse.navbar-fixed-top
+      div.container
+        div.navbar-header
+          button(type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar")
+            span.sr-only Toggle navigation
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+          a.navbar-brand(href="/") Banter Bot
+    
+    div.container
+      div.row
+        div.col-md-12
+          div.error-template
+            h1 Oops!
+            h2 404 Not Found
+            div.error-details Sorry, an error has occurred,
+            div.error-actions
+              a(href="/" class="btn btn-primary btn-lg")
+                span.glyphicon.glyphicon-home
+                |  Go back
+    
+    include ../partials/footer
