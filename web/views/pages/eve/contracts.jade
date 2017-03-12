@@ -1,0 +1,36 @@
+//
+// Copyright (c) 2017 DrSmugleaf
+//
+
+doctype html
+html(lang="en")
+  head
+    include ../../partials/header
+  body
+    include ../../partials/eve/navigation
+    
+    div.jumbotron
+      div.container
+        h1 Mango Deliveries
+        p There are #{contracts ? contracts.length : "no"} contracts left
+    
+    if(contracts)
+      div.container
+        table.table.table-striped
+          thead
+            tr
+              th #
+              th Price
+              th Submitter
+              th Submitted
+              th Accept
+          tbody
+            - contracts.forEach(function(contract, id) {
+              tr
+                td=id
+                td=value
+                td test
+                td=contract.totals.sell
+            - })
+    
+    include ../../partials/footer
