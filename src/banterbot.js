@@ -21,8 +21,7 @@ const client = new Commando.Client({
 const oneLine = require("common-tags").oneLine
 const path = require("path")
 const PostgreSQLProvider = require("./providers/postgresql")
-const token = process.env.NODE_ENV === "dev" ?
-  process.env.DISCORD_TOKEN_DEV : process.env.DISCORD_TOKEN
+const token = process.env.DISCORD_TOKEN
 const VersionAnnouncer = require("./announcer/version")
 new VersionAnnouncer(client)
 const winston = require("winston")
