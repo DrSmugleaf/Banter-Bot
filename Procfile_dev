@@ -1,1 +1,2 @@
+web: nodemon --harmony --trace-warnings web/app.js
 worker: nodemon --harmony --trace-warnings src/banterbot.js
