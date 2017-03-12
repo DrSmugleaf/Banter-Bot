@@ -10,10 +10,7 @@ const PGP = require("pg-promise")({
     winston.error(e)
   }
 })
-const pgp = PGP(process.env.NODE_ENV === "dev" ?
-  process.env.DATABASE_URL_DEV + "?ssl=true" :
-  process.env.DATABASE_URL + "?ssl=true"
-)
+const pgp = PGP(process.env.DATABASE_URL + "?ssl=true")
 
 class DB {
   constructor() {
