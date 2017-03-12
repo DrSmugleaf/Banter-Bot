@@ -2,6 +2,7 @@
 // Copyright (c) 2017 DrSmugleaf
 //
 
+require("checkenv").check()
 const express = require("express")
 const app = express()
 const path = require("path")
