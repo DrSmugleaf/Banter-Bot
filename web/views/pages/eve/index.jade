@@ -1,0 +1,66 @@
+//
+// Copyright (c) 2017 DrSmugleaf
+//
+
+doctype html
+html(lang="en")
+  head
+    include ../../partials/header
+  body
+    include ../../partials/eve/navigation
+    
+    div.jumbotron
+      div.container
+        h1 Mango Deliveries
+        p Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+    
+    div.container.text-center
+      form
+        div.form-group
+          div.row
+            div.col-md-4.col-md-offset-4
+              label(class="sr-only" for="link") Evepraisal/Skyblade link
+              input(name="link" type="text" class="form-control" id="link" placeholder="Evepraisal/Skyblade link" autocomplete="off")
+            div(class="col-md-1" style="width: 10%;")
+              div.input-group
+                label(class="sr-only" for="multiplier") Multiplier
+                input(name="multiplier" type="text" class="form-control" id="multiplier" placeholder="1" autocomplete="off")
+                div.input-group-addon x
+        div.form-group
+          div.row
+            div.col-md-4
+              h2 7RM
+              h4 An image goes here
+            div.col-md-4
+              h2 GME
+              h4 An image goes here
+            div.col-md-4
+              h2 B-9
+              h4 An image goes here
+        div.form-group
+          div.row
+            div.col-md-4.col-md-offset-4
+              div.input-group
+                div.input-group-addon Quote
+                input(class="form-control" type="text" id="cost" readonly)
+                div.input-group-addon ISK
+        div.form-group
+          div.row
+            div.col-md-4.col-md-offset-4
+              button(type="submit" class="btn btn-primary") Create contract
+    
+    include ../../partials/footer
+    script.
+      $("#link").change(function() {
+        $.ajax({
+          type: "GET",
+          url: "/eve/query",
+          data: {
+            link: $("#link").val(),
+            multiplier: $("#multiplier").val()
+          },
+          success: function(response) {
+            $("#cost").val(response.result + " (" + response.resultShort + ")")
+          }
+        }).done()
+      })
