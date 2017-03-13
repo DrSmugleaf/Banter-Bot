@@ -7,11 +7,11 @@ const _ = require("underscore")
 const character = require("../models/eve/character")
 const contract = require("../models/eve/contract")
 const express = require("express")
+const moment = require("moment-timezone")
 const router = express.Router()
 const request = require("request-promise")
 const session = require("express-session")
 const url = require("url")
-const uuidV4 = require("uuid/v4")
 const winston = require("winston")
 
 router.use(session({
@@ -26,18 +26,6 @@ router.get("/login", function(req, res) {
 })
 
 router.get("/eve", function(req, res) {
-  if(req.query.link) {
-    const link = req.query.link
-    request.get(link).then((body) => {
-      body = JSON.parse(body)
-      contract.set({
-        evepraisal_id: body.id
-        value: body.totals.sell
-        
-      })
-      }
-    })
-  }
   res.render("pages/eve/index", {
     character: req.session.character,
     title: "Home - Mango Deliveries",
@@ -47,7 +35,6 @@ router.get("/eve", function(req, res) {
 
 router.get("/contracts", function(req, res) {
   contract.getAll().then((contracts) => {
-    console.log(contracts)
     res.render("pages/eve/contracts", {
     character: req.session.character,
     contracts: contracts,
@@ -80,7 +67,7 @@ router.get("/auth", function(req, res) {
     })
   }).then((body) => {
     body = JSON.parse(body)
-    eveCharacter.character_id = body.CharacterID
+    eveCharacter.id = body.CharacterID
     
     return Promise.all([
       request.get(`https://esi.tech.ccp.is/latest/characters/${body.CharacterID}/`),
@@ -91,9 +78,10 @@ router.get("/auth", function(req, res) {
       bodies[index] = JSON.parse(body)
     })
     eveCharacter.character_name = bodies[0].name
+    eveCharacter.character_portrait = bodies[1].px64x64
+    eveCharacter.character_birthday = moment(bodies[0].birthday).format("YYYY-MM-DD HH:MM:SS")
     eveCharacter.alliance_id = bodies[0].alliance_id
     eveCharacter.corporation_id = bodies[0].corporation_id
-    eveCharacter.character_portrait = bodies[1].px64x64
     
     return Promise.all([
       request.get(`https://esi.tech.ccp.is/latest/alliances/${eveCharacter.alliance_id}/`),
@@ -109,7 +97,6 @@ router.get("/auth", function(req, res) {
     eveCharacter.alliance_portrait = bodies[1].px64x64
     eveCharacter.corporation_name = bodies[2].corporation_name
     eveCharacter.corporation_portrait = bodies[3].px64x64
-    eveCharacter.id = uuidV4()
     
     character.set(eveCharacter)
     req.session.character = eveCharacter
@@ -138,6 +125,29 @@ router.get("/query", function(req, res) {
       winston.error(e)
     })
   }
+})
+
+router.post("/submit", function(req, res) {
+  const link = req.body.link
+  const multiplier = req.body.multiplier || 1
+  
+  request.get({
+    url: `${link}.json`
+  }).then((body) => {
+    body = JSON.parse(body)
+    contract.set({
+      link: `${link}.json`,
+      value: body.totals.sell,
+      volume: body.totals.volume,
+      multiplier: multiplier,
+      submitter_id: req.session.character.id,
+      submitter_name: req.session.character.character_name,
+      status: "pending"
+    })
+  }).catch((e) => {
+    winston.error(e)
+    res.status(401)
+  })
 })
 
 module.exports = router

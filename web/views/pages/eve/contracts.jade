@@ -21,16 +21,20 @@ html(lang="en")
             tr
               th #
               th Price
+              th ISK/m³
               th Submitter
               th Submitted
+              th Status
               th Accept
           tbody
-            - contracts.forEach(function(contract, id) {
+            - contracts.forEach(function(contract) {
               tr
-                td=id
-                td=value
-                td test
-                td=contract.totals.sell
+                td=contract.id
+                td=contract.value * contract.multiplier
+                td=contract.value / contract.volume * contract.multiplier
+                td=contract.submitter_name
+                td=contract.submitted
+                td=contract.status
             - })
     
     include ../../partials/footer

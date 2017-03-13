@@ -4,11 +4,14 @@
 
 require("checkenv").check()
 require("./db")
+const bodyParser = require("body-parser")
 const express = require("express")
 const app = express()
 const path = require("path")
 const winston = require("winston")
 
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
 app.use(require("morgan")("dev"))
 app.engine("jade", require("jade").__express)
 app.set("views", path.join(__dirname + "/views"))
