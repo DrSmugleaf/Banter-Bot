@@ -11,7 +11,8 @@ module.exports = {
     this.db = db
     return this.db.query(`CREATE TABLE IF NOT EXISTS eve_characters (
       id BIGINT UNSIGNED NOT NULL PRIMARY KEY,
-      token TINYTEXT NOT NULL, character_name TINYTEXT NOT NULL,
+      token TINYTEXT NOT NULL,
+      character_name TINYTEXT NOT NULL,
       character_portrait TINYTEXT NOT NULL,
       character_birthday TIMESTAMP NOT NULL,
       corporation_id BIGINT UNSIGNED NOT NULL,
