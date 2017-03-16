@@ -18,7 +18,7 @@ router.use(session({
   secret: require("crypto").randomBytes(64).toString("hex"),
   resave: false,
   saveUninitialized: true,
-  maxAge: 1200000,
+  maxAge: 1200000
 }))
 
 router.get("/login", function(req, res) {
@@ -39,7 +39,7 @@ router.get("/contracts", function(req, res) {
     character: req.session.character,
     contracts: contracts,
     title: "Contracts - Mango Deliveries",
-    active: "Contracts",
+    active: "Contracts"
     })
   })
 })
