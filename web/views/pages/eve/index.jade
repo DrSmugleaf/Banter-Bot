@@ -28,15 +28,23 @@ html(lang="en")
                 div.input-group-addon x
         div.form-group
           div.row
-            div.col-md-4
-              h2 7RM
-              h4 An image goes here
-            div.col-md-4
-              h2 GME
-              h4 An image goes here
-            div.col-md-4
-              h2 B-9
-              h4 An image goes here
+            div#image_container
+              div.col-md-4
+                h2 7RM-N0
+                img(class="img-responsive" src="../7rm.png" value="7RM-N0")
+              div.col-md-4
+                h2 GME-PQ
+                img(class="img-responsive" src="../gme.png" value="GME-PQ")
+              div.col-md-4
+                h2 B-9C24
+                img(class="img-responsive" src="../b-9.png" value="B-9C24")
+        div.form-group
+          div.row
+            div.col-md-4.col-md-offset-4
+              div.input-group
+                div.input-group-addon Destination
+                label(class="sr-only" for="destination")
+                input(name="destination" type="text" class="form-control" id="destination" placeholder="Destination" autocomplete="off" readonly)
         div.form-group
           div.row
             div.col-md-4.col-md-offset-4
@@ -63,4 +71,11 @@ html(lang="en")
             $("#cost").val(response.result + " (" + response.resultShort + ")")
           }
         }).done()
+      })
+    
+    script.
+      $("div#image_container div img").click(function() {
+        $("input#destination").val($(this).attr("value"))
+        $("div#image_container div img").css("outline", "")
+        $(this).css("outline", "4px solid #0088CC")
       })
