@@ -6,6 +6,7 @@
 const _ = require("underscore")
 const character = require("../models/eve/character")
 const contract = require("../models/eve/contract")
+const eveAuth = require("../middlewares/eve").eveAuth
 const express = require("express")
 const moment = require("moment-timezone")
 const router = express.Router()
@@ -33,7 +34,7 @@ router.get("/eve", function(req, res) {
   })
 })
 
-router.get("/contracts", function(req, res) {
+router.get("/contracts", eveAuth, function(req, res) {
   contract.getAll().then((contracts) => {
     res.render("pages/eve/contracts", {
     character: req.session.character,
