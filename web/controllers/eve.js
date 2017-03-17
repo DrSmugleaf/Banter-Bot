@@ -23,7 +23,9 @@ router.use(session({
 }))
 
 router.get("/login", function(req, res) {
-  res.redirect(`https://login.eveonline.com/oauth/authorize/?response_type=code&redirect_uri=${process.env.EVE_CALLBACK}&client_id=${process.env.EVE_ID}`)
+  const state = require("crypto").randomBytes(64).toString("hex")
+  req.session.state = state
+  res.redirect(`https://login.eveonline.com/oauth/authorize/?response_type=code&redirect_uri=${process.env.EVE_CALLBACK}&client_id=${process.env.EVE_ID}&state=${state}`)
 })
 
 router.get("/eve", function(req, res) {
@@ -46,6 +48,7 @@ router.get("/contracts", eveAuth, function(req, res) {
 })
 
 router.get("/auth", function(req, res) {
+  if(req.query.state !== req.session.state) return res.sendStatus(403)
   var eveCharacter = {}
   request.post({
     headers: {
@@ -147,7 +150,7 @@ router.post("/submit", function(req, res) {
     })
   }).catch((e) => {
     winston.error(e)
-    res.status(401)
+    res.sendStatus(403)
   })
 })
 
