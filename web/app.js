@@ -3,6 +3,7 @@
 //
 
 require("checkenv").check()
+if(process.env.NODE_ENV === "dev") require("longjohn")
 require("./db")
 const bodyParser = require("body-parser")
 const express = require("express")
