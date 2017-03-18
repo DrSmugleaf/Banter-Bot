@@ -16,45 +16,60 @@ html(lang="en")
     
     div.container.text-center
       form(method="post" action="/eve/submit")
-        div.form-group
+        div.row
+          div#image_container
+            div.col-md-2.col-md-offset-3
+              div.panel.panel-default
+                div.panel-heading 7RM-N0
+                div.panel-body
+                  img(src="../7RM-N0.png" value="7RM-N0")
+            div.col-md-2
+              div.panel.panel-default
+                div.panel-heading GME-PQ
+                div.panel-body
+                  img(src="../GME-PQ.png" value="GME-PQ")
+            div.col-md-2
+              div.panel.panel-default
+                div.panel-heading B-9C24
+                div.panel-body
+                  img(src="../B-9C24.png" value="B-9C24")
+        div.row
           div.col-md-6.col-md-offset-3
-            div.panel.panel-default
-              div.panel-heading Contract
-              div.panel-body
-                div.form-group
-                  div.row
-                    label.col-md-3(for="link") Appraisal link
-                    div.col-md-5
-                      input(name="link" type="text" class="form-control" id="link" placeholder="http://evepraisal.com/e/15821432" autocomplete="off")
-                    div(class="col-md-3")
-                      div.input-group
-                        label(class="sr-only" for="multiplier") Multiplier
-                        input(name="multiplier" type="text" class="form-control" id="multiplier" placeholder="1" autocomplete="off")
-                        div.input-group-addon x
-                div.form-group
-                  div.row
-                    label.col-md-3(for="destination") Destination
-                    div.col-md-8
-                      select#destination.form-control
-                        option 7RM-N0
-                        option GME-PQ
-                        option B-9C24
-                div.form-group
-                  div.row
-                    label.col-md-3(for="jita-sell") Jita Sell
-                    div.col-md-8
-                      div.input-group
-                        input(class="form-control" type="text" id="jita-sell" autocomplete="off" readonly)
-                        div.input-group-addon ISK
-                div.form-group
-                  div.row
-                    label.col-md-3(for="quote") Quote
-                    div.col-md-8
-                      div.input-group
-                        input(class="form-control" type="text" id="quote" autocomplete="off" readonly)
-                        div.input-group-addon ISK
-                div.form-group
-                  button(type="submit" class="btn btn-primary") Create Contract
+            div.form-group
+              div.panel.panel-default
+                div.panel-heading Contract
+                div.panel-body
+                  div.form-group
+                    div.row
+                      label.col-md-3(for="link") Appraisal link
+                      div.col-md-5
+                        input(name="link" type="text" class="form-control" id="link" placeholder="http://evepraisal.com/e/15821432" autocomplete="off")
+                      div(class="col-md-3")
+                        div.input-group
+                          label(class="sr-only" for="multiplier") Multiplier
+                          input(name="multiplier" type="text" class="form-control" id="multiplier" placeholder="1" autocomplete="off")
+                          div.input-group-addon x
+                  div.form-group
+                    div.row
+                      label.col-md-3(for="destination") Destination
+                      div.col-md-8
+                        input(class="form-control" type="text" id="destination" autocomplete="off" readonly)
+                  div.form-group
+                    div.row
+                      label.col-md-3(for="jita-sell") Jita Sell
+                      div.col-md-8
+                        div.input-group
+                          input(class="form-control" type="text" id="jita-sell" autocomplete="off" readonly)
+                          div.input-group-addon ISK
+                  div.form-group
+                    div.row
+                      label.col-md-3(for="quote") Quote
+                      div.col-md-8
+                        div.input-group
+                          input(class="form-control" type="text" id="quote" autocomplete="off" readonly)
+                          div.input-group-addon ISK
+                  div.form-group
+                    button(type="submit" class="btn btn-primary") Create Contract
     
     include ../../partials/footer
     script.
@@ -68,6 +83,16 @@ html(lang="en")
           },
           success: function(res) {
             $("#cost").val(res.result + " (" + res.resultShort + ")")
+          },
+          error: function(res) {
+            res = JSON.parse(res)
           }
         }).done()
+      })
+    
+    script.
+      $("div#image_container div div").click(function() {
+        $("input#destination").val($("div img", this).attr("value"))
+        $("div#image_container div div img").css("outline", "")
+        $("div img", this).css("outline", "4px solid #0088CC")
       })
