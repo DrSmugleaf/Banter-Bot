@@ -9,13 +9,10 @@ const contract = require("../models/eve/contract")
 const eveAuth = require("../middlewares/eve").eveAuth
 const eveHelper = require("../helpers/eve")
 const express = require("express")
-const invMarketGroups = require("../models/eve/invmarketgroups")
-const invTypes = require("../models/eve/invtypes")
 const moment = require("moment-timezone")
 const router = express.Router()
 const request = require("request-promise")
 const session = require("express-session")
-const url = require("url")
 const winston = require("winston")
 
 router.use(session({
