@@ -25,3 +25,7 @@ body {
 .navbar-right li a {
   text-align: right;
 }
+
+.tooltip-inner {
+  white-space: pre-wrap;
+}

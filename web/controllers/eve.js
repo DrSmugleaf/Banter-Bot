@@ -7,9 +7,11 @@ const _ = require("underscore")
 const character = require("../models/eve/character")
 const contract = require("../models/eve/contract")
 const eveAuth = require("../middlewares/eve").eveAuth
+const eveHelper = require("../helpers/eve")
 const express = require("express")
+const invMarketGroups = require("../models/eve/invmarketgroups")
+const invTypes = require("../models/eve/invtypes")
 const moment = require("moment-timezone")
-const nFormatter = require("../helpers/eve").nFormatter
 const router = express.Router()
 const request = require("request-promise")
 const session = require("express-session")
@@ -40,10 +42,10 @@ router.get("/eve", function(req, res) {
 router.get("/contracts", eveAuth, function(req, res) {
   contract.getAll().then((contracts) => {
     res.render("pages/eve/contracts", {
-    character: req.session.character,
-    contracts: contracts,
-    title: "Contracts - Mango Deliveries",
-    active: "Contracts"
+      character: req.session.character,
+      contracts: contracts,
+      title: "Contracts - Mango Deliveries",
+      active: "Contracts"
     })
   })
 })
@@ -112,24 +114,18 @@ router.get("/auth", function(req, res) {
   })
 })
 
-router.get("/query", function(req, res) {
-  var link = url.parse(req.query.link)
+router.get("/query", async function(req, res) {
+  const validate = await eveHelper.validateAppraisal(req.query.link)
+  if(validate.invalid) return res.status(500).json(validate)
+  const body = validate
+  const price = body.totals.sell
   const multiplier = req.query.multiplier || 1
-  
-  if(link && ["evepraisal.com", "skyblade.de"].includes(link.hostname)) {
-    request.get({
-      url: `${link.href}.json`
-    }).then((body) => {
-      body = JSON.parse(body)
-      
-      res.json({
-        result: (body.totals.sell * multiplier).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","),
-        resultShort: nFormatter(body.totals.sell, 2, multiplier)
-      })
-    }).catch((e) => {
-      winston.error(e)
-    })
-  }
+  return res.status(200).json({
+    jita: (price * multiplier).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+    jitaShort: eveHelper.nFormatter(price, 2, multiplier),
+    quote: (price * 1.13 * multiplier).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+    quoteShort: eveHelper.nFormatter(price * 1.13, 2, multiplier)
+  })
 })
 
 router.post("/submit", function(req, res) {
