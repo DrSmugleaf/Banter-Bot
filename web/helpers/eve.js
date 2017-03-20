@@ -10,8 +10,7 @@ const request = require("request-promise")
 const url = require("url")
 
 module.exports = {
-  nFormatter(num, digits, multiplier) {
-    num = num * multiplier
+  nFormatter(num, digits) {
     var si = [
       { value: 1E18, symbol: "E" },
       { value: 1E15, symbol: "P" },

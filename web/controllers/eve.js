@@ -122,9 +122,9 @@ router.get("/query", async function(req, res) {
   const multiplier = req.query.multiplier || 1
   return res.status(200).json({
     jita: (price * multiplier).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","),
-    jitaShort: eveHelper.nFormatter(price, 2, multiplier),
+    jitaShort: eveHelper.nFormatter(price * multiplier, 2),
     quote: (price * 1.13 * multiplier).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","),
-    quoteShort: eveHelper.nFormatter(price * 1.13, 2, multiplier)
+    quoteShort: eveHelper.nFormatter(price * 1.13 * multiplier, 2)
   })
 })
 
