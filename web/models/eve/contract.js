@@ -17,7 +17,7 @@ module.exports = {
       multiplier TINYINT UNSIGNED NOT NULL,
       submitter_id INTEGER UNSIGNED NOT NULL,
       submitter_name TINYTEXT NOT NULL,
-      submitted TIMESTAMP NOT NULL,
+      submitted BIGINT NOT NULL,
       status TINYTEXT NOT NULL
     )`)
   },
