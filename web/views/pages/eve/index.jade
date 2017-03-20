@@ -43,7 +43,7 @@ html(lang="en")
                     div.row
                       label.col-md-3(for="link") Appraisal link
                       div.col-md-6
-                        input(name="link" type="text" class="form-control" id="link" placeholder="http://evepraisal.com/e/16231499" autocomplete="off")
+                        input(name="link" type="text" class="form-control" id="link" placeholder="http://evepraisal.com/e/16231499" autocomplete="off" data-toggle="tooltip" title="")
                       div(class="col-md-3")
                         div.input-group
                           label(class="sr-only" for="multiplier") Multiplier
@@ -82,10 +82,20 @@ html(lang="en")
             multiplier: $("#multiplier").val()
           },
           success: function(res) {
-            $("#cost").val(res.result + " (" + res.resultShort + ")")
+          console.log(res)
+            $("#jita-sell").val(res.jita + " (" + res.jitaShort + ")")
+            $("#quote").val(res.quote + " (" + res.quoteShort + ")")
           },
           error: function(res) {
-            res = JSON.parse(res)
+            $("input").parent().removeClass("has-error")
+            res = JSON.parse(res.responseText)
+            if(res.invalid) {
+              for(var element in res.invalid) {
+                if(!res.invalid.hasOwnProperty(element)) return
+                $(element).parent().addClass("has-error")
+                $(element).prop("title", res.invalid[element]).tooltip("fixTitle").tooltip("show")
+              }
+            }
           }
         }).done()
       })
@@ -95,4 +105,9 @@ html(lang="en")
         $("input#destination").val($("div img", this).attr("value"))
         $("div#image_container div div img").css("outline", "")
         $("div img", this).css("outline", "4px solid #0088CC")
+      })
+    
+    script.
+      $(document).ready(function() {
+        $('[data-toggle="tooltip"]').tooltip()
       })
