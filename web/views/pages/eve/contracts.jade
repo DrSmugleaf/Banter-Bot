@@ -12,7 +12,12 @@ html(lang="en")
     div.jumbotron
       div.container
         h1 Mango Deliveries
-        p There are #{contracts ? contracts.length : "no"} contracts left
+        if(contracts && contracts.length === 1)
+          p There is 1 contract left
+        else if(contracts)
+          p There are #{contracts.length} contracts left
+        else
+          p There are no contracts left
     
     if(contracts)
       div.container
