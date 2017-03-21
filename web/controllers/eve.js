@@ -82,7 +82,7 @@ router.get("/auth", function(req, res) {
       bodies[index] = JSON.parse(body)
     })
     eveCharacter.character_name = bodies[0].name
-    eveCharacter.character_portrait = bodies[1].px64x64
+    eveCharacter.character_portrait = bodies[1].px64x64.replace(/^http:\/\//i, 'https://')
     eveCharacter.character_birthday = moment(bodies[0].birthday).format("YYYY-MM-DD HH:MM:SS")
     eveCharacter.alliance_id = bodies[0].alliance_id
     eveCharacter.corporation_id = bodies[0].corporation_id
@@ -98,9 +98,9 @@ router.get("/auth", function(req, res) {
       bodies[index] = JSON.parse(body)
     })
     eveCharacter.alliance_name = bodies[0].alliance_name
-    eveCharacter.alliance_portrait = bodies[1].px64x64
+    eveCharacter.alliance_portrait = bodies[1].px64x64.replace(/^http:\/\//i, 'https://')
     eveCharacter.corporation_name = bodies[2].corporation_name
-    eveCharacter.corporation_portrait = bodies[3].px64x64
+    eveCharacter.corporation_portrait = bodies[3].px64x64.replace(/^http:\/\//i, 'https://')
     
     character.set(eveCharacter)
     req.session.character = eveCharacter
