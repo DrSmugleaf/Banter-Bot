@@ -23,7 +23,7 @@ router.use(session({
 }))
 
 router.get("/login", function(req, res) {
-  const state = require("crypto").randomBytes(64).toString("base64")
+  const state = require("crypto").randomBytes(64).toString("hex")
   req.session.state = state
   res.redirect(`https://login.eveonline.com/oauth/authorize/?response_type=code&redirect_uri=${process.env.EVE_CALLBACK}&client_id=${process.env.EVE_ID}&state=${state}`)
 })
