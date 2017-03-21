@@ -95,7 +95,9 @@ html(lang="en")
               for(var element in res.invalid) {
                 if(!res.invalid.hasOwnProperty(element)) return
                 $(element).addClass("parent-has-error")
-                $(element).parents(".input-group", ".btn-group").tooltip({ container: "body" })
+                if($(element).parents(".input-group", ".btn-group").length) {
+                  $(element).tooltip({ container: "body" })
+                }
                 $(element).parent().addClass("has-error")
                 $(element).prop("title", res.invalid[element]).tooltip("fixTitle").tooltip("show")
               }
