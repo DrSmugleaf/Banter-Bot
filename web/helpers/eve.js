@@ -27,13 +27,15 @@ module.exports = {
     return num.toFixed(digits).replace(rx, "$1")
   },
   
-  validateAppraisal(link) {
+  validateAppraisal(req) {
     return new Promise((resolve, reject) => {
+      const link = url.parse(req.query.link)
+      const multiplier = req.query.multiplier ? parseInt(req.query.multiplier, 10) : 1
       if(!link) return resolve({ invalid: { "#link": "Invalid link." } })
-      link = url.parse(link)
       if(!(link && ["evepraisal.com", "skyblade.de"].includes(link.hostname))) {
         return resolve({ invalid: { "#link": "Invalid link." } })
       }
+      if(!multiplier) return resolve({ invalid: { "#multiplier": "Invalid multiplier." } })
       
       request.get(`${link.href}.json`).then(async (body) => {
         body = JSON.parse(body)
