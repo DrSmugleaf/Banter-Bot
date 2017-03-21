@@ -125,7 +125,9 @@ router.get("/query", async function(req, res) {
   })
 })
 
-router.post("/submit", function(req, res) {
+router.post("/submit", async function(req, res) {
+  const validate = await eveHelper.validateAppraisal(req.body.link)
+  if(validate.invalid) return res.status(500)
   const link = req.body.link
   const multiplier = req.body.multiplier || 1
   
