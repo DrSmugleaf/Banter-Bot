@@ -44,8 +44,8 @@ module.exports = {
         if(body.market_name !== "Jita") {
           response.invalid["#link"] += "Appraisal market must be Jita.\n"
         }
-        if(body.totals.volume > 300000) {
-          response.invalid["#link"] += "Volume is over 300.000m³.\n"
+        if(body.totals.volume * multiplier > 300000) {
+          response.invalid["#link"] += "Total cargo volume is over 300.000m³.\n"
         }
         async.filter(body.items, async (item, callback) => {
           item = await invTypes.get(item.typeID)
@@ -57,10 +57,9 @@ module.exports = {
           if(results.length > 0) {
             response.invalid["#link"] += "Your appraisal contains items from the Manufacture & Research or Blueprints market groups.\n"
           }
-          return resolve(response)
+          if(response.invalid) return resolve(response)
+          return resolve(body)
         })
-        
-        return resolve(body)
       }).catch((e) => {
         resolve({ invalid: { "#link": "Invalid appraisal." } })
       })
