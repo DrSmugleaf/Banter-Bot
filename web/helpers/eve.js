@@ -37,7 +37,7 @@ module.exports = {
       }
       if(!multiplier) return resolve({ invalid: { "#multiplier": "Invalid multiplier." } })
       
-      request.get(`${link.href}.json`).then(async (body) => {
+      request.get(`${link.href}.json`).then((body) => {
         body = JSON.parse(body)
         var response = { invalid: { "#link": "" } }
         
