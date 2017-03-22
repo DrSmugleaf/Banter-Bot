@@ -113,7 +113,7 @@ router.get("/auth", function(req, res) {
 
 router.get("/query", async function(req, res) {
   const validate = await eveHelper.validateAppraisal(req)
-  if(validate.invalid) return res.status(500).json(validate)
+  if(validate.invalid) return res.status(400).json(validate)
   const body = validate
   const price = body.totals.sell
   const multiplier = req.query.multiplier || 1
