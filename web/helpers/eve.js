@@ -21,8 +21,9 @@ module.exports = {
       { value: 1E9,  symbol: "B" },
       { value: 1E6,  symbol: "M" },
       { value: 1E3,  symbol: "k" }
-    ], rx = /\.0+$|(\.[0-9]*[1-9])0+$/, i
-    for (i = 0; i < si.length; i++) {
+    ]
+    var rx = /\.0+$|(\.[0-9]*[1-9])0+$/
+    for (var i = 0; i < si.length; i++) {
       if (num >= si[i].value) {
         return (num / si[i].value).toFixed(digits).replace(rx, "$1") + si[i].symbol
       }
@@ -31,7 +32,7 @@ module.exports = {
   },
   
   validateAppraisal(req) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       const link = req.query.link && typeof req.query.link === "string" ? url.parse(req.query.link) : null
       const multiplier = req.query.multiplier ? parseInt(req.query.multiplier, 10) : 1
       
@@ -82,7 +83,7 @@ module.exports = {
     // 475: Manufacture & Research
     const banned = [2, 475]
     
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       async.filter(appraisal.items, async (item, callback) => {
         item = await invTypes.get(item.typeID)
         const group = await invMarketGroups.getHighestParentID(item[0].marketGroupID)
@@ -96,7 +97,7 @@ module.exports = {
   fixShipVolumes(appraisal) {
     appraisal.totals.volume = 0
     
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       async.eachOf(appraisal.items, async (item, key, callback) => {
         const invVolumesItem = await invVolumes.get(item.typeID)
         if(invVolumesItem.length < 1) return callback()

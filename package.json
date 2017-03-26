@@ -9,7 +9,7 @@
   "scripts": {
     "start": "nf start --procfile Procfile",
     "start:dev": "nf start --procfile Procfile_dev",
-    "lint": "eslint src",
+    "lint": "eslint src && eslint web",
     "pretest": "npm run lint",
     "test": "nf run npm run mocha",
     "mocha": "mocha --harmony --trace-warnings --recursive --timeout 10000 --bail"
