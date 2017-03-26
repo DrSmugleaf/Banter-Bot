@@ -30,30 +30,30 @@ module.exports = {
     }
     return num.toFixed(digits).replace(rx, "$1")
   },
-  
+
   validateAppraisal(req) {
     return new Promise((resolve) => {
       const link = req.query.link && typeof req.query.link === "string" ? url.parse(req.query.link) : null
       const multiplier = req.query.multiplier ? parseInt(req.query.multiplier, 10) : 1
-      
+
       if(!link) return resolve({ invalid: { "#link": "Invalid link." } })
       if(!["evepraisal.com", "skyblade.de"].includes(link.hostname)) {
         return resolve({ invalid: { "#link": "Invalid link." } })
       }
       if(!multiplier) return resolve({ invalid: { "#multiplier": "Invalid multiplier." } })
-    
+
       var response = { invalid: {} }
       var appraisal
       request.get(`${link.href}.json`).then((body) => {
         appraisal = JSON.parse(body)
-        
+
         return Promise.all([
           this.filterBannedItems(appraisal),
           this.fixShipVolumes(appraisal)
         ])
       }).then((promises) => {
         const bannedItems = promises[0]
-        
+
         if(appraisal.market_name !== "Jita") {
           const string = "Appraisal market must be Jita.\n"
           response.invalid["#link"] = response.invalid["#link"] ?
@@ -77,12 +77,12 @@ module.exports = {
       })
     })
   },
-  
+
   async filterBannedItems(appraisal) {
     // 2: Blueprints
     // 475: Manufacture & Research
     const banned = [2, 475]
-    
+
     return new Promise((resolve) => {
       async.filter(appraisal.items, async (item, callback) => {
         item = await invTypes.get(item.typeID)
@@ -93,10 +93,10 @@ module.exports = {
       })
     })
   },
-  
+
   fixShipVolumes(appraisal) {
     appraisal.totals.volume = 0
-    
+
     return new Promise((resolve) => {
       async.eachOf(appraisal.items, async (item, key, callback) => {
         const invVolumesItem = await invVolumes.get(item.typeID)

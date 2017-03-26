@@ -16,7 +16,7 @@ module.exports = {
       process.exit(1)
     })
   },
-  
+
   getHighestParentID(id) {
     const that = this
     return new Promise((resolve, reject) => {
