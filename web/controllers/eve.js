@@ -62,7 +62,7 @@ router.get("/auth", function(req, res) {
   }).then((body) => {
     body = JSON.parse(body)
     eveCharacter.token = body.access_token
-
+    
     return request.get({
       headers: {
         "Authorization": `Bearer ${eveCharacter.token}`
@@ -72,7 +72,7 @@ router.get("/auth", function(req, res) {
   }).then((body) => {
     body = JSON.parse(body)
     eveCharacter.id = body.CharacterID
-
+    
     return Promise.all([
       request.get(`https://esi.tech.ccp.is/latest/characters/${body.CharacterID}/`),
       request.get(`https://esi.tech.ccp.is/latest/characters/${body.CharacterID}/portrait/`)
@@ -86,7 +86,7 @@ router.get("/auth", function(req, res) {
     eveCharacter.character_birthday = moment(bodies[0].birthday).format("YYYY-MM-DD HH:MM:SS")
     eveCharacter.alliance_id = bodies[0].alliance_id
     eveCharacter.corporation_id = bodies[0].corporation_id
-
+    
     return Promise.all([
       request.get(`https://esi.tech.ccp.is/latest/alliances/${eveCharacter.alliance_id}/`),
       request.get(`https://esi.tech.ccp.is/latest/alliances/${eveCharacter.alliance_id}/icons/`),
@@ -101,7 +101,7 @@ router.get("/auth", function(req, res) {
     eveCharacter.alliance_portrait = bodies[1].px64x64.replace(/^http:\/\//i, "https://")
     eveCharacter.corporation_name = bodies[2].corporation_name
     eveCharacter.corporation_portrait = bodies[3].px64x64.replace(/^http:\/\//i, "https://")
-
+    
     character.set(eveCharacter)
     req.session.character = eveCharacter
     res.redirect("/eve/eve")
@@ -112,7 +112,7 @@ router.get("/auth", function(req, res) {
 })
 
 router.get("/query", async function(req, res) {
-  const validate = await eveHelper.validateAppraisal(req)
+  const validate = await eveHelper.validateAppraisal(req.query)
   if(validate.invalid) return res.status(400).json(validate)
   const appraisal = validate
   const price = appraisal.totals.sell
@@ -126,22 +126,24 @@ router.get("/query", async function(req, res) {
 })
 
 router.post("/submit", async function(req, res) {
-  const validate = await eveHelper.validateAppraisal(req.body.link)
+  const validate = await eveHelper.validateAppraisal(req.body)
   if(validate.invalid) return res.status(500)
   const link = req.body.link
   const multiplier = req.body.multiplier || 1
-
+  
   request.get({
     url: `${link}.json`
   }).then((body) => {
     body = JSON.parse(body)
     contract.set({
       link: `${link}.json`,
+      destination: req.body.destination,
       value: body.totals.sell,
       volume: body.totals.volume,
       multiplier: multiplier,
       submitter_id: req.session.character.id,
       submitter_name: req.session.character.character_name,
+      submitted: moment().unix(),
       status: "pending"
     })
   }).catch((e) => {
