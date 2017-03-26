@@ -55,15 +55,18 @@ module.exports = {
         
         if(appraisal.market_name !== "Jita") {
           const string = "Appraisal market must be Jita.\n"
-          response.invalid["#link"] = response.invalid["#link"] ? + string : string
+          response.invalid["#link"] = response.invalid["#link"] ?
+            response.invalid["#link"].concat(string) : string
         }
         if(appraisal.totals.volume * multiplier > 300000) {
           const string = "Total cargo volume is over 300.000m³.\n"
-          response.invalid["#link"] = response.invalid["#link"] ? + string : string
+          response.invalid["#link"] = response.invalid["#link"] ?
+            response.invalid["#link"].concat(string) : string
         }
         if(bannedItems.length > 0) {
           const string = "Your appraisal contains items from the Manufacture & Research or Blueprints market groups.\n"
-          response.invalid["#link"] = response.invalid["#link"] ? + string : string
+          response.invalid["#link"] = response.invalid["#link"] ?
+            response.invalid["#link"].concat(string) : string
         }
         if(!_.isEmpty(response.invalid)) return resolve(response)
         return resolve(appraisal)
