@@ -114,8 +114,8 @@ router.get("/auth", function(req, res) {
 router.get("/query", async function(req, res) {
   const validate = await eveHelper.validateAppraisal(req)
   if(validate.invalid) return res.status(400).json(validate)
-  const body = validate
-  const price = body.totals.sell
+  const appraisal = validate
+  const price = appraisal.totals.sell
   const multiplier = req.query.multiplier || 1
   return res.status(200).json({
     jita: (price * multiplier).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","),
