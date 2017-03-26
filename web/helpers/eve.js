@@ -31,10 +31,10 @@ module.exports = {
     return num.toFixed(digits).replace(rx, "$1")
   },
 
-  validateAppraisal(req) {
+  validateAppraisal(query) {
     return new Promise((resolve) => {
-      const link = req.query.link && typeof req.query.link === "string" ? url.parse(req.query.link) : null
-      const multiplier = req.query.multiplier ? parseInt(req.query.multiplier, 10) : 1
+      const link = query.link && typeof query.link === "string" ? url.parse(query.link) : null
+      const multiplier = query.multiplier ? parseInt(query.multiplier, 10) : 1
 
       if(!link) return resolve({ invalid: { "#link": "Invalid link." } })
       if(!["evepraisal.com", "skyblade.de"].includes(link.hostname)) {
