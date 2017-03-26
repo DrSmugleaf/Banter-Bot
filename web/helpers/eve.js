@@ -54,15 +54,17 @@ module.exports = {
         const bannedItems = promises[0]
         
         if(appraisal.market_name !== "Jita") {
-          response.invalid["#link"] += "Appraisal market must be Jita.\n"
+          const string = "Appraisal market must be Jita.\n"
+          response.invalid["#link"] = response.invalid["#link"] ? + string : string
         }
         if(appraisal.totals.volume * multiplier > 300000) {
-          response.invalid["#link"] += "Total cargo volume is over 300.000m³.\n"
+          const string = "Total cargo volume is over 300.000m³.\n"
+          response.invalid["#link"] = response.invalid["#link"] ? + string : string
         }
         if(bannedItems.length > 0) {
-          response.invalid["#link"] += "Your appraisal contains items from the Manufacture & Research or Blueprints market groups.\n"
+          const string = "Your appraisal contains items from the Manufacture & Research or Blueprints market groups.\n"
+          response.invalid["#link"] = response.invalid["#link"] ? + string : string
         }
-        
         if(!_.isEmpty(response.invalid)) return resolve(response)
         return resolve(appraisal)
       }).catch((e) => {
