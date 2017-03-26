@@ -8,12 +8,12 @@ html(lang="en")
     include ../../partials/header
   body
     include ../../partials/eve/navigation
-    
+
     div.jumbotron
       div.container
         h1 Mango Deliveries
         p Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-    
+
     div.container.text-center
       form(method="post" action="/eve/submit")
         div.row
@@ -70,7 +70,7 @@ html(lang="en")
                           div.input-group-addon ISK
                   div.form-group
                     button(type="submit" class="btn btn-primary") Create Contract
-    
+
     include ../../partials/footer
     script.
       $("#link").change(function() {
@@ -105,14 +105,14 @@ html(lang="en")
           }
         }).done()
       })
-    
+
     script.
       $("div#image_container div div").click(function() {
         $("input#destination").val($("div img", this).attr("value"))
         $("div#image_container div div img").css("outline", "")
         $("div img", this).css("outline", "4px solid #0088CC")
       })
-    
+
     script.
       $(document).ready(function() {
         $('[data-toggle="tooltip"]').tooltip()

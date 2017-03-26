@@ -8,7 +8,7 @@ html(lang="en")
     include ../../partials/header
   body
     include ../../partials/eve/navigation
-    
+
     div.jumbotron
       div.container
         h1 Mango Deliveries
@@ -18,7 +18,7 @@ html(lang="en")
           p There are #{contracts.length} contracts left
         else
           p There are no contracts left
-    
+
     if(contracts)
       div.container.table-responsive
         table.table.table-striped
@@ -33,7 +33,7 @@ html(lang="en")
               th Submitted
               th Status
               th Accept
-              
+
           tbody
             - contracts.forEach(function(contract) {
               tr
@@ -48,5 +48,5 @@ html(lang="en")
                 td=contract.status
                 td Placeholder
             - })
-    
+
     include ../../partials/footer
