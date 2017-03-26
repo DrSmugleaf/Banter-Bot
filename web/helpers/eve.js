@@ -32,7 +32,7 @@ module.exports = {
   
   validateAppraisal(req) {
     return new Promise((resolve, reject) => {
-      const link = url.parse(req.query.link)
+      const link = req.query.link && typeof req.query.link === "string" ? url.parse(req.query.link) : null
       const multiplier = req.query.multiplier ? parseInt(req.query.multiplier, 10) : 1
       
       if(!link) return resolve({ invalid: { "#link": "Invalid link." } })
