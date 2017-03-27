@@ -12,12 +12,22 @@ module.exports = {
     return this.db.query(`CREATE TABLE IF NOT EXISTS eve_contracts (
       id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
       link TINYTEXT NOT NULL,
+      destination TINYTEXT NOT NULL,
       value BIGINT UNSIGNED NOT NULL,
+      value_formatted TINYTEXT NOT NULL,
+      value_short TINYTEXT NOT NULL,
+      quote BIGINT UNSIGNED NOT NULL,
+      quote_formatted TINYTEXT NOT NULL,
+      quote_short TINYTEXT NOT NULL,
       volume BIGINT UNSIGNED NOT NULL,
+      volume_formatted TINYTEXT NOT NULL,
+      value_volume_ratio INTEGER UNSIGNED NOT NULL,
+      value_volume_ratio_formatted TINYTEXT NOT NULL,
       multiplier TINYINT UNSIGNED NOT NULL,
       submitter_id INTEGER UNSIGNED NOT NULL,
       submitter_name TINYTEXT NOT NULL,
       submitted BIGINT NOT NULL,
+      submitted_formatted TINYTEXT NOT NULL,
       status TINYTEXT NOT NULL
     )`)
   },
