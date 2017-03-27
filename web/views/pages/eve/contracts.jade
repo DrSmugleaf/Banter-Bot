@@ -24,10 +24,12 @@ html(lang="en")
         table.table.table-striped
           thead
             tr
-              th #
+              th # (Link)
               th Destination
               th Customer
-              th ISK Cost
+              th Price
+              th Quote
+              th Multiplier
               th Volume
               th ISK/m³
               th Submitted
@@ -38,13 +40,15 @@ html(lang="en")
             - contracts.forEach(function(contract) {
               tr
                 td
-                  a(href="#{contract.link.replace('.json', '')}")=contract.id
-                td Placeholder
+                  a(href="#{contract.link}")=contract.id
+                td=contract.destination
                 td=contract.submitter_name
-                td=contract.value * contract.multiplier
-                td=contract.volume
-                td=contract.value / contract.volume
-                td=contract.submitted
+                td=contract.value_short
+                td=contract.quote_formatted
+                td=contract.multiplier
+                td=contract.volume_formatted
+                td=contract.value_volume_ratio_formatted
+                td=contract.submitted_formatted
                 td=contract.status
                 td Placeholder
             - })

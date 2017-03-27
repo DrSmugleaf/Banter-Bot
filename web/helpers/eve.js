@@ -13,7 +13,7 @@ const url = require("url")
 const winston = require("winston")
 
 module.exports = {
-  nFormatter(num, digits) {
+  nShortener(num, digits = 2) {
     var si = [
       { value: 1E18, symbol: "E" },
       { value: 1E15, symbol: "P" },

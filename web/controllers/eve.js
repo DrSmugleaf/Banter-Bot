@@ -119,36 +119,41 @@ router.get("/query", async function(req, res) {
   const multiplier = req.query.multiplier || 1
   return res.status(200).json({
     jita: (price * multiplier).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","),
-    jitaShort: eveHelper.nFormatter(price * multiplier, 2),
+    jitaShort: eveHelper.nShortener(price * multiplier, 2),
     quote: (price * 1.13 * multiplier).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","),
-    quoteShort: eveHelper.nFormatter(price * 1.13 * multiplier, 2)
+    quoteShort: eveHelper.nShortener(price * 1.13 * multiplier, 2)
   })
 })
 
 router.post("/submit", async function(req, res) {
   const validate = await eveHelper.validateAppraisal(req.body)
-  if(validate.invalid) return res.status(500)
+  if(validate.invalid) return res.status(400)
+  const appraisal = validate
   const link = req.body.link
+  const destination = req.body.destination
+  const price = appraisal.totals.sell
   const multiplier = req.body.multiplier || 1
+  const volume = appraisal.totals.volume
   
-  request.get({
-    url: `${link}.json`
-  }).then((body) => {
-    body = JSON.parse(body)
-    contract.set({
-      link: `${link}.json`,
-      destination: req.body.destination,
-      value: body.totals.sell,
-      volume: body.totals.volume,
-      multiplier: multiplier,
-      submitter_id: req.session.character.id,
-      submitter_name: req.session.character.character_name,
-      submitted: moment().unix(),
-      status: "pending"
-    })
-  }).catch((e) => {
-    winston.error(e)
-    res.sendStatus(403)
+  contract.set({
+    link: link,
+    destination: destination,
+    value: price * multiplier,
+    value_formatted: (price * multiplier).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+    value_short: eveHelper.nShortener(price * multiplier),
+    quote: price * 1.13 * multiplier,
+    quote_formatted: Math.round(price * 1.13 * multiplier).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+    quote_short: eveHelper.nShortener(price * 1.13 * multiplier),
+    volume: volume * multiplier,
+    volume_formatted: (volume * multiplier).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+    value_volume_ratio: Math.round(price / volume),
+    value_volume_ratio_formatted: Math.round(price / volume).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+    multiplier: multiplier,
+    submitter_id: req.session.character.id,
+    submitter_name: req.session.character.character_name,
+    submitted: moment().unix(),
+    submitted_formatted: moment().format("MMMM Do YYYY, HH:mm:ss"),
+    status: "pending"
   })
 })
 
