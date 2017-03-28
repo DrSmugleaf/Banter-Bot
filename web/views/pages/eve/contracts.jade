@@ -6,6 +6,7 @@ doctype html
 html(lang="en")
   head
     include ../../partials/header
+    link(rel="stylesheet" type="text/css" href="/stylesheets/eve/contracts.css")
   body
     include ../../partials/eve/navigation
 
@@ -13,9 +14,35 @@ html(lang="en")
       div.container
         h1 Mango Deliveries
         if(contracts && contracts.length === 1)
-          p There is 1 contract left
-        else if(contracts)
-          p There are #{contracts.length} contracts left
+          div.col-md-6
+            div.row
+              p There is 1 contract left
+          div.col-md-6
+            div.col-md-6.pull-right
+              div.form-group
+                div.row
+                  label(for="tax") Tax
+                  div.input-group
+                    input.pull-right(class="form-control" name="tax" type="text" id="tax" autocomplete="off" readonly)
+                    div.input-group-addon ISK
+              div.form-group
+                div(style="text-align: center;")
+                  button.btn.btn-primary(type="submit" onclick="submit()") Submit
+        else if(contracts && contracts.length > 1)
+          div.col-md-6
+            div.row
+              p There are #{contracts.length} contracts left
+          div.col-md-6
+            div.col-md-6.pull-right
+              div.form-group
+                div.row
+                  label(for="tax") Tax
+                  div.input-group
+                    input.pull-right(class="form-control" name="tax" type="text" id="tax" autocomplete="off" readonly)
+                    div.input-group-addon ISK
+              div.form-group
+                div(style="text-align: center;")
+                  button.btn.btn-primary(type="submit" onclick="submit()") Submit
         else
           p There are no contracts left
 
@@ -33,12 +60,12 @@ html(lang="en")
               th Volume
               th ISK/m³
               th Submitted
-              th Status
               th Accept
+              th Flag
 
           tbody
             - contracts.forEach(function(contract) {
-              tr
+              tr(class=contract.status)
                 td
                   a(href="#{contract.link}")=contract.id
                 td=contract.destination
@@ -49,8 +76,44 @@ html(lang="en")
                 td=contract.volume_formatted
                 td=contract.value_volume_ratio_formatted
                 td=contract.submitted_formatted
-                td=contract.status
-                td Placeholder
+                if(contract.status === "pending")
+                  td
+                    input(type="checkbox" name="accept" value=contract.value contract=contract.id)
+                  td
+                    input(type="checkbox" name="flag" value=contract.value contract=contract.id)
+                else
+                  td(colspan="2")=contract.freighter_name
             - })
 
     include ../../partials/footer
+    script.
+      var tax = 0
+      $("tr input[type=checkbox]").change(function() {
+        if($(this).prop("checked") == true) {
+          tax += parseInt($(this).prop("value"), 10) * 0.03
+        } else {
+          tax -= parseInt($(this).prop("value"), 10) * 0.03
+        }
+        $("#tax").val(tax)
+      })
+    
+    script.
+      function submit() {
+        var contracts = []
+        $("input[name=accept]:checked").each(function() {
+          contracts.push($(this).attr("contract"))
+        })
+        $.ajax({
+          type: "POST",
+          url: "/eve/contracts/submit",
+          data: {
+            contracts: contracts
+          },
+          success: function(res) {
+            
+          },
+          error: function(res) {
+            
+          }
+        }).done()
+      }

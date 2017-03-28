@@ -157,4 +157,16 @@ router.post("/submit", async function(req, res) {
   })
 })
 
+router.post("/contracts/submit", async function(req, res) {
+  _.forEach(req.body.contracts, async (id) => {
+    var oldContract = await contract.get(id)
+    oldContract = oldContract[0]
+    if(oldContract.status !== "pending") return res.status(403)
+    oldContract.status = "ongoing"
+    oldContract.freighter_id = req.session.character.character_id
+    oldContract.freighter_name = req.session.character.character_name
+    contract.set(oldContract)
+  })
+})
+
 module.exports = router

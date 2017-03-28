@@ -28,7 +28,10 @@ module.exports = {
       submitter_name TINYTEXT NOT NULL,
       submitted BIGINT NOT NULL,
       submitted_formatted TINYTEXT NOT NULL,
-      status TINYTEXT NOT NULL
+      status TINYTEXT NOT NULL,
+      freighter_id INTEGER UNSIGNED,
+      freighter_name TINYTEXT,
+      taxed BOOLEAN NOT NULL DEFAULT 0
     )`)
   },
 
@@ -37,7 +40,7 @@ module.exports = {
   },
 
   get(id) {
-    return this.db.query("SELECT * FROM eve_contracts WHERE id=?", [id])
+    return this.db.query("SELECT * FROM eve_contracts WHERE id=? LIMIT 1", [id])
   },
 
   getAll() {
