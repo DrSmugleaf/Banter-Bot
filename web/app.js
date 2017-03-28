@@ -20,25 +20,25 @@ app.set("view engine", "jade")
 app.use(express.static(path.join(__dirname + "/public")))
 app.use(require("./controllers"))
 
-if(process.env.NODE_ENV === "dev") {
-  app.use(function(e, req, res) {
-    winston.info(e)
-    res.status(e.status || 500)
-    res.render("pages/404", {
-      message: e.message,
-      error: e
-    })
-  })
-} else {
-  app.use(function(e, req, res) {
-    winston.info(e)
-    res.status(e.status || 500)
-    res.render("pages/404", {
-      message: e.message,
-      error: {}
-    })
-  })
-}
+// if(process.env.NODE_ENV === "dev") {
+//   app.use(function(e, req, res) {
+//     winston.info(e)
+//     res.status(e.status || 500)
+//     res.render("pages/404", {
+//       message: e.message,
+//       error: e
+//     })
+//   })
+// } else {
+//   app.use(function(e, req, res) {
+//     winston.info(e)
+//     res.status(e.status || 500)
+//     res.render("pages/404", {
+//       message: e.message,
+//       error: {}
+//     })
+//   })
+// }
 
 app.listen(process.env.PORT || 3000, function() {
   winston.info(`Listening on port ${process.env.PORT || 3000}`)

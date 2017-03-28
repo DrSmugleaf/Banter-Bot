@@ -1,0 +1,31 @@
+.table>tbody>tr.selected>td,.table>tbody>tr.selected>th,.table>tbody>tr>td.selected,.table>tbody>tr>th.selected,.table>tfoot>tr.selected>td,.table>tfoot>tr.selected>th,.table>tfoot>tr>td.selected,.table>tfoot>tr>th.selected,.table>thead>tr.selected>td,.table>thead>tr.selected>th,.table>thead>tr>td.selected,.table>thead>tr>th.selected {
+    background-color: #f5f5f5
+}
+
+.table-hover>tbody>tr.selected:hover>td,.table-hover>tbody>tr.selected:hover>th,.table-hover>tbody>tr:hover>.selected,.table-hover>tbody>tr>td.selected:hover,.table-hover>tbody>tr>th.selected:hover {
+    background-color: #e8e8e8
+}
+
+.table>tbody>tr.ongoing>td,.table>tbody>tr.ongoing>th,.table>tbody>tr>td.ongoing,.table>tbody>tr>th.ongoing,.table>tfoot>tr.ongoing>td,.table>tfoot>tr.ongoing>th,.table>tfoot>tr>td.ongoing,.table>tfoot>tr>th.ongoing,.table>thead>tr.ongoing>td,.table>thead>tr.ongoing>th,.table>thead>tr>td.ongoing,.table>thead>tr>th.ongoing {
+    background-color: #dff0d8
+}
+
+.table-hover>tbody>tr.ongoing:hover>td,.table-hover>tbody>tr.ongoing:hover>th,.table-hover>tbody>tr:hover>.ongoing,.table-hover>tbody>tr>td.ongoing:hover,.table-hover>tbody>tr>th.ongoing:hover {
+    background-color: #d0e9c6
+}
+
+.table>tbody>tr.pending>td,.table>tbody>tr.pending>th,.table>tbody>tr>td.pending,.table>tbody>tr>th.pending,.table>tfoot>tr.pending>td,.table>tfoot>tr.pending>th,.table>tfoot>tr>td.pending,.table>tfoot>tr>th.pending,.table>thead>tr.pending>td,.table>thead>tr.pending>th,.table>thead>tr>td.pending,.table>thead>tr>th.pending {
+    background-color: #fcf8e3
+}
+
+.table-hover>tbody>tr.pending:hover>td,.table-hover>tbody>tr.pending:hover>th,.table-hover>tbody>tr:hover>.pending,.table-hover>tbody>tr>td.pending:hover,.table-hover>tbody>tr>th.pending:hover {
+    background-color: #faf2cc
+}
+
+.table>tbody>tr.flagged>td,.table>tbody>tr.flagged>th,.table>tbody>tr>td.flagged,.table>tbody>tr>th.flagged,.table>tfoot>tr.flagged>td,.table>tfoot>tr.flagged>th,.table>tfoot>tr>td.flagged,.table>tfoot>tr>th.flagged,.table>thead>tr.flagged>td,.table>thead>tr.flagged>th,.table>thead>tr>td.flagged,.table>thead>tr>th.flagged {
+    background-color: #f2dede
+}
+
+.table-hover>tbody>tr.flagged:hover>td,.table-hover>tbody>tr.flagged:hover>th,.table-hover>tbody>tr:hover>.flagged,.table-hover>tbody>tr>td.flagged:hover,.table-hover>tbody>tr>th.flagged:hover {
+    background-color: #ebcccc
+}
