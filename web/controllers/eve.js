@@ -58,7 +58,9 @@ router.get("/contracts", eveAuth, function(req, res) {
 })
 
 router.get("/auth", function(req, res) {
-  if(req.query.state !== req.session.state) return res.sendStatus(403)
+  const sessionState = req.session.state
+  delete req.session.state
+  if(req.query.state !== sessionState) return res.sendStatus(403)
   var eveCharacter = {}
   request.post({
     headers: {
