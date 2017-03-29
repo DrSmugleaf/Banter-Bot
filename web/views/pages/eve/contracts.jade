@@ -220,18 +220,24 @@ html(lang="en")
     script.
       function showPending(e) {
         if($(e).parent(".disabled").length) return
+        $("ul.nav.nav-tabs.nav-justified li").removeClass("active")
+        $(e).parent("li").addClass("active")
         $("div.table-responsive").hide()
         $("#pendingContracts").show()
       }
       
       function showOngoing(e) {
         if($(e).parent(".disabled").length) return
+        $("ul.nav.nav-tabs.nav-justified li").removeClass("active")
+        $(e).parent("li").addClass("active")
         $("div.table-responsive").hide()
         $("#ongoingContracts").show()
       }
       
       function showFinalized(e) {
         if($(e).parent(".disabled").length) return
+        $("ul.nav.nav-tabs.nav-justified li").removeClass("active")
+        $(e).parent("li").addClass("active")
         $("div.table-responsive").hide()
         $("#finalizedContracts").show()
       }
