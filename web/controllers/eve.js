@@ -56,6 +56,7 @@ router.get("/contracts", eveAuth, function(req, res) {
       pendingContracts: pending,
       ongoingContracts: ongoing,
       finalizedContracts: finalized,
+      freighter: ["freighter", "director"].includes(req.session.character.role),
       title: "Contracts - Mango Deliveries",
       active: "Contracts"
     })
