@@ -9,42 +9,43 @@ html(lang="en")
     link(rel="stylesheet" type="text/css" href="/stylesheets/eve/contracts.css")
   body
     include ../../partials/eve/navigation
-
+    
     div.jumbotron
       div.container
         h1 Mango Deliveries
-        if(pendingContracts.length + ongoingContracts.length + finalizedContracts.length === 1)
-          div.col-md-6
-            div.row
+        div.col-md-6
+          div.row
+            if(pendingContracts.length === 1)
               p There is 1 pending contract left
-          div.col-md-6
-            div.col-md-6.pull-right
-              div.form-group
-                div.row
-                  label(for="tax") Tax
-                  div.input-group
-                    input.pull-right(class="form-control" name="tax" type="text" id="tax" autocomplete="off" readonly)
-                    div.input-group-addon ISK
-              div.form-group
-                div(style="text-align: center;")
-                  button.btn.btn-primary(type="submit" onclick="submit()") Submit
-        else if(pendingContracts.length + ongoingContracts.length + finalizedContracts.length > 1)
-          div.col-md-6
-            div.row
+            else if(pendingContracts.length > 1)
               p There are #{pendingContracts.length} pending contracts left
-          div.col-md-6
-            div.col-md-6.pull-right
-              div.form-group
-                div.row
-                  label(for="tax") Tax
-                  div.input-group
-                    input.pull-right(class="form-control" name="tax" type="text" id="tax" autocomplete="off" readonly)
-                    div.input-group-addon ISK
-              div.form-group
-                div(style="text-align: center;")
-                  button.btn.btn-primary(type="submit" onclick="submit()") Submit
-        else
-          p There are no contracts left
+            else
+              p There are no pending contracts left
+            
+            if(ongoingContracts.length === 1)
+              p There is 1 currently ongoing contract
+            else if(ongoingContracts.length > 1)
+              p There are #{ongoingContracts.length} currently ongoing contracts
+            else
+              p There are no currently ongoing contracts
+            
+            if(finalizedContracts.length === 1)
+              p There is 1 finalized contract
+            else if(finalizedContracts.length > 1)
+              p There are #{finalizedContracts.length} finalized contracts
+            else
+              p There are no finalized contracts
+        div.col-md-6
+          div.col-md-6.pull-right
+            div.form-group
+              div.row
+                label(for="tax") Tax
+                div.input-group
+                  input.pull-right.form-control(name="tax" type="text" id="tax" autocomplete="off" readonly)
+                  div.input-group-addon ISK
+            div.form-group
+              div(style="text-align: center;")
+                button.btn.btn-primary(type="submit" onclick="submit()") Submit
     
     if(pendingContracts || ongoingContracts || finalizedContracts)
       div.container
