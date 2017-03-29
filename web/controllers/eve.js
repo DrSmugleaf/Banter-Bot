@@ -41,6 +41,7 @@ router.get("/contracts", eveAuth, function(req, res) {
   if(req.session.character.role !== "user") {
     characterID = req.session.character.id
   }
+  
   Promise.all([
     contract.getAllPending(characterID),
     contract.getAllOngoing(characterID),

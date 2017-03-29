@@ -59,7 +59,7 @@ html(lang="en")
       div.container
         div#submit-alert.alert(role="alert")
         ul.nav.nav-tabs.nav-justified
-            li(class=pendingContracts[0] ? null : "disabled")
+            li(class=pendingContracts[0] ? "active" : "disabled")
               a(onclick="showPending(this)") Pending Contracts
             li(class=ongoingContracts[0] ? null : "disabled")
               a(onclick="showOngoing(this)") Ongoing Contracts
