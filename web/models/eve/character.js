@@ -20,7 +20,8 @@ module.exports = {
       corporation_portrait TINYTEXT NOT NULL,
       alliance_id BIGINT UNSIGNED NOT NULL,
       alliance_name TINYTEXT NOT NULL,
-      alliance_portrait TINYTEXT NOT NULL
+      alliance_portrait TINYTEXT NOT NULL,
+      role VARCHAR(16) NOT NULL DEFAULT 'user'
     )`)
   },
 

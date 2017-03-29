@@ -37,11 +37,15 @@ router.get("/eve", function(req, res) {
 })
 
 router.get("/contracts", eveAuth, function(req, res) {
+  var characterID
+  if(req.session.character.role !== "user") {
+    characterID = req.session.character.id
+  }
   Promise.all([
-    contract.getAllPending(),
-    contract.getAllOngoing(),
-    contract.getAllFinalized(),
-    contract.getAllUntaxed()
+    contract.getAllPending(characterID),
+    contract.getAllOngoing(characterID),
+    contract.getAllFinalized(characterID),
+    contract.getAllUntaxed(characterID)
   ]).then((contracts) => {
     const pending = contracts[0]
     const ongoing = contracts[1]
@@ -108,7 +112,7 @@ router.get("/auth", function(req, res) {
       request.get(`https://esi.tech.ccp.is/latest/corporations/${eveCharacter.corporation_id}/`),
       request.get(`https://esi.tech.ccp.is/latest/corporations/${eveCharacter.corporation_id}/icons/`)
     ])
-  }).then((bodies) => {
+  }).then(async (bodies) => {
     _.forEach(bodies, (body, index) => {
       bodies[index] = JSON.parse(body)
     })
@@ -118,7 +122,8 @@ router.get("/auth", function(req, res) {
     eveCharacter.corporation_portrait = bodies[3].px64x64.replace(/^http:\/\//i, "https://")
     
     character.set(eveCharacter)
-    req.session.character = eveCharacter
+    eveCharacter = await character.get(eveCharacter.id)
+    req.session.character = eveCharacter[0]
     res.redirect("/eve/eve")
   }).catch((e) => {
     winston.error(`Error while retrieving character: ${e}`)
