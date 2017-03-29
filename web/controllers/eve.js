@@ -100,7 +100,7 @@ router.get("/auth", function(req, res) {
     })
     eveCharacter.character_name = bodies[0].name
     eveCharacter.character_portrait = bodies[1].px64x64.replace(/^http:\/\//i, "https://")
-    eveCharacter.character_birthday = moment(bodies[0].birthday).format("YYYY-MM-DD HH:MM:SS")
+    eveCharacter.character_birthday = moment(bodies[0].birthday).format("YYYY-MM-DD HH:mm:ss")
     eveCharacter.alliance_id = bodies[0].alliance_id
     eveCharacter.corporation_id = bodies[0].corporation_id
     
