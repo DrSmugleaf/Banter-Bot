@@ -13,7 +13,7 @@ html(lang="en")
     div.jumbotron
       div.container
         h1 Mango Deliveries
-        if((pendingContracts && pendingContracts.length === 1) || (ongoingContracts && ongoingContracts.length === 1))
+        if(pendingContracts.length + ongoingContracts.length + finalizedContracts.length === 1)
           div.col-md-6
             div.row
               p There is 1 pending contract left
@@ -28,7 +28,7 @@ html(lang="en")
               div.form-group
                 div(style="text-align: center;")
                   button.btn.btn-primary(type="submit" onclick="submit()") Submit
-        else if((pendingContracts && pendingContracts.length > 1) || (ongoingContracts && ongoingContracts.length > 1))
+        else if(pendingContracts.length + ongoingContracts.length + finalizedContracts.length > 1)
           div.col-md-6
             div.row
               p There are #{pendingContracts.length} pending contracts left
@@ -48,6 +48,7 @@ html(lang="en")
     
     if(pendingContracts || ongoingContracts || finalizedContracts)
       div.container
+        div#submit-alert.alert(role="alert")
         ul.nav.nav-tabs.nav-justified
             li(class=pendingContracts[0] ? null : "disabled")
               a(onclick="showPending(this)") Pending Contracts
@@ -208,11 +209,16 @@ html(lang="en")
             complete: complete,
             tax: tax
           },
-          success: function(res) {
-            
+          success: function() {
+            location.reload()
           },
           error: function(res) {
-            
+            res = JSON.parse(res.responseText)
+            $("div#submit-alert")
+              .addClass("alert-danger")
+              .text(res.alert)
+            if($("div#submit-alert").parent("a").length > 0) return
+            $("div#submit-alert").wrapInner("<a href='javascript:window.location.reload()'></a>")
           }
         }).done()
       }
