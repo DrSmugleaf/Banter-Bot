@@ -5,6 +5,7 @@
 "use strict"
 const _ = require("underscore")
 const async = require("async")
+const contract = require("../models/eve/contract")
 const invMarketGroups = require("../models/eve/invmarketgroups")
 const invTypes = require("../models/eve/invtypes")
 const invVolumes = require("../models/eve/invvolumes")
@@ -108,5 +109,70 @@ module.exports = {
         resolve()
       })
     })
+  },
+  
+  contracts: {
+    accept(req) {
+      return new Promise((resolve, reject) => {
+        async.forEach(req.body.accept, async (id, callback) => {
+          var oldContract = await contract.get(id)
+          oldContract = oldContract[0]
+          if(!oldContract || !["pending", "flagged"].includes(oldContract.status)) return callback(id)
+          oldContract.status = "ongoing"
+          oldContract.freighter_id = req.session.character.character_id
+          oldContract.freighter_name = req.session.character.character_name
+          contract.set(oldContract)
+          return callback()
+        }, function(errorID) {
+          if(errorID) return reject(errorID)
+          return resolve()
+        })
+      })
+    },
+    flag(req) {
+      return new Promise((resolve, reject) => {
+        async.forEach(req.body.flag, async (id, callback) => {
+          var oldContract = await contract.get(id)
+          oldContract = oldContract[0]
+          if(!oldContract || oldContract.status !== "pending") return callback(id)
+          oldContract.status = "flagged"
+          contract.set(oldContract)
+          return callback()
+        }, function(errorID) {
+          if(errorID) return reject(errorID)
+          return resolve()
+        })
+      })
+    },
+    complete(req) {
+      return new Promise((resolve, reject) => {
+        async.forEach(req.body.complete, async (id, callback) => {
+          var oldContract = await contract.get(id)
+          oldContract = oldContract[0]
+          if(!oldContract || oldContract.status !== "ongoing") return callback(id)
+          oldContract.status = "completed"
+          contract.set(oldContract)
+          return callback()
+        }, function(errorID) {
+          if(errorID) return reject(errorID)
+          return resolve()
+        })
+      })
+    },
+    tax(req) {
+      return new Promise((resolve, reject) => {
+        async.forEach(req.body.tax, async (id, callback) => {
+          var oldContract = await contract.get(id)
+          oldContract = oldContract[0]
+          if(!oldContract || oldContract.status !== "completed" || oldContract.taxed) return callback(id)
+          oldContract.taxed = true
+          contract.set(oldContract)
+          return callback()
+        }, function(errorID) {
+          if(errorID) return reject(errorID)
+          return resolve()
+        })
+      })
+    }
   }
 }

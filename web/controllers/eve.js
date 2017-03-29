@@ -169,39 +169,18 @@ router.post("/submit", async function(req, res) {
   })
 })
 
-router.post("/contracts/submit", async function(req, res) {
-  _.forEach(req.body.accept, async (id) => {
-    var oldContract = await contract.get(id)
-    oldContract = oldContract[0]
-    if(oldContract.status !== "pending" && oldContract.status !== "flagged") return res.status(403)
-    oldContract.status = "ongoing"
-    oldContract.freighter_id = req.session.character.character_id
-    oldContract.freighter_name = req.session.character.character_name
-    contract.set(oldContract)
-  })
-  
-  _.forEach(req.body.flag, async (id) => {
-    var oldContract = await contract.get(id)
-    oldContract = oldContract[0]
-    if(oldContract.status !== "pending") return res.status(403)
-    oldContract.status = "flagged"
-    contract.set(oldContract)
-  })
-  
-  _.forEach(req.body.complete, async (id) => {
-    var oldContract = await contract.get(id)
-    oldContract = oldContract[0]
-    if(oldContract.status !== "ongoing") return res.status(403)
-    oldContract.status = "completed"
-    contract.set(oldContract)
-  })
-  
-  _.forEach(req.body.tax, async (id) => {
-    var oldContract = await contract.get(id)
-    oldContract = oldContract[0]
-    if(oldContract.status !== "completed" || oldContract.taxed) return res.status(403)
-    oldContract.taxed = true
-    contract.set(oldContract)
+router.post("/contracts/submit", function(req, res) {
+  Promise.all([
+    eveHelper.contracts.accept(req),
+    eveHelper.contracts.flag(req),
+    eveHelper.contracts.complete(req),
+    eveHelper.contracts.tax(req)
+  ]).then(() => {
+    return res.sendStatus(200)
+  }).catch((errorID) => {
+    return res.status(403).json({
+      alert: `Contract #${errorID} was modified by someone else. Please reload the page.`
+    })
   })
 })
 
