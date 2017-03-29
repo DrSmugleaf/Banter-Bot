@@ -36,17 +36,18 @@ html(lang="en")
             else
               p There are no finalized contracts
         
-        div.col-md-6
-          div.col-md-6.pull-right
-            div.form-group
-              div.row
-                label(for="tax") Tax (3%)
-                div.input-group
-                  input.pull-right.form-control(name="tax" type="text" id="tax" autocomplete="off" readonly)
-                  div.input-group-addon ISK
-            div.form-group
-              div(style="text-align: center;")
-                button.btn.btn-primary(type="submit" onclick="submit()") Submit
+        if(freighter)
+          div.col-md-6
+            div.col-md-6.pull-right
+              div.form-group
+                div.row
+                  label(for="tax") Tax (3%)
+                  div.input-group
+                    input.pull-right.form-control(name="tax" type="text" id="tax" autocomplete="off" readonly)
+                    div.input-group-addon ISK
+              div.form-group
+                div(style="text-align: center;")
+                  button.btn.btn-primary(type="submit" onclick="submit()") Submit
     
     if(pendingContracts || ongoingContracts || finalizedContracts)
       div.container
@@ -64,35 +65,39 @@ html(lang="en")
                   tr
                     th # (Link)
                     th Destination
-                    th Customer
+                    if(freighter)
+                      th Customer
                     th Price
                     th Quote
                     th Multiplier
                     th Volume
                     th ISK/m³
                     th Submitted
-                    th Accept
-                    th Flag
+                    if(freighter)
+                      th Accept
+                      th Flag
                 tbody
                   - pendingContracts.forEach(function(contract) {
                     tr(class=contract.status)
                       td
                         a(href="#{contract.link}")=contract.id
                       td=contract.destination
-                      td=contract.submitter_name
+                      if(freighter)
+                        td=contract.submitter_name
                       td=contract.value_short
                       td=contract.quote_formatted
                       td=contract.multiplier
                       td=contract.volume_formatted
                       td=contract.value_volume_ratio_formatted
                       td=contract.submitted_formatted
-                      td
-                        input(type="checkbox" name="accept" value=contract.value contract=contract.id)
-                      td
-                        if(contract.status === "flagged")
-                          input(type="checkbox" name="flag" value=contract.value contract=contract.id disabled)
-                        else
-                          input(type="checkbox" name="flag" value=contract.value contract=contract.id)
+                      if(freighter)
+                        td
+                          input(type="checkbox" name="accept" value=contract.value contract=contract.id)
+                        td
+                          if(contract.status === "flagged")
+                            input(type="checkbox" name="flag" value=contract.value contract=contract.id disabled)
+                          else
+                            input(type="checkbox" name="flag" value=contract.value contract=contract.id)
                   - })
                   
             div.table-responsive#ongoingContracts(style="display: none;")
@@ -101,31 +106,35 @@ html(lang="en")
                   tr
                     th # (Link)
                     th Destination
-                    th Customer
+                    if(freighter)
+                      th Customer
                     th Price
                     th Quote
                     th Multiplier
                     th Volume
                     th ISK/m³
                     th Submitted
-                    th Freighter
-                    th Complete
+                    if(freighter)
+                      th Freighter
+                      th Complete
                 tbody
                   - ongoingContracts.forEach(function(contract) {
                     tr
                       td
                         a(href="#{contract.link}")=contract.id
                       td=contract.destination
-                      td=contract.submitter_name
+                      if(freighter)
+                        td=contract.submitter_name
                       td=contract.value_short
                       td=contract.quote_formatted
                       td=contract.multiplier
                       td=contract.volume_formatted
                       td=contract.value_volume_ratio_formatted
                       td=contract.submitted_formatted
-                      td=contract.freighter_name
-                      td
-                        input(type="checkbox" name="complete" value=contract.value contract=contract.id)
+                      if(freighter)
+                        td=contract.freighter_name
+                        td
+                          input(type="checkbox" name="complete" value=contract.value contract=contract.id)
                   - })
             
             div.table-responsive#finalizedContracts(style="display: none;")
@@ -134,38 +143,42 @@ html(lang="en")
                   tr
                     th # (Link)
                     th Destination
-                    th Customer
+                    if(freighter)
+                      th Customer
                     th Price
                     th Quote
                     th Multiplier
                     th Volume
                     th ISK/³
                     th Submitted
-                    th Freighter
-                    th Taxed
-                    th Tax
+                    if(freighter)
+                      th Freighter
+                      th Taxed
+                      th Tax
                 tbody
                   - finalizedContracts.forEach(function(contract) {
                     tr(class=contract.status)
                       td
                         a(href="#{contract.link}")=contract.id
                         td=contract.destination
-                        td=contract.submitter_name
+                        if(freighter)
+                          td=contract.submitter_name
                         td=contract.value_short
                         td=contract.quote_formatted
                         td=contract.multiplier
                         td=contract.volume_formatted
                         td=contract.value_volume_ratio_formatted
                         td=contract.submitted_formatted
-                        td=contract.freighter_name
-                        if(contract.taxed)
-                          td Yes
-                          td
-                            input(type="checkbox" name="tax" value=contract.value contract=contract.id disabled)
-                        else
-                          td No
-                          td
-                            input(type="checkbox" name="tax" value=contract.value contract=contract.id)
+                        if(freighter)
+                          td=contract.freighter_name
+                          if(contract.taxed)
+                            td Yes
+                            td
+                              input(type="checkbox" name="tax" value=contract.value contract=contract.id disabled)
+                          else
+                            td No
+                            td
+                              input(type="checkbox" name="tax" value=contract.value contract=contract.id)
                   - })
 
     include ../../partials/footer
