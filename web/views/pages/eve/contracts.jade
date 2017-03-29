@@ -35,11 +35,19 @@ html(lang="en")
               p There are #{finalizedContracts.length} finalized contracts
             else
               p There are no finalized contracts
+            
+            if(untaxedContracts.length === 1)
+              p There is 1 currently unconfirmed as taxed contract
+            else if(untaxedContracts.length > 1)
+              p There are #{untaxedContracts.length} currently unconfirmed as taxed contracts
+            else
+              p There are no currently unconfirmed as taxed contracts
+        
         div.col-md-6
           div.col-md-6.pull-right
             div.form-group
               div.row
-                label(for="tax") Tax
+                label(for="tax") Tax (3%)
                 div.input-group
                   input.pull-right.form-control(name="tax" type="text" id="tax" autocomplete="off" readonly)
                   div.input-group-addon ISK

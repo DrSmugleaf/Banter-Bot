@@ -54,6 +54,10 @@ module.exports = {
   getAllFinalized() {
     return this.db.query("SELECT * FROM eve_contracts WHERE status = 'completed'")
   },
+  
+  getAllUntaxed() {
+    return this.db.query("SELECT * FROM eve_contracts WHERE (status = 'completed' OR status = 'ongoing') AND taxed = '0'")
+  },
 
   set(data) {
     return this.db.query("INSERT INTO eve_contracts SET ? ON DUPLICATE KEY UPDATE ?", [data, data])
