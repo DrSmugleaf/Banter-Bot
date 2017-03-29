@@ -40,17 +40,20 @@ router.get("/contracts", eveAuth, function(req, res) {
   Promise.all([
     contract.getAllPending(),
     contract.getAllOngoing(),
-    contract.getAllFinalized()
+    contract.getAllFinalized(),
+    contract.getAllUntaxed()
   ]).then((contracts) => {
     const pending = contracts[0]
     const ongoing = contracts[1]
     const finalized = contracts[2]
+    const untaxed = contracts[3]
     
     res.render("pages/eve/contracts", {
       character: req.session.character,
       pendingContracts: pending,
       ongoingContracts: ongoing,
       finalizedContracts: finalized,
+      untaxedContracts: untaxed,
       title: "Contracts - Mango Deliveries",
       active: "Contracts"
     })
