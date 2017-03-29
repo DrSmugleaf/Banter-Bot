@@ -193,6 +193,14 @@ router.post("/contracts/submit", async function(req, res) {
     oldContract.status = "completed"
     contract.set(oldContract)
   })
+  
+  _.forEach(req.body.tax, async (id) => {
+    var oldContract = await contract.get(id)
+    oldContract = oldContract[0]
+    if(oldContract.status !== "completed" || oldContract.taxed) return res.status(403)
+    oldContract.taxed = true
+    contract.set(oldContract)
+  })
 })
 
 module.exports = router

@@ -87,7 +87,7 @@ html(lang="en")
                         input(type="checkbox" name="accept" value=contract.value contract=contract.id)
                       td
                         if(contract.status === "flagged")
-                          input.disabled(type="checkbox" name="flag" value=contract.value contract=contract.id disabled)
+                          input(type="checkbox" name="flag" value=contract.value contract=contract.id disabled)
                         else
                           input(type="checkbox" name="flag" value=contract.value contract=contract.id)
                   - })
@@ -140,6 +140,7 @@ html(lang="en")
                     th Submitted
                     th Freighter
                     th Taxed
+                    th Tax
                 tbody
                   - finalizedContracts.forEach(function(contract) {
                     tr(class=contract.status)
@@ -154,7 +155,14 @@ html(lang="en")
                         td=contract.value_volume_ratio_formatted
                         td=contract.submitted_formatted
                         td=contract.freighter_name
-                        td=contract.taxed
+                        if(contract.taxed)
+                          td Yes
+                          td
+                            input(type="checkbox" name="tax" value=contract.value contract=contract.id disabled)
+                        else
+                          td No
+                          td
+                            input(type="checkbox" name="tax" value=contract.value contract=contract.id)
                   - })
 
     include ../../partials/footer
@@ -185,13 +193,20 @@ html(lang="en")
         $("input[name=complete]:checked").each(function() {
           complete.push($(this).attr("contract"))
         })
+        
+        var tax = []
+        $("input[name=tax]:checked").each(function() {
+          tax.push($(this).attr("contract"))
+        })
+        
         $.ajax({
           type: "POST",
           url: "/eve/contracts/submit",
           data: {
             accept: accept,
             flag: flag,
-            complete: complete
+            complete: complete,
+            tax: tax
           },
           success: function(res) {
             
