@@ -43,19 +43,23 @@ module.exports = {
     return this.db.query("SELECT * FROM eve_contracts WHERE id=? LIMIT 1", [id])
   },
   
-  getAllPending() {
+  getAllPending(characterID) {
+    if(characterID) return this.db.query("SELECT * FROM eve_contracts WHERE (status = 'pending' OR status = 'flagged') AND submitter_id = ?", [characterID])
     return this.db.query("SELECT * FROM eve_contracts WHERE status = 'pending' OR status = 'flagged'")
   },
   
-  getAllOngoing() {
+  getAllOngoing(characterID) {
+    if(characterID) return this.db.query("SELECT * FROM eve_contracts WHERE status = 'ongoing' AND submitter_id = ?", [characterID])
     return this.db.query("SELECT * FROM eve_contracts WHERE status = 'ongoing'")
   },
   
-  getAllFinalized() {
+  getAllFinalized(characterID) {
+    if(characterID) return this.db.query("SELECT * FROM eve_contracts WHERE status = 'completed' AND submitter_id = ?", [characterID])
     return this.db.query("SELECT * FROM eve_contracts WHERE status = 'completed'")
   },
   
-  getAllUntaxed() {
+  getAllUntaxed(characterID) {
+    if(characterID) return this.db.query("SELECT * FROM eve_contracts WHERE (status = 'completed' OR status = 'ongoing') AND taxed = '0' AND submitter_id = ?", [characterID])
     return this.db.query("SELECT * FROM eve_contracts WHERE (status = 'completed' OR status = 'ongoing') AND taxed = '0'")
   },
 
