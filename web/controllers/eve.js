@@ -37,10 +37,20 @@ router.get("/eve", function(req, res) {
 })
 
 router.get("/contracts", eveAuth, function(req, res) {
-  contract.getAll().then((contracts) => {
+  Promise.all([
+    contract.getAllPending(),
+    contract.getAllOngoing(),
+    contract.getAllFinalized()
+  ]).then((contracts) => {
+    const pending = contracts[0]
+    const ongoing = contracts[1]
+    const finalized = contracts[2]
+    
     res.render("pages/eve/contracts", {
       character: req.session.character,
-      contracts: contracts,
+      pendingContracts: pending,
+      ongoingContracts: ongoing,
+      finalizedContracts: finalized,
       title: "Contracts - Mango Deliveries",
       active: "Contracts"
     })
@@ -158,13 +168,29 @@ router.post("/submit", async function(req, res) {
 })
 
 router.post("/contracts/submit", async function(req, res) {
-  _.forEach(req.body.contracts, async (id) => {
+  _.forEach(req.body.accept, async (id) => {
     var oldContract = await contract.get(id)
     oldContract = oldContract[0]
-    if(oldContract.status !== "pending") return res.status(403)
+    if(oldContract.status !== "pending" && oldContract.status !== "flagged") return res.status(403)
     oldContract.status = "ongoing"
     oldContract.freighter_id = req.session.character.character_id
     oldContract.freighter_name = req.session.character.character_name
+    contract.set(oldContract)
+  })
+  
+  _.forEach(req.body.flag, async (id) => {
+    var oldContract = await contract.get(id)
+    oldContract = oldContract[0]
+    if(oldContract.status !== "pending") return res.status(403)
+    oldContract.status = "flagged"
+    contract.set(oldContract)
+  })
+  
+  _.forEach(req.body.complete, async (id) => {
+    var oldContract = await contract.get(id)
+    oldContract = oldContract[0]
+    if(oldContract.status !== "ongoing") return res.status(403)
+    oldContract.status = "completed"
     contract.set(oldContract)
   })
 })

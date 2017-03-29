@@ -42,9 +42,17 @@ module.exports = {
   get(id) {
     return this.db.query("SELECT * FROM eve_contracts WHERE id=? LIMIT 1", [id])
   },
-
-  getAll() {
-    return this.db.query("SELECT * FROM eve_contracts")
+  
+  getAllPending() {
+    return this.db.query("SELECT * FROM eve_contracts WHERE status = 'pending' OR status = 'flagged'")
+  },
+  
+  getAllOngoing() {
+    return this.db.query("SELECT * FROM eve_contracts WHERE status = 'ongoing'")
+  },
+  
+  getAllFinalized() {
+    return this.db.query("SELECT * FROM eve_contracts WHERE status = 'completed'")
   },
 
   set(data) {

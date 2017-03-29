@@ -13,10 +13,10 @@ html(lang="en")
     div.jumbotron
       div.container
         h1 Mango Deliveries
-        if(contracts && contracts.length === 1)
+        if((pendingContracts && pendingContracts.length === 1) || (ongoingContracts && ongoingContracts.length === 1))
           div.col-md-6
             div.row
-              p There is 1 contract left
+              p There is 1 pending contract left
           div.col-md-6
             div.col-md-6.pull-right
               div.form-group
@@ -28,10 +28,10 @@ html(lang="en")
               div.form-group
                 div(style="text-align: center;")
                   button.btn.btn-primary(type="submit" onclick="submit()") Submit
-        else if(contracts && contracts.length > 1)
+        else if((pendingContracts && pendingContracts.length > 1) || (ongoingContracts && ongoingContracts.length > 1))
           div.col-md-6
             div.row
-              p There are #{contracts.length} contracts left
+              p There are #{pendingContracts.length} pending contracts left
           div.col-md-6
             div.col-md-6.pull-right
               div.form-group
@@ -45,45 +45,117 @@ html(lang="en")
                   button.btn.btn-primary(type="submit" onclick="submit()") Submit
         else
           p There are no contracts left
-
-    if(contracts)
-      div.container.table-responsive
-        table.table.table-striped
-          thead
-            tr
-              th # (Link)
-              th Destination
-              th Customer
-              th Price
-              th Quote
-              th Multiplier
-              th Volume
-              th ISK/m³
-              th Submitted
-              th Accept
-              th Flag
-
-          tbody
-            - contracts.forEach(function(contract) {
-              tr(class=contract.status)
-                td
-                  a(href="#{contract.link}")=contract.id
-                td=contract.destination
-                td=contract.submitter_name
-                td=contract.value_short
-                td=contract.quote_formatted
-                td=contract.multiplier
-                td=contract.volume_formatted
-                td=contract.value_volume_ratio_formatted
-                td=contract.submitted_formatted
-                if(contract.status === "pending")
-                  td
-                    input(type="checkbox" name="accept" value=contract.value contract=contract.id)
-                  td
-                    input(type="checkbox" name="flag" value=contract.value contract=contract.id)
-                else
-                  td(colspan="2")=contract.freighter_name
-            - })
+    
+    if(pendingContracts || ongoingContracts || finalizedContracts)
+      div.container
+        ul.nav.nav-tabs.nav-justified
+            li(class=pendingContracts[0] ? null : "disabled")
+              a(onclick="showPending(this)") Pending Contracts
+            li(class=ongoingContracts[0] ? null : "disabled")
+              a(onclick="showOngoing(this)") Ongoing Contracts
+            li(class=finalizedContracts[0] ? null : "disabled")
+              a(onclick="showFinalized(this)") Finalized Contracts
+            div.table-responsive#pendingContracts(style="display: block;")
+              table.table.table-striped
+                thead
+                  tr
+                    th # (Link)
+                    th Destination
+                    th Customer
+                    th Price
+                    th Quote
+                    th Multiplier
+                    th Volume
+                    th ISK/m³
+                    th Submitted
+                    th Accept
+                    th Flag
+                tbody
+                  - pendingContracts.forEach(function(contract) {
+                    tr(class=contract.status)
+                      td
+                        a(href="#{contract.link}")=contract.id
+                      td=contract.destination
+                      td=contract.submitter_name
+                      td=contract.value_short
+                      td=contract.quote_formatted
+                      td=contract.multiplier
+                      td=contract.volume_formatted
+                      td=contract.value_volume_ratio_formatted
+                      td=contract.submitted_formatted
+                      td
+                        input(type="checkbox" name="accept" value=contract.value contract=contract.id)
+                      td
+                        if(contract.status === "flagged")
+                          input.disabled(type="checkbox" name="flag" value=contract.value contract=contract.id disabled)
+                        else
+                          input(type="checkbox" name="flag" value=contract.value contract=contract.id)
+                  - })
+                  
+            div.table-responsive#ongoingContracts(style="display: none;")
+              table.table.table-striped
+                thead
+                  tr
+                    th # (Link)
+                    th Destination
+                    th Customer
+                    th Price
+                    th Quote
+                    th Multiplier
+                    th Volume
+                    th ISK/m³
+                    th Submitted
+                    th Freighter
+                    th Complete
+                tbody
+                  - ongoingContracts.forEach(function(contract) {
+                    tr
+                      td
+                        a(href="#{contract.link}")=contract.id
+                      td=contract.destination
+                      td=contract.submitter_name
+                      td=contract.value_short
+                      td=contract.quote_formatted
+                      td=contract.multiplier
+                      td=contract.volume_formatted
+                      td=contract.value_volume_ratio_formatted
+                      td=contract.submitted_formatted
+                      td=contract.freighter_name
+                      td
+                        input(type="checkbox" name="complete" value=contract.value contract=contract.id)
+                  - })
+            
+            div.table-responsive#finalizedContracts(style="display: none;")
+              table.table.table-striped
+                thead
+                  tr
+                    th # (Link)
+                    th Destination
+                    th Customer
+                    th Price
+                    th Quote
+                    th Multiplier
+                    th Volume
+                    th ISK/³
+                    th Submitted
+                    th Freighter
+                    th Taxed
+                tbody
+                  - finalizedContracts.forEach(function(contract) {
+                    tr(class=contract.status)
+                      td
+                        a(href="#{contract.link}")=contract.id
+                        td=contract.destination
+                        td=contract.submitter_name
+                        td=contract.value_short
+                        td=contract.quote_formatted
+                        td=contract.multiplier
+                        td=contract.volume_formatted
+                        td=contract.value_volume_ratio_formatted
+                        td=contract.submitted_formatted
+                        td=contract.freighter_name
+                        td=contract.taxed
+                  - })
 
     include ../../partials/footer
     script.
@@ -99,15 +171,27 @@ html(lang="en")
     
     script.
       function submit() {
-        var contracts = []
+        var accept = []
         $("input[name=accept]:checked").each(function() {
-          contracts.push($(this).attr("contract"))
+          accept.push($(this).attr("contract"))
+        })
+        
+        var flag = []
+        $("input[name=flag]:checked").each(function() {
+          flag.push($(this).attr("contract"))
+        })
+        
+        var complete = []
+        $("input[name=complete]:checked").each(function() {
+          complete.push($(this).attr("contract"))
         })
         $.ajax({
           type: "POST",
           url: "/eve/contracts/submit",
           data: {
-            contracts: contracts
+            accept: accept,
+            flag: flag,
+            complete: complete
           },
           success: function(res) {
             
@@ -116,4 +200,23 @@ html(lang="en")
             
           }
         }).done()
+      }
+
+    script.
+      function showPending(e) {
+        if($(e).parent(".disabled").length) return
+        $("div.table-responsive").hide()
+        $("#pendingContracts").show()
+      }
+      
+      function showOngoing(e) {
+        if($(e).parent(".disabled").length) return
+        $("div.table-responsive").hide()
+        $("#ongoingContracts").show()
+      }
+      
+      function showFinalized(e) {
+        if($(e).parent(".disabled").length) return
+        $("div.table-responsive").hide()
+        $("#finalizedContracts").show()
       }
