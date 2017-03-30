@@ -30,7 +30,7 @@ router.get("/login", function(req, res) {
 
 router.get("/eve", function(req, res) {
   res.render("pages/eve/index", {
-    character: req.session.character,
+    character: req.session.character || {},
     title: "Home - Mango Deliveries",
     active: "Home"
   })
@@ -52,7 +52,7 @@ router.get("/contracts", eveAuth, function(req, res) {
     const finalized = contracts[2]
     
     res.render("pages/eve/contracts", {
-      character: req.session.character,
+      character: req.session.character || {},
       pendingContracts: pending,
       ongoingContracts: ongoing,
       finalizedContracts: finalized,
@@ -188,6 +188,15 @@ router.post("/contracts/submit", function(req, res) {
     return res.status(403).json({
       alert: `Contract #${errorID} was modified by someone else. Please reload the page.`
     })
+  })
+})
+
+router.get("/director", eveAuth, function(req, res) {
+  if(req.session.character.role !== "director") return res.redirect("/eve/eve")
+  res.render("pages/eve/director", {
+    character: req.session.character || {},
+    title: "Director Panel - Mango Deliveries",
+    active: "Director Panel"
   })
 })
 

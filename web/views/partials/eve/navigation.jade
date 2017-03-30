@@ -13,13 +13,16 @@ nav.navbar.navbar-inverse.navbar-fixed-top
       a.navbar-brand(href="/") Mango Deliveries
     div#navbar.navbar-collapse.collapse
       ul.nav.navbar-nav.navbar-left
-        li(class="#{active === 'Home' ? 'active' : ''}")
+        li(class="#{active === 'Home' ? 'active' : null}")
           a(href="/eve/eve") Home
           span.sr-only (current)
-        li(class="#{active === 'Contracts' ? 'active' : ''}")
+        li(class="#{active === 'Contracts' ? 'active' : null}")
           a(href="/eve/contracts") Contracts
+        if(character.role === "director")
+          li(class="#{active === 'Director Panel' ? 'active' : null}")
+            a(href="/eve/director") Director Panel
       ul.nav.navbar-nav.navbar-right
-        if(character)
+        if(character.id)
           li
             a(href="/eve/login") #{character.character_name}
           li
