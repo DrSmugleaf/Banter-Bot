@@ -79,8 +79,8 @@ module.exports = {
         }
         if(bannedMarketGroups.length > 0) {
           string = "Your appraisal contains items from banned market groups:\n"
-          _.forEach(bannedMarketGroups, (group) => {
-            string = string.concat(`\n`)
+          _.forEach(bannedMarketGroups, (item) => {
+            string = string.concat(`${item.typeName}\n`)
           })
           response.invalid["#link"] = response.invalid["#link"] ?
             response.invalid["#link"].concat(string) : string

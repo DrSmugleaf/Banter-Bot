@@ -271,8 +271,8 @@ router.post("/director/submit", eveAuth, async function(req, res) {
     
     if(groups.length > 1) {
       return res.status(400).json({
-      alert: ".",
-      groups: groups
+        alert: ".",
+        groups: groups
       })
     }
     
