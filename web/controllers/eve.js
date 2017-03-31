@@ -235,7 +235,13 @@ router.post("/director/submit", eveAuth, async function(req, res) {
       return res.sendStatus(400)
     }
   } else if(req.body.item) {
-    var item = await invTypes.getByName(req.body.item)
+    var item
+    if(+req.body.item) {
+      item = await invTypes.get(+req.body.item)
+    } else {
+      item = await invTypes.getByName(req.body.item)
+    }
+    
     item = item[0]
     if(!item) return res.status(200).json({
       alert: `Item type ${req.body.item} doesn't exist.`
@@ -255,9 +261,22 @@ router.post("/director/submit", eveAuth, async function(req, res) {
       return res.sendStatus(400)
     }
   } else if(req.body.group) {
-    var group = await invMarketGroups.getByName(req.body.group)
-    group = group[0]
-    if(!group) return res.status(200).json({
+    var groups
+    if(!isNaN(+req.body.group)) {
+      groups = await invMarketGroups.get(+req.body.group)
+    } else {
+      groups = await invMarketGroups.getByName(req.body.group)
+    }
+    
+    if(groups.length > 1) {
+      return res.status(400).json({
+      alert: ".",
+      groups: groups
+      })
+    }
+    
+    const group = groups[0]
+    if(!group) return res.status(400).json({
       alert: `Market group ${req.body.group} doesn't exist.`
     })
     

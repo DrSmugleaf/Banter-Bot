@@ -49,30 +49,43 @@ module.exports = {
         appraisal = JSON.parse(body)
 
         return Promise.all([
-          this.filterBannedItems(appraisal),
+          this.filterBannedItemTypes(appraisal),
+          this.filterBannedMarketGroups(appraisal),
           this.fixShipVolumes(appraisal)
         ])
       }).then((promises) => {
-        const bannedItems = promises[0]
+        const bannedItemTypes = promises[0]
+        const bannedMarketGroups = promises[1]
 
+        var string
         if(appraisal.market_name !== "Jita") {
-          const string = "Appraisal market must be Jita.\n"
+          string = "Appraisal market must be Jita.\n"
           response.invalid["#link"] = response.invalid["#link"] ?
             response.invalid["#link"].concat(string) : string
         }
         if(appraisal.totals.volume * multiplier > 300000) {
-          const string = "Total cargo volume is over 300.000m³.\n"
+          string = "Total cargo volume is over 300.000m³.\n"
           response.invalid["#link"] = response.invalid["#link"] ?
             response.invalid["#link"].concat(string) : string
         }
-        if(bannedItems.length > 0) {
-          var string = "Your appraisal contains banned items:\n"
-          _.forEach(bannedItems, (item) => {
+        
+        if(bannedItemTypes.length > 0) {
+          string = "Your appraisal contains banned items:\n"
+          _.forEach(bannedItemTypes, (item) => {
             string = string.concat(`${item.typeName}\n`)
           })
           response.invalid["#link"] = response.invalid["#link"] ?
             response.invalid["#link"].concat(string) : string
         }
+        if(bannedMarketGroups.length > 0) {
+          string = "Your appraisal contains items from banned market groups:\n"
+          _.forEach(bannedMarketGroups, (group) => {
+            string = string.concat(`\n`)
+          })
+          response.invalid["#link"] = response.invalid["#link"] ?
+            response.invalid["#link"].concat(string) : string
+        }
+        
         if(!_.isEmpty(response.invalid)) return resolve(response)
         return resolve(appraisal)
       }).catch((e) => {
@@ -82,15 +95,31 @@ module.exports = {
     })
   },
 
-  async filterBannedItems(appraisal) {
-    const bannedTypes = await invTypes.getBanned()
-    const bannedIDs = _.pluck(bannedTypes, "typeID")
-
-    return new Promise((resolve) => {
+  async filterBannedItemTypes(appraisal) {
+    return new Promise(async (resolve) => {
+      const bannedTypes = await invTypes.getBanned()
+      const bannedTypeIDs = _.pluck(bannedTypes, "typeID")
+      
       async.filter(appraisal.items, async (item, callback) => {
         item = await invTypes.get(item.typeID)
         item = item[0]
-        callback(null, bannedIDs.includes(item.typeID))
+        callback(null, bannedTypeIDs.includes(item.typeID))
+      }, function(e, results) {
+        resolve(results)
+      })
+    })
+  },
+  
+  async filterBannedMarketGroups(appraisal) {
+    return new Promise(async (resolve) => {
+      const bannedMarketGroups = await invMarketGroups.getBanned()
+      const bannedMarketGroupIDs = _.pluck(bannedMarketGroups, "marketGroupID")
+      
+      async.filter(appraisal.items, async (item, callback) => {
+        item = await invTypes.get(item.typeID)
+        item = item[0]
+        const groups = await invMarketGroups.getAllParentsByID(item.marketGroupID)
+        callback(null, _.intersection(bannedMarketGroupIDs, groups).length > 0)
       }, function(e, results) {
         resolve(results)
       })

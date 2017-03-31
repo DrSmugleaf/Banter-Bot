@@ -16,6 +16,7 @@ html(lang="en")
     
     div.container
       div#submit-alert.alert(role="alert")
+        p(style="white-space: pre-wrap;")
       ul.nav.nav-tabs.nav-justified
         li
           a(onclick="showFreighterPanel(this)") Freighter Panel
@@ -166,10 +167,17 @@ html(lang="en")
               .text(res.confirm)
           },
           error: function(res) {
+            if(res.responseText) res = JSON.parse(res.responseText)
             if(!res.alert) window.location.replace("login")
-            $("div#submit-alert")
-              .addClass("alert-danger")
-              .text(res.alert)
+            if(res.groups) {
+              res.alert = "Multiple market groups exist with that name, please input an ID:\n"
+              for(const group in res.groups) {
+                if(!res.groups.hasOwnProperty(group)) return
+                res.alert += res.groups[group].marketGroupID + " " + res.groups[group].marketGroupName + ": " + res.groups[group].description + "\n"
+              }
+            }
+            $("div#submit-alert").addClass("alert-danger")
+            $("div#submit-alert p").text(res.alert)
           }
         })
         return false
