@@ -209,7 +209,7 @@ router.get("/director", eveAuth, async function(req, res) {
   })
 })
 
-router.post("/director/submit", async function(req, res) {
+router.post("/director/submit", eveAuth, async function(req, res) {
   if(req.session.character.role !== "director") return res.sendStatus(403)
   
   if(req.body.freighter) {
