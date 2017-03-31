@@ -40,7 +40,8 @@ router.get("/eve", function(req, res) {
 
 router.get("/contracts", eveAuth, function(req, res) {
   var characterID
-  if(req.session.character.role !== "user") {
+  var freighter = req.session.character.freighter || req.session.character.director
+  if(!freighter) {
     characterID = req.session.character.id
   }
   
@@ -58,7 +59,7 @@ router.get("/contracts", eveAuth, function(req, res) {
       pendingContracts: pending,
       ongoingContracts: ongoing,
       finalizedContracts: finalized,
-      freighter: ["freighter", "director"].includes(req.session.character.role),
+      freighter: freighter,
       title: "Contracts - Mango Deliveries",
       active: "Contracts"
     })
@@ -194,7 +195,7 @@ router.post("/contracts/submit", function(req, res) {
 })
 
 router.get("/director", eveAuth, async function(req, res) {
-  if(req.session.character.role !== "director") return res.redirect("/eve/eve")
+  if(!req.session.character.director) return res.redirect("/eve/eve")
   
   const freighters = await character.getFreighters()
   const bannedItemTypes = await invTypes.getBanned()
@@ -210,24 +211,24 @@ router.get("/director", eveAuth, async function(req, res) {
 })
 
 router.post("/director/submit", eveAuth, async function(req, res) {
-  if(req.session.character.role !== "director") return res.sendStatus(403)
+  if(!req.session.character.director) return res.sendStatus(403)
   
   if(req.body.freighter) {
-    var freighter = await character.getByName(req.body.freighter)
-    freighter = freighter[0]
-    if(!freighter) return res.status(200).json({
+    var user = await character.getByName(req.body.freighter)
+    user = user[0]
+    if(!user) return res.status(200).json({
       alert: `Character ${req.body.freighter} doesn't exist.`
     })
     
     if(req.body.action === "add") {
-      freighter.role = "freighter"
-      character.set(freighter)
+      user.freighter = true
+      character.set(user)
       return res.status(200).json({
         confirm: `Added ${req.body.freighter} to the list of freighters.`
       })
     } else if(req.body.action === "remove") {
-      freighter.role = "user"
-      character.set(freighter)
+      user.freighter = false
+      character.set(user)
       return res.status(200).json({
         confirm: `Removed ${req.body.freighter} from the list of freighters.`
       })

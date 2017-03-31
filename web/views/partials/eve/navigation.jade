@@ -18,7 +18,7 @@ nav.navbar.navbar-inverse.navbar-fixed-top
           span.sr-only (current)
         li(class="#{active === 'Contracts' ? 'active' : null}")
           a(href="/eve/contracts") Contracts
-        if(character.role === "director")
+        if(character.director)
           li(class="#{active === 'Director Panel' ? 'active' : null}")
             a(href="/eve/director") Director Panel
       ul.nav.navbar-nav.navbar-right

@@ -21,7 +21,8 @@ module.exports = {
       alliance_id BIGINT UNSIGNED NOT NULL,
       alliance_name TINYTEXT NOT NULL,
       alliance_portrait TINYTEXT NOT NULL,
-      role VARCHAR(16) NOT NULL DEFAULT 'user'
+      freighter BOOLEAN NOT NULL DEFAULT 0,
+      director BOOLEAN NOT NULL DEFAULT 0
     )`)
   },
 
@@ -38,7 +39,7 @@ module.exports = {
   },
   
   getFreighters() {
-    return this.db.query("SELECT * FROM eve_characters WHERE role='freighter'")
+    return this.db.query("SELECT * FROM eve_characters WHERE freighter='1'")
   },
 
   async set(data) {
