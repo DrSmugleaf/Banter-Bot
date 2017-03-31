@@ -242,10 +242,7 @@ router.post("/director/submit", eveAuth, async function(req, res) {
     })
     
     if(req.body.action === "ban") {
-      invTypes.ban({
-        typeID: item.typeID,
-        typeName: item.typeName
-      })
+      invTypes.ban(item)
       return res.status(200).json({
         confirm: `Banned item ${req.body.item} from appraisals.`
       })
@@ -265,10 +262,7 @@ router.post("/director/submit", eveAuth, async function(req, res) {
     })
     
     if(req.body.action === "ban") {
-      invMarketGroups.ban({
-        marketGroupID: group.marketGroupID,
-        marketGroupName: group.marketGroupName
-      })
+      invMarketGroups.ban(group)
       return res.status(200).json({
         confirm: `Banned market group ${req.body.group} from appraisals.`
       })

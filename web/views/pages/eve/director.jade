@@ -70,7 +70,7 @@ html(lang="en")
               div.form-group
                 div.row.text-center
                   button.btn.btn-danger(type="submit" name="ban" style="margin-right: 5px;") Ban Item Type
-                  button.btn.btn-success(type"submit" name="allow") Allow Item Type
+                  button.btn.btn-success(type="submit" name="allow") Allow Item Type
         div.table-responsive
           table.table.table-striped
             thead
@@ -88,7 +88,8 @@ html(lang="en")
                   td=type.typeID
                   td=type.groupID
                   td=type.typeName
-                  td=type.description
+                  td
+                    span.glyphicon.glyphicon-question-sign(data-toggle="tooltip" data-container: "body" title=type.description)
                   td=type.mass
                   td=type.volume
                   td=type.capacity
@@ -107,7 +108,7 @@ html(lang="en")
               div.form-group
                 div.row.text-center
                   button.btn.btn-danger(type="submit" name="ban" style="margin-right: 5px;") Ban Item Group
-                  button.btn.btn-success(type"submit" name="allow") Allow Item Group
+                  button.btn.btn-success(type="submit" name="allow") Allow Item Group
         div.table-responsive
           table.table.table-striped
             thead
@@ -172,4 +173,9 @@ html(lang="en")
           }
         })
         return false
+      })
+    
+    script.
+      $(document).ready(function() {
+        $("[data-toggle='tooltip']").tooltip()
       })
