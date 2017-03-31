@@ -14,18 +14,15 @@ module.exports = {
       winston.error(`MySQL table invtypes in database ${process.env.MYSQL_DATABASE} doesn't exist. Please import it from CCP's latest database dump.`)
       process.exit(1)
     })
-    return this.db.query(`CREATE TABLE IF NOT EXISTS eve_banned_types (
-      typeID int(11) NOT NULL PRIMARY KEY,
-      typeName varchar(100) DEFAULT NULL
-    )`)
+    return this.db.query(`CREATE TABLE IF NOT EXISTS eve_banned_types LIKE invtypes`)
   },
   
   allow(id) {
-    return this.db.query("DELETE FROM eve_banned_types WHERE id = ?", [id])
+    return this.db.query("DELETE FROM eve_banned_types WHERE typeID = ?", [id])
   },
   
   ban(data) {
-    return this.db.query("INSERT INTO eve_banned_types (?)", [data])
+    return this.db.query("INSERT INTO eve_banned_types SET ?", [data])
   },
 
   get(id) {

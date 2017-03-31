@@ -66,7 +66,10 @@ module.exports = {
             response.invalid["#link"].concat(string) : string
         }
         if(bannedItems.length > 0) {
-          const string = "Your appraisal contains items from the Manufacture & Research or Blueprints market groups.\n"
+          var string = "Your appraisal contains banned items:\n"
+          _.forEach(bannedItems, (item) => {
+            string = string.concat(`${item.typeName}\n`)
+          })
           response.invalid["#link"] = response.invalid["#link"] ?
             response.invalid["#link"].concat(string) : string
         }
@@ -80,15 +83,14 @@ module.exports = {
   },
 
   async filterBannedItems(appraisal) {
-    // 2: Blueprints
-    // 475: Manufacture & Research
-    const banned = [2, 475]
+    const bannedTypes = await invTypes.getBanned()
+    const bannedIDs = _.pluck(bannedTypes, "typeID")
 
     return new Promise((resolve) => {
       async.filter(appraisal.items, async (item, callback) => {
         item = await invTypes.get(item.typeID)
-        const group = await invMarketGroups.getHighestParentID(item[0].marketGroupID)
-        callback(null, banned.includes(group[0].marketGroupID))
+        item = item[0]
+        callback(null, bannedIDs.includes(item.typeID))
       }, function(e, results) {
         resolve(results)
       })
