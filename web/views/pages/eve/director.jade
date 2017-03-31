@@ -165,6 +165,7 @@ html(lang="en")
               .text(res.confirm)
           },
           error: function(res) {
+            if(!res.alert) window.location.replace("login")
             $("div#submit-alert")
               .addClass("alert-danger")
               .text(res.alert)
