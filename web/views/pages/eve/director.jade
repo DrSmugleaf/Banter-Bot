@@ -23,7 +23,7 @@ html(lang="en")
         li
           a(onclick="showItemTypePanel(this)") Item Type Panel
         li
-          a(onclick="showItemGroupPanel(this)") Item Group Panel
+          a(onclick="showMarketGroupPanel(this)") Market Group Panel
       div#freighterPanel(style="display: none;")
         form(method="post" action="/eve/director/submit")
           div.panel.panel-default
@@ -96,10 +96,10 @@ html(lang="en")
                   td=type.capacity
               - })
       
-      div#itemGroupPanel(style="display: none;")
+      div#marketGroupPanel(style="display: none;")
         form(method="post" action="/eve/director/submit")
           div.panel.panel-default
-            div.panel-heading Item Group Panel
+            div.panel-heading Market Group Panel
             div.panel-body
               div.form-group
                 div.row
@@ -108,8 +108,8 @@ html(lang="en")
                     input(name="group" type="text" class="form-control" id="group" placeholder="Frigate" autocomplete="off" data-toggle="tooltip" title="")
               div.form-group
                 div.row.text-center
-                  button.btn.btn-danger(type="submit" name="ban" style="margin-right: 5px;") Ban Item Group
-                  button.btn.btn-success(type="submit" name="allow") Allow Item Group
+                  button.btn.btn-danger(type="submit" name="ban" style="margin-right: 5px;") Ban Market Group
+                  button.btn.btn-success(type="submit" name="allow") Allow Market Group
         div.table-responsive
           table.table.table-striped
             thead
@@ -141,11 +141,11 @@ html(lang="en")
         $("#itemTypePanel").show()
       }
       
-      function showItemGroupPanel(e) {
+      function showMarketGroupPanel(e) {
         $("ul.nav.nav-tabs.nav-justified li").removeClass("active")
         $(e).parent("li").addClass("active")
         $("form").parent("div").hide()
-        $("#itemGroupPanel").show()
+        $("#marketGroupPanel").show()
       }
 
     script.
