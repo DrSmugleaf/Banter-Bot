@@ -9,6 +9,8 @@ const contract = require("../models/eve/contract")
 const eveAuth = require("../middlewares/eve").eveAuth
 const eveHelper = require("../helpers/eve")
 const express = require("express")
+const invMarketGroups = require("../models/eve/invmarketgroups")
+const invTypes = require("../models/eve/invtypes")
 const moment = require("moment-timezone")
 const router = express.Router()
 const request = require("request-promise")
@@ -191,13 +193,96 @@ router.post("/contracts/submit", function(req, res) {
   })
 })
 
-router.get("/director", eveAuth, function(req, res) {
+router.get("/director", eveAuth, async function(req, res) {
   if(req.session.character.role !== "director") return res.redirect("/eve/eve")
+  
+  const freighters = await character.getFreighters()
+  const bannedItemTypes = await invTypes.getBanned()
+  const bannedMarketGroups = await invMarketGroups.getBanned()
   res.render("pages/eve/director", {
     character: req.session.character || {},
     title: "Director Panel - Mango Deliveries",
-    active: "Director Panel"
+    active: "Director Panel",
+    freighters: freighters,
+    bannedItemTypes: bannedItemTypes,
+    bannedMarketGroups: bannedMarketGroups
   })
+})
+
+router.post("/director/submit", async function(req, res) {
+  if(req.session.character.role !== "director") return res.sendStatus(403)
+  
+  if(req.body.freighter) {
+    var freighter = await character.getByName(req.body.freighter)
+    freighter = freighter[0]
+    if(!freighter) return res.status(200).json({
+      alert: `Character ${req.body.freighter} doesn't exist.`
+    })
+    
+    if(req.body.action === "add") {
+      freighter.role = "freighter"
+      character.set(freighter)
+      return res.status(200).json({
+        confirm: `Added ${req.body.freighter} to the list of freighters.`
+      })
+    } else if(req.body.action === "remove") {
+      freighter.role = "user"
+      character.set(freighter)
+      return res.status(200).json({
+        confirm: `Removed ${req.body.freighter} from the list of freighters.`
+      })
+    } else {
+      return res.sendStatus(400)
+    }
+  } else if(req.body.item) {
+    var item = await invTypes.getByName(req.body.item)
+    item = item[0]
+    if(!item) return res.status(200).json({
+      alert: `Item type ${req.body.item} doesn't exist.`
+    })
+    
+    if(req.body.action === "ban") {
+      invTypes.ban({
+        typeID: item.typeID,
+        typeName: item.typeName
+      })
+      return res.status(200).json({
+        confirm: `Banned item ${req.body.item} from appraisals.`
+      })
+    } else if(req.body.action === "allow") {
+      invTypes.allow(item.typeID)
+      return res.status(200).json({
+        confirm: `Item ${req.body.item} is no longer banned from appraisals.`
+      })
+    } else {
+      return res.sendStatus(400)
+    }
+  } else if(req.body.group) {
+    var group = await invMarketGroups.getByName(req.body.group)
+    group = group[0]
+    if(!group) return res.status(200).json({
+      alert: `Market group ${req.body.group} doesn't exist.`
+    })
+    
+    if(req.body.action === "ban") {
+      invMarketGroups.ban({
+        marketGroupID: group.marketGroupID,
+        marketGroupName: group.marketGroupName
+      })
+      return res.status(200).json({
+        confirm: `Banned market group ${req.body.group} from appraisals.`
+      })
+    } else if(req.body.action === "allow") {
+      invMarketGroups.allow(group.marketGroupID)
+      return res.status(200).json({
+        confirm: `Market group ${req.body.group} is no longer banned from appraisals.` 
+      })
+    } else {
+      return res.sendStatus(400)
+    }
+  } else {
+    return res.sendStatus(400)
+  }
 })
 
 module.exports = router

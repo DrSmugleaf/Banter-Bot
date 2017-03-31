@@ -14,7 +14,7 @@ html(lang="en")
         h1 Mango Deliveries
         p Director Panel
     
-    div.container.text-center
+    div.container
       div#submit-alert.alert(role="alert")
       ul.nav.nav-tabs.nav-justified
         li
@@ -24,7 +24,7 @@ html(lang="en")
         li
           a(onclick="showItemGroupPanel(this)") Item Group Panel
       div#freighterPanel(style="display: none;")
-        form(method="post" action="/eve/director/submit/freighter")
+        form(method="post" action="/eve/director/submit")
           div.panel.panel-default
             div.panel-heading Freighter Panel
             div.panel-body
@@ -34,9 +34,9 @@ html(lang="en")
                   div.col-md-6
                     input(name="freighter" type="text" class="form-control" id="freighter" placeholder="DrSmugleaf Aulmais" autocomplete="off" data-toggle="tooltip" title="")
               div.form-group
-                div.row
-                  button.btn.btn-success(type="submit" value="add" style="margin-right: 5px;") Add Freighter
-                  button.btn.btn-danger(type="submit" value="remove") Remove Freighter
+                div.row.text-center
+                  button.btn.btn-success(type="submit" name="add" style="margin-right: 5px;") Add Freighter
+                  button.btn.btn-danger(type="submit" name="remove") Remove Freighter
         div.table-responsive
           table.table.table-striped
             thead
@@ -47,8 +47,18 @@ html(lang="en")
                 th Corporation Name
                 th Alliance Name
             tbody
+              - freighters.forEach(function(freighter) {
+                tr
+                  td
+                    img(src=freighter.character_portrait style="width: 25px; height: 25px;")
+                  td=freighter.id
+                  td=freighter.character_name
+                  td=freighter.corporation_name
+                  td=freighter.alliance_name
+              - })
+      
       div#itemTypePanel(style="display: none;")
-        form(method="/eve/director/submit/item")
+        form(method="post" action="/eve/director/submit")
           div.panel.panel-default
             div.panel-heading Item Type Panel
             div.panel-body
@@ -58,10 +68,9 @@ html(lang="en")
                   div.col-md-6
                     input(name="item" type="text" class="form-control" id="item" placeholder="Cargo Container" autocomplete="off" data-toggle="tooltip" title="")
               div.form-group
-                div.row
-                  button.btn.btn-danger(type="submit" value="remove") Ban Item Type
-                  button.btn.btn-success(type"submit" value="add" style="margin-right: 5px;") Allow Item Type
-
+                div.row.text-center
+                  button.btn.btn-danger(type="submit" name="ban" style="margin-right: 5px;") Ban Item Type
+                  button.btn.btn-success(type"submit" name="allow") Allow Item Type
         div.table-responsive
           table.table.table-striped
             thead
@@ -74,8 +83,19 @@ html(lang="en")
                 th Volume
                 th Capacity
             tbody
+              - bannedItemTypes.forEach(function(type) {
+                tr
+                  td=type.typeID
+                  td=type.groupID
+                  td=type.typeName
+                  td=type.description
+                  td=type.mass
+                  td=type.volume
+                  td=type.capacity
+              - })
+      
       div#itemGroupPanel(style="display: none;")
-        form(method="/eve/director/submit/group")
+        form(method="post" action="/eve/director/submit")
           div.panel.panel-default
             div.panel-heading Item Group Panel
             div.panel-body
@@ -85,17 +105,23 @@ html(lang="en")
                   div.col-md-6
                     input(name="group" type="text" class="form-control" id="group" placeholder="Frigate" autocomplete="off" data-toggle="tooltip" title="")
               div.form-group
-                div.row
-                  button.btn.btn-danger(type="submit" value="remove") Ban Item Group
-                  button.btn.btn-success(type"submit" value="add" style="margin-right: 5px;") Allow Item Group
+                div.row.text-center
+                  button.btn.btn-danger(type="submit" name="ban" style="margin-right: 5px;") Ban Item Group
+                  button.btn.btn-success(type"submit" name="allow") Allow Item Group
         div.table-responsive
           table.table.table-striped
             thead
               tr
                 th Group ID
-                th Category ID
                 th Group Name
+                th Description
             tbody
+              - bannedMarketGroups.forEach(function(group) {
+                tr
+                  td=group.marketGroupID
+                  td=group.marketGroupName
+                  td=group.description
+              - })
     
     include ../../partials/footer
     script.
@@ -119,3 +145,30 @@ html(lang="en")
         $("form").parent("div").hide()
         $("#itemGroupPanel").show()
       }
+
+    script.
+      $("button[type='submit']").on("click", function() {
+        $(this).closest("form").data("action", this.name)
+      })
+    
+      $("form").submit(function(e) {
+        var data = $(this).serialize()
+        data += "&action=" + $(this).data("action") || $("input[type='submit']").get(0).name
+        
+        $.ajax({
+          type: $(this).attr("method"),
+          url: $(this).attr("action"),
+          data: data,
+          success: function(res) {
+            $("div#submit-alert")
+              .addClass("alert-success")
+              .text(res.confirm)
+          },
+          error: function(res) {
+            $("div#submit-alert")
+              .addClass("alert-danger")
+              .text(res.alert)
+          }
+        })
+        return false
+      })

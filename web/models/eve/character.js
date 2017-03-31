@@ -26,11 +26,19 @@ module.exports = {
   },
 
   delete(id) {
-    return this.db.query("DELETE FROM eve_characters WHERE id=?", [id])
+    return this.db.query("DELETE FROM eve_characters WHERE id = ?", [id])
   },
 
   get(id) {
-    return this.db.query("SELECT * FROM eve_characters WHERE id=?", [id])
+    return this.db.query("SELECT * FROM eve_characters WHERE id = ? LIMIT 1", [id])
+  },
+  
+  getByName(name) {
+    return this.db.query("SELECT * FROM eve_characters WHERE character_name = ? LIMIT 1", [name])
+  },
+  
+  getFreighters() {
+    return this.db.query("SELECT * FROM eve_characters WHERE role='freighter'")
   },
 
   async set(data) {
