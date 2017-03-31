@@ -168,7 +168,7 @@ html(lang="en")
           },
           error: function(res) {
             if(res.responseText) res = JSON.parse(res.responseText)
-            if(!res.alert) window.location.replace("login")
+            if(!res.alert) return window.location.replace("login")
             if(res.groups) {
               res.alert = "Multiple market groups exist with that name, please input an ID:\n"
               for(const group in res.groups) {
