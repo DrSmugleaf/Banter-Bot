@@ -10,7 +10,7 @@ class MemberExtension {
       const userSettings = this.guild.settings.get(this.id)
       this._language = userSettings ? userSettings.language : null
     }
-    return this._language || this.user.language || this.guild.language
+    return "english"
   }
 
   set language(language) {
