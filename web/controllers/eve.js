@@ -59,6 +59,7 @@ router.get("/contracts", eveAuth, function(req, res) {
       pendingContracts: pending,
       ongoingContracts: ongoing,
       finalizedContracts: finalized,
+      director: req.session.character.director,
       freighter: freighter,
       title: "Contracts - Mango Deliveries",
       active: "Contracts"
@@ -179,7 +180,10 @@ router.post("/submit", async function(req, res) {
   })
 })
 
-router.post("/contracts/submit", function(req, res) {
+router.post("/contracts/submit", eveAuth, function(req, res) {
+  const freighter = req.session.character.freighter || req.session.character.director
+  if(!freighter) return res.sendStatus(403)
+  
   Promise.all([
     eveHelper.contracts.accept(req),
     eveHelper.contracts.flag(req),
