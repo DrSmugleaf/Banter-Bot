@@ -213,90 +213,15 @@ router.get("/director", eveAuth, async function(req, res) {
 router.post("/director/submit", eveAuth, async function(req, res) {
   if(!req.session.character.director) return res.sendStatus(403)
   
-  if(req.body.freighter) {
-    var user = await character.getByName(req.body.freighter)
-    user = user[0]
-    if(!user) return res.status(200).json({
-      alert: `Character ${req.body.freighter} doesn't exist.`
-    })
-    
-    if(req.body.action === "add") {
-      user.freighter = true
-      character.set(user)
-      return res.status(200).json({
-        confirm: `Added ${req.body.freighter} to the list of freighters.`
-      })
-    } else if(req.body.action === "remove") {
-      user.freighter = false
-      character.set(user)
-      return res.status(200).json({
-        confirm: `Removed ${req.body.freighter} from the list of freighters.`
-      })
-    } else {
-      return res.sendStatus(400)
-    }
-  } else if(req.body.item) {
-    var item
-    if(+req.body.item) {
-      item = await invTypes.get(+req.body.item)
-    } else {
-      item = await invTypes.getByName(req.body.item)
-    }
-    
-    item = item[0]
-    if(!item) return res.status(200).json({
-      alert: `Item type ${req.body.item} doesn't exist.`
-    })
-    
-    if(req.body.action === "ban") {
-      invTypes.ban(item)
-      return res.status(200).json({
-        confirm: `Banned item ${req.body.item} from appraisals.`
-      })
-    } else if(req.body.action === "allow") {
-      invTypes.allow(item.typeID)
-      return res.status(200).json({
-        confirm: `Item ${req.body.item} is no longer banned from appraisals.`
-      })
-    } else {
-      return res.sendStatus(400)
-    }
-  } else if(req.body.group) {
-    var groups
-    if(!isNaN(+req.body.group)) {
-      groups = await invMarketGroups.get(+req.body.group)
-    } else {
-      groups = await invMarketGroups.getByName(req.body.group)
-    }
-    
-    if(groups.length > 1) {
-      return res.status(400).json({
-        alert: ".",
-        groups: groups
-      })
-    }
-    
-    const group = groups[0]
-    if(!group) return res.status(400).json({
-      alert: `Market group ${req.body.group} doesn't exist.`
-    })
-    
-    if(req.body.action === "ban") {
-      invMarketGroups.ban(group)
-      return res.status(200).json({
-        confirm: `Banned market group ${req.body.group} from appraisals.`
-      })
-    } else if(req.body.action === "allow") {
-      invMarketGroups.allow(group.marketGroupID)
-      return res.status(200).json({
-        confirm: `Market group ${req.body.group} is no longer banned from appraisals.` 
-      })
-    } else {
-      return res.sendStatus(400)
-    }
-  } else {
-    return res.sendStatus(400)
-  }
+  var action = req.body.action
+  var response
+  if(req.body.freighter) response = await eveHelper.director.freighter(req.body.freighter, action)
+  if(req.body.item) response = await eveHelper.director.itemType(req.body.item, action)
+  if(req.body.group) response = await eveHelper.director.marketGroup(req.body.group, action)
+  
+  if(!response) return res.sendStatus(400)
+  if(response.error) return res.status(404).json({ alert: response.alert })
+  return res.status(200).json(response)
 })
 
 module.exports = router

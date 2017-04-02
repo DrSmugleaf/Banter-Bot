@@ -5,6 +5,7 @@
 "use strict"
 const _ = require("underscore")
 const async = require("async")
+const character = require("../models/eve/character")
 const contract = require("../models/eve/contract")
 const invMarketGroups = require("../models/eve/invmarketgroups")
 const invTypes = require("../models/eve/invtypes")
@@ -204,6 +205,79 @@ module.exports = {
           return resolve()
         })
       })
+    }
+  },
+  
+  director: {
+    async freighter(name, action) {
+      var user = await character.getByName(name)
+      user = user[0]
+      if(!user) return { error: true, alert: `Character ${name} doesn't exist.` }
+      
+      switch(action) {
+        case "add":
+          user.freighter = true
+          character.set(user)
+          return { alert: `Added ${name} to the list of freighters.` }
+        case "remove":
+          user.freighter = false
+          character.set(user)
+          return { alert: `Removed ${name} from the list of freighters.` }
+        default:
+          return false
+      }
+    },
+    async itemType(item, action) {
+      var invItem
+      if(+item) {
+        invItem = await invTypes.get(+item)
+      } else {
+        invItem = await invTypes.getByName(item)
+      }
+      
+      invItem = invItem[0]
+      if(!invItem) return { error: true, alert: `Item type ${item} doesn't exist.` }
+      
+      switch (action) {
+        case "ban":
+          invTypes.ban(invItem)
+          return { alert: `Banned item ${item} from appraisals.` }
+        case "allow":
+          invTypes.allow(invItem.typeID)
+          return { alert: `Item ${item} is no longer banned from appraisals.` }
+        default:
+          return false
+      }
+    },
+    async marketGroup(group, action) {
+      var groups
+      if(+group) {
+        groups = await invMarketGroups.get(+group)
+      } else {
+        groups = await invMarketGroups.getByName(group)
+      }
+      
+      if(groups.length > 1) {
+        var alert = "Multiple market groups exist with that name, please input an ID:\n"
+        _.forEach(groups, (group) => {
+          alert = alert.concat(`${group.marketGroupID} ${group.marketGroupName}: ${group.description}\n`)
+        })
+        return { error: true, alert: alert }
+      }
+      
+      var invGroup = groups[0]
+      if(!invGroup) return { error: true, alert: `Market group ${group} doesn't exist` }
+      
+      switch(action) {
+        case "ban":
+          invMarketGroups.ban(invGroup)
+          return { alert: `Banned market group ${group} from appraisals` }
+        case "allow":
+          invMarketGroups.allow(invGroup.marketGroupID)
+          return { alert: `Market group ${group} is no longer banned from appraisals.` }
+        default:
+          return false
+      }
     }
   }
 }
