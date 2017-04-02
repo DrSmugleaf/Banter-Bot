@@ -27,7 +27,7 @@ module.exports = MySQL.createConnection({
     Error connecting to database ${process.env.MYSQL_DATABASE},
     with host ${process.env.MYSQL_HOST},
     at port ${process.env.MYSQL_PORT},
-    as user ${process.env.MYSQL_USER},
+    as user defined in the MYSQL_USER environment variable,
     with password defined in the MYSQL_PASSWORD environment variable.
     
     Error message: ${e.name}: ${e.message}

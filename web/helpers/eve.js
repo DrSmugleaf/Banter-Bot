@@ -4,9 +4,11 @@
 
 "use strict"
 const _ = require("underscore")
+const alliance = require("../models/eve/alliance")
 const async = require("async")
 const character = require("../models/eve/character")
 const contract = require("../models/eve/contract")
+const corporation = require("../models/eve/corporation")
 const invMarketGroups = require("../models/eve/invmarketgroups")
 const invTypes = require("../models/eve/invtypes")
 const invVolumes = require("../models/eve/invvolumes")
@@ -211,6 +213,18 @@ module.exports = {
   },
   
   director: {
+    user(name, action) {
+      switch(action) {
+        case "ban":
+          character.ban(name)
+          return { alert: `Banned ${name}.` }
+        case "unban":
+          character.unban(name)
+          return { alert: `Unbanned ${name}.` }
+        default:
+          return false
+      }
+    },
     async freighter(name, action) {
       var user = await character.getByName(name)
       user = user[0]
@@ -225,6 +239,36 @@ module.exports = {
           user.freighter = false
           character.set(user)
           return { alert: `Removed ${name} from the list of freighters.` }
+        default:
+          return false
+      }
+    },
+    async alliance(name, action) {
+      const allowed = await alliance.isAllowed(name)
+      switch(action) {
+        case "allow":
+          if(allowed[0]) return { error: true, alert: `Alliance ${name} is already whitelisted.` }
+          alliance.allow(name)
+          return { alert: `Players in the alliance ${name} are now allowed to submit contracts.` }
+        case "disallow":
+          if(!allowed[0]) return { error: true, alert: `Alliance ${name} isn't whitelisted.` }
+          alliance.disallow(name)
+          return { alert: `Players in the alliance ${name} are no longer allowed to submit contracts.` }
+        default:
+          return false
+      }
+    },
+    async corporation(name, action) {
+      const allowed = await corporation.isAllowed(name)
+      switch(action) {
+        case "allow":
+          if(allowed[0]) return { error: true, alert: `Corporation ${name} is already whitelisted.` }
+          corporation.allow(name)
+          return { alert: `Players in the corporation ${name} are now allowed to submit contracts.` }
+        case "disallow":
+          if(!allowed[0]) return { error: true, alert: `Corporation ${name} isn't whitelisted.` }
+          corporation.disallow(name)
+          return { alert: `Players in the corporation ${name} are no longer allowed to submit contracts.` }
         default:
           return false
       }
