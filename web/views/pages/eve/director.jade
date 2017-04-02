@@ -19,21 +19,57 @@ html(lang="en")
         p(style="white-space: pre-wrap;")
       ul.nav.nav-tabs.nav-justified
         li
-          a(onclick="showFreighterPanel(this)") Freighter Panel
+          a(onclick="showUserPanel(this)") Users
         li
-          a(onclick="showItemTypePanel(this)") Item Type Panel
+          a(onclick="showFreighterPanel(this)") Freighters
         li
-          a(onclick="showMarketGroupPanel(this)") Market Group Panel
-      div#freighterPanel(style="display: none;")
+          a(onclick="showAlliancePanel(this)") Alliances
+        li
+          a(onclick="showCorporationPanel(this)") Corporations
+        li
+          a(onclick="showItemTypePanel(this)") Item Types
+        li
+          a(onclick="showMarketGroupPanel(this)") Market Groups
+        li
+          a(onclick="showSettingsPanel(this)") Settings
+      
+      div#userPanel(style="display: none;")
         form(method="post" action="/eve/director/submit")
           div.panel.panel-default
-            div.panel-heading Freighter Panel
+            div.panel-heading.text-center User Panel
             div.panel-body
               div.form-group
                 div.row
-                  label.col-md-3(for="freighter")
+                  label.col-md-3(for="user") Username
                   div.col-md-6
-                    input(name="freighter" type="text" class="form-control" id="freighter" placeholder="DrSmugleaf Aulmais" autocomplete="off" data-toggle="tooltip" title="")
+                    input(name="user" type="text" class="form-control" id="user" placeholder="DrSmugleaf Aulmais" autocomplete="off")
+              div.form-group
+                div.row.text-center
+                  button.btn.btn-danger(type="submit" name="ban" style="margin-right: 5px;") Ban User
+                  button.btn.btn-success(type="submit" name="allow") Unban User
+        div.table-responsive
+          table.table.table-striped
+            thead
+              tr
+                th Character Name
+            tbody
+              - bannedUsers.forEach(function(user) {
+                tr
+                  td
+                    img(src=user.character_portrait style="width: 25px; height: 25px;")
+                  td=user.character_name
+              - })
+      
+      div#freighterPanel(style="display: none;")
+        form(method="post" action="/eve/director/submit")
+          div.panel.panel-default
+            div.panel-heading.text-center Freighter Panel
+            div.panel-body
+              div.form-group
+                div.row
+                  label.col-md-3(for="freighter") Freighter Name
+                  div.col-md-6
+                    input(name="freighter" type="text" class="form-control" id="freighter" placeholder="DrSmugleaf Aulmais" autocomplete="off")
               div.form-group
                 div.row.text-center
                   button.btn.btn-success(type="submit" name="add" style="margin-right: 5px;") Add Freighter
@@ -58,16 +94,65 @@ html(lang="en")
                   td=freighter.alliance_name
               - })
       
-      div#itemTypePanel(style="display: none;")
+      div#alliancePanel(style="display: none;")
         form(method="post" action="/eve/director/submit")
           div.panel.panel-default
-            div.panel-heading Item Type Panel
+            div.panel-heading.text-center Alliance Panel
             div.panel-body
               div.form-group
                 div.row
-                  label.col-md-3(for="item")
+                  label.col-md-3(for="alliance") Alliance Name
                   div.col-md-6
-                    input(name="item" type="text" class="form-control" id="item" placeholder="Cargo Container" autocomplete="off" data-toggle="tooltip" title="")
+                    input(name="alliance" type="text" class="form-control" id="freighter" placeholder="Pandemic Horde" autocomplete="off")
+              div.form-group
+                div.row.text-center
+                  button.btn.btn-success(type="submit" name="allow" style="margin-right: 5px;") Allow Alliance
+                  button.btn.btn-danger(type="submit" name="disallow") Disallow Alliance
+          table.table.table-striped
+            thead
+              tr
+                th Alliance Name
+            tbody
+              - allowedAlliances.forEach(function(alliance) {
+                tr
+                  td=alliance.name
+              - })
+      
+      div#corporationPanel(style="display: none;")
+        form(method="post" action="/eve/director/submit")
+          div.panel.panel-default
+            div.panel-heading.text-center Corporation Panel
+            div.panel-body
+              div.form-group
+                div.row
+                  label.col-md-3(for="corporation") Corporation Name
+                  div.col-md-6
+                    input(name="corporation" type="text" class="form-control" id="freighter" placeholder="Pandemic Horde Inc." autocomplete="off")
+              div.form-group
+                div.row.text-center
+                  button.btn.btn-success(type="submit" name="allow" style="margin-right: 5px;") Allow Corporation
+                  button.btn.btn-danger(type="submit" name="disallow") Disallow Corporation
+        div.table-responsive
+          table.table.table-striped
+            thead
+              tr
+                th Corporation Name
+            tbody
+              - allowedCorporations.forEach(function(corporation) {
+                tr
+                  td=corporation.name
+              - })
+      
+      div#itemTypePanel(style="display: none;")
+        form(method="post" action="/eve/director/submit")
+          div.panel.panel-default
+            div.panel-heading.text-center Item Type Panel
+            div.panel-body
+              div.form-group
+                div.row
+                  label.col-md-3(for="item") Item Type
+                  div.col-md-6
+                    input(name="item" type="text" class="form-control" id="item" placeholder="Cargo Container" autocomplete="off")
               div.form-group
                 div.row.text-center
                   button.btn.btn-danger(type="submit" name="ban" style="margin-right: 5px;") Ban Item Type
@@ -99,13 +184,13 @@ html(lang="en")
       div#marketGroupPanel(style="display: none;")
         form(method="post" action="/eve/director/submit")
           div.panel.panel-default
-            div.panel-heading Market Group Panel
+            div.panel-heading.text-center Market Group Panel
             div.panel-body
               div.form-group
                 div.row
-                  label.col-md-3(for="group")
+                  label.col-md-3(for="group") Market Group
                   div.col-md-6
-                    input(name="group" type="text" class="form-control" id="group" placeholder="Frigate" autocomplete="off" data-toggle="tooltip" title="")
+                    input(name="group" type="text" class="form-control" id="group" placeholder="Frigate" autocomplete="off")
               div.form-group
                 div.row.text-center
                   button.btn.btn-danger(type="submit" name="ban" style="margin-right: 5px;") Ban Market Group
@@ -124,14 +209,48 @@ html(lang="en")
                   td=group.marketGroupName
                   td=group.description
               - })
+      
+      div#settingsPanel(style="display: none;")
+        form(method="post" action="eve/director/submit")
+          div.panel.panel-default
+            div.panel-heading.text-center Settings Panel
+            div.panel-body
+              div.form-group
+                div.row
+                  label.col-md-3(for="maxVolume") Volume
+                  div.col-md-6
+                    input(name="maxVolume" type="text" class="form-control" id="maxVolume" placeholder="300000" autocomplete="off")
+                  div.col-md-3
+                    p Current: #{settings.maxVolume}
     
     include ../../partials/footer
     script.
+      function showUserPanel(e) {
+        $("ul.nav.nav-tabs.nav-justified li").removeClass("active")
+        $(e).parent("li").addClass("active")
+        $("form").parent("div").hide()
+        $("#userPanel").show()
+      }
+      
       function showFreighterPanel(e) {
         $("ul.nav.nav-tabs.nav-justified li").removeClass("active")
         $(e).parent("li").addClass("active")
         $("form").parent("div").hide()
         $("#freighterPanel").show()
+      }
+      
+      function showAlliancePanel(e) {
+        $("ul.nav.nav-tabs.nav-justified li").removeClass("active")
+        $(e).parent("li").addClass("active")
+        $("form").parent("div").hide()
+        $("#alliancePanel").show()
+      }
+      
+      function showCorporationPanel(e) {
+        $("ul.nav.nav-tabs.nav-justified li").removeClass("active")
+        $(e).parent("li").addClass("active")
+        $("form").parent("div").hide()
+        $("#corporationPanel").show()
       }
       
       function showItemTypePanel(e) {
@@ -146,6 +265,13 @@ html(lang="en")
         $(e).parent("li").addClass("active")
         $("form").parent("div").hide()
         $("#marketGroupPanel").show()
+      }
+      
+      function showSettingsPanel(e) {
+        $("ul.nav.nav-tabs.nav-justified li").removeClass("active")
+        $(e).parent("li").addClass("active")
+        $("form").parent("div").hide()
+        $("#settingsPanel").show()
       }
 
     script.

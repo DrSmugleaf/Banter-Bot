@@ -4,8 +4,10 @@
 
 "use strict"
 const _ = require("underscore")
+const alliance = require("../models/eve/alliance")
 const character = require("../models/eve/character")
 const contract = require("../models/eve/contract")
+const corporation = require("../models/eve/corporation")
 const eveAuth = require("../middlewares/eve").eveAuth
 const eveHelper = require("../helpers/eve")
 const express = require("express")
@@ -15,6 +17,7 @@ const moment = require("moment-timezone")
 const router = express.Router()
 const request = require("request-promise")
 const session = require("express-session")
+const settings = require("../models/eve/settings")
 const winston = require("winston")
 
 router.use(session({
@@ -86,6 +89,12 @@ router.get("/auth", function(req, res) {
     eveCharacter.alliance_portrait = bodies[1].px64x64.replace(/^http:\/\//i, "https://")
     eveCharacter.corporation_name = bodies[2].corporation_name
     eveCharacter.corporation_portrait = bodies[3].px64x64.replace(/^http:\/\//i, "https://")
+    
+    const userBanned = await character.isBanned(eveCharacter.character_name)
+    const allianceAllowed = await alliance.isAllowed(eveCharacter.alliance_name)
+    const corporationAllowed = await corporation.isAllowed(eveCharacter.corporation_name)
+    const isAllowed = !userBanned[0] && (allianceAllowed[0] || corporationAllowed[0])
+    if(!isAllowed) return res.render("pages/eve/unauthorized")
     
     character.set(eveCharacter)
     eveCharacter = await character.get(eveCharacter.id)
@@ -203,16 +212,24 @@ router.post("/contracts/submit", eveAuth, function(req, res) {
 router.get("/director", eveAuth, async function(req, res) {
   if(!req.session.character.director) return res.redirect("/eve/eve")
   
+  const bannedUsers = await character.getBanned()
   const freighters = await character.getFreighters()
+  const allowedAlliances = await alliance.getAllowed()
+  const allowedCorporations = await corporation.getAllowed()
   const bannedItemTypes = await invTypes.getBanned()
   const bannedMarketGroups = await invMarketGroups.getBanned()
+  const eveSettings = await settings.get()
   res.render("pages/eve/director", {
     character: req.session.character || {},
     title: "Director Panel - Mango Deliveries",
     active: "Director Panel",
+    bannedUsers: bannedUsers,
     freighters: freighters,
+    allowedAlliances: allowedAlliances,
+    allowedCorporations: allowedCorporations,
     bannedItemTypes: bannedItemTypes,
-    bannedMarketGroups: bannedMarketGroups
+    bannedMarketGroups: bannedMarketGroups,
+    settings: eveSettings[0],
   })
 })
 
@@ -220,10 +237,15 @@ router.post("/director/submit", eveAuth, async function(req, res) {
   if(!req.session.character.director) return res.sendStatus(403)
   
   var action = req.body.action
+  var value = req.body.value
   var response
+  if(req.body.user) response = await eveHelper.director.freighter(req.body.user, action)
   if(req.body.freighter) response = await eveHelper.director.freighter(req.body.freighter, action)
+  if(req.body.alliance) response = await eveHelper.director.alliance(req.body.alliance, action)
+  if(req.body.corporation) response = await eveHelper.director.corporation(req.body.corporation, action)
   if(req.body.item) response = await eveHelper.director.itemType(req.body.item, action)
   if(req.body.group) response = await eveHelper.director.marketGroup(req.body.group, action)
+  if(req.body.settings) response = await eveHelper.director.settings(req.body.setting, value)
   
   if(!response) return res.sendStatus(400)
   if(response.error) return res.status(404).json({ alert: response.alert })

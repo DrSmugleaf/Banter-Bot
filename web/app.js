@@ -19,6 +19,7 @@ app.set("views", path.join(__dirname + "/views"))
 app.set("view engine", "jade")
 app.use(express.static(path.join(__dirname + "/public")))
 app.use(require("./controllers"))
+app.locals.character = {}
 
 // if(process.env.NODE_ENV === "dev") {
 //   app.use(function(e, req, res) {
