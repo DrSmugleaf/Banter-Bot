@@ -161,23 +161,15 @@ html(lang="en")
           type: $(this).attr("method"),
           url: $(this).attr("action"),
           data: data,
+          dataType: "json",
           success: function(res) {
-            $("div#submit-alert")
-              .addClass("alert-success")
-              .text(res.confirm)
+            $("div#submit-alert").removeClass("alert-danger").addClass("alert-success")
+            $("div#submit-alert p").text(res.alert)
           },
           error: function(res) {
-            if(res.responseText) res = JSON.parse(res.responseText)
-            if(!res.alert) return window.location.replace("login")
-            if(res.groups) {
-              res.alert = "Multiple market groups exist with that name, please input an ID:\n"
-              for(const group in res.groups) {
-                if(!res.groups.hasOwnProperty(group)) return
-                res.alert += res.groups[group].marketGroupID + " " + res.groups[group].marketGroupName + ": " + res.groups[group].description + "\n"
-              }
-            }
-            $("div#submit-alert").addClass("alert-danger")
-            $("div#submit-alert p").text(res.alert)
+            if(!res.responseJSON) return window.location.replace("login")
+            $("div#submit-alert").removeClass("alert-success").addClass("alert-danger")
+            $("div#submit-alert p").text(res.responseJSON.alert)
           }
         })
         return false
