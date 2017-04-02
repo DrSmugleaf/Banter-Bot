@@ -138,7 +138,7 @@ html(lang="en")
       })
     
     script.
-      $("div#image_container div div").unbind("click").click(function(e) {
+      $("div#image_container div div").click(function(e) {
         $("input#destination").val($("img", this).attr("value"))
         $("div#image_container div div img").css("outline", "")
         $("img", this).css("outline", "4px solid #0088CC")
