@@ -30,43 +30,6 @@ router.get("/login", function(req, res) {
   res.redirect(`https://login.eveonline.com/oauth/authorize/?response_type=code&redirect_uri=${process.env.EVE_CALLBACK}&client_id=${process.env.EVE_ID}&state=${state}`)
 })
 
-router.get("/eve", function(req, res) {
-  res.render("pages/eve/index", {
-    character: req.session.character || {},
-    title: "Home - Mango Deliveries",
-    active: "Home"
-  })
-})
-
-router.get("/contracts", eveAuth, function(req, res) {
-  var characterID
-  var freighter = req.session.character.freighter || req.session.character.director
-  if(!freighter) {
-    characterID = req.session.character.id
-  }
-  
-  Promise.all([
-    contract.getAllPending(characterID),
-    contract.getAllOngoing(characterID),
-    contract.getAllFinalized(characterID)
-  ]).then((contracts) => {
-    const pending = contracts[0]
-    const ongoing = contracts[1]
-    const finalized = contracts[2]
-    
-    res.render("pages/eve/contracts", {
-      character: req.session.character || {},
-      pendingContracts: pending,
-      ongoingContracts: ongoing,
-      finalizedContracts: finalized,
-      director: req.session.character.director,
-      freighter: freighter,
-      title: "Contracts - Mango Deliveries",
-      active: "Contracts"
-    })
-  })
-})
-
 router.get("/auth", function(req, res) {
   const sessionState = req.session.state
   delete req.session.state
@@ -134,6 +97,14 @@ router.get("/auth", function(req, res) {
   })
 })
 
+router.get("/eve", function(req, res) {
+  res.render("pages/eve/index", {
+    character: req.session.character || {},
+    title: "Home - Mango Deliveries",
+    active: "Home"
+  })
+})
+
 router.get("/query", async function(req, res) {
   const validate = await eveHelper.validateAppraisal(req.query)
   if(validate.invalid) return res.status(400).json(validate)
@@ -177,6 +148,35 @@ router.post("/submit", async function(req, res) {
     submitted: moment().unix(),
     submitted_formatted: moment().format("MMMM Do YYYY, HH:mm:ss"),
     status: "pending"
+  })
+})
+
+router.get("/contracts", eveAuth, function(req, res) {
+  var characterID
+  var freighter = req.session.character.freighter || req.session.character.director
+  if(!freighter) {
+    characterID = req.session.character.id
+  }
+  
+  Promise.all([
+    contract.getAllPending(characterID),
+    contract.getAllOngoing(characterID),
+    contract.getAllFinalized(characterID)
+  ]).then((contracts) => {
+    const pending = contracts[0]
+    const ongoing = contracts[1]
+    const finalized = contracts[2]
+    
+    res.render("pages/eve/contracts", {
+      character: req.session.character || {},
+      pendingContracts: pending,
+      ongoingContracts: ongoing,
+      finalizedContracts: finalized,
+      director: req.session.character.director,
+      freighter: freighter,
+      title: "Contracts - Mango Deliveries",
+      active: "Contracts"
+    })
   })
 })
 
