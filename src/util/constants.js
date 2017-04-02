@@ -302,6 +302,20 @@ exports.versions = {
     english: "http://i.imgur.com/5c9vFjF.jpg (April Fools)",
     klingon: "http://i.imgur.com/5c9vFjF.jpg (April Fools)",
     spanish: "http://i.imgur.com/5c9vFjF.jpg (April Fools)"
+  },
+  "11": {
+    english: stripIndents`
+      The bot no longer only speaks in Klingon.
+      Klingon is now a valid language for the command !language.
+    `,
+    klingon: stripIndents`
+      qawlu' neH jatlh bot pa' tlhIngan.
+      tlhIngan DaH valid Hol ra'! Hol.
+    `,
+    spanish: stripIndents`
+      El bot ya no responde sólo en Klingon.
+      Klingon es ahora un lenguaje válido para el comando !language.
+    `
   }
 }
 
@@ -1118,58 +1132,58 @@ exports.mslanguages = {
 exports.responses = {
   AUTO_CHANNEL: {
     DISABLED: {
-      _english: "Disabled automatic channels in this server.",
-      english: "Qotlh automatic channels qaStaHvIS jabwI'.",
-      _spanish: "Desactivados canales automáticos en este servidor."
+      english: "Disabled automatic channels in this server.",
+      klingon: "Qotlh automatic channels qaStaHvIS jabwI'.",
+      spanish: "Desactivados canales automáticos en este servidor."
     },
     ENABLED: {
-      _english: "Enabled automatic channels in this server.",
-      english: "enable automatic channels neH jabwI'.",
-      _spanish: "Activados canales automáticos en este servidor."
+      english: "Enabled automatic channels in this server.",
+      klingon: "enable automatic channels neH jabwI'.",
+      spanish: "Activados canales automáticos en este servidor."
     },
     NOT_READY: {
-      _english: "Automatic channels aren't ready yet in this server, please wait a few more seconds and try again.",
-      english: "aren't SuH wej qaStaHvIS jabwI' DubelmoHchugh puS cha'DIch neH loS 'ej yInIDqa' automatic channels.",
-      _spanish: "Los canales automáticos no están listos todavía en este servidor, por favor espera unos segundos más e inténtalo de nuevo."
+      english: "Automatic channels aren't ready yet in this server, please wait a few more seconds and try again.",
+      klingon: "aren't SuH wej qaStaHvIS jabwI' DubelmoHchugh puS cha'DIch neH loS 'ej yInIDqa' automatic channels.",
+      spanish: "Los canales automáticos no están listos todavía en este servidor, por favor espera unos segundos más e inténtalo de nuevo."
     },
     UPDATED: {
-      _english: "Updated channels for this server.",
-      english: "update channels jabwI'.",
-      _spanish: "Actualizados los canales de este servidor"
+      english: "Updated channels for this server.",
+      klingon: "update channels jabwI'.",
+      spanish: "Actualizados los canales de este servidor"
     },
     SET_THRESHOLD: {
-      _english: (threshold) => `Set the automatic channel creation threshold in this server to \`${threshold}\` players.`,
-      english: (threshold) => `automatic channel creation threshold HIjmeH qaStaHvIS jabwI' \`${threshold}\` DawI'pu'.`,
-      _spanish: (threshold) => `Configurado el umbral de creación automática de canales en este servidor a \`${threshold}\` jugadores.`
+      english: (threshold) => `Set the automatic channel creation threshold in this server to \`${threshold}\` players.`,
+      klingon: (threshold) => `automatic channel creation threshold HIjmeH qaStaHvIS jabwI' \`${threshold}\` DawI'pu'.`,
+      spanish: (threshold) => `Configurado el umbral de creación automática de canales en este servidor a \`${threshold}\` jugadores.`
     }
   },
 
   AVATAR: {
     INVALID: {
-      _english: (url) => `${url} is an invalid image.`,
-      english: (url) => `${url} ghItlhvam invalid.`,
-      _spanish: (url) => `${url} es una imagen inválida.`
+      english: (url) => `${url} is an invalid image.`,
+      klingon: (url) => `${url} ghItlhvam invalid.`,
+      spanish: (url) => `${url} es una imagen inválida.`
     },
     SET: {
-      _english: (url) => `Changed the bot's image to ${url}.`,
-      english: (url) => `bot ghItlhvam 'ej wIQaw'laH ${url}`,
-      _spanish: (url) => `Cambiado la imagen del bot a ${url}.`
+      english: (url) => `Changed the bot's image to ${url}.`,
+      klingon: (url) => `bot ghItlhvam 'ej wIQaw'laH ${url}`,
+      spanish: (url) => `Cambiado la imagen del bot a ${url}.`
     }
   },
 
   BLACKJACK: {
     ADDED_PLAYER: {
-      _english: (channel) => stripIndents`Added you to a game of Blackjack.
+      english: (channel) => stripIndents`Added you to a game of Blackjack.
       If you don't know how to play Blackjack, type \`help\` in <#${channel}>.
       You can also type \`actions\` to see your available actions and \`kick\` to kick someone.
       You can play in <#${channel}>.
       You can remove yourself from the game at any time by using this command again.`,
-      english: (channel) => stripIndents`chel SoH Qujmey Blackjack.
+      klingon: (channel) => stripIndents`chel SoH Qujmey Blackjack.
       chay' Blackjack QujmeH ghewmey DaSovchugh, vaj \`QaH\` Segh neH <#${channel}>.
       \`actions\` lupoQ actions \`pup\` vay' pup 'ej lulegh laH je Segh SoH.
       ghonja'gho neH <#${channel}>.
       laH teq SoH vo' Quj DeSDu' vay' poH pong ra' lo' jatlhqa'.`,
-      _spanish: (channel) => stripIndents`Te he añadido a una partida de Blackjack.
+      spanish: (channel) => stripIndents`Te he añadido a una partida de Blackjack.
       Si no sabes jugar, escribe \`ayuda\` en <#${channel}>.
       También puedes escribir \`acciones\` para ver tus acciones disponibles o \`echar\` para echar a alguien.
       Puedes jugar en <#${channel}>.
@@ -1177,96 +1191,96 @@ exports.responses = {
     },
     ALIASES: {
       ACTION: {
-        _english: ["action", "actions"],
         english: ["action", "actions"],
-        _spanish: ["accion", "acción", "acciones"]
+        klingon: ["action", "actions"],
+        spanish: ["accion", "acción", "acciones"]
       },
       HELP: {
-        _english: ["help", "rules", "rule"],
-        english: ["QaH"],
-        _spanish: ["ayuda", "reglas", "regla"],
+        english: ["help", "rules", "rule"],
+        klingon: ["QaH"],
+        spanish: ["ayuda", "reglas", "regla"],
       },
       KICK: {
-        _english: ["kick"],
-        english: ["pup"],
-        _spanish: ["echar"]
+        english: ["kick"],
+        klingon: ["pup"],
+        spanish: ["echar"]
       }
     },
     AVAILABLE_ACTIONS: {
-      _english: (actions) => `Your available actions are \`${actions}\`.`,
-      english: (actions) => `actions lupoQ \`${actions}\``,
-      _spanish: (actions) => `Tus acciones disponibles son \`${actions}\`.`
+      english: (actions) => `Your available actions are \`${actions}\`.`,
+      klingon: (actions) => `actions lupoQ \`${actions}\``,
+      spanish: (actions) => `Tus acciones disponibles son \`${actions}\`.`
     },
     CANT_KICK_DEALER: {
-      _english: "Nice try.",
-      english: "nice 'e' nID.",
-      _spanish: "Buen intento."
+      english: "Nice try.",
+      klingon: "nice 'e' nID.",
+      spanish: "Buen intento."
     },
     CARD: {
-      _english: (symbol, name) => `${symbol}${name}`,
       english: (symbol, name) => `${symbol}${name}`,
-      _spanish: (symbol, name) => `${symbol}${name}`
+      klingon: (symbol, name) => `${symbol}${name}`,
+      spanish: (symbol, name) => `${symbol}${name}`
     },
     CHANNEL_REMOVED: {
-      _english: (name) => oneLine`
+      english: (name) => oneLine`
         Channel ${name} was deleted by someone or something.
         You can continue playing in this channel.
       `,
-      english: (name) => oneLine`
+      klingon: (name) => oneLine`
         channel ${name} deleted pong vay' vay'.
         qaStaHvIS channel chu' laH taH SoH.
       `,
-      _spanish: (name) => oneLine`
+      spanish: (name) => oneLine`
         Canal ${name} ha sido eliminado por alguien o algo.
         Podéis seguir jugando en este canal.
       `
     },
     CHANNEL_REMOVED_GAME_ENDED: {
-      _english: (channel, guild) => oneLine`
+      english: (channel, guild) => oneLine`
         Channel ${channel} in ${guild} was deleted by someone or something.
         You can start a new game to keep playing Blackjack.
       `,
-      english: (channel, guild) => oneLine`
+      klingon: (channel, guild) => oneLine`
         deleted channel ${channel} neH ${guild} pong vay' vay'.
         chu' Quj QujmeH pol Blackjack laH start SoH.
       `,
-      _spanish: (channel, guild) => oneLine`
+      spanish: (channel, guild) => oneLine`
         El canal ${channel} en el servidor ${guild} ha sido eliminado por alguien o algo.
         Puedes empezar una nueva partida para seguir jugando Blackjack.
       `
     },
     DEAL: {
-      _english: (name, symbol, card, total, actions) => stripIndents`
+      english: (name, symbol, card, total, actions) => stripIndents`
         ${name}, dealt you ${symbol}${card}. Total score: ${total}.
         Actions you can take: ${actions}
       `,
-      english: (name, symbol, card, total, actions) => stripIndents`
+      klingon: (name, symbol, card, total, actions) => stripIndents`
         ${name} ${symbol} Ha' SoH ${card}. total pe''egh: ${total}.
         laH tlhap SoH actions: ${actions}
       `,
-      _spanish: (name, symbol, card, total, actions) => stripIndents`
+      spanish: (name, symbol, card, total, actions) => stripIndents`
         ${name}, te he repartido ${symbol}${card}. Puntuación total: ${total}.
         Acciones que puedes tomar: ${actions}
       `
     },
     DEALER_DEAL: {
-      _english: (symbol, card, total) => stripIndents`
+      english: (symbol, card, total) => stripIndents`
         The dealer draws ${symbol}${card}. Total score: ${total}.
       `,
-      english: (symbol, card, total) => stripIndents`
+      klingon: (symbol, card, total) => stripIndents`
         ${symbol}${card} tu'lu'be' dealer. total pe''egh: ${total}.
       `,
-      _spanish: (symbol, card, total) => stripIndents`
+      spanish: (symbol, card, total) => stripIndents`
         El crupier roba ${symbol}${card}. Puntuación total: ${total}.
       `
     },
     DEALER_HAND: {
-      _english: "Dealer's hand:\n",
-      english: "dealer ghop:\n",
-      _spanish: "Mano del crupier:\n"
+      english: "Dealer's hand:\n",
+      klingon: "dealer ghop:\n",
+      spanish: "Mano del crupier:\n"
     },
     HELP: {
-      _english: stripIndents`In a game of Blackjack, the objective is to reach the highest score that is equal to or under 21. If at any point you go above 21 points, you lose that round.
+      english: stripIndents`In a game of Blackjack, the objective is to reach the highest score that is equal to or under 21. If at any point you go above 21 points, you lose that round.
 
       Every numeric card has the same point value as its number, Aces are worth either 1 or 11 points, and face cards (Jack, Queen, King) are worth 10 points.
 
@@ -1285,7 +1299,7 @@ exports.responses = {
 
       Surrender halves your bet and makes you instantly lose that game.
       `,
-      english: stripIndents`qaStaHvIS Quj Blackjack, objective nIv pe''egh 'e' equal pagh 'ach ghaytan 21 SIch. vaj legh vay' lang QochQo'chuqlaw' wovbe' 21 lang, round luj SoH.
+      klingon: stripIndents`qaStaHvIS Quj Blackjack, objective nIv pe''egh 'e' equal pagh 'ach ghaytan 21 SIch. vaj legh vay' lang QochQo'chuqlaw' wovbe' 21 lang, round luj SoH.
 
       rap lang je mI' lo'laHwI'na' chaw' numeric Hoch, Aces worth vo' vImughta' 1 pagh 11 lang, vaj qab cards (jawwI' Dogh, GHERTLHUD, ta') worth 10 lang.
 
@@ -1303,7 +1317,7 @@ exports.responses = {
       laH neH lo' split rap lo'laHwI'na' chaw' wa'DIch 2 'ej ghaH chaw' wa' ghoplIj vaj cha' chev ghop Hoch splits.
 
       bet halves 'ej instantly Quj luj SoH jegh.`,
-      _spanish: stripIndents`En una partida de Blackjack, el objetivo es alcanzar la puntuación más alta que sea igual o menor a 21. Si en cualquier momento tu puntuación llega a ser más de 21, pierdes esa ronda.
+      spanish: stripIndents`En una partida de Blackjack, el objetivo es alcanzar la puntuación más alta que sea igual o menor a 21. Si en cualquier momento tu puntuación llega a ser más de 21, pierdes esa ronda.
 
       Cada carta numérica tiene el mismo valor que su número, los Ases valen 1 o 11 puntos, y las figuras (Valet, Dame y Roi) valen 10 puntos.
 
@@ -1325,310 +1339,310 @@ exports.responses = {
     },
     KICK: {
       ALREADY_VOTED: {
-        _english: (name) => `You already voted to kick ${name}.`,
-        english: (name) => `chonayta' voted SoH ${name} pup.`,
-        _spanish: (name) => `Ya has votado para echar a ${name}.`
+        english: (name) => `You already voted to kick ${name}.`,
+        klingon: (name) => `chonayta' voted SoH ${name} pup.`,
+        spanish: (name) => `Ya has votado para echar a ${name}.`
       },
       CANT_KICK_SELF: {
-        _english: "You can't kick yourself!",
-        english: "pup SoH pagh!",
-        _spanish: "¡No te puedes echar a ti mismo!"
+        english: "You can't kick yourself!",
+        klingon: "pup SoH pagh!",
+        spanish: "¡No te puedes echar a ti mismo!"
       },
       FAIL: {
-        _english: (votes, total, name) => `${votes} out of ${total} players want to kick ${name} from this round of Blackjack.`,
-        english: (votes, total, name) => `${name} pup neH $ bIr mIw wIje'laHbe'chugh vaj ${votes} ${total} DawI'pu' vo' Blackjack round.`,
-        _spanish: (votes, total, name) => `${votes} de ${total} jugadores quieren echar a ${name} de esta ronda de Blackjack.`
+        english: (votes, total, name) => `${votes} out of ${total} players want to kick ${name} from this round of Blackjack.`,
+        klingon: (votes, total, name) => `${name} pup neH $ bIr mIw wIje'laHbe'chugh vaj ${votes} ${total} DawI'pu' vo' Blackjack round.`,
+        spanish: (votes, total, name) => `${votes} de ${total} jugadores quieren echar a ${name} de esta ronda de Blackjack.`
       },
       INVALID_MEMBER: {
-        _english: "Invalid player.",
-        english: "invalid DawI'pu'.",
-        _spanish: "Jugador inválido."
+        english: "Invalid player.",
+        klingon: "invalid DawI'pu'.",
+        spanish: "Jugador inválido."
       },
       NO_MEMBER_SPECIFIED: {
-        _english: "You need to specify a player to vote kick.",
-        english: "DawI'pu' pup vote per bImejnIS.",
-        _spanish: "Necesitas especificar un jugador a quien echar por votos."
+        english: "You need to specify a player to vote kick.",
+        klingon: "DawI'pu' pup vote per bImejnIS.",
+        spanish: "Necesitas especificar un jugador a quien echar por votos."
       },
       NOT_PLAYING: {
-        _english: (name) => `${name} isn't playing Blackjack.`,
-        english: (name) => `Blackjack isn't chu' ${name}.`,
-        _spanish: (name) => `${name} no esta jugando Blackjack.`
+        english: (name) => `${name} isn't playing Blackjack.`,
+        klingon: (name) => `Blackjack isn't chu' ${name}.`,
+        spanish: (name) => `${name} no esta jugando Blackjack.`
       },
       SUCCESS: {
-        _english: (name) => `Kicked player ${name} from this round of Blackjack.`,
-        english: (name) => `pup chu'wI' ${name} vo' Blackjack round.`,
-        _spanish: (name) => `Echado jugador ${name} de esta ronda de Blackjack.`
+        english: (name) => `Kicked player ${name} from this round of Blackjack.`,
+        klingon: (name) => `pup chu'wI' ${name} vo' Blackjack round.`,
+        spanish: (name) => `Echado jugador ${name} de esta ronda de Blackjack.`
       }
     },
     LOSE: {
-      _english: (name) => `${name} loses.`,
-      english: (name) => `luj ${name}.`,
-      _spanish: (name) => `${name} pierde.`
+      english: (name) => `${name} loses.`,
+      klingon: (name) => `luj ${name}.`,
+      spanish: (name) => `${name} pierde.`
     },
     NATURAL_BLACKJACK: {
-      _english: (name) => `${name} gets a natural Blackjack!`,
-      english: (name) => `natural blackjack Suq ${name}!`,
-      _spanish: (name) => `¡${name} consigue un Blackjack natural!`
+      english: (name) => `${name} gets a natural Blackjack!`,
+      klingon: (name) => `natural blackjack Suq ${name}!`,
+      spanish: (name) => `¡${name} consigue un Blackjack natural!`
     },
     NOT_PLAYING_YET: {
-      _english: "You aren't playing yet, wait until this round finishes or vote kick inactive players.",
-      english: "aren't chu' 'ach loS until rIn round pagh pup inactive chu'wI' vote tlhIH.",
-      _spanish: "Aún no estás jugando, espera a que esta ronda termine o vota para echar a los jugadores inactivos."
+      english: "You aren't playing yet, wait until this round finishes or vote kick inactive players.",
+      klingon: "aren't chu' 'ach loS until rIn round pagh pup inactive chu'wI' vote tlhIH.",
+      spanish: "Aún no estás jugando, espera a que esta ronda termine o vota para echar a los jugadores inactivos."
     },
     PLAYER_HAND: {
-      _english: (name) => `${name}'s hand:\n`,
-      english: (name) => `ghopDu' ${name}:\n`,
-      _spanish: (name) => `Mano de ${name}:\n`
+      english: (name) => `${name}'s hand:\n`,
+      klingon: (name) => `ghopDu' ${name}:\n`,
+      spanish: (name) => `Mano de ${name}:\n`
     },
     PLAYER_TOTAL: {
-      _english: (score, actions) => `. Total: ${score}. ${actions ? `Actions you can take: ${actions}.` : ""}\n`,
-      english: (score, actions) => `. total: ${score}. ${actions ? `actions laH SoH tlhap: ${actions}.` : ""}\n`,
-      _spanish: (score, actions) => `. Total: ${score}. ${actions ? `Acciones que puedes tomar: ${actions}.` : ""}\n`
+      english: (score, actions) => `. Total: ${score}. ${actions ? `Actions you can take: ${actions}.` : ""}\n`,
+      klingon: (score, actions) => `. total: ${score}. ${actions ? `actions laH SoH tlhap: ${actions}.` : ""}\n`,
+      spanish: (score, actions) => `. Total: ${score}. ${actions ? `Acciones que puedes tomar: ${actions}.` : ""}\n`
     },
     REMOVED_PLAYER: {
-      _english: "Removed you from a game of Blackjack.",
-      english: "SoHvaD quSmey teqlu'pu' Qujmey Blackjack.",
-      _spanish: "Te he quitado de un juego de Blackjack."
+      english: "Removed you from a game of Blackjack.",
+      klingon: "SoHvaD quSmey teqlu'pu' Qujmey Blackjack.",
+      spanish: "Te he quitado de un juego de Blackjack."
     },
     SURRENDER: {
-      _english: (name) => `${name} surrenders.`,
-      english: (name) => `jegh'a' ${name}.`,
-      _spanish: (name) => `${name} se rinde.`
+      english: (name) => `${name} surrenders.`,
+      klingon: (name) => `jegh'a' ${name}.`,
+      spanish: (name) => `${name} se rinde.`
     },
     TIE: {
-      _english: (name) => `${name} ties with the dealer.`,
-      english: (name) => `mong Ha'quj ${name} dealer.`,
-      _spanish: (name) => `${name} empata con el crupier.`
+      english: (name) => `${name} ties with the dealer.`,
+      klingon: (name) => `mong Ha'quj ${name} dealer.`,
+      spanish: (name) => `${name} empata con el crupier.`
     },
     WIN: {
-      _english: (name) => `${name} wins!`,
-      english: (name) => `Qap ${name}`,
-      _spanish: (name) => `¡${name} gana!`
+      english: (name) => `${name} wins!`,
+      klingon: (name) => `Qap ${name}`,
+      spanish: (name) => `¡${name} gana!`
     }
   },
 
   BLACKJACK_ADMIN: {
     ENDED_GAME: {
-      _english: (channel) => `Ended a game of Blackjack in ${channel}.`,
-      english: (channel) => `Qujmey Blackjack pa' ${channel} qabna'Daj`,
-      _spanish: (channel) => `Terminada una partida de Blackjack en ${channel}.`
+      english: (channel) => `Ended a game of Blackjack in ${channel}.`,
+      klingon: (channel) => `Qujmey Blackjack pa' ${channel} qabna'Daj`,
+      spanish: (channel) => `Terminada una partida de Blackjack en ${channel}.`
     },
     KICKED_PLAYER: {
-      _english: (player) => `Kicked player ${player} from a game of Blackjack.`,
-      english: (player) => `wej DawI' ${player} vo' Qujmey Blackjack pup`,
-      _spanish: (player) => `Echado jugador ${player} de una partida de Blackjack.`
+      english: (player) => `Kicked player ${player} from a game of Blackjack.`,
+      klingon: (player) => `wej DawI' ${player} vo' Qujmey Blackjack pup`,
+      spanish: (player) => `Echado jugador ${player} de una partida de Blackjack.`
     },
     NO_GAMES: {
-      _english: "No games of Blackjack are being played in this server.",
-      english: "chu' pagh Quj Blackjack qaStaHvIS jabwI'.",
-      _spanish: "Ninguna partida de Blackjack esta siendo jugada en este servidor."
+      english: "No games of Blackjack are being played in this server.",
+      klingon: "chu' pagh Quj Blackjack qaStaHvIS jabwI'.",
+      spanish: "Ninguna partida de Blackjack esta siendo jugada en este servidor."
     },
     NO_PLAYER: {
-      _english: (name) => `${name} isn't playing Blackjack.`,
-      english: (name) => `Blackjack isn't chu' ${name}`,
-      _spanish: (name) => `${name} no está jugando Blackjack.`
+      english: (name) => `${name} isn't playing Blackjack.`,
+      klingon: (name) => `Blackjack isn't chu' ${name}`,
+      spanish: (name) => `${name} no está jugando Blackjack.`
     },
     NOT_TEXT_CHANNEL: {
-      _english: (name) => `${name} isn't a text channel.`,
-      english: (name) => `${name} isn't bIngDaq ghItlh leghlu' channel`,
-      _spanish: (name) => `${name} no es un canal de texto.`
+      english: (name) => `${name} isn't a text channel.`,
+      klingon: (name) => `${name} isn't bIngDaq ghItlh leghlu' channel`,
+      spanish: (name) => `${name} no es un canal de texto.`
     },
     MOVED_CHANNEL: {
-      _english: (channelID, memberID) => oneLine`
+      english: (channelID, memberID) => oneLine`
         This game of Blackjack has been moved to channel <#${channelID}> by <@${memberID}>.
         You can keep playing there.
       `,
-      english: (channelID, memberID) => oneLine`
+      klingon: (channelID, memberID) => oneLine`
         vIH Qujmey Blackjack channel <#${channelID}> pong <@${memberID}>.
         pol ghonja'gho tu'lu'
       `,
-      _spanish: (channelID, memberID) => oneLine`
+      spanish: (channelID, memberID) => oneLine`
         Esta partida de Blackjack ha sido movida al canal <#${channelID}> por <@${memberID}>.
         Podéis seguir jugando allí.
       `
     },
     MOVED_CHANNEL_REPLY: {
-      _english: (channelID) => `Moved the current game of Blackjack to <#${channelID}>.`,
-      english: (channelID) => `Qu'mey potlh Qujmey Blackjack wIpeghtaHvIS, maSoy'DI' <#${channelID}>.`,
-      _spanish: (channelID) => `Movida la partida de Blackjack actual a <#${channelID}>.`
+      english: (channelID) => `Moved the current game of Blackjack to <#${channelID}>.`,
+      klingon: (channelID) => `Qu'mey potlh Qujmey Blackjack wIpeghtaHvIS, maSoy'DI' <#${channelID}>.`,
+      spanish: (channelID) => `Movida la partida de Blackjack actual a <#${channelID}>.`
     }
   },
 
   BLACKLIST: {
     BLACKLISTED: {
-      _english: (name) => `Added user \`${name}\` to the blacklist.`,
-      english: (name) => `boq user \`${name}\` jaj wanI'mey`,
-      _spanish: (name) => `Añadido usuario \`${name}\` en la lista negra.`
+      english: (name) => `Added user \`${name}\` to the blacklist.`,
+      klingon: (name) => `boq user \`${name}\` jaj wanI'mey`,
+      spanish: (name) => `Añadido usuario \`${name}\` en la lista negra.`
     },
     CANT_BLACKLIST_SELF: {
-      _english: "You can't blacklist yourself!",
-      english: "pagh jaj wanI'mey SoH!",
-      _spanish: "¡No te puedes poner en la lista negra a ti mismo!"
+      english: "You can't blacklist yourself!",
+      klingon: "pagh jaj wanI'mey SoH!",
+      spanish: "¡No te puedes poner en la lista negra a ti mismo!"
     },
     LOWER_RANK_POSITION: {
-      _english: "You can't blacklist someone with an equal or higher rank than you.",
-      english: "vay' je equal pagh veb patlh law' pagh jaj wanI'mey SoH.",
-      _spanish: "No puedes poner en la lista negra a alguien con el mismo o más rango que tú."
+      english: "You can't blacklist someone with an equal or higher rank than you.",
+      klingon: "vay' je equal pagh veb patlh law' pagh jaj wanI'mey SoH.",
+      spanish: "No puedes poner en la lista negra a alguien con el mismo o más rango que tú."
     },
     UNBLACKLISTED: {
-      _english: (name) => `Removed user \`${name}\` from the blacklist.`,
-      english: (name) => `user \`${name}\` teq vo' jaj wanI'mey.`,
-      _spanish: (name) => `Quitado usuario \`${name}\` de la lista negra.`
+      english: (name) => `Removed user \`${name}\` from the blacklist.`,
+      klingon: (name) => `user \`${name}\` teq vo' jaj wanI'mey.`,
+      spanish: (name) => `Quitado usuario \`${name}\` de la lista negra.`
     }
   },
 
   BRIDGE: {
     BRIDGED: {
-      _english: (channels) => oneLine`
+      english: (channels) => oneLine`
         Linked together channels \`${channels}\`.
         Messages sent to those channels will be translated and sent between them.
       `,
-      english: (channels) => oneLine`
+      klingon: (channels) => oneLine`
         channels \`${channels}\` linked tay'.
         mugh 'ej ngeH SabtaHbogh chaH QIn ngeH channels.
       `,
-      _spanish: (channels) => oneLine`
+      spanish: (channels) => oneLine`
         Juntados canales \`${channels}\`.
         Los mensajes mandados a través de esos canales serán traducidos y enviados entre ellos.
       `
     },
     NOT_READY: {
-      _english: "Channel linking isn't ready yet in this server, please wait a few more seconds and try again.",
-      english: "isn't SuH wej qaStaHvIS jabwI' DubelmoHchugh puS cha'DIch neH loS 'ej yInIDqa' channel linking.",
-      _spanish: "El enlace de canales no está listo todavía en este servidor, por favor espera unos segundos más e inténtalo de nuevo."
+      english: "Channel linking isn't ready yet in this server, please wait a few more seconds and try again.",
+      klingon: "isn't SuH wej qaStaHvIS jabwI' DubelmoHchugh puS cha'DIch neH loS 'ej yInIDqa' channel linking.",
+      spanish: "El enlace de canales no está listo todavía en este servidor, por favor espera unos segundos más e inténtalo de nuevo."
     },
     TRANSLATE: (name, translation) => `**${name}**: ${translation}`,
   },
 
   CLEAN_MESSAGES: {
     NO_PERMISSION: {
-      _english: "I don't have permission to delete messages in this channel.",
-      english: "choHwI' wIlIng 'ej channel QIn delete ghewmey vIghaj.",
-      _spanish: "No tengo permiso para borrar mensajes en este canal."
+      english: "I don't have permission to delete messages in this channel.",
+      klingon: "choHwI' wIlIng 'ej channel QIn delete ghewmey vIghaj.",
+      spanish: "No tengo permiso para borrar mensajes en este canal."
     }
   },
 
   COLOR: {
     ADDED: {
-      _english: (hex) => `Added name color \`${hex}\`.`,
-      english: (hex) => `chel pong color \`${hex}\`.`,
-      _spanish: (hex) => `Añadido color de nombre \`${hex}\`.`
+      english: (hex) => `Added name color \`${hex}\`.`,
+      klingon: (hex) => `chel pong color \`${hex}\`.`,
+      spanish: (hex) => `Añadido color de nombre \`${hex}\`.`
     },
     EDITED: {
-      _english: (hex) => `Changed your name color to \`${hex}\`.`,
-      english: (hex) => `color pong choH \`${hex}\`.`,
-      _spanish: (hex) => `He cambiado tu color de nombre a \`${hex}\`.`
+      english: (hex) => `Changed your name color to \`${hex}\`.`,
+      klingon: (hex) => `color pong choH \`${hex}\`.`,
+      spanish: (hex) => `He cambiado tu color de nombre a \`${hex}\`.`
     },
     INVALID: {
-      _english: (color) => `Color \`${color}\` doesn't exist. Try a name in english or hex string (red, #FF0000).`,
-      english: (color) => `color \`${color}\` doesn't nIv'e'. tera' pagh hex SIrgh (Doq, #ff0000) pong nID.`,
-      _spanish: (color) => `Color \`${color}\` no existe. Prueba a usar un nombre en inglés o hex (red, #FF0000).`
+      english: (color) => `Color \`${color}\` doesn't exist. Try a name in english or hex string (red, #FF0000).`,
+      klingon: (color) => `color \`${color}\` doesn't nIv'e'. tera' pagh hex SIrgh (Doq, #ff0000) pong nID.`,
+      spanish: (color) => `Color \`${color}\` no existe. Prueba a usar un nombre en inglés o hex (red, #FF0000).`
     },
     NO_COLOR_ROLE: {
-      _english: "You don't have a name color.",
-      english: "pong color ghewmey Daghaj.",
-      _spanish: "No tienes un color de nombre."
+      english: "You don't have a name color.",
+      klingon: "pong color ghewmey Daghaj.",
+      spanish: "No tienes un color de nombre."
     },
     NO_PERMISSION: {
-      _english: "I don't have permission to change your name color.",
-      english: "choHwI' wIlIng 'ej color pong choH ghewmey vIghaj.",
-      _spanish: "No tengo permiso para cambiar el color de tu nombre."
+      english: "I don't have permission to change your name color.",
+      klingon: "choHwI' wIlIng 'ej color pong choH ghewmey vIghaj.",
+      spanish: "No tengo permiso para cambiar el color de tu nombre."
     },
     REMOVED: {
-      _english: "Removed name color.",
-      english: "pong color teq.",
-      _spanish: "Quitado color de nombre."
+      english: "Removed name color.",
+      klingon: "pong color teq.",
+      spanish: "Quitado color de nombre."
     }
   },
 
   COMMANDO: {
     ARGUMENT: {
       INVALID_LABEL: {
-        _english: (label) => `You provided an invalid ${label}. Please try again.`,
-        english: (label) => `invalid ${label} DuHIvDI' SoH. DubelmoHchugh yInIDqa'.`,
-        _spanish: (label) => `Has proporcionado un ${label} inválido. Por favor inténtalo de nuevo.`
+        english: (label) => `You provided an invalid ${label}. Please try again.`,
+        klingon: (label) => `invalid ${label} DuHIvDI' SoH. DubelmoHchugh yInIDqa'.`,
+        spanish: (label) => `Has proporcionado un ${label} inválido. Por favor inténtalo de nuevo.`
       },
       RESPOND_WITH_CANCEL: {
-        _english: "Respond with \`cancel\` to cancel the command.",
-        english: "respond \`cancel\` ra' qIl.",
-        _spanish: "Responde con \`cancel\` para cancelar el comando."
+        english: "Respond with \`cancel\` to cancel the command.",
+        klingon: "respond \`cancel\` ra' qIl.",
+        spanish: "Responde con \`cancel\` para cancelar el comando."
       },
       WAIT: {
-        _english: (time) => `The command will automatically be cancelled in ${time} seconds.`,
-        english: (time) => `automatically qIl ra' neH ${time} cha'DIch.`,
-        _spanish: (time) => `El commando será automáticamente cancelado en ${time} segundos.`
+        english: (time) => `The command will automatically be cancelled in ${time} seconds.`,
+        klingon: (time) => `automatically qIl ra' neH ${time} cha'DIch.`,
+        spanish: (time) => `El commando será automáticamente cancelado en ${time} segundos.`
       }
     }
   },
 
   CUSTOM_COMMAND: {
     ALREADY_EXISTS: {
-      _english: (name) => `Custom command \`${name}\` already exists.`,
-      english: (name) => `tIgh ra' \`${name}\` chonayta' nIv'e'.`,
-      _spanish: (name) => `Comando personalizado \`${name}\` ya existe.`
+      english: (name) => `Custom command \`${name}\` already exists.`,
+      klingon: (name) => `tIgh ra' \`${name}\` chonayta' nIv'e'.`,
+      spanish: (name) => `Comando personalizado \`${name}\` ya existe.`
     },
     CANT_CONNECT: {
-      _english: "I can't connect to that voice channel.",
-      english: "pagh rar jIH channel ghogh.",
-      _spanish: "No puedo conectarme a ese canal de voz."
+      english: "I can't connect to that voice channel.",
+      klingon: "pagh rar jIH channel ghogh.",
+      spanish: "No puedo conectarme a ese canal de voz."
     },
     CANT_SPEAK: {
-      _english: "I can't speak in that voice channel.",
-      english: "pagh jIvItpu' neH ghogh channel.",
-      _spanish: "No puedo hablar en ese canal de voz."
+      english: "I can't speak in that voice channel.",
+      klingon: "pagh jIvItpu' neH ghogh channel.",
+      spanish: "No puedo hablar en ese canal de voz."
     },
     CURRENTLY_PLAYING: {
-      _english: "A song is currently playing, please wait until it finishes.",
-      english: "currently chu' bom, nuqneH loS until rIn 'oH.",
-      _spanish: "Una canción se esta reproduciendo actualmente, por favor espere a que termine."
+      english: "A song is currently playing, please wait until it finishes.",
+      klingon: "currently chu' bom, nuqneH loS until rIn 'oH.",
+      spanish: "Una canción se esta reproduciendo actualmente, por favor espere a que termine."
     },
     DISPATCHER_ERROR: {
-      _english: (name) => `Error playing ${name}.`,
-      english: (name) => `Qagh ${name} chu'.`,
-      _spanish: (name) => `Error descargando ${name}.`
+      english: (name) => `Error playing ${name}.`,
+      klingon: (name) => `Qagh ${name} chu'.`,
+      spanish: (name) => `Error descargando ${name}.`
     },
     DOESNT_EXIST: {
-      _english: (name) => `Custom command \`${name}\` doesn't exist.`,
-      english: (name) => `tIgh ra' \`${name}\` doesn't nIv'e'.`,
-      _spanish: (name) => `Comando personalizado \`${name}\` no existe.`
+      english: (name) => `Custom command \`${name}\` doesn't exist.`,
+      klingon: (name) => `tIgh ra' \`${name}\` doesn't nIv'e'.`,
+      spanish: (name) => `Comando personalizado \`${name}\` no existe.`
     },
     NOT_IN_VOICE_CHANNEL: {
-      _english: (name) => `Member ${name} isn't currently in a voice channel.`,
-      english: (name) => `isn't member ${name} currently qaStaHvIS ghogh channel.`,
-      _spanish: (name) => `El miembro ${name} no está actualmente en un canal de voz.`
+      english: (name) => `Member ${name} isn't currently in a voice channel.`,
+      klingon: (name) => `isn't member ${name} currently qaStaHvIS ghogh channel.`,
+      spanish: (name) => `El miembro ${name} no está actualmente en un canal de voz.`
     },
     NOT_READY: {
-      _english: "Custom commands aren't ready yet in this server, please wait a few more seconds and try again.",
-      english: "aren't SuH wej qaStaHvIS jabwI' DubelmoHchugh puS cha'DIch neH loS 'ej yInIDqa' tIgh ra'.",
-      _spanish: "Los comandos personalizados no están listos todavía en este servidor, por favor espera unos segundos más e inténtalo de nuevo."
+      english: "Custom commands aren't ready yet in this server, please wait a few more seconds and try again.",
+      klingon: "aren't SuH wej qaStaHvIS jabwI' DubelmoHchugh puS cha'DIch neH loS 'ej yInIDqa' tIgh ra'.",
+      spanish: "Los comandos personalizados no están listos todavía en este servidor, por favor espera unos segundos más e inténtalo de nuevo."
     },
     REGISTERED: {
-      _english: (name) => oneLine`Added command ${name}, use \`${name}\` to use it.`,
-      english: (name) => oneLine`\`${name}\` yIlo' chel ra' ${name}, 'oH lo'.`,
-      _spanish: (name) => oneLine`Añadido comando ${name}, usa \`${name}\` para usarlo.`
+      english: (name) => oneLine`Added command ${name}, use \`${name}\` to use it.`,
+      klingon: (name) => oneLine`\`${name}\` yIlo' chel ra' ${name}, 'oH lo'.`,
+      spanish: (name) => oneLine`Añadido comando ${name}, usa \`${name}\` para usarlo.`
     },
     UNREGISTERED: {
-      _english: (name) => `Removed custom command \`${name}\`.`,
-      english: (name) => `tIgh ra' \`${name}\` teq.`,
-      _spanish: (name) => `Borrado comando personalizado \`${name}\`.`
+      english: (name) => `Removed custom command \`${name}\`.`,
+      klingon: (name) => `tIgh ra' \`${name}\` teq.`,
+      spanish: (name) => `Borrado comando personalizado \`${name}\`.`
     },
     YTDL_ERROR: {
-      _english: (name) => `Error downloading ${name}.`,
-      english: (name) => `Qagh ${name} downloading.`,
-      _spanish: (name) => `Error descargando ${name}.`
+      english: (name) => `Error downloading ${name}.`,
+      klingon: (name) => `Qagh ${name} downloading.`,
+      spanish: (name) => `Error descargando ${name}.`
     }
   },
 
   INFO: {
-    _english: stripIndents`
+    english: stripIndents`
       GitHub page: https://github.com/DrSmugleaf/Banter-Bot
       Support server: https://discord.gg/yyDWNBr
     `,
-    english: stripIndents`
+    klingon: stripIndents`
       github page: https://github.com/DrSmugleaf/Banter-Bot
       Qutlh jabwI': https://discord.gg/yydwnbr
     `,
-    _spanish: stripIndents`
+    spanish: stripIndents`
       Página de GitHub: https://github.com/DrSmugleaf/Banter-Bot
       Servidor de soporte: https://discord.gg/yyDWNBr
     `
@@ -1636,194 +1650,194 @@ exports.responses = {
 
   INFO_CHANNEL: {
     INVALID: {
-      _english: (channel) => `${channel} isn't a text channel.`,
-      english: (channel) => `${channel} isn't bIngDaq ghItlh leghlu' channel.`,
-      _spanish: (channel) => `${channel} no es un canal de texto.`
+      english: (channel) => `${channel} isn't a text channel.`,
+      klingon: (channel) => `${channel} isn't bIngDaq ghItlh leghlu' channel.`,
+      spanish: (channel) => `${channel} no es un canal de texto.`
     },
     NO_PERMISSION: {
-      _english: (channel) => `I don't have permission to send messages to ${channel}.`,
-      english: (channel) => `choHwI' wIlIng 'ej QIn ngeH ${channel} ghewmey vIghaj.`,
-      _spanish: (channel) => `No tengo permiso para enviar mensajes a ${channel}.`
+      english: (channel) => `I don't have permission to send messages to ${channel}.`,
+      klingon: (channel) => `choHwI' wIlIng 'ej QIn ngeH ${channel} ghewmey vIghaj.`,
+      spanish: (channel) => `No tengo permiso para enviar mensajes a ${channel}.`
     },
     REMOVED: {
-      _english: "Removed server's info channel.",
-      english: "teq jabwI' info channel.",
-      _spanish: "Quitado el canal de información del servidor."
+      english: "Removed server's info channel.",
+      klingon: "teq jabwI' info channel.",
+      spanish: "Quitado el canal de información del servidor."
     },
     SET: {
-      _english: (channel) => `Set ${channel} as this server's info channel.`,
-      english: (channel) => `${channel} HIjmeH je jabwI' info channel.`,
-      _spanish: (channel) => `Asignado ${channel} como el canal de información de este servidor.`
+      english: (channel) => `Set ${channel} as this server's info channel.`,
+      klingon: (channel) => `${channel} HIjmeH je jabwI' info channel.`,
+      spanish: (channel) => `Asignado ${channel} como el canal de información de este servidor.`
     },
   },
 
   LANGUAGE: {
     SET: {
-      _english: (language) => `Set your language to ${language}.`,
-      english: (language) => `Hol HIjmeH ${language}`,
-      _spanish: (language) => `Asignado tu lenguaje a ${language}.`
+      english: (language) => `Set your language to ${language}.`,
+      klingon: (language) => `Hol HIjmeH ${language}`,
+      spanish: (language) => `Asignado tu lenguaje a ${language}.`
     }
   },
 
   MAGIC8BALL: {
-    _english: ["It is certain.", "It is decidedly so.", "Without a doubt.", "Yes, definitely.", "You may rely on it.", "As I see it, yes.", "Most likely.", "Outlook good.", "Yes.", "Signs point to yes.", "Reply hazy try again.", "Ask again later.", "Better not tell you now.", "Cannot predict now.", "Concentrate and ask again.", "Don't count on it.", "My reply is no.", "My sources say no.", "Outlook not so good.", "Very doubtful."],
-    english: ["be.", "decidedly matlhutlhjaj", "Hutlh Hon.", "HIja' definitely.", "chaq wuv SoH wInIHnIS. wIje'laHbe'chugh", "Hoch, HIja'. vIlegh", "'ach ghaytan.", "Outlook QaQ.", "luq.", "qI' volchaHDaj HIja'.", "jang hazy nID jatlhqa'.", "ghel jatlhqa' later.", "net poQbej wej DaH. Dara'", "pagh DaH. predict", "yIbuS 'ej jatlhqa'.", "Qo' 'ech wInIHnIS. wIje'laHbe'chugh", "jang ghobe'", "Qo' jatlh Hal." , "outlook wej vaj QaQ.", "majQa' mu'tlhegh vay' tIja'."],
-    _spanish: ["En mi opinión, sí.", "Es cierto.", "Es decididamente así.", "Probablemente.", "Buen pronóstico.", "Todo apunta a que sí.", "Sin duda.", "Sí.", "Sí - definitivamente.", "Debes confiar en ello.", "Respuesta vaga, vuelve a intentarlo.", "Pregunta en otro momento.", "Será mejor que no te lo diga ahora.", "No puedo predecirlo ahora.", "Concéntrate y vuelve a preguntar.", "No cuentes con ello.", "Mi respuesta es no.", "Mis fuentes me dicen que no.", "Las perspectivas no son buenas.", "Muy dudoso."]
+    english: ["It is certain.", "It is decidedly so.", "Without a doubt.", "Yes, definitely.", "You may rely on it.", "As I see it, yes.", "Most likely.", "Outlook good.", "Yes.", "Signs point to yes.", "Reply hazy try again.", "Ask again later.", "Better not tell you now.", "Cannot predict now.", "Concentrate and ask again.", "Don't count on it.", "My reply is no.", "My sources say no.", "Outlook not so good.", "Very doubtful."],
+    klingon: ["be.", "decidedly matlhutlhjaj", "Hutlh Hon.", "HIja' definitely.", "chaq wuv SoH wInIHnIS. wIje'laHbe'chugh", "Hoch, HIja'. vIlegh", "'ach ghaytan.", "Outlook QaQ.", "luq.", "qI' volchaHDaj HIja'.", "jang hazy nID jatlhqa'.", "ghel jatlhqa' later.", "net poQbej wej DaH. Dara'", "pagh DaH. predict", "yIbuS 'ej jatlhqa'.", "Qo' 'ech wInIHnIS. wIje'laHbe'chugh", "jang ghobe'", "Qo' jatlh Hal." , "outlook wej vaj QaQ.", "majQa' mu'tlhegh vay' tIja'."],
+    spanish: ["En mi opinión, sí.", "Es cierto.", "Es decididamente así.", "Probablemente.", "Buen pronóstico.", "Todo apunta a que sí.", "Sin duda.", "Sí.", "Sí - definitivamente.", "Debes confiar en ello.", "Respuesta vaga, vuelve a intentarlo.", "Pregunta en otro momento.", "Será mejor que no te lo diga ahora.", "No puedo predecirlo ahora.", "Concéntrate y vuelve a preguntar.", "No cuentes con ello.", "Mi respuesta es no.", "Mis fuentes me dicen que no.", "Las perspectivas no son buenas.", "Muy dudoso."]
   },
 
   NAME: {
     SET: {
-      _english: (name) => `Changed the bot's username to ${name}.`,
-      english: (name) => `bot username 'ej wIQaw'laH ${name}.`,
-      _spanish: (name) => `Cambiado el nombre del bot a ${name}.`
+      english: (name) => `Changed the bot's username to ${name}.`,
+      klingon: (name) => `bot username 'ej wIQaw'laH ${name}.`,
+      spanish: (name) => `Cambiado el nombre del bot a ${name}.`
     }
   },
 
   PLAYING: {
     SET: {
-      _english: (name) => `Changed the bot's game to ${name}.`,
-      english: (name) => `bot Quj 'ej wIQaw'laH ${name}.`,
-      _spanish: (name) => `Cambiado el nombre del bot a ${name}.`
+      english: (name) => `Changed the bot's game to ${name}.`,
+      klingon: (name) => `bot Quj 'ej wIQaw'laH ${name}.`,
+      spanish: (name) => `Cambiado el nombre del bot a ${name}.`
     }
   },
 
   QUOTE: {
     ADDED: {
-      _english: (number, command) => `Quote #${number} added, use \`${command} ${number}\` to see it.`,
-      english: (number, command) => `#${number} chel quote, \`${command} ${number}\` 'oH vIlegh.`,
-      _spanish: (number, command) => `Quote #${number} añadido, usa \`${command} ${number}\` para verlo.`
+      english: (number, command) => `Quote #${number} added, use \`${command} ${number}\` to see it.`,
+      klingon: (number, command) => `#${number} chel quote, \`${command} ${number}\` 'oH vIlegh.`,
+      spanish: (number, command) => `Quote #${number} añadido, usa \`${command} ${number}\` para verlo.`
     },
     EMPTY: {
-      _english: (command) => `There are no quotes, add some by using \`${command} <text>\`.`,
-      english: (command) => `pagh quotes, pong \`${command} <'op chel>\` bIngDaq ghItlh leghlu'.`,
-      _spanish: (command) => `No hay quotes en la lista, añade algunos usando \`${command} <texto>\`.`
+      english: (command) => `There are no quotes, add some by using \`${command} <text>\`.`,
+      klingon: (command) => `pagh quotes, pong \`${command} <'op chel>\` bIngDaq ghItlh leghlu'.`,
+      spanish: (command) => `No hay quotes en la lista, añade algunos usando \`${command} <texto>\`.`
     },
     ERROR: {
-      _english: `Error occurred while managing quotes, please try again or contact the owner in ${exports.defaultoptions.invite}.`,
-      english: `wa'vatlh quotes vu' qaS Qagh, nuqneH yInIDqa' pagh ${exports.defaultoptions.invite} owner contact`,
-      _spanish: `Se produjo un error al gestionar los quotes, por favor inténtelo de nuevo o contacta con el dueño en ${exports.defaultoptions.invite}.`
+      english: `Error occurred while managing quotes, please try again or contact the owner in ${exports.defaultoptions.invite}.`,
+      klingon: `wa'vatlh quotes vu' qaS Qagh, nuqneH yInIDqa' pagh ${exports.defaultoptions.invite} owner contact`,
+      spanish: `Se produjo un error al gestionar los quotes, por favor inténtelo de nuevo o contacta con el dueño en ${exports.defaultoptions.invite}.`
     },
     GET: {
-      _english: (number, text) => `Quote #${number}: ${text}`,
       english: (number, text) => `Quote #${number}: ${text}`,
-      _spanish: (number, text) => `Quote #${number}: ${text}`
+      klingon: (number, text) => `Quote #${number}: ${text}`,
+      spanish: (number, text) => `Quote #${number}: ${text}`
     },
     MISSING: {
-      _english: (number) => `Quote #${number} doesn't exist.`,
-      english: (number) => `quote doesn't nIv'e' #${number}.`,
-      _spanish: (number) => `Quote #${number} no existe.`
+      english: (number) => `Quote #${number} doesn't exist.`,
+      klingon: (number) => `quote doesn't nIv'e' #${number}.`,
+      spanish: (number) => `Quote #${number} no existe.`
     },
     NO_MODE: {
-      _english: (mode) => `Mode \`${mode}\` doesn't exist.`,
-      english: (mode) => `mode \`${mode}\` doesn't nIv'e'.`,
-      _spanish: (mode) => `Modo \`${mode}\` no existe.`
+      english: (mode) => `Mode \`${mode}\` doesn't exist.`,
+      klingon: (mode) => `mode \`${mode}\` doesn't nIv'e'.`,
+      spanish: (mode) => `Modo \`${mode}\` no existe.`
     },
     NO_PERMISSION: {
-      _english: (number) => `You don't have permission to remove quote #${number}.`,
-      english: (number) => `choHwI' wIlIng 'ej quote #${number} teq ghewmey Daghaj.`,
-      _spanish: (number) => `No tienes permiso para eliminar quote #${number}.`
+      english: (number) => `You don't have permission to remove quote #${number}.`,
+      klingon: (number) => `choHwI' wIlIng 'ej quote #${number} teq ghewmey Daghaj.`,
+      spanish: (number) => `No tienes permiso para eliminar quote #${number}.`
     },
     NO_TEXT: {
-      _english: "Quote empty, add text after the command.",
-      english: "quote chIm, bIngDaq ghItlh leghlu' chel qaSpu'DI' ra'.",
-      _spanish: "Quote vacío, añade texto después del comando."
+      english: "Quote empty, add text after the command.",
+      klingon: "quote chIm, bIngDaq ghItlh leghlu' chel qaSpu'DI' ra'.",
+      spanish: "Quote vacío, añade texto después del comando."
     },
     NOT_READY: {
-      _english: "Quotes aren't ready yet in this server, please wait a few more seconds and try again.",
-      english: "aren't SuH wej qaStaHvIS jabwI' DubelmoHchugh puS cha'DIch neH loS 'ej yInIDqa' quotes.",
-      _spanish: "Los quotes no están listos todavía en este servidor, por favor espera unos segundos más e inténtalo de nuevo"
+      english: "Quotes aren't ready yet in this server, please wait a few more seconds and try again.",
+      klingon: "aren't SuH wej qaStaHvIS jabwI' DubelmoHchugh puS cha'DIch neH loS 'ej yInIDqa' quotes.",
+      spanish: "Los quotes no están listos todavía en este servidor, por favor espera unos segundos más e inténtalo de nuevo"
     },
     REMOVED: {
-      _english: (number) => `Removed quote #${number}.`,
-      english: (number) => `#${number} teq quote.`,
-      _spanish: (number) => `Quote #${number} eliminado.`
+      english: (number) => `Removed quote #${number}.`,
+      klingon: (number) => `#${number} teq quote.`,
+      spanish: (number) => `Quote #${number} eliminado.`
     }
   },
 
   SERVER_LANGUAGE: {
     SET: {
-      _english: (language) => `Set the server language to ${language}.`,
-      english: (language) => `jabwI' Hol HIjmeH ${language}`,
-      _spanish: (language) => `Asignado el lenguaje del servidor a ${language}.`
+      english: (language) => `Set the server language to ${language}.`,
+      klingon: (language) => `jabwI' Hol HIjmeH ${language}`,
+      spanish: (language) => `Asignado el lenguaje del servidor a ${language}.`
     }
   },
 
   SERVER_SETTINGS: {
     CLEAR: {
-      _english: "Cleared settings for this server.",
-      english: "Huv settings jabwI'.",
-      _spanish: "Limpiadas las opciones de este servidor."
+      english: "Cleared settings for this server.",
+      klingon: "Huv settings jabwI'.",
+      spanish: "Limpiadas las opciones de este servidor."
     },
     GET: {
-      _english: (key, value) => `Settings for \`${key}\`: \`${value}\`.`,
-      english: (key, value) => `settings \`${key}\`: \`${value}\``,
-      _spanish: (key, value) => `Opciones para \`${key}\`: \`0${value}\`.`
+      english: (key, value) => `Settings for \`${key}\`: \`${value}\`.`,
+      klingon: (key, value) => `settings \`${key}\`: \`${value}\``,
+      spanish: (key, value) => `Opciones para \`${key}\`: \`0${value}\`.`
     },
     REMOVE: {
-      _english: (key) => `Removed setting \`${key}\`.`,
-      english: (key) => `setting \`${key}\` teq.`,
-      _spanish: (key) => `Eliminada opción \`${key}\`.`
+      english: (key) => `Removed setting \`${key}\`.`,
+      klingon: (key) => `setting \`${key}\` teq.`,
+      spanish: (key) => `Eliminada opción \`${key}\`.`
     },
     SET: {
-      _english: (key, value) => `Set \`${key}\` to \`${value}\`.`,
-      english: (key, value) => `HIjmeH \`${key}\` \`${value}\`.`,
-      _spanish: (key, value) => `Establecida \`${key}\` como \`${value}\`.`
+      english: (key, value) => `Set \`${key}\` to \`${value}\`.`,
+      klingon: (key, value) => `HIjmeH \`${key}\` \`${value}\`.`,
+      spanish: (key, value) => `Establecida \`${key}\` como \`${value}\`.`
     }
   },
 
   SONG_TEXT_CHANNEL: {
     INVALID: {
-      _english: (channel) => `${channel} isn't a text channel.`,
-      english: (channel) => `${channel} isn't bIngDaq ghItlh leghlu' channel.`,
-      _spanish: (channel) => `${channel} no es un canal de texto.`
+      english: (channel) => `${channel} isn't a text channel.`,
+      klingon: (channel) => `${channel} isn't bIngDaq ghItlh leghlu' channel.`,
+      spanish: (channel) => `${channel} no es un canal de texto.`
     },
     NO_PERMISSION: {
-      _english: (channel) => `I don't have permission to send messages to ${channel}.`,
-      english: (channel) => `choHwI' wIlIng 'ej QIn ngeH ${channel} ghewmey vIghaj.`,
-      _spanish: (channel) => `No tengo permiso para enviar mensajes a ${channel}.`
+      english: (channel) => `I don't have permission to send messages to ${channel}.`,
+      klingon: (channel) => `choHwI' wIlIng 'ej QIn ngeH ${channel} ghewmey vIghaj.`,
+      spanish: (channel) => `No tengo permiso para enviar mensajes a ${channel}.`
     },
     REMOVED: {
-      _english: "Removed server's song text channel.",
-      english: "teq jabwI' bom bIngDaq ghItlh leghlu' channel.",
-      _spanish: "Quitado el canal de texto de canciones de este servidor."
+      english: "Removed server's song text channel.",
+      klingon: "teq jabwI' bom bIngDaq ghItlh leghlu' channel.",
+      spanish: "Quitado el canal de texto de canciones de este servidor."
     },
     SET: {
-      _english: (channel) => `Set ${channel} as this server's song text channel.`,
-      english: (channel) => `${channel} HIjmeH je jabwI' bom bIngDaq ghItlh leghlu' channel`,
-      _spanish: (channel) => `Asignado ${channel} como el canal de texto de canciones de este servidor.`
+      english: (channel) => `Set ${channel} as this server's song text channel.`,
+      klingon: (channel) => `${channel} HIjmeH je jabwI' bom bIngDaq ghItlh leghlu' channel`,
+      spanish: (channel) => `Asignado ${channel} como el canal de texto de canciones de este servidor.`
     }
   },
 
   SONG_VOICE_CHANNEL: {
     INVALID: {
-      _english: (channel) => `${channel} isn't a voice channel.`,
-      english: (channel) => `${channel} isn't ghogh channel.`,
-      _spanish: (channel) => `${channel} no es un canal de voz.`
+      english: (channel) => `${channel} isn't a voice channel.`,
+      klingon: (channel) => `${channel} isn't ghogh channel.`,
+      spanish: (channel) => `${channel} no es un canal de voz.`
     },
     CANT_CONNECT: {
-      _english: (channel) => `I can't connect to ${channel}.`,
-      english: (channel) => `pagh rar jIH ${channel}.`,
-      _spanish: (channel) => `No puedo conectarme a ${channel}.`
+      english: (channel) => `I can't connect to ${channel}.`,
+      klingon: (channel) => `pagh rar jIH ${channel}.`,
+      spanish: (channel) => `No puedo conectarme a ${channel}.`
     },
     CANT_SPEAK: {
-      _english: "I can't speak in that voice channel.",
-      english: "pagh jIvItpu' neH ghogh channel.",
-      _spanish: "No puedo hablar en ese canal de voz."
+      english: "I can't speak in that voice channel.",
+      klingon: "pagh jIvItpu' neH ghogh channel.",
+      spanish: "No puedo hablar en ese canal de voz."
     },
     REMOVED: {
-      _english: "Removed server's song voice channel.",
-      english: "teq jabwI' bom ghogh channel.",
-      _spanish: "Quitado el canal de voz de canciones de este servidor."
+      english: "Removed server's song voice channel.",
+      klingon: "teq jabwI' bom ghogh channel.",
+      spanish: "Quitado el canal de voz de canciones de este servidor."
     },
     SET: {
-      _english: (channel) => `Set ${channel} as this server's song voice channel.`,
-      english: (channel) => `${channel} HIjmeH je jabwI' bom ghogh channel`,
-      _spanish: (channel) => `Asignado ${channel} como el canal de voz de canciones de este servidor.`
+      english: (channel) => `Set ${channel} as this server's song voice channel.`,
+      klingon: (channel) => `${channel} HIjmeH je jabwI' bom ghogh channel`,
+      spanish: (channel) => `Asignado ${channel} como el canal de voz de canciones de este servidor.`
     }
   },
 
   WHOIS: {
-    _english: (user, member, joined, created) => stripIndents`
+    english: (user, member, joined, created) => stripIndents`
       Info on **${user.username}#${user.discriminator}** (ID: ${user.id})
       **❯ Member Details**
       ${member.nickname !== null ? ` • Nickname: ${member.nickname}` : " • No Nickname"}
@@ -1835,7 +1849,7 @@ exports.responses = {
        • Status: ${user.presence.status}
        • Game: ${user.presence.game ? user.presence.game.name : "None"}
     `,
-    english: (user, member, joined, created) => stripIndents`
+    klingon: (user, member, joined, created) => stripIndents`
       info **${user.username}#${user.discriminator}** (id: ${user.id})
       **❯ Member Details**
       ${member.nickname !== null ? ` • Nickname: ${member.nickname}` : " • pagh Nickname"}
@@ -1847,7 +1861,7 @@ exports.responses = {
        • Dotlh: ${user.presence.status}
        • Quj: ${user.presence.game ? user.presence.game.name : "pagh"}
     `,
-    _spanish: (user, member, joined, created) => stripIndents`
+    spanish: (user, member, joined, created) => stripIndents`
       Información sobre **${user.username}#${user.discriminator}** (ID: ${user.id})
       **❯ Detalles de Miembro**
       ${member.nickname !== null ? ` • Apodo: ${member.nickname}` : " • Ningún Apodo"}
@@ -1863,145 +1877,145 @@ exports.responses = {
 
   YOUTUBE: {
     CANT_CONNECT: {
-      _english: (channel) => `I can't connect to \`${channel}\`.`,
-      english: (channel) => `pagh rar, 'ej jIH \`${channel}\`.`,
-      _spanish: (channel) => `No puedo conectarme a \`${channel}\`.`
+      english: (channel) => `I can't connect to \`${channel}\`.`,
+      klingon: (channel) => `pagh rar, 'ej jIH \`${channel}\`.`,
+      spanish: (channel) => `No puedo conectarme a \`${channel}\`.`
     },
     CANT_CONNECT_ANYMORE: {
-      _english: (channel) => `I can't connect to \`${channel}\` anymore, skipping song.`,
-      english: (channel) => `pagh rar, 'ej jIH \`${channel}\` anymore, bom skipping.`,
-      _spanish: (channel) => `Ya no puedo conectarme a \`${channel}\`, omitiendo canción.`
+      english: (channel) => `I can't connect to \`${channel}\` anymore, skipping song.`,
+      klingon: (channel) => `pagh rar, 'ej jIH \`${channel}\` anymore, bom skipping.`,
+      spanish: (channel) => `Ya no puedo conectarme a \`${channel}\`, omitiendo canción.`
     },
     CANT_SPEAK: {
-      _english: (channel) => `I can't speak in \`${channel}\`.`,
-      english: (channel) => `pagh pejatlh neH \`${channel}\`.`,
-      _spanish: (channel) => `No puedo hablar en \`${channel}\`.`
+      english: (channel) => `I can't speak in \`${channel}\`.`,
+      klingon: (channel) => `pagh pejatlh neH \`${channel}\`.`,
+      spanish: (channel) => `No puedo hablar en \`${channel}\`.`
     },
     CANT_SPEAK_ANYMORE: {
-      _english: (channel) => `I can't speak in \`${channel}\` anymore, skipping song.`,
-      english: (channel) => `pagh pejatlh neH \`${channel}\` anymore, bom skipping`,
-      _spanish: (channel) => `Ya no puedo hablar en \`${channel}\`, omitiendo canción.`
+      english: (channel) => `I can't speak in \`${channel}\` anymore, skipping song.`,
+      klingon: (channel) => `pagh pejatlh neH \`${channel}\` anymore, bom skipping`,
+      spanish: (channel) => `Ya no puedo hablar en \`${channel}\`, omitiendo canción.`
     },
     EMPTY_QUEUE: {
-      _english: "There are no songs in the queue.",
-      english: "tu'lu' pagh bom neH queue.",
-      _spanish: "No hay canciones en cola."
+      english: "There are no songs in the queue.",
+      klingon: "tu'lu' pagh bom neH queue.",
+      spanish: "No hay canciones en cola."
     },
     ERROR: {
-      _english: "Error downloading song.",
-      english: "Qagh bom downloading.",
-      _spanish: "Error descargando canción."
+      english: "Error downloading song.",
+      klingon: "Qagh bom downloading.",
+      spanish: "Error descargando canción."
     },
     LEFT_VOICE: {
-      _english: "You aren't in a voice channel anymore, skipping song.",
-      english: "aren't SoH qaStaHvIS ghogh channel anymore, bom skipping.",
-      _spanish: "Ya no estás en un canal de voz, omitiendo canción."
+      english: "You aren't in a voice channel anymore, skipping song.",
+      klingon: "aren't SoH qaStaHvIS ghogh channel anymore, bom skipping.",
+      spanish: "Ya no estás en un canal de voz, omitiendo canción."
     },
     NEXT: {
       DISPATCHER_ERROR: {
-        _english: (title) => `Error playing ${title}, skipping song.`,
-        english: (title) => `Qagh ${title} chu', bom skipping.`,
-        _spanish: (title) => `Error reproduciendo ${title}, omitiendo canción.`
+        english: (title) => `Error playing ${title}, skipping song.`,
+        klingon: (title) => `Qagh ${title} chu', bom skipping.`,
+        spanish: (title) => `Error reproduciendo ${title}, omitiendo canción.`
       },
       ERROR: {
-        _english: (title) => `Couldn't play ${title}, skipping song.`,
-        english: (title) => `couldn't ${title}, bom skipping chu'.`,
-        _spanish: (title) => `Error al reproducir la canción ${title}, omitiendo canción.`
+        english: (title) => `Couldn't play ${title}, skipping song.`,
+        klingon: (title) => `couldn't ${title}, bom skipping chu'.`,
+        spanish: (title) => `Error al reproducir la canción ${title}, omitiendo canción.`
       },
       PLAY: {
-        _english: (title) => `Now playing: ${title}.`,
-        english: (title) => `DaH chu': ${title}.`,
-        _spanish: (title) => `Ahora reproduciendo: ${title}.`,
+        english: (title) => `Now playing: ${title}.`,
+        klingon: (title) => `DaH chu': ${title}.`,
+        spanish: (title) => `Ahora reproduciendo: ${title}.`,
       },
       REPEAT: {
-        _english: (title) => `Now repeating: ${title}.`,
-        english: (title) => `DaH jatlhqa': ${title}.`,
-        _spanish: (title) => `Ahora repitiendo: ${title}.`
+        english: (title) => `Now repeating: ${title}.`,
+        klingon: (title) => `DaH jatlhqa': ${title}.`,
+        spanish: (title) => `Ahora repitiendo: ${title}.`
       }
     },
     NO_CURRENTLY_PLAYING: {
-      _english: "There is no currently playing song.",
-      english: "pa' ghobe' currently bom Quj.",
-      _spanish: "No hay ninguna canción puesta."
+      english: "There is no currently playing song.",
+      klingon: "pa' ghobe' currently bom Quj.",
+      spanish: "No hay ninguna canción puesta."
     },
     NO_PAUSED: {
-      _english: "There is no currently paused song.",
-      english: "tu'lu' pagh currently yev bom.",
-      _spanish: "No hay ninguna canción pausada.",
+      english: "There is no currently paused song.",
+      klingon: "tu'lu' pagh currently yev bom.",
+      spanish: "No hay ninguna canción pausada.",
     },
     NO_PLAYING: {
-      _english: "There is no currently playing or paused song.",
-      english: "tu'lu' pagh currently reH pagh, yev bom.",
-      _spanish: "No hay ninguna canción puesta o pausada actualmente."
+      english: "There is no currently playing or paused song.",
+      klingon: "tu'lu' pagh currently reH pagh, yev bom.",
+      spanish: "No hay ninguna canción puesta o pausada actualmente."
     },
     NOT_IN_VOICE_CHANNEL: {
-      _english: "You aren't in a voice channel.",
-      english: "aren't SoH qaStaHvIS ghogh channel.",
-      _spanish: "No estás en un canal de voz."
+      english: "You aren't in a voice channel.",
+      klingon: "aren't SoH qaStaHvIS ghogh channel.",
+      spanish: "No estás en un canal de voz."
     },
     NOT_SAME_VOICE_CHANNEL: {
-      _english: "You aren't in the same voice channel.",
-      english: "aren't SoH rap ghogh channel neH.",
-      _spanish: "No estas en el mismo canal de voz."
+      english: "You aren't in the same voice channel.",
+      klingon: "aren't SoH rap ghogh channel neH.",
+      spanish: "No estas en el mismo canal de voz."
     },
     PAUSE: {
-      _english: "Paused the current video.",
-      english: "yev Qu'mey potlh video.",
-      _spanish: "Vídeo pausado."
+      english: "Paused the current video.",
+      klingon: "yev Qu'mey potlh video.",
+      spanish: "Vídeo pausado."
     },
     PLAY: {
-      _english: (title) => `Added ${title} to the queue.`,
-      english: (title) => `boq ${title} queue.`,
-      _spanish: (title) => `Añadido ${title} a la cola.`
+      english: (title) => `Added ${title} to the queue.`,
+      klingon: (title) => `boq ${title} queue.`,
+      spanish: (title) => `Añadido ${title} a la cola.`
     },
     QUEUE: {
-      _english: (length) => `There are ${length} songs in the queue.`,
-      english: (length) => `tu'lu' ${length} bom neH queue.`,
-      _spanish: (length) => `Hay ${length} canciones en la cola.`
+      english: (length) => `There are ${length} songs in the queue.`,
+      klingon: (length) => `tu'lu' ${length} bom neH queue.`,
+      spanish: (length) => `Hay ${length} canciones en la cola.`
     },
     RESUME: {
-      _english: "Resumed the current video.",
-      english: "video Qu'mey potlh qa'.",
-      _spanish: "Vídeo reanudado."
+      english: "Resumed the current video.",
+      klingon: "video Qu'mey potlh qa'.",
+      spanish: "Vídeo reanudado."
     },
     SKIP: {
       ALREADY_VOTED: {
-        _english: "You already voted to skip this song.",
-        english: "chonayta' voted SoH bom skip.",
-        _spanish: "Ya has votado para omitir esta canción."
+        english: "You already voted to skip this song.",
+        klingon: "chonayta' voted SoH bom skip.",
+        spanish: "Ya has votado para omitir esta canción."
       },
       FAIL: {
-        _english: (votes, total) => oneLine`${votes} out of ${total} members want
+        english: (votes, total) => oneLine`${votes} out of ${total} members want
           to skip the current video.`,
-        english: (votes, total) => oneLine`neH $ bIr mIw wIje'laHbe'chugh vaj ${votes} ${total} members video Qu'mey potlh skip.`,
-        _spanish: (votes, total) => oneLine`${votes} de ${total} miembros quieren
+        klingon: (votes, total) => oneLine`neH $ bIr mIw wIje'laHbe'chugh vaj ${votes} ${total} members video Qu'mey potlh skip.`,
+        spanish: (votes, total) => oneLine`${votes} de ${total} miembros quieren
           saltarse el vídeo actual.`
       },
       SUCCESS: {
-        _english: (votes, total) => oneLine`${votes} out of ${total} members voted
+        english: (votes, total) => oneLine`${votes} out of ${total} members voted
           to skip, skipped the current video.`,
-        english: (votes, total) => oneLine`video Qu'mey potlh skipped $ bIr mIw wIje'laHbe'chugh
+        klingon: (votes, total) => oneLine`video Qu'mey potlh skipped $ bIr mIw wIje'laHbe'chugh
           vaj ${votes} ${total} members voted skip.`,
-        _spanish: (votes, total) => oneLine`${votes} de ${total} miembros votaron
+        spanish: (votes, total) => oneLine`${votes} de ${total} miembros votaron
           para saltar este vídeo, saltado el vídeo actual.`
       }
     },
     STOP: {
-      _english: "Stopped the current video.",
-      english: "video Qu'mey potlh mev.",
-      _spanish: "Parado el vídeo actual."
+      english: "Stopped the current video.",
+      klingon: "video Qu'mey potlh mev.",
+      spanish: "Parado el vídeo actual."
     },
     STOP_ALL: {
-      _english: "Stopped and removed all videos from the queue.",
-      english: "mev 'ej Hoch teq videos vo' queue.",
-      _spanish: "Parados y quitados todos los vídeos en cola."
+      english: "Stopped and removed all videos from the queue.",
+      klingon: "mev 'ej Hoch teq videos vo' queue.",
+      spanish: "Parados y quitados todos los vídeos en cola."
     },
     TOO_MANY_SONGS: {
-      _english: oneLine`You have submitted too many songs to the queue,
+      english: oneLine`You have submitted too many songs to the queue,
         wait until one of yours finishes.
       `,
-      english: "Iq bom queue submitted, loS until rIn wa' lu' SoH.",
-      _spanish: oneLine`Has enviado demasiadas canciones a la cola,
+      klingon: "Iq bom queue submitted, loS until rIn wa' lu' SoH.",
+      spanish: oneLine`Has enviado demasiadas canciones a la cola,
         espera hasta que una de las tuyas termine.
       `
     }
