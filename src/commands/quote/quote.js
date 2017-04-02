@@ -94,7 +94,7 @@ module.exports = class QuoteCommand extends commando.Command {
       break
     case "get": {
       parameters = { id: id, guild: msg.guild.id }
-      if(this.quote.empty(msg.guild.id)) return msg.reply(responses.EMPTY[msg.language])
+      if(this.quote.empty(msg.guild.id)) return msg.reply(responses.EMPTY[msg.language](`${prefix}quote`))
       if(id && !this.quote.has(parameters)) return msg.reply(responses.MISSING[msg.language](id))
 
       const quote = this.quote.get(parameters)
