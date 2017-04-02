@@ -37,12 +37,14 @@ module.exports = {
     return new Promise((resolve) => {
       const link = query.link && typeof query.link === "string" ? url.parse(query.link) : null
       const multiplier = query.multiplier ? parseInt(query.multiplier, 10) : 1
+      const destination = query.destination
 
       if(!link) return resolve({ invalid: { "#link": "Invalid link." } })
       if(!["evepraisal.com", "skyblade.de"].includes(link.hostname)) {
         return resolve({ invalid: { "#link": "Invalid link." } })
       }
       if(!multiplier) return resolve({ invalid: { "#multiplier": "Invalid multiplier." } })
+      if(!destination) return resolve({ invalid: { "#destination": "Invalid destination. Click one of the station images above." } })
 
       var response = { invalid: {} }
       var appraisal

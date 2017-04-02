@@ -106,6 +106,7 @@ router.get("/eve", function(req, res) {
 })
 
 router.get("/query", async function(req, res) {
+  if(!req.session.character) return res.sendStatus(403)
   const validate = await eveHelper.validateAppraisal(req.query)
   if(validate.invalid) return res.status(400).json(validate)
   const appraisal = validate
@@ -120,8 +121,9 @@ router.get("/query", async function(req, res) {
 })
 
 router.post("/submit", async function(req, res) {
+  if(!req.session.character) return res.sendStatus(403)
   const validate = await eveHelper.validateAppraisal(req.body)
-  if(validate.invalid) return res.status(400)
+  if(validate.invalid) return res.status(400).json(validate)
   const appraisal = validate
   const link = req.body.link
   const destination = req.body.destination
