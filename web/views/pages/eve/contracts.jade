@@ -154,6 +154,7 @@ html(lang="en")
                 if(freighter)
                   th Freighter
                   th Taxed
+                if(director)
                   th Tax
             tbody
               - finalizedContracts.forEach(function(contract) {
@@ -173,12 +174,11 @@ html(lang="en")
                       td=contract.freighter_name
                       if(contract.taxed)
                         td Yes
-                        td
-                          input(type="checkbox" name="tax" value=contract.value contract=contract.id disabled)
+                          if(director)
                       else
                         td No
-                        td
-                          input(type="checkbox" name="tax" value=contract.value contract=contract.id)
+                      td
+                        input(type="checkbox" name="tax" value=contract.value contract=contract.id disabled=Boolean(contract.taxed))
               - })
 
     include ../../partials/footer
@@ -224,14 +224,16 @@ html(lang="en")
             complete: complete,
             tax: tax
           },
+          dataType: "json",
           success: function() {
             location.reload()
           },
           error: function(res) {
-            res = JSON.parse(res.responseText)
+            if(!res.responseJSON) return window.location.reload()
             $("div#submit-alert")
+              .removeClass("alert-success")
               .addClass("alert-danger")
-              .text(res.alert)
+              .text(res.responseJSON.alert)
             if($("div#submit-alert").parent("a").length > 0) return
             $("div#submit-alert").wrapInner("<a href='javascript:window.location.reload()'></a>")
           }
