@@ -34,8 +34,7 @@ router.use(session({
   store: sessionStore,
   resave: true,
   saveUninitialized: true,
-  maxAge: 1800000,
-  cookie: { secure: true }
+  cookie: { httpOnly: true, secure: true, maxAge: 1800000 }
 }))
 
 router.get("/login", function(req, res) {

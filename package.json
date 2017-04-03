@@ -31,6 +31,7 @@
     "express": "4.15.2",
     "express-session": "1.15.1",
     "ffmpeg-binaries": "3.2.2-3",
+    "helmet": "3.5.0",
     "jade": "1.11.0",
     "moment-timezone": "0.5.11",
     "morgan": "1.8.1",
@@ -59,6 +60,7 @@
     "foreman": "latest",
     "longjohn": "latest",
     "mocha": "latest",
-    "nodemon": "latest"
+    "nodemon": "latest",
+    "nsp": "latest"
   }
 }
