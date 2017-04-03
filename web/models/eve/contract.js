@@ -44,8 +44,8 @@ module.exports = {
   },
   
   getAllPending(characterID) {
-    if(characterID) return this.db.query("SELECT * FROM eve_contracts WHERE (status = 'pending' OR status = 'flagged') AND submitter_id = ?", [characterID])
-    return this.db.query("SELECT * FROM eve_contracts WHERE status = 'pending' OR status = 'flagged'")
+    if(characterID) return this.db.query("SELECT * FROM eve_contracts WHERE (status = 'pending' OR status = 'flagged') AND submitter_id = ? ORDER BY status desc, submitted", [characterID])
+    return this.db.query("SELECT * FROM eve_contracts WHERE status = 'pending' OR status = 'flagged' ORDER BY status desc, submitted")
   },
   
   getAllOngoing(characterID) {
