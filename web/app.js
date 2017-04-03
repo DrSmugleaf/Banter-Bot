@@ -11,6 +11,7 @@ const app = express()
 const path = require("path")
 const winston = require("winston")
 
+app.set("trust proxy", 1)
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(require("morgan")("dev"))
