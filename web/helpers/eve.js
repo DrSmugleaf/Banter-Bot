@@ -14,7 +14,7 @@ const invTypes = require("../models/eve/invtypes")
 const invVolumes = require("../models/eve/invvolumes")
 const request = require("request-promise")
 const url = require("url")
-const winston = require("winston")
+const validUrl = require("valid-url")
 
 module.exports = {
   nShortener(num, digits = 2) {
@@ -37,6 +37,7 @@ module.exports = {
 
   validateAppraisal(query) {
     return new Promise((resolve) => {
+      if(!validUrl.isUri(query.link)) return resolve({ invalid: { "#link": "Invalid link."} })
       const link = query.link && typeof query.link === "string" ? url.parse(query.link) : null
       const multiplier = query.multiplier ? parseInt(query.multiplier, 10) : 1
       const destination = query.destination
@@ -93,8 +94,7 @@ module.exports = {
         
         if(!_.isEmpty(response.invalid)) return resolve(response)
         return resolve(appraisal)
-      }).catch((e) => {
-        winston.error(e)
+      }).catch(() => {
         resolve({ invalid: { "#link": "Invalid appraisal." } })
       })
     })
