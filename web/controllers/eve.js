@@ -113,7 +113,7 @@ router.get("/auth", function(req, res) {
     const isAllowed = !userBanned[0] && (allianceAllowed[0] || corporationAllowed[0] || isDirector || isFreighter)
     if(!isAllowed) return res.render("pages/eve/unauthorized")
     
-    req.session.character = eveCharacter
+    req.session.eveToken = eveCharacter.token
     res.redirect("/eve/eve")
   }).catch((e) => {
     winston.error(`Error while retrieving character: ${e.stack}`)
@@ -130,8 +130,25 @@ router.get("/eve", function(req, res) {
 })
 
 router.get("/query", async function(req, res) {
+  if(req.session.eveToken) {
+      const eveCharacter = await character.getByToken(req.session.eveToken)
+      req.session.character = eveCharacter[0]
+  }
   if(!req.session.character) return res.status(403).json({
     alert: "You need to login before submitting contracts."
+  })
+  
+  const eveCharacter = req.session.character
+  
+  const userBanned = await character.isBanned(eveCharacter.character_name)
+  const allianceAllowed = await alliance.isAllowed(eveCharacter.alliance_name)
+  const corporationAllowed = await corporation.isAllowed(eveCharacter.corporation_name)
+  const isDirector = eveCharacter.director
+  const isFreighter = eveCharacter.freighter
+  const isAllowed = !userBanned[0] && (allianceAllowed[0] || corporationAllowed[0] || isDirector || isFreighter)
+  
+  if(!isAllowed) return res.status(403).json({
+    alert: "You aren't allowed to submit contracts. Either you have been banned, or your corporation isn't whitelisted."
   })
   
   const validate = await eveHelper.validateAppraisal(req.query)
@@ -149,8 +166,25 @@ router.get("/query", async function(req, res) {
 })
 
 router.post("/submit", async function(req, res) {
+  if(req.session.eveToken) {
+      const eveCharacter = await character.getByToken(req.session.eveToken)
+      req.session.character = eveCharacter[0]
+  }
   if(!req.session.character) return res.status(403).json({
     alert: "You need to login before submitting contracts."
+  })
+  
+  const eveCharacter = req.session.character
+  
+  const userBanned = await character.isBanned(eveCharacter.character_name)
+  const allianceAllowed = await alliance.isAllowed(eveCharacter.alliance_name)
+  const corporationAllowed = await corporation.isAllowed(eveCharacter.corporation_name)
+  const isDirector = eveCharacter.director
+  const isFreighter = eveCharacter.freighter
+  const isAllowed = !userBanned[0] && (allianceAllowed[0] || corporationAllowed[0] || isDirector || isFreighter)
+  
+  if(!isAllowed) return res.status(403).json({
+    alert: "You aren't allowed to submit contracts. Either you have been banned, or your corporation isn't whitelisted."
   })
   
   const validate = await eveHelper.validateAppraisal(req.body)

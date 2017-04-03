@@ -3,10 +3,16 @@
 //
 
 "use strict"
+const character = require("../models/eve/character")
 
 module.exports = {
-  eveAuth(req, res, next) {
-    if(req.session.character) return next()
-    return res.redirect("/eve/login")
+  async eveAuth(req, res, next) {
+    if(req.session.eveToken) {
+      const eveCharacter = await character.getByToken(req.session.eveToken)
+      req.session.character = eveCharacter[0]
+      return next()
+    } else {
+      return res.redirect("/eve/login")
+    }
   }
 }
