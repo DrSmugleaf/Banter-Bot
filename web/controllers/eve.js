@@ -101,15 +101,19 @@ router.get("/auth", function(req, res) {
     eveCharacter.corporation_name = bodies[2].corporation_name
     eveCharacter.corporation_portrait = bodies[3].px64x64.replace(/^http:\/\//i, "https://")
     
-    // const userBanned = await character.isBanned(eveCharacter.character_name)
-    // const allianceAllowed = await alliance.isAllowed(eveCharacter.alliance_name)
-    // const corporationAllowed = await corporation.isAllowed(eveCharacter.corporation_name)
-    // const isAllowed = !userBanned[0] && (allianceAllowed[0] || corporationAllowed[0])
-    // if(!isAllowed) return res.render("pages/eve/unauthorized")
-    
     character.set(eveCharacter)
     eveCharacter = await character.get(eveCharacter.id)
-    req.session.character = eveCharacter[0]
+    eveCharacter = eveCharacter[0]
+    
+    const userBanned = await character.isBanned(eveCharacter.character_name)
+    const allianceAllowed = await alliance.isAllowed(eveCharacter.alliance_name)
+    const corporationAllowed = await corporation.isAllowed(eveCharacter.corporation_name)
+    const isDirector = eveCharacter.director
+    const isFreighter = eveCharacter.freighter
+    const isAllowed = !userBanned[0] && (allianceAllowed[0] || corporationAllowed[0] || isDirector || isFreighter)
+    if(!isAllowed) return res.render("pages/eve/unauthorized")
+    
+    req.session.character = eveCharacter
     res.redirect("/eve/eve")
   }).catch((e) => {
     winston.error(`Error while retrieving character: ${e.stack}`)

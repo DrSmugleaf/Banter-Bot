@@ -7,7 +7,7 @@ html(lang="en")
   head
     include ../../partials/header
   body
-    include ../../partials/navigation
+    include ../../partials/eve/navigation
     
     div.container
       div.row
@@ -16,5 +16,9 @@ html(lang="en")
             h1 Unauthorized
             h2 Your alliance/corporation isn't allowed to submit contracts, or you have been banned
             div.error-details If you believe this to be a mistake, please contact a director from Mango Deliveries
+            div.error-actions
+              a.btn.btn-primary.btn-lg(href="/")
+              span.glyphicon.glyphicon-home
+              |   Go back
             
     include ../../partials/footer
