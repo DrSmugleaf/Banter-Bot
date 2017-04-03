@@ -204,8 +204,10 @@ router.get("/contracts", eveAuth, function(req, res) {
 })
 
 router.post("/contracts/submit", eveAuth, function(req, res) {
-  const freighter = req.session.character.freighter || req.session.character.director
-  if(!freighter) return res.sendStatus(403)
+  const director = req.session.character.director
+  const freighter = req.session.character.freighter
+  if(!(director || freighter)) return res.sendStatus(403)
+  if(req.body.tax && !director) return res.sendStatus(403)
   
   Promise.all([
     eveHelper.contracts.accept(req),
