@@ -129,13 +129,17 @@ router.get("/eve", function(req, res) {
   })
 })
 
-router.get("/query", eveAuth, async function(req, res) {
-  if(!req.session.character) return res.sendStatus(403)
+router.get("/query", async function(req, res) {
+  if(!req.session.character) return res.status(403).json({
+    alert: `You need to login before submitting contracts.`
+  })
+  
   const validate = await eveHelper.validateAppraisal(req.query)
   if(validate.invalid) return res.status(400).json(validate)
   const appraisal = validate
   const price = appraisal.totals.sell
   const multiplier = req.query.multiplier || 1
+  
   return res.status(200).json({
     jita: (price * multiplier).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","),
     jitaShort: eveHelper.nShortener(price * multiplier, 2),
@@ -144,8 +148,11 @@ router.get("/query", eveAuth, async function(req, res) {
   })
 })
 
-router.post("/submit", eveAuth, async function(req, res) {
-  if(!req.session.character) return res.sendStatus(403)
+router.post("/submit", async function(req, res) {
+  if(!req.session.character) return res.status(403).json({
+    alert: `You need to login before submitting contracts.`
+  })
+  
   const validate = await eveHelper.validateAppraisal(req.body)
   if(validate.invalid) return res.status(400).json(validate)
   const appraisal = validate
@@ -174,6 +181,10 @@ router.post("/submit", eveAuth, async function(req, res) {
     submitted: moment().unix(),
     submitted_formatted: moment().format("MMMM Do YYYY, HH:mm:ss"),
     status: "pending"
+  })
+  
+  return res.status(200).json({
+    alert: `Contract submitted. Click here to see it.`
   })
 })
 
