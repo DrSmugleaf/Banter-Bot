@@ -22,25 +22,16 @@ app.use(express.static(path.join(__dirname + "/public")))
 app.use(require("./controllers"))
 app.locals.character = {}
 
-// if(process.env.NODE_ENV === "dev") {
-//   app.use(function(e, req, res) {
-//     winston.info(e)
-//     res.status(e.status || 500)
-//     res.render("pages/404", {
-//       message: e.message,
-//       error: e
-//     })
-//   })
-// } else {
-//   app.use(function(e, req, res) {
-//     winston.info(e)
-//     res.status(e.status || 500)
-//     res.render("pages/404", {
-//       message: e.message,
-//       error: {}
-//     })
-//   })
-// }
+if(process.env.NODE_ENV !== "dev") {
+  app.use("/eve", function(e, req, res, next) {
+    winston.info(e.stack)
+    res.status(500).render("pages/eve/500")
+  })
+  app.use("/", function(e, req, res, next) {
+    winston.info(e.stack)
+    res.status(500).render("pages/500")
+  })
+}
 
 app.listen(process.env.PORT || 3000, function() {
   winston.info(`Listening on port ${process.env.PORT || 3000}`)

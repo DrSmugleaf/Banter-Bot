@@ -38,7 +38,6 @@ router.use(session({
   cookie: { secure: true }
 }))
 
-
 router.get("/login", function(req, res) {
   const state = require("crypto").randomBytes(64).toString("hex")
   req.session.state = state
