@@ -26,7 +26,6 @@ const sessionStore = new MySQLStore({
   port: process.env.MYSQL_PORT
 })
 const settings = require("../models/eve/settings")
-const winston = require("winston")
 
 router.use(session({
   name: "mango deliveries",
