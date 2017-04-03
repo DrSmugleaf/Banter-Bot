@@ -26,10 +26,12 @@ if(process.env.NODE_ENV !== "dev") {
   app.use("/eve", function(e, req, res, next) {
     winston.info(e.stack)
     res.status(500).render("pages/eve/500")
+    next()
   })
   app.use("/", function(e, req, res, next) {
     winston.info(e.stack)
     res.status(500).render("pages/500")
+    next()
   })
 }
 
