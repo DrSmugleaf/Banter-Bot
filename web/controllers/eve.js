@@ -114,8 +114,7 @@ router.get("/auth", function(req, res) {
     
     req.session.eveToken = eveCharacter.token
     res.redirect("/eve/eve")
-  }).catch((e) => {
-    winston.error(`Error while retrieving character: ${e.stack}`)
+  }).catch(() => {
     res.render("pages/404")
   })
 })
