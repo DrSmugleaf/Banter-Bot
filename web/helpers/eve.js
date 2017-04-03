@@ -216,6 +216,9 @@ module.exports = {
     user(name, action) {
       switch(action) {
       case "ban":
+        var user = await character.getByName(name)
+        user = user[0]
+        if(user.director) return { error: true, alert: `You can't ban ${name}, he's a director.` }
         character.ban(name)
         return { alert: `Banned ${name}.` }
       case "unban":
