@@ -37,6 +37,6 @@ if(process.env.NODE_ENV !== "dev") {
   })
 }
 
-app.listen(process.env.PORT || 3000, function() {
-  winston.info(`Listening on port ${process.env.PORT || 3000}`)
+app.listen(process.env.PORT, function() {
+  winston.info(`Listening on port ${process.env.PORT}`)
 })
