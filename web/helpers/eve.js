@@ -213,7 +213,7 @@ module.exports = {
   },
   
   director: {
-    user(name, action) {
+    async user(name, action) {
       switch(action) {
       case "ban":
         var user = await character.getByName(name)
