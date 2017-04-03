@@ -131,8 +131,8 @@ router.get("/eve", function(req, res) {
 
 router.get("/query", async function(req, res) {
   if(req.session.eveToken) {
-      const eveCharacter = await character.getByToken(req.session.eveToken)
-      req.session.character = eveCharacter[0]
+    const eveCharacter = await character.getByToken(req.session.eveToken)
+    req.session.character = eveCharacter[0]
   }
   if(!req.session.character) return res.status(403).json({
     alert: "You need to login before submitting contracts."
@@ -167,8 +167,8 @@ router.get("/query", async function(req, res) {
 
 router.post("/submit", async function(req, res) {
   if(req.session.eveToken) {
-      const eveCharacter = await character.getByToken(req.session.eveToken)
-      req.session.character = eveCharacter[0]
+    const eveCharacter = await character.getByToken(req.session.eveToken)
+    req.session.character = eveCharacter[0]
   }
   if(!req.session.character) return res.status(403).json({
     alert: "You need to login before submitting contracts."
