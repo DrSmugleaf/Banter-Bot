@@ -15,6 +15,8 @@ html(lang="en")
         p Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
     
     div.container.text-center
+      div.col-md-6.col-md-offset-3
+        div#submit-alert.alert(role="alert")
       form(method="post" action="/eve/submit")
         div.row
           div#image_container
@@ -90,17 +92,25 @@ html(lang="en")
             $("#quote").val(res.quote + " (" + res.quoteShort + ")")
           },
           error: function(res) {
-            if(!res.responseJSON) return window.location.replace("login")
-            $(".parent-has-error").attr("data-original-title", '')
-            $(".has-error").removeClass("has-error")
-            for(var element in res.responseJSON.invalid) {
-              if(!res.responseJSON.invalid.hasOwnProperty(element)) return
-              $(element).addClass("parent-has-error")
-              if($(element).parents(".input-group", ".btn-group").length) {
-                $(element).tooltip({ container: "body" })
+            if(res.responseJSON.alert) {
+              $("div#submit-alert")
+                .removeClass("alert-success")
+                .addClass("alert-danger")
+                .text(res.responseJSON.alert)
+              if($("div#submit-alert").parent("a").length > 0) return
+              $("div#submit-alert").wrap("<a href='javascript:window.location.replace(\"login\")'></a>")
+            } else {
+              $(".parent-has-error").attr("data-original-title", '')
+              $(".has-error").removeClass("has-error")
+              for(var element in res.responseJSON.invalid) {
+                if(!res.responseJSON.invalid.hasOwnProperty(element)) return
+                $(element).addClass("parent-has-error")
+                if($(element).parents(".input-group", ".btn-group").length) {
+                  $(element).tooltip({ container: "body" })
+                }
+                $(element).parent().addClass("has-error")
+                $(element).prop("title", res.responseJSON.invalid[element]).tooltip("fixTitle").tooltip("show")
               }
-              $(element).parent().addClass("has-error")
-              $(element).prop("title", res.responseJSON.invalid[element]).tooltip("fixTitle").tooltip("show")
             }
           }
         }).done()
@@ -121,20 +131,34 @@ html(lang="en")
           data: $(this).serialize(),
           dataType: "json",
           success: function(res) {
-            return window.location.replace("contracts")
+            $("div#submit-alert")
+              .removeClass("alert-danger")
+              .addClass("alert-success")
+              .text(res.alert)
+            if($("div#submit-alert").parent("a").length > 0) return
+            $("div#submit-alert").wrap("<a href='javascript:window.location.replace(\"contracts\")'></a>")
           },
           error: function(res) {
-            if(!res.responseJSON) return window.location.replace("login")
-            for(var element in res.responseJSON) {
-              if(!res.responseJSON.hasOwnProperty(element)) return
-              if($(element).parents(".input-group", ".btn.group").length > 0) {
-                $(element).tooltip({ container: "body" })
+            if(res.responseJSON.alert) {
+              $("div#submit-alert")
+                .removeClass("alert-success")
+                .addClass("alert-danger")
+                .text(res.responseJSON.alert)
+              if($("div#submit-alert").parent("a").length > 0) return
+              $("div#submit-alert").wrap("<a href='javascript:window.location.replace(\"login\")'></a>")
+            } else {
+              for(var element in res.responseJSON) {
+                if(!res.responseJSON.hasOwnProperty(element)) return
+                if($(element).parents(".input-group", ".btn.group").length > 0) {
+                  $(element).tooltip({ container: "body" })
+                }
+                $(element).parent().addClass("has-error")
+                $(element).prop("title", res.responseJSON[element]).tooltip("fixTitle").tooltip("show")
               }
-              $(element).parent().addClass("has-error")
-              $(element).prop("title", res.responseJSON[element]).tooltip("fixTitle").tooltip("show")
             }
           }
-        })
+        }).done()
+        return false
       })
     
     script.

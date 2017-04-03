@@ -297,7 +297,7 @@ html(lang="en")
             $("div#submit-alert").removeClass("alert-success").addClass("alert-danger")
             $("div#submit-alert p").text(res.responseJSON.alert)
           }
-        })
+        }).done()
         return false
       })
     
