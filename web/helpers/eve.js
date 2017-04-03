@@ -215,14 +215,14 @@ module.exports = {
   director: {
     user(name, action) {
       switch(action) {
-        case "ban":
-          character.ban(name)
-          return { alert: `Banned ${name}.` }
-        case "unban":
-          character.unban(name)
-          return { alert: `Unbanned ${name}.` }
-        default:
-          return false
+      case "ban":
+        character.ban(name)
+        return { alert: `Banned ${name}.` }
+      case "unban":
+        character.unban(name)
+        return { alert: `Unbanned ${name}.` }
+      default:
+        return false
       }
     },
     async freighter(name, action) {
@@ -231,46 +231,46 @@ module.exports = {
       if(!user) return { error: true, alert: `Character ${name} doesn't exist.` }
       
       switch(action) {
-        case "add":
-          user.freighter = true
-          character.set(user)
-          return { alert: `Added ${name} to the list of freighters.` }
-        case "remove":
-          user.freighter = false
-          character.set(user)
-          return { alert: `Removed ${name} from the list of freighters.` }
-        default:
-          return false
+      case "add":
+        user.freighter = true
+        character.set(user)
+        return { alert: `Added ${name} to the list of freighters.` }
+      case "remove":
+        user.freighter = false
+        character.set(user)
+        return { alert: `Removed ${name} from the list of freighters.` }
+      default:
+        return false
       }
     },
     async alliance(name, action) {
       const allowed = await alliance.isAllowed(name)
       switch(action) {
-        case "allow":
-          if(allowed[0]) return { error: true, alert: `Alliance ${name} is already whitelisted.` }
-          alliance.allow(name)
-          return { alert: `Players in the alliance ${name} are now allowed to submit contracts.` }
-        case "disallow":
-          if(!allowed[0]) return { error: true, alert: `Alliance ${name} isn't whitelisted.` }
-          alliance.disallow(name)
-          return { alert: `Players in the alliance ${name} are no longer allowed to submit contracts.` }
-        default:
-          return false
+      case "allow":
+        if(allowed[0]) return { error: true, alert: `Alliance ${name} is already whitelisted.` }
+        alliance.allow(name)
+        return { alert: `Players in the alliance ${name} are now allowed to submit contracts.` }
+      case "disallow":
+        if(!allowed[0]) return { error: true, alert: `Alliance ${name} isn't whitelisted.` }
+        alliance.disallow(name)
+        return { alert: `Players in the alliance ${name} are no longer allowed to submit contracts.` }
+      default:
+        return false
       }
     },
     async corporation(name, action) {
       const allowed = await corporation.isAllowed(name)
       switch(action) {
-        case "allow":
-          if(allowed[0]) return { error: true, alert: `Corporation ${name} is already whitelisted.` }
-          corporation.allow(name)
-          return { alert: `Players in the corporation ${name} are now allowed to submit contracts.` }
-        case "disallow":
-          if(!allowed[0]) return { error: true, alert: `Corporation ${name} isn't whitelisted.` }
-          corporation.disallow(name)
-          return { alert: `Players in the corporation ${name} are no longer allowed to submit contracts.` }
-        default:
-          return false
+      case "allow":
+        if(allowed[0]) return { error: true, alert: `Corporation ${name} is already whitelisted.` }
+        corporation.allow(name)
+        return { alert: `Players in the corporation ${name} are now allowed to submit contracts.` }
+      case "disallow":
+        if(!allowed[0]) return { error: true, alert: `Corporation ${name} isn't whitelisted.` }
+        corporation.disallow(name)
+        return { alert: `Players in the corporation ${name} are no longer allowed to submit contracts.` }
+      default:
+        return false
       }
     },
     async itemType(item, action) {
@@ -285,14 +285,14 @@ module.exports = {
       if(!invItem) return { error: true, alert: `Item type ${item} doesn't exist.` }
       
       switch (action) {
-        case "ban":
-          invTypes.ban(invItem)
-          return { alert: `Banned item ${item} from appraisals.` }
-        case "allow":
-          invTypes.allow(invItem.typeID)
-          return { alert: `Item ${item} is no longer banned from appraisals.` }
-        default:
-          return false
+      case "ban":
+        invTypes.ban(invItem)
+        return { alert: `Banned item ${item} from appraisals.` }
+      case "allow":
+        invTypes.allow(invItem.typeID)
+        return { alert: `Item ${item} is no longer banned from appraisals.` }
+      default:
+        return false
       }
     },
     async marketGroup(group, action) {
@@ -315,14 +315,14 @@ module.exports = {
       if(!invGroup) return { error: true, alert: `Market group ${group} doesn't exist` }
       
       switch(action) {
-        case "ban":
-          invMarketGroups.ban(invGroup)
-          return { alert: `Banned market group ${group} from appraisals` }
-        case "allow":
-          invMarketGroups.allow(invGroup.marketGroupID)
-          return { alert: `Market group ${group} is no longer banned from appraisals.` }
-        default:
-          return false
+      case "ban":
+        invMarketGroups.ban(invGroup)
+        return { alert: `Banned market group ${group} from appraisals` }
+      case "allow":
+        invMarketGroups.allow(invGroup.marketGroupID)
+        return { alert: `Market group ${group} is no longer banned from appraisals.` }
+      default:
+        return false
       }
     }
   }
