@@ -7,6 +7,6 @@
 module.exports = {
   eveAuth(req, res, next) {
     if(req.session.character) return next()
-    res.redirect("/eve/login")
+    return res.redirect("/eve/login")
   }
 }

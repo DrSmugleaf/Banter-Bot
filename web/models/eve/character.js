@@ -49,6 +49,10 @@ module.exports = {
     return this.db.query("SELECT * FROM eve_characters WHERE character_name = ? LIMIT 1", [name])
   },
   
+  getByToken(token) {
+    return this.db.query("SELECT * FROM eve_characters WHERE token = ?", [token])
+  },
+  
   getFreighters() {
     return this.db.query("SELECT * FROM eve_characters WHERE freighter='1'")
   },

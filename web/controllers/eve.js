@@ -17,15 +17,27 @@ const moment = require("moment-timezone")
 const router = express.Router()
 const request = require("request-promise")
 const session = require("express-session")
+const MySQLStore = require("express-mysql-session")(session)
+const sessionStore = new MySQLStore({
+  host: process.env.MYSQL_HOST,
+  user: process.env.MYSQL_USER,
+  password: process.env.MYSQL_PASSWORD || "",
+  database: process.env.MYSQL_DATABASE,
+  port: process.env.MYSQL_PORT
+})
 const settings = require("../models/eve/settings")
 const winston = require("winston")
 
 router.use(session({
-  secret: require("crypto").randomBytes(64).toString("hex"),
-  resave: false,
+  name: "mango deliveries",
+  secret: process.env.EVE_DELIVERIES_SESSION_SECRET,
+  store: sessionStore,
+  resave: true,
   saveUninitialized: true,
-  maxAge: 1200000
+  maxAge: 1800000,
+  cookie: { secure: true }
 }))
+
 
 router.get("/login", function(req, res) {
   const state = require("crypto").randomBytes(64).toString("hex")
@@ -90,18 +102,18 @@ router.get("/auth", function(req, res) {
     eveCharacter.corporation_name = bodies[2].corporation_name
     eveCharacter.corporation_portrait = bodies[3].px64x64.replace(/^http:\/\//i, "https://")
     
-    const userBanned = await character.isBanned(eveCharacter.character_name)
-    const allianceAllowed = await alliance.isAllowed(eveCharacter.alliance_name)
-    const corporationAllowed = await corporation.isAllowed(eveCharacter.corporation_name)
-    const isAllowed = !userBanned[0] && (allianceAllowed[0] || corporationAllowed[0])
-    if(!isAllowed) return res.render("pages/eve/unauthorized")
+    // const userBanned = await character.isBanned(eveCharacter.character_name)
+    // const allianceAllowed = await alliance.isAllowed(eveCharacter.alliance_name)
+    // const corporationAllowed = await corporation.isAllowed(eveCharacter.corporation_name)
+    // const isAllowed = !userBanned[0] && (allianceAllowed[0] || corporationAllowed[0])
+    // if(!isAllowed) return res.render("pages/eve/unauthorized")
     
     character.set(eveCharacter)
     eveCharacter = await character.get(eveCharacter.id)
     req.session.character = eveCharacter[0]
     res.redirect("/eve/eve")
   }).catch((e) => {
-    winston.error(`Error while retrieving character: ${e}`)
+    winston.error(`Error while retrieving character: ${e.stack}`)
     res.render("pages/404")
   })
 })
@@ -114,7 +126,7 @@ router.get("/eve", function(req, res) {
   })
 })
 
-router.get("/query", async function(req, res) {
+router.get("/query", eveAuth, async function(req, res) {
   if(!req.session.character) return res.sendStatus(403)
   const validate = await eveHelper.validateAppraisal(req.query)
   if(validate.invalid) return res.status(400).json(validate)
@@ -129,7 +141,7 @@ router.get("/query", async function(req, res) {
   })
 })
 
-router.post("/submit", async function(req, res) {
+router.post("/submit", eveAuth, async function(req, res) {
   if(!req.session.character) return res.sendStatus(403)
   const validate = await eveHelper.validateAppraisal(req.body)
   if(validate.invalid) return res.status(400).json(validate)
