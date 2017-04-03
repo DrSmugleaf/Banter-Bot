@@ -131,7 +131,7 @@ router.get("/eve", function(req, res) {
 
 router.get("/query", async function(req, res) {
   if(!req.session.character) return res.status(403).json({
-    alert: `You need to login before submitting contracts.`
+    alert: "You need to login before submitting contracts."
   })
   
   const validate = await eveHelper.validateAppraisal(req.query)
@@ -150,7 +150,7 @@ router.get("/query", async function(req, res) {
 
 router.post("/submit", async function(req, res) {
   if(!req.session.character) return res.status(403).json({
-    alert: `You need to login before submitting contracts.`
+    alert: "You need to login before submitting contracts."
   })
   
   const validate = await eveHelper.validateAppraisal(req.body)
@@ -184,7 +184,7 @@ router.post("/submit", async function(req, res) {
   })
   
   return res.status(200).json({
-    alert: `Contract submitted. Click here to see it.`
+    alert: "Contract submitted. Click here to see it."
   })
 })
 
