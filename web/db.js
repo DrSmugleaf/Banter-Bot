@@ -12,26 +12,24 @@ const models = require("require-all")({
 const stripIndents = require("common-tags").stripIndents
 const winston = require("winston")
 
-module.exports = MySQL.createConnection({
+const pool = MySQL.createPool({
   host: process.env.MYSQL_HOST,
   user: process.env.MYSQL_USER,
   password: process.env.MYSQL_PASSWORD || "",
   database: process.env.MYSQL_DATABASE,
   port: process.env.MYSQL_PORT
-}).then((connection) => {
+})
+
+pool.getConnection().then((connection) => {
+  pool.releaseConnection(connection)
   _.forEach(models, (model) => {
-    model.init(connection)
+    model.init(pool)
   })
 }).catch((e) => {
   winston.error(stripIndents`
-    Error connecting to database ${process.env.MYSQL_DATABASE},
-    with host ${process.env.MYSQL_HOST},
-    at port ${process.env.MYSQL_PORT},
-    as user defined in the MYSQL_USER environment variable,
-    with password defined in the MYSQL_PASSWORD environment variable.
-    
-    Error message: ${e.name}: ${e.message}
-    Error stack trace: ${e.stack}
+    Error connecting to MySQL database with credentials set in environment variables
+    MYSQL_DATABASE, MYSQL_HOST, MYSQL_PORT, MYSQL_USER, MYSQL_PASSWORD:
+    ${e.stack}
   `)
   process.exit(1)
 })
