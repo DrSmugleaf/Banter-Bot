@@ -8,14 +8,18 @@ const winston = require("winston")
 
 module.exports = {
   db: null,
+  tableName: null,
 
   async init(db) {
     this.db = db
-    await this.db.query("SELECT * FROM invmarketgroups LIMIT 1").catch(() => {
-      winston.error(`MySQL table invmarketgroups in database ${process.env.MYSQL_DATABASE} doesn't exist. Please import it from CCP's latest database dump.`)
+    const tables = await this.db.query("SELECT table_name FROM information_schema.tables WHERE LOWER(table_name) LIKE 'invmarketgroups' AND table_schema = ?", [process.env.MYSQL_DATABASE])
+    if(!tables[0]) {
+      winston.error(`MySQL table invMarketGroups in database ${process.env.MYSQL_DATABASE} doesn't exist. Please import it from CCP's latest database dump.`)
       process.exit(1)
-    })
-    return this.db.query("CREATE TABLE IF NOT EXISTS eve_banned_market_groups LIKE invmarketgroups")
+    }
+    this.tableName = tables[0].table_name
+    
+    return this.db.query("CREATE TABLE IF NOT EXISTS eve_banned_market_groups LIKE ??", [this.tableName])
   },
   
   allow(id) {
@@ -27,7 +31,7 @@ module.exports = {
   },
   
   get(id) {
-    return this.db.query("SELECT * FROM invmarketgroups WHERE marketGroupID = ? LIMIT 1", [id])
+    return this.db.query("SELECT * FROM ?? WHERE marketGroupID = ? LIMIT 1", [this.tableName, id])
   },
   
   getBanned() {
@@ -35,20 +39,20 @@ module.exports = {
   },
   
   getByName(name) {
-    return this.db.query("SELECT * FROM invmarketgroups WHERE marketGroupName = ?", [name])
+    return this.db.query("SELECT * FROM ?? WHERE marketGroupName = ?", [this.tableName, name])
   },
   
   getAllParentsByID(id) {
     const that = this
     return new Promise((resolve, reject) => {
-      this.db.query("SELECT * FROM invmarketgroups WHERE marketGroupID = ? LIMIT 1", [id]).then((result) => {
+      this.db.query("SELECT * FROM ?? WHERE marketGroupID = ? LIMIT 1", [this.tableName, id]).then((result) => {
         var parentGroupID = result[0].parentGroupID
         const parents = [result[0].marketGroupID]
         parents.push(parentGroupID)
         async.whilst(
           function() { return parentGroupID },
           async function(callback) {
-            result = await that.db.query("SELECT * FROM invmarketgroups WHERE marketGroupID = ? LIMIT 1", [parentGroupID])
+            result = await that.db.query("SELECT * FROM ?? WHERE marketGroupID = ? LIMIT 1", [this.tableName, parentGroupID])
             parentGroupID = result[0].parentGroupID
             if(parentGroupID) parents.push(parentGroupID)
             callback(null, parents)
@@ -68,12 +72,12 @@ module.exports = {
   getHighestParentID(id) {
     const that = this
     return new Promise((resolve, reject) => {
-      this.db.query("SELECT * FROM invmarketgroups WHERE marketGroupID = ? LIMIT 1", [id]).then((result) => {
+      this.db.query("SELECT * FROM ?? WHERE marketGroupID = ? LIMIT 1", [this.tableName, id]).then((result) => {
         var parent = result[0].parentGroupID
         async.whilst(
           function() { return parent },
           async function(callback) {
-            result = await that.db.query("SELECT * FROM invmarketgroups WHERE marketGroupID = ? LIMIT 1", [parent])
+            result = await that.db.query("SELECT * FROM ?? WHERE marketGroupID = ? LIMIT 1", [this.tableName, parent])
             if(result) parent = result[0].parentGroupID
             callback(null, result)
           },
