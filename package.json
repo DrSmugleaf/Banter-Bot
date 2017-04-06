@@ -29,6 +29,7 @@
     "discord.js-commando": "0.9.0",
     "erlpack": "github:hammerandchisel/erlpack#master",
     "express": "4.15.2",
+    "express-mysql-session": "1.2.0",
     "express-session": "1.15.1",
     "ffmpeg-binaries": "3.2.2-3",
     "helmet": "3.5.0",
