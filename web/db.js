@@ -36,3 +36,5 @@ pool.getConnection().then((connection) => {
   `)
   process.exit(1)
 })
+
+module.exports = pool
