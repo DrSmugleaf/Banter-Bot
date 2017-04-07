@@ -18,13 +18,7 @@ const router = express.Router()
 const request = require("request-promise")
 const session = require("express-session")
 const MySQLStore = require("express-mysql-session")(session)
-const sessionStore = new MySQLStore({
-  host: process.env.MYSQL_HOST,
-  user: process.env.MYSQL_USER,
-  password: process.env.MYSQL_PASSWORD || "",
-  database: process.env.MYSQL_DATABASE,
-  port: process.env.MYSQL_PORT
-})
+const sessionStore = new MySQLStore({}, require("../db.js"))
 const settings = require("../models/eve/settings")
 
 router.use(session({
