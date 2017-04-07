@@ -12,6 +12,7 @@ const corporation = require("../models/eve/corporation")
 const invMarketGroups = require("../models/eve/invmarketgroups")
 const invTypes = require("../models/eve/invtypes")
 const invVolumes = require("../models/eve/invvolumes")
+const moment = require("moment-timezone")
 const request = require("request-promise")
 const url = require("url")
 const validUrl = require("valid-url")
@@ -64,6 +65,11 @@ module.exports = {
         const bannedMarketGroups = promises[1]
 
         var string
+        if(moment().diff(moment.unix(appraisal.created), "days") > 2) {
+          string = "Appraisals can't be more than 2 days old."
+          response.invalid["#link"] = response.invalid["#link"] ?
+            response.invalid["#link"].concat(string) : string
+        }
         if(appraisal.market_name !== "Jita") {
           string = "Appraisal market must be Jita.\n"
           response.invalid["#link"] = response.invalid["#link"] ?
