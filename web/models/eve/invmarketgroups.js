@@ -52,7 +52,7 @@ module.exports = {
         async.whilst(
           function() { return parentGroupID },
           async function(callback) {
-            result = await that.db.query("SELECT * FROM ?? WHERE marketGroupID = ? LIMIT 1", [this.tableName, parentGroupID])
+            result = await that.db.query("SELECT * FROM ?? WHERE marketGroupID = ? LIMIT 1", [that.tableName, parentGroupID])
             parentGroupID = result[0].parentGroupID
             if(parentGroupID) parents.push(parentGroupID)
             callback(null, parents)
