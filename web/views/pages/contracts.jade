@@ -5,10 +5,10 @@
 doctype html
 html(lang="en")
   head
-    include ../../partials/header
+    include ../partials/header
     link(rel="stylesheet" type="text/css" href="/stylesheets/eve/contracts.css")
   body
-    include ../../partials/navigation
+    include ../partials/navigation
     
     div.jumbotron
       div.container
@@ -181,7 +181,7 @@ html(lang="en")
                         input(type="checkbox" name="tax" value=contract.value contract=contract.id disabled=Boolean(contract.taxed))
               - })
 
-    include ../../partials/footer
+    include ../partials/footer
     script.
       var tax = 0
       $("tr input[type=checkbox]").change(function() {

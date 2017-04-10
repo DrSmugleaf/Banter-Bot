@@ -5,9 +5,9 @@
 doctype html
 html(lang="en")
   head
-    include ../../partials/header
+    include ../partials/header
   body
-    include ../../partials/navigation
+    include ../partials/navigation
     
     div.jumbotron
       div.container
@@ -223,7 +223,7 @@ html(lang="en")
                   div.col-md-3
                     p Current: #{settings.maxVolume}
     
-    include ../../partials/footer
+    include ../partials/footer
     script.
       function showUserPanel(e) {
         $("ul.nav.nav-tabs.nav-justified li").removeClass("active")
