@@ -8,7 +8,7 @@ html(lang="en")
     include ../../partials/header
     link(rel="stylesheet" type="text/css" href="/stylesheets/eve/contracts.css")
   body
-    include ../../partials/eve/navigation
+    include ../../partials/navigation
     
     div.jumbotron
       div.container
@@ -217,7 +217,7 @@ html(lang="en")
         
         $.ajax({
           type: "POST",
-          url: "/eve/contracts/submit",
+          url: "/contracts/submit",
           data: {
             accept: accept,
             flag: flag,
