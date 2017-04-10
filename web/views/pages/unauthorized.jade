@@ -7,18 +7,18 @@ html(lang="en")
   head
     include ../../partials/header
   body
-    include ../../partials/eve/navigation
+    include ../../partials/navigation
     
     div.container
       div.row
         div.col-md-12
           div.error-template
-            h1 Oops!
-            h2 500 Internal Server Error
-            div.error-details Sorry, an error has occurred
+            h1 Unauthorized
+            h2 Your alliance/corporation isn't allowed to submit contracts, or you have been banned
+            div.error-details If you believe this to be a mistake, please contact a director from Mango Deliveries
             div.error-actions
-              a.btn.btn-primary.btn-lg(href="/eve")
+              a.btn.btn-primary.btn-lg(href="/")
                 span.glyphicon.glyphicon-home
                 |   Go back
-    
+            
     include ../../partials/footer

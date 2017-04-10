@@ -36,7 +36,7 @@ router.get("/login", function(req, res) {
   res.redirect(`https://login.eveonline.com/oauth/authorize/?response_type=code&redirect_uri=${process.env.EVE_CALLBACK}&client_id=${process.env.EVE_ID}&state=${state}`)
 })
 
-router.get("/auth", function(req, res) {
+router.get("/oauth", function(req, res) {
   const sessionState = req.session.state
   delete req.session.state
   if(req.query.state !== sessionState) return res.sendStatus(403)
@@ -103,17 +103,17 @@ router.get("/auth", function(req, res) {
     const isDirector = eveCharacter.director
     const isFreighter = eveCharacter.freighter
     const isAllowed = !userBanned[0] && (allianceAllowed[0] || corporationAllowed[0] || isDirector || isFreighter)
-    if(!isAllowed) return res.render("pages/eve/unauthorized")
+    if(!isAllowed) return res.render("pages/unauthorized")
     
     req.session.eveToken = eveCharacter.token
-    res.redirect("/eve/eve")
+    res.redirect("/")
   }).catch(() => {
     res.render("pages/404")
   })
 })
 
-router.get("/eve", function(req, res) {
-  res.render("pages/eve/index", {
+router.get("/", function(req, res) {
+  res.render("pages/index", {
     character: req.session.character || {},
     title: "Home - Mango Deliveries",
     active: "Home"
@@ -229,7 +229,7 @@ router.get("/contracts", eveAuth, function(req, res) {
     const ongoing = contracts[1]
     const finalized = contracts[2]
     
-    res.render("pages/eve/contracts", {
+    res.render("pages/contracts", {
       character: req.session.character || {},
       pendingContracts: pending,
       ongoingContracts: ongoing,
@@ -272,7 +272,7 @@ router.get("/director", eveAuth, async function(req, res) {
   const bannedItemTypes = await invTypes.getBanned()
   const bannedMarketGroups = await invMarketGroups.getBanned()
   const eveSettings = await settings.get()
-  res.render("pages/eve/director", {
+  res.render("pages/director", {
     character: req.session.character || {},
     title: "Director Panel - Mango Deliveries",
     active: "Director Panel",

@@ -7,7 +7,7 @@ html(lang="en")
   head
     include ../../partials/header
   body
-    include ../../partials/eve/navigation
+    include ../../partials/navigation
     
     div.jumbotron
       div.container
@@ -17,7 +17,7 @@ html(lang="en")
     div.container.text-center
       div.col-md-6.col-md-offset-3
         div#submit-alert.alert(role="alert")
-      form(method="post" action="/eve/submit")
+      form(method="post" action="/submit")
         div.row
           div#image_container
             div.col-md-2.col-md-offset-3
@@ -78,7 +78,7 @@ html(lang="en")
       function query() {
         $.ajax({
           type: "GET",
-          url: "/eve/query",
+          url: "/query",
           data: {
             link: $("#link").val(),
             multiplier: $("#multiplier").val(),

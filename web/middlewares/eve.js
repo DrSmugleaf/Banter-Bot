@@ -12,7 +12,7 @@ module.exports = {
       req.session.character = eveCharacter[0]
       return next()
     } else {
-      return res.redirect("/eve/login")
+      return res.redirect("/login")
     }
   }
 }
