@@ -30,13 +30,13 @@ module.exports = class ResumeCommand extends commando.Command {
 
   async run(msg) {
     if(!main.isCurrentlyPaused(msg.guild)) {
-      return msg.reply(responses.YOUTUBE.NO_PAUSED[msg.language])
+      return msg.reply(responses.NO_PAUSED[msg.language])
     }
     if(!main.isSameVoiceChannel(msg.member)) {
-      return msg.reply(responses.YOUTUBE.NOT_SAME_VOICE_CHANNEL[msg.language])
+      return msg.reply(responses.NOT_SAME_VOICE_CHANNEL[msg.language])
     }
 
     main.dispatcher(msg.guild).resume()
-    return msg.reply(responses.YOUTUBE.RESUME[msg.language])
+    return msg.reply(responses.RESUME[msg.language])
   }
 }
