@@ -5,11 +5,10 @@
 "use strict"
 const commando = require("discord.js-commando")
 const main = require("./base/main")
+const request = require("request-promise")
 const responses = require("../../util/constants").responses.YOUTUBE
 const Song = require("./base/song")
 const winston = require("winston")
-const Youtube = require("simple-youtube-api")
-const youtube = new Youtube(process.env.GOOGLE_KEY)
 
 module.exports = class PlayCommand extends commando.Command {
   constructor(client) {
@@ -27,15 +26,48 @@ module.exports = class PlayCommand extends commando.Command {
       },
       args: [
         {
-          key: "url",
+          key: "video",
           prompt: "What video do you want to queue?",
           type: "string",
-          validate: (url) => {
-            return youtube.getVideo(url).then((video) => {
-              if(video.durationSeconds <= 0) return false
-              return true
-            }).catch(() => {
-              return false
+          validate: (video) => {
+            return new Promise((resolve) => {
+              request.get({
+                url: "https://www.googleapis.com/youtube/v3/videos",
+                qs: {
+                  key: process.env.GOOGLE_KEY,
+                  id: Song.id(video),
+                  part: "snippet"
+                },
+                json: true
+              }).then((video) => {
+                video = video.items[0]
+                if(!video) return resolve(false)
+                if(video.snippet.liveBroadcastContent !== "none") return resolve(false)
+                resolve(true)
+              }).catch((e) => {
+                winston.error(e)
+                resolve(false)
+              })
+            })
+          },
+          parse: (video) => {
+            return new Promise((resolve) => {
+              request.get({
+                url: "https://www.googleapis.com/youtube/v3/videos",
+                qs: {
+                  key: process.env.GOOGLE_KEY,
+                  id: Song.id(video),
+                  part: "snippet"
+                },
+                json: true
+              }).then((video) => {
+                video = video.items[0]
+                video.url = `https://www.youtube.com/watch?v=${video.id}`
+                resolve(video)
+              }).catch((e) => {
+                winston.error(e)
+                resolve(null)
+              })
             })
           }
         },
@@ -50,6 +82,7 @@ module.exports = class PlayCommand extends commando.Command {
   }
 
   async run(msg, args) {
+    const video = args.video
     if(!main.isMemberInVoiceChannel(msg.member)) {
       return msg.reply(responses.NOT_IN_VOICE_CHANNEL[msg.language])
     }
@@ -71,14 +104,8 @@ module.exports = class PlayCommand extends commando.Command {
       return msg.reply(responses.TOO_MANY_SONGS[msg.language])
     }
 
-    const url = args.url
-    youtube.getVideo(url).then((video) => {
-      const song = new Song(msg, args, video)
-      main.addToQueue(msg.guild, song)
-      return msg.reply(responses.PLAY[msg.language](video.title))
-    }).catch(e => {
-      winston.error(e)
-      return msg.reply(responses.ERROR[msg.language])
-    })
+    const song = new Song(msg, args)
+    main.addToQueue(msg.guild, song)
+    return msg.reply(responses.PLAY[msg.language](video.snippet.title))
   }
 }

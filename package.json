@@ -39,7 +39,6 @@
     "pg-promise": "5.5.6",
     "request": "2.79.0",
     "request-promise": "4.1.1",
-    "simple-youtube-api": "2.1.0",
     "sqlite": "2.3.0",
     "underscore": "1.8.3",
     "uws": "0.14.1",

@@ -5,9 +5,10 @@
 "use strict"
 const commando = require("discord.js-commando")
 const CustomCommandAdmin = require("./admin")
+const request = require("request-promise")
 const responses = require("../../util/constants").responses.CUSTOM_COMMAND
-const Youtube = require("simple-youtube-api")
-const youtube = new Youtube(process.env.GOOGLE_KEY)
+const Song = require("../youtube/base/song")
+const winston = require("winston")
 
 module.exports = class CustomVoiceCommandCommand extends commando.Command {
   constructor(client) {
@@ -33,14 +34,48 @@ module.exports = class CustomVoiceCommandCommand extends commando.Command {
           type: "string"
         },
         {
-          key: "url",
+          key: "video",
           prompt: "What youtube video do you want this command to play?",
           type: "string",
-          validate: (url) => {
-            return youtube.getVideo(url).then(() => {
-              return true
-            }).catch(() => {
-              return false
+          validate: (video) => {
+            return new Promise((resolve) => {
+              request.get({
+                url: "https://www.googleapis.com/youtube/v3/videos",
+                qs: {
+                  key: process.env.GOOGLE_KEY,
+                  id: Song.id(video),
+                  part: "snippet"
+                },
+                json: true
+              }).then((video) => {
+                video = video.items[0]
+                if(!video) return resolve(false)
+                if(video.snippet.liveBroadcastContent !== "none") return resolve(false)
+                resolve(true)
+              }).catch((e) => {
+                winston.error(e)
+                resolve(false)
+              })
+            })
+          },
+          parse: (video) => {
+            return new Promise((resolve) => {
+              request.get({
+                url: "https://www.googleapis.com/youtube/v3/videos",
+                qs: {
+                  key: process.env.GOOGLE_KEY,
+                  id: Song.id(video),
+                  part: "snippet"
+                },
+                json: true
+              }).then((video) => {
+                video = video.items[0]
+                video.url = `https://www.youtube.com/watch?v=${video.id}`
+                resolve(video)
+              }).catch((e) => {
+                winston.error(e)
+                resolve(null)
+              })
             })
           }
         }
@@ -50,14 +85,14 @@ module.exports = class CustomVoiceCommandCommand extends commando.Command {
 
   async run(msg, args) {
     const name = args.name.toLowerCase()
-    const url = args.url
+    const video = args.video
 
     if(this.client.registry.commands.get(name)) {
       return msg.reply(responses.ALREADY_EXISTS[msg.language](name))
     }
 
     const command = {
-      url: url
+      url: video
     }
     CustomCommandAdmin.registerCommand(msg.guild, name, command)
 
