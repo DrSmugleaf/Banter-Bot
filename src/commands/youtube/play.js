@@ -5,10 +5,8 @@
 "use strict"
 const commando = require("discord.js-commando")
 const main = require("./base/main")
-const request = require("request-promise")
 const responses = require("../../util/constants").responses.YOUTUBE
 const Song = require("./base/song")
-const winston = require("winston")
 
 module.exports = class PlayCommand extends commando.Command {
   constructor(client) {
@@ -28,54 +26,7 @@ module.exports = class PlayCommand extends commando.Command {
         {
           key: "video",
           prompt: "What video do you want to queue?",
-          type: "string",
-          validate: (video) => {
-            return new Promise((resolve) => {
-              request.get({
-                url: "https://www.googleapis.com/youtube/v3/videos",
-                qs: {
-                  key: process.env.GOOGLE_KEY,
-                  id: Song.id(video),
-                  part: "snippet"
-                },
-                json: true
-              }).then((video) => {
-                video = video.items[0]
-                if(!video) return resolve(false)
-                if(video.snippet.liveBroadcastContent !== "none") return resolve(false)
-                resolve(true)
-              }).catch((e) => {
-                winston.error(e)
-                resolve(false)
-              })
-            })
-          },
-          parse: (video) => {
-            return new Promise((resolve) => {
-              request.get({
-                url: "https://www.googleapis.com/youtube/v3/videos",
-                qs: {
-                  key: process.env.GOOGLE_KEY,
-                  id: Song.id(video),
-                  part: "snippet"
-                },
-                json: true
-              }).then((video) => {
-                video = video.items[0]
-                video.url = `https://www.youtube.com/watch?v=${video.id}`
-                resolve(video)
-              }).catch((e) => {
-                winston.error(e)
-                resolve(null)
-              })
-            })
-          }
-        },
-        {
-          key: "repeat",
-          prompt: "Repeat the video?",
-          type: "boolean",
-          default: false
+          type: "video"
         }
       ]
     })

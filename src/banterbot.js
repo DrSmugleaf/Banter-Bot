@@ -81,6 +81,7 @@ client.registry
   .registerGroup("user", "User")
   .registerGroup("youtube", "Youtube")
   .registerDefaults()
+  .registerTypesIn(path.join(__dirname, "types"))
   .registerCommandsIn(path.join(__dirname, "commands"))
 
 client.login(token)
