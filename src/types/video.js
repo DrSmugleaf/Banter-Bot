@@ -25,7 +25,22 @@ module.exports = class VideoArgumentType extends commando.ArgumentType {
         json: true
       }).then((video) => {
         video = video.items[0]
-        if(!video) return resolve(false)
+        if(!video) return request.get({
+          url: "https://www.googleapis.com/youtube/v3/search",
+          qs: {
+            key: process.env.GOOGLE_KEY,
+            maxResults: 1,
+            q: value,
+            part: "snippet",
+            type: "video"
+          },
+          json: true
+        }).then((video) => {
+          video = video.items[0]
+          if(!video) return resolve(false)
+          if(video.snippet.liveBroadcastContent !== "none") return resolve(false)
+          resolve(true)
+        })
         if(video.snippet.liveBroadcastContent !== "none") return resolve(false)
         resolve(true)
       }).catch((e) => {
@@ -47,6 +62,21 @@ module.exports = class VideoArgumentType extends commando.ArgumentType {
         json: true
       }).then((video) => {
         video = video.items[0]
+        if(!video) return request.get({
+          url: "https://www.googleapis.com/youtube/v3/search",
+          qs: {
+            key: process.env.GOOGLE_KEY,
+            maxResults: 1,
+            q: value,
+            part: "snippet",
+            type: "video"
+          },
+          json: true
+        }).then((video) => {
+          video = video.items[0]
+          video.url = `https://www.youtube.com/watch?v=${video.id.videoId}`
+          resolve(video)
+        })
         video.url = `https://www.youtube.com/watch?v=${video.id}`
         resolve(video)
       }).catch((e) => {
