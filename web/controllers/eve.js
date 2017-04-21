@@ -105,7 +105,7 @@ router.get("/oauth", function(req, res) {
     const isAllowed = !userBanned[0] && (allianceAllowed[0] || corporationAllowed[0] || isDirector || isFreighter)
     if(!isAllowed) return res.render("pages/unauthorized")
     
-    req.session.eveToken = eveCharacter.token
+    req.session.character = eveCharacter
     res.redirect("/")
   }).catch(() => {
     res.render("pages/404")
