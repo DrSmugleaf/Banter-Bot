@@ -16,6 +16,7 @@ const moment = require("moment-timezone")
 const request = require("request-promise")
 const url = require("url")
 const validUrl = require("valid-url")
+const winston = require("winston")
 
 module.exports = {
   nShortener(num, digits = 2) {
@@ -106,32 +107,34 @@ module.exports = {
     })
   },
 
-  async filterBannedItemTypes(appraisal) {
+  filterBannedItemTypes(appraisal) {
     return new Promise(async (resolve) => {
       const bannedTypes = await invTypes.getBanned()
       const bannedTypeIDs = _.pluck(bannedTypes, "typeID")
       
-      async.filter(appraisal.items, async (item, callback) => {
+      async.filter(appraisal.items, async (item) => {
         item = await invTypes.get(item.typeID)
         item = item[0]
-        callback(null, bannedTypeIDs.includes(item.typeID))
+        if(bannedTypeIDs.includes(item.typeID)) return item
       }, function(e, results) {
+        if(e) winston.error(e)
         resolve(results)
       })
     })
   },
   
-  async filterBannedMarketGroups(appraisal) {
+  filterBannedMarketGroups(appraisal) {
     return new Promise(async (resolve) => {
       const bannedMarketGroups = await invMarketGroups.getBanned()
       const bannedMarketGroupIDs = _.pluck(bannedMarketGroups, "marketGroupID")
       
-      async.filter(appraisal.items, async (item, callback) => {
+      async.filter(appraisal.items, async (item) => {
         item = await invTypes.get(item.typeID)
         item = item[0]
         const groups = await invMarketGroups.getAllParentsByID(item.marketGroupID)
-        callback(null, _.intersection(bannedMarketGroupIDs, groups).length > 0)
+        if(_.intersection(bannedMarketGroupIDs, groups).length > 0) return item
       }, function(e, results) {
+        if(e) winston.error(e)
         resolve(results)
       })
     })
@@ -141,12 +144,12 @@ module.exports = {
     appraisal.totals.volume = 0
 
     return new Promise((resolve) => {
-      async.eachOf(appraisal.items, async (item, key, callback) => {
+      async.eachOf(appraisal.items, async (item, key) => {
         const invVolumesItem = await invVolumes.get(item.typeID)
-        if(invVolumesItem.length < 1) return callback()
+        if(invVolumesItem.length < 1) return
         appraisal.items[key].volume = invVolumesItem[0].volume
         appraisal.totals.volume += invVolumesItem[0].volume
-        return callback()
+        return
       }, function() {
         resolve()
       })
@@ -156,62 +159,62 @@ module.exports = {
   contracts: {
     accept(req) {
       return new Promise((resolve, reject) => {
-        async.forEach(req.body.accept, async (id, callback) => {
+        async.forEach(req.body.accept, async (id) => {
           var oldContract = await contract.get(id)
           oldContract = oldContract[0]
-          if(!oldContract || !["pending", "flagged"].includes(oldContract.status)) return callback(id)
+          if(!oldContract || !["pending", "flagged"].includes(oldContract.status)) throw id
           oldContract.status = "ongoing"
           oldContract.freighter_id = req.session.character.character_id
           oldContract.freighter_name = req.session.character.character_name
           contract.set(oldContract)
-          return callback()
-        }, function(errorID) {
-          if(errorID) return reject(errorID)
+          return
+        }, function(e) {
+          if(e) return reject(e.message)
           return resolve()
         })
       })
     },
     flag(req) {
       return new Promise((resolve, reject) => {
-        async.forEach(req.body.flag, async (id, callback) => {
+        async.forEach(req.body.flag, async (id) => {
           var oldContract = await contract.get(id)
           oldContract = oldContract[0]
-          if(!oldContract || oldContract.status !== "pending") return callback(id)
+          if(!oldContract || oldContract.status !== "pending") throw id
           oldContract.status = "flagged"
           contract.set(oldContract)
-          return callback()
-        }, function(errorID) {
-          if(errorID) return reject(errorID)
+          return
+        }, function(e) {
+          if(e) return reject(e.message)
           return resolve()
         })
       })
     },
     complete(req) {
       return new Promise((resolve, reject) => {
-        async.forEach(req.body.complete, async (id, callback) => {
+        async.forEach(req.body.complete, async (id) => {
           var oldContract = await contract.get(id)
           oldContract = oldContract[0]
-          if(!oldContract || oldContract.status !== "ongoing") return callback(id)
+          if(!oldContract || oldContract.status !== "ongoing") throw id
           oldContract.status = "completed"
           contract.set(oldContract)
-          return callback()
-        }, function(errorID) {
-          if(errorID) return reject(errorID)
+          return
+        }, function(e) {
+          if(e) return reject(e.message)
           return resolve()
         })
       })
     },
     tax(req) {
       return new Promise((resolve, reject) => {
-        async.forEach(req.body.tax, async (id, callback) => {
+        async.forEach(req.body.tax, async (id) => {
           var oldContract = await contract.get(id)
           oldContract = oldContract[0]
-          if(!oldContract || oldContract.status !== "completed" || oldContract.taxed) return callback(id)
+          if(!oldContract || oldContract.status !== "completed" || oldContract.taxed) throw id
           oldContract.taxed = true
           contract.set(oldContract)
-          return callback()
-        }, function(errorID) {
-          if(errorID) return reject(errorID)
+          return
+        }, function(e) {
+          if(e) return reject(e.message)
           return resolve()
         })
       })
