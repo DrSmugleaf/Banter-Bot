@@ -100,7 +100,7 @@ html(lang="en")
               if($("div#submit-alert").parent("a").length > 0) return
               $("div#submit-alert").wrap("<a href='javascript:window.location.replace(\"login\")'></a>")
             } else {
-              $(".parent-has-error").attr("data-original-title", '')
+              $(".parent-has-error").attr("data-original-title", '').tooltip("fixTitle").tooltip("hide")
               $(".has-error").removeClass("has-error")
               for(var element in res.responseJSON.invalid) {
                 if(!res.responseJSON.invalid.hasOwnProperty(element)) return
