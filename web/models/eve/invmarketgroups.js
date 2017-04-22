@@ -42,31 +42,26 @@ module.exports = {
     return this.db.query("SELECT * FROM ?? WHERE marketGroupName = ?", [this.tableName, name])
   },
   
-  getAllParentsByID(id) {
+  getAllParentsByID(parentGroupID) {
     const that = this
+    const parents = [parentGroupID]
     return new Promise((resolve, reject) => {
-      this.db.query("SELECT * FROM ?? WHERE marketGroupID = ? LIMIT 1", [this.tableName, id]).then((result) => {
-        var parentGroupID = result[0].parentGroupID
-        const parents = [result[0].marketGroupID]
-        parents.push(parentGroupID)
-        async.whilst(
-          function() { return parentGroupID },
-          function(callback) {
-            that.db.query("SELECT * FROM ?? WHERE marketGroupID = ? LIMIT 1", [that.tableName, parentGroupID]).then((result) => {
-              parentGroupID = result[0].parentGroupID
-              if(parentGroupID) parents.push(parentGroupID)
-              callback(null, parents)
-            })
-          },
-          function(e, result) {
-            if(e) {
-              winston.error(e)
-              reject(e)
-            }
-            resolve(result)
+      async.whilst(
+        function() { return Boolean(parentGroupID) },
+        async function() {
+          const result = await that.db.query("SELECT * FROM ?? WHERE marketGroupID = ? LIMIT 1", [that.tableName, parentGroupID])
+          parentGroupID = result[0].parentGroupID
+          if(parentGroupID) parents.push(parentGroupID)
+          return parents
+        },
+        function(e, result) {
+          if(e) {
+            winston.error(e)
+            reject(e)
           }
-        )
-      })
+          resolve(result)
+        }
+      )
     })
   },
 
