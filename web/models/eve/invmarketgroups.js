@@ -88,4 +88,8 @@ module.exports = {
       })
     })
   },
+  
+  isBanned(id) {
+    return this.db.query("SELECT * FROM eve_banned_market_groups WHERE marketGroupID = ? LIMIT 1", [id])
+  }
 }

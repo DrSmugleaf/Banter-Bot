@@ -64,7 +64,7 @@ module.exports = {
       }).then((promises) => {
         const bannedItemTypes = promises[0]
         const bannedMarketGroups = promises[1]
-
+        
         var string
         if(moment().diff(moment.unix(appraisal.created), "days") > 2) {
           string = "Appraisals can't be more than 2 days old."
@@ -326,11 +326,14 @@ module.exports = {
       var invGroup = groups[0]
       if(!invGroup) return { error: true, alert: `Market group ${group} doesn't exist` }
       
+      var banned = await invMarketGroups.isBanned(invGroup.marketGroupID)
       switch(action) {
       case "ban":
+        if(banned[0]) return { error: true, alert: `Market group ${group} is already banned` }
         invMarketGroups.ban(invGroup)
         return { alert: `Banned market group ${group} from appraisals` }
       case "allow":
+        if(!banned[0]) return { error: true, alert: `Market group ${group} isn't banned` }
         invMarketGroups.allow(invGroup.marketGroupID)
         return { alert: `Market group ${group} is no longer banned from appraisals.` }
       default:
