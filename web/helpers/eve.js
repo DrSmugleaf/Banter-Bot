@@ -223,16 +223,19 @@ module.exports = {
   
   director: {
     async user(name, action) {
+      const banned = await character.isBanned(name)
       switch(action) {
       case "ban":
+        if(banned[0]) return { error: true, alert: `Character ${name} is already banned.` }
         var user = await character.getByName(name)
         user = user[0]
         if(user.director) return { error: true, alert: `You can't ban ${name}, he's a director.` }
         character.ban(name)
-        return { alert: `Banned ${name}.` }
+        return { alert: `Banned character ${name}.` }
       case "unban":
+        if(!banned[0]) return { error: true, alert: `Character ${name} isn't banned.` }
         character.unban(name)
-        return { alert: `Unbanned ${name}.` }
+        return { alert: `Unbanned character ${name}.` }
       default:
         return false
       }
@@ -244,10 +247,12 @@ module.exports = {
       
       switch(action) {
       case "add":
+        if(user.freighter) return { error: true, alert: `Character ${name} is already a freighter.` }
         user.freighter = true
         character.set(user)
         return { alert: `Added ${name} to the list of freighters.` }
       case "remove":
+        if(!user.freighter) return { error: true, alert: `Character ${name} isn't a freighter.` }
         user.freighter = false
         character.set(user)
         return { alert: `Removed ${name} from the list of freighters.` }
@@ -296,11 +301,14 @@ module.exports = {
       invItem = invItem[0]
       if(!invItem) return { error: true, alert: `Item type ${item} doesn't exist.` }
       
+      const banned = await invTypes.isIDBanned(invItem.typeID)
       switch (action) {
       case "ban":
+        if(banned[0]) return { error: true, alert: `Item ${item} is already banned.` }
         invTypes.ban(invItem)
         return { alert: `Banned item ${item} from appraisals.` }
       case "allow":
+        if(!banned[0]) return { error: true, alert: `Item ${item} isn't banned.` }
         invTypes.allow(invItem.typeID)
         return { alert: `Item ${item} is no longer banned from appraisals.` }
       default:
@@ -324,16 +332,16 @@ module.exports = {
       }
       
       var invGroup = groups[0]
-      if(!invGroup) return { error: true, alert: `Market group ${group} doesn't exist` }
+      if(!invGroup) return { error: true, alert: `Market group ${group} doesn't exist.` }
       
-      var banned = await invMarketGroups.isBanned(invGroup.marketGroupID)
+      const banned = await invMarketGroups.isBanned(invGroup.marketGroupID)
       switch(action) {
       case "ban":
-        if(banned[0]) return { error: true, alert: `Market group ${group} is already banned` }
+        if(banned[0]) return { error: true, alert: `Market group ${group} is already banned.` }
         invMarketGroups.ban(invGroup)
-        return { alert: `Banned market group ${group} from appraisals` }
+        return { alert: `Banned market group ${group} from appraisals.` }
       case "allow":
-        if(!banned[0]) return { error: true, alert: `Market group ${group} isn't banned` }
+        if(!banned[0]) return { error: true, alert: `Market group ${group} isn't banned.` }
         invMarketGroups.allow(invGroup.marketGroupID)
         return { alert: `Market group ${group} is no longer banned from appraisals.` }
       default:
