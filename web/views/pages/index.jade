@@ -18,23 +18,18 @@ html(lang="en")
       div.col-md-6.col-md-offset-3
         div#submit-alert.alert(role="alert")
       form(method="post" action="/submit")
-        div.row
           div#image_container
-            div.col-md-2.col-md-offset-3
-              div.panel.panel-default
-                div.panel-heading 7RM-N0
-                div.panel-body(style="padding: 0px;")
-                  img(class="img-responsive center-block" src="../7RM-N0.jpg" value="7RM-N0" width="100%")
-            div.col-md-2
-              div.panel.panel-default
-                div.panel-heading GME-PQ
-                div.panel-body(style="padding: 0px;")
-                  img(class="img-responsive center-block" src="../GME-PQ.jpg" value="GME-PQ" width="100%")
-            div.col-md-2
-              div.panel.panel-default
-                div.panel-heading B-9C24
-                div.panel-body(style="padding: 0px;")
-                  img(class="img-responsive center-block" src="../B-9C24.jpg" value="B-9C24" width="100%")
+            if(destinations)
+              - for(var i = 0; i < destinations.length; i++) {
+                - if(i % 3 === 0) {
+                  div.row
+                - }
+                    div(class=i % 3 === 0 ? "col-md-2 col-md-offset-3" : "col-md-2")
+                      div.panel.panel-default
+                        div.panel-heading=destinations[i].name
+                        div.panel-body(style="padding: 0px;")
+                          img(class="img-responsive center-block" src=destinations[i].image value=destinations[i].name width="100%")
+              - }
         div.row
           div.col-md-6.col-md-offset-3
             div.form-group

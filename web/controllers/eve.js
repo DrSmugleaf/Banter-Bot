@@ -8,6 +8,7 @@ const alliance = require("../models/eve/alliance")
 const character = require("../models/eve/character")
 const contract = require("../models/eve/contract")
 const corporation = require("../models/eve/corporation")
+const destination = require("../models/eve/destinations")
 const eveAuth = require("../middlewares/eve").eveAuth
 const eveHelper = require("../helpers/eve")
 const express = require("express")
@@ -112,9 +113,10 @@ router.get("/oauth", function(req, res) {
   })
 })
 
-router.get("/", function(req, res) {
+router.get("/", async function(req, res) {
   res.render("pages/index", {
     character: req.session.character || {},
+    destinations: await destination.getAll(),
     title: "Home - Mango Deliveries",
     active: "Home"
   })
@@ -299,6 +301,7 @@ router.post("/director/submit", eveAuth, async function(req, res) {
   if(req.body.item) response = await eveHelper.director.itemType(req.body.item, action)
   if(req.body.group) response = await eveHelper.director.marketGroup(req.body.group, action)
   if(req.body.settings) response = await eveHelper.director.settings(req.body.setting, value)
+  if(req.body.object === "destination") response = await eveHelper.director.destination(req.body, action)
   
   if(!response) return res.sendStatus(400)
   if(response.error) return res.status(404).json({ alert: response.alert })
