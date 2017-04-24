@@ -19,5 +19,9 @@ module.exports = {
   
   get() {
     return this.db.query("SELECT * FROM settings")
+  },
+  
+  set(data) {
+    return this.db.query("UPDATE settings SET ?", [data])
   }
 }

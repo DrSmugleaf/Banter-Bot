@@ -213,7 +213,7 @@ html(lang="en")
               - })
       
       div#settingsPanel(style="display: none;")
-        form(method="post" action="/director/submit")
+        form(method="post" action="/director/submit" object="settings")
           div.panel.panel-default
             div.panel-heading.text-center Settings Panel
             div.panel-body
@@ -224,6 +224,9 @@ html(lang="en")
                     input(name="maxVolume" type="text" class="form-control" id="maxVolume" placeholder="300000" autocomplete="off")
                   div.col-md-3
                     p Current: #{settings.maxVolume}
+              div.form-group
+                div.row.text-center
+                  button.btn.btn-success(type="submit" name="apply") Apply
       
       div#destinationsPanel(style="display: none;")
         form(method="post" action="/director/submit" object="destination")

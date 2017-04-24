@@ -15,6 +15,7 @@ const invTypes = require("../models/eve/invtypes")
 const invVolumes = require("../models/eve/invvolumes")
 const moment = require("moment-timezone")
 const request = require("request-promise")
+const settings = require("../models/eve/settings")
 const url = require("url")
 const validUrl = require("valid-url")
 const winston = require("winston")
@@ -175,6 +176,7 @@ module.exports = {
         })
       })
     },
+    
     flag(req) {
       return new Promise((resolve, reject) => {
         async.forEach(req.body.flag, async (id) => {
@@ -190,6 +192,7 @@ module.exports = {
         })
       })
     },
+    
     complete(req) {
       return new Promise((resolve, reject) => {
         async.forEach(req.body.complete, async (id) => {
@@ -205,6 +208,7 @@ module.exports = {
         })
       })
     },
+    
     tax(req) {
       return new Promise((resolve, reject) => {
         async.forEach(req.body.tax, async (id) => {
@@ -241,6 +245,7 @@ module.exports = {
         return false
       }
     },
+    
     async freighter(name, action) {
       var user = await character.getByName(name)
       user = user[0]
@@ -261,6 +266,7 @@ module.exports = {
         return false
       }
     },
+    
     async alliance(name, action) {
       const allowed = await alliance.isAllowed(name)
       switch(action) {
@@ -276,6 +282,7 @@ module.exports = {
         return false
       }
     },
+    
     async corporation(name, action) {
       const allowed = await corporation.isAllowed(name)
       switch(action) {
@@ -291,6 +298,7 @@ module.exports = {
         return false
       }
     },
+    
     async itemType(item, action) {
       var invItem
       if(+item) {
@@ -316,6 +324,7 @@ module.exports = {
         return false
       }
     },
+    
     async marketGroup(group, action) {
       var groups
       if(+group) {
@@ -349,6 +358,12 @@ module.exports = {
         return false
       }
     },
+    
+    async settings(body) {
+      settings.set({ "maxVolume": body.maxVolume })
+      return { alert: `Settings updated.` }
+    },
+    
     async destination(body, action) {
       const exists = await destination.get(body.name)
       switch(action) {
