@@ -32,6 +32,8 @@ html(lang="en")
           a(onclick="showMarketGroupPanel(this)") Market Groups
         li
           a(onclick="showSettingsPanel(this)") Settings
+        li
+          a(onclick="showDestinationsPanel(this)") Destinations
       
       div#userPanel(style="display: none;")
         form(method="post" action="/director/submit")
@@ -222,6 +224,26 @@ html(lang="en")
                     input(name="maxVolume" type="text" class="form-control" id="maxVolume" placeholder="300000" autocomplete="off")
                   div.col-md-3
                     p Current: #{settings.maxVolume}
+      
+      div#destinationsPanel(style="display: none;")
+        form(method="post" action="/director/submit" object="destination")
+          div.panel.panel-default
+            div.panel-heading.text-center Destinations Panel
+            div.panel-body
+              div.form-group
+                div.row
+                  label.col-md-3(for="name") Destination Name
+                  div.col-md-6
+                    input(name="name" type="text" class="form-control" id="destinationName" placeholder="7RM-N0" autocomplete="off")
+              div.form-group
+                div.row
+                  label.col-md-3(for="image") Destination Image
+                  div.col-md-6
+                    input(name="image" type="text" class="form-control" id="destinationImage" placeholder="https://i.imgur.com/IE6tWjE.jpg" autocomplete="off")
+              div.form-group
+                div.row.text-center
+                  button.btn.btn-success(type="submit" name="add" style="margin-right: 5px;" value="destination") Add Destination
+                  button.btn.btn-danger(type="submit" name="remove") Remove Destination
     
     include ../partials/footer
     script.
@@ -273,6 +295,13 @@ html(lang="en")
         $("form").parent("div").hide()
         $("#settingsPanel").show()
       }
+      
+      function showDestinationsPanel(e) {
+        $("ul.nav.nav-tabs.nav-justified li").removeClass("active")
+        $(e).parent("li").addClass("active")
+        $("form").parent("div").hide()
+        $("#destinationsPanel").show()
+      }
 
     script.
       $("button[type='submit']").on("click", function() {
@@ -282,6 +311,7 @@ html(lang="en")
       $("form").submit(function(e) {
         var data = $(this).serialize()
         data += "&action=" + $(this).data("action") || $("input[type='submit']").get(0).name
+        data += "&object=" + $(this).attr("object")
         
         $.ajax({
           type: $(this).attr("method"),

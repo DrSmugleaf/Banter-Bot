@@ -9,6 +9,7 @@ const async = require("async")
 const character = require("../models/eve/character")
 const contract = require("../models/eve/contract")
 const corporation = require("../models/eve/corporation")
+const destination = require("../models/eve/destinations")
 const invMarketGroups = require("../models/eve/invmarketgroups")
 const invTypes = require("../models/eve/invtypes")
 const invVolumes = require("../models/eve/invvolumes")
@@ -344,6 +345,21 @@ module.exports = {
         if(!banned[0]) return { error: true, alert: `Market group ${group} isn't banned.` }
         invMarketGroups.allow(invGroup.marketGroupID)
         return { alert: `Market group ${group} is no longer banned from appraisals.` }
+      default:
+        return false
+      }
+    },
+    async destination(body, action) {
+      const exists = await destination.get(body.name)
+      switch(action) {
+      case "add":
+        if(exists[0]) return { error: true, alert: `Destination ${body.name} is already in the list.` }
+        destination.add({ "name": body.name, "image": body.image }).catch((e) => winston.error(e))
+        return { alert: `Added ${body.name} to the list of destinations with image ${body.image}.` }
+      case "remove":
+        if(!exists[0]) return { error: true, alert: `Destination ${body.name} isn't on the list.` }
+        destination.remove(body.name)
+        return { alert: `Removed ${body.name} from the list of destinations.` }
       default:
         return false
       }
