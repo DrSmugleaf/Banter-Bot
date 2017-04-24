@@ -300,7 +300,7 @@ router.post("/director/submit", eveAuth, async function(req, res) {
   if(req.body.corporation) response = await eveHelper.director.corporation(req.body.corporation, action)
   if(req.body.item) response = await eveHelper.director.itemType(req.body.item, action)
   if(req.body.group) response = await eveHelper.director.marketGroup(req.body.group, action)
-  if(req.body.settings) response = await eveHelper.director.settings(req.body.setting, value)
+  if(req.body.object === "settings") response = await eveHelper.director.settings(req.body)
   if(req.body.object === "destination") response = await eveHelper.director.destination(req.body, action)
   
   if(!response) return res.sendStatus(400)
