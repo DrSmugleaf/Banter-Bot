@@ -2023,7 +2023,7 @@ exports.responses = {
 },
 
 exports.youtube = {
-  STREAM_OPTIONS: { seek: 0, volume: 0.25, passes: 2 }
+  STREAM_OPTIONS: { seek: 0, volume: 0.25, passes: 1 }
 }
 
 
