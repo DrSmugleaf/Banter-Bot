@@ -45,7 +45,6 @@
     "promise-mysql": "3.0.1",
     "request": "2.81.0",
     "request-promise": "4.2.0",
-    "simple-youtube-api": "2.1.0",
     "sqlite": "2.5.0",
     "underscore": "1.8.3",
     "uws": "0.14.1",

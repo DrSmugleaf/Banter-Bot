@@ -316,6 +316,29 @@ exports.versions = {
       El bot ya no responde sólo en Klingon.
       Klingon es ahora un lenguaje válido para el comando !language.
     `
+  },
+  "12": {
+    english: stripIndents`
+      **ADDED**
+      Added !play youtube video searching by name.
+
+      **FIXED**
+      Fixed an error when using !resume.
+    `,
+    klingon: stripIndents`
+      **CHEL**
+      chel! Quj youtube video searching pong.
+
+      **TI'**
+      Qagh tI' lo'lu'DI'! qa'.
+    `,
+    spanish: stripIndents`
+      **AÑADIDO**
+      Ahora se pueden buscar vídeos de youtube por nombre con !play.
+
+      **ARREGLADO**
+      Arreglado un error al usar !resume.
+    `
   }
 }
 
@@ -2023,7 +2046,7 @@ exports.responses = {
 },
 
 exports.youtube = {
-  STREAM_OPTIONS: { seek: 0, volume: 0.25, passes: 2 }
+  STREAM_OPTIONS: { seek: 0, volume: 0.25, passes: 1 }
 }
 
 

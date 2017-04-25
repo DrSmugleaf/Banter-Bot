@@ -148,10 +148,10 @@ module.exports = {
     }
 
     this.joinVoice(next.voiceChannel).then(voiceConnection => {
-      const stream = ytdl(next.url, { filter: "audioonly" }).on("error", (e) => {
+      const stream = ytdl(next.video.url, { filter: "audioonly" }).on("error", (e) => {
         winston.error(e)
         return next.textChannel.sendMessage(
-          responses.NEXT.DISPATCHER_ERROR[next.message.language](next.video.title)
+          responses.NEXT.DISPATCHER_ERROR[next.message.language](next.video.snippet.title)
         )
       })
 
@@ -167,23 +167,23 @@ module.exports = {
         queue.shift()
         this.playNext(guild)
         return next.textChannel.sendMessage(
-          responses.NEXT.DISPATCHER_ERROR[next.message.language](next.video.title)
+          responses.NEXT.DISPATCHER_ERROR[next.message.language](next.video.snippet.title)
         )
       })
 
       if(next.repeat && !next.repeated) {
         return next.textChannel.sendMessage(
-          responses.NEXT.REPEAT[next.message.language](next.video.title)
+          responses.NEXT.REPEAT[next.message.language](next.video.snippet.title)
         )
       } else if(!next.repeated) {
         return next.textChannel.sendMessage(
-          responses.NEXT.PLAY[next.message.language](next.video.title)
+          responses.NEXT.PLAY[next.message.language](next.video.snippet.title)
         )
       }
     }).catch(e => {
       winston.error(e)
       next.textChannel.sendMessage(
-        responses.NEXT.ERROR[next.message.language](next.video.title)
+        responses.NEXT.ERROR[next.message.language](next.video.snippet.title)
       )
       return this.playNext(guild)
     })
