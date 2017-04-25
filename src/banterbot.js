@@ -3,6 +3,7 @@
 //
 
 "use strict"
+if(process.env.NODE_ENV === "dev") require("longjohn")
 const Commando = require("discord.js-commando")
 const Discord = require("discord.js")
 require("./extensions/guild").applyToClass(Discord.Guild)
@@ -80,6 +81,7 @@ client.registry
   .registerGroup("user", "User")
   .registerGroup("youtube", "Youtube")
   .registerDefaults()
+  .registerTypesIn(path.join(__dirname, "types"))
   .registerCommandsIn(path.join(__dirname, "commands"))
 
 client.login(token)

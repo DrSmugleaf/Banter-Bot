@@ -4,8 +4,6 @@
 
 "use strict"
 const commando = require("discord.js-commando")
-const Youtube = require("simple-youtube-api")
-const youtube = new Youtube(process.env.GOOGLE_KEY)
 
 module.exports = class RepeatCommand extends commando.Command {
   constructor(client) {
@@ -23,16 +21,9 @@ module.exports = class RepeatCommand extends commando.Command {
       },
       args: [
         {
-          key: "url",
+          key: "video",
           prompt: "What video do you want to repeat?",
-          type: "string",
-          validate: (url) => {
-            return youtube.getVideo(url).then(() => {
-              return true
-            }).catch(() => {
-              return false
-            })
-          }
+          type: "video"
         }
       ]
     })
