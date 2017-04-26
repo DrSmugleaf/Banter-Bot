@@ -92,7 +92,7 @@ module.exports = class CustomVoiceCommandCommand extends commando.Command {
     }
 
     const command = {
-      url: video
+      url: video.url
     }
     CustomCommandAdmin.registerCommand(msg.guild, name, command)
 
