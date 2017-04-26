@@ -42,7 +42,9 @@ module.exports = (guild, name, command) => class CustomCommand extends commando.
     if(command.text) {
       msg.channel.sendMessage(`<@${member.id}>, ${this.text}`)
     } else if(command.url) {
-      args.video = this.url
+      const command = this.client.registry.resolveCommand("youtube:play")
+      const video = await command.args[0].parse(this.url)
+      args.video = video
       args.repeat = false
       this.client.registry.resolveCommand("youtube:play").run(msg, args)
     }
