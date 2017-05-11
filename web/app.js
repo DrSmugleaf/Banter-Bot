@@ -4,7 +4,7 @@
 
 "use strict"
 require("checkenv").check()
-require("db")
+require("./db")
 if(process.env.NODE_ENV === "dev") require("longjohn")
 const bodyParser = require("body-parser")
 const express = require("express")
