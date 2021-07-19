@@ -4,29 +4,41 @@
 
 "use strict"
 
+const { Model, DataTypes } = require("sequelize")
+const winston = require("winston")
+
+class AllowedCorporations extends Model {}
+
 module.exports = {
   db: null,
-  
+
   init(db) {
+    winston.info("Initializing corporations")
     this.db = db
-    return this.db.query(`CREATE TABLE IF NOT EXISTS allowed_corporations (
-      name VARCHAR(32) NOT NULL PRIMARY KEY
-    )`)
+
+    AllowedCorporations.init({
+      name: {
+        type: DataTypes.STRING(32),
+        primaryKey: true
+      }
+    }, {
+      sequelize: this.db
+    })
   },
-  
+
   allow(name) {
-    return this.db.query("INSERT INTO allowed_corporations VALUES (?)", [name])
+    AllowedCorporations.build({name: name}).save()
   },
-  
+
   disallow(name) {
-    return this.db.query("DELETE FROM allowed_corporations WHERE name = ?", [name])
+    AllowedCorporations.build({name: name}).destroy()
   },
-  
+
   getAllowed() {
-    return this.db.query("SELECT * FROM allowed_corporations")
+    return AllowedCorporations.findAll()
   },
-  
-  isAllowed(name) {
-    return this.db.query("SELECT * FROM allowed_corporations WHERE name = ? LIMIT 1", [name])
+
+  async isAllowed(name) {
+    return AllowedCorporations.findOne({where: {name: name}}).then(c => c !== null)
   }
 }

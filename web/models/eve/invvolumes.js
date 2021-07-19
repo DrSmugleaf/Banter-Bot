@@ -4,23 +4,51 @@
 
 "use strict"
 
+const { Model, DataTypes } = require("sequelize")
+const fs = require("fs")
+const YAML = require("yaml")
+const { getByName } = require("./character")
 const winston = require("winston")
+
+class InvVolumes extends Model {}
 
 module.exports = {
   db: null,
-  tableName: null,
+  tableName: "typeIDs",
 
   async init(db) {
+    winston.info("Initializing invvolumes")
     this.db = db
-    const tables = await this.db.query("SELECT table_name FROM information_schema.tables WHERE LOWER(table_name) LIKE 'invvolumes' AND table_schema = ?", [process.env.MYSQL_DATABASE])
-    if(!tables[0]) {
-      winston.error(`MySQL table invVolumes in database ${process.env.MYSQL_DATABASE} doesn't exist. Please import it from CCP's latest database dump.`)
-      process.exit(1)
-    }
-    this.tableName = tables[0].table_name
+
+    InvVolumes.init({
+      typeId: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        primaryKey: true
+      },
+      volume: {
+        type: DataTypes.DOUBLE,
+        allowNull: true
+      }
+    }, {
+      sequelize: db,
+      modelName: this.tableName
+    })
+  },
+
+  async import(db) {
+    // TODO
+    // const file = fs.readFileSync("./sde/bsd/typeIDs.yaml", "utf8")
+    // const types = YAML.parse(file)
+
+    // const typesParsed = [] // TODO
+    // for (let type of types) {
+    //   typesParsed.push({
+
+    //   })
+    // }
   },
 
   get(id) {
-    return this.db.query("SELECT * FROM ?? WHERE typeID = ? LIMIT 1", [this.tableName, id])
+    return InvVolumes.findByPk(id)
   }
 }

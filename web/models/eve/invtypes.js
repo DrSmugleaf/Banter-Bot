@@ -3,49 +3,74 @@
 //
 
 "use strict"
+const { Model, DataTypes } = require("sequelize")
+const fs = require("fs")
+const YAML = require("yaml")
 const winston = require("winston")
+
+class InvTypes extends Model {}
+class EveBannedTypes extends Model {}
 
 module.exports = {
   db: null,
-  tableName: null,
+
+  initTable(model, tableName) {
+    winston.info(`Initializing ${tableName}`)
+
+    model.init({
+      itemId: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        primaryKey: true
+      },
+      itemName: {
+        type: DataTypes.STRING(255),
+        allowNull: false
+      }
+    }, {
+      sequelize: this.db,
+      modelName: tableName
+    })
+  },
 
   async init(db) {
     this.db = db
-    const tables = await this.db.query("SELECT table_name FROM information_schema.tables WHERE LOWER(table_name) LIKE 'invtypes' AND table_schema = ?", [process.env.MYSQL_DATABASE])
-    if(!tables[0]) {
-      winston.error(`MySQL table invTypes in database ${process.env.MYSQL_DATABASE} doesn't exist. Please import it from CCP's latest database dump.`)
-      process.exit(1)
-    }
-    this.tableName = tables[0].table_name
-    
-    return this.db.query("CREATE TABLE IF NOT EXISTS eve_banned_types LIKE ??", [this.tableName])
+
+    this.initTable(InvTypes, "invtypes")
+    this.initTable(EveBannedTypes, "eve_banned_types")
   },
-  
+
+  async import() {
+    const file = fs.readFileSync("./sde/bsd/invNames.yaml", "utf8")
+    const names = YAML.parse(file)
+
+    await InvTypes.bulkCreate(names)
+  },
+
   allow(id) {
-    return this.db.query("DELETE FROM eve_banned_types WHERE typeID = ?", [id])
+    EveBannedTypes.destroy({where: {itemId: id}})
   },
-  
+
   ban(data) {
-    return this.db.query("INSERT INTO eve_banned_types SET ?", [data])
+    EveBannedTypes.build(data).save()
   },
 
   get(id) {
-    return this.db.query("SELECT * FROM ?? WHERE typeID = ? LIMIT 1", [this.tableName, id])
+    return InvTypes.findByPk(id)
   },
-  
+
   getBanned() {
-    return this.db.query("SELECT * FROM eve_banned_types")
+    return EveBannedTypes.findAll()
   },
-  
+
   getByName(name) {
-    return this.db.query("SELECT * FROM ?? WHERE typeName = ?", [this.tableName, name])
+    return InvTypes.findOne({where: {itemName: name}})
   },
-  
-  isIDBanned(id) {
-    return this.db.query("SELECT * FROM eve_banned_types WHERE typeID = ? LIMIT 1", [id])
+
+  async isIDBanned(id) {
+    return EveBannedTypes.findByPk(id).then(t => t !== null)
   },
-  
-  isNameBanned(name) {
-    return this.db.query("SELECT * FROM eve_banned_types WHERE typeName = ?", [name])
+
+  async isNameBanned(name) {
+    return EveBannedTypes.findOne({where: {itemName: name}}).then(t => t !== null)
   }
 }

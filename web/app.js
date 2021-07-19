@@ -2,30 +2,34 @@
 // Copyright (c) 2017 DrSmugleaf
 //
 
+require("dotenv").config()
 require("checkenv").check()
 if(process.env.NODE_ENV === "dev") require("longjohn")
+
+const winston = require("winston")
+const { transports } = require("winston")
+winston.add(new transports.Console({
+  format: winston.format.simple()
+}))
+
 require("./db")
-const bodyParser = require("body-parser")
-const fs = require("fs")
 const express = require("express")
 const app = express()
 const helmet = require("helmet")
-const https = require("https")
 const path = require("path")
-const winston = require("winston")
-const credentials = {
-  cert: fs.readFileSync(process.env.SSL_CERT, "utf8"),
-  key: fs.readFileSync(process.env.SSL_KEY, "utf8")
-}
 
-app.use(helmet())
+app.use(helmet({
+  contentSecurityPolicy: {
+    reportOnly: true
+  }
+}))
 app.set("trust proxy", 1)
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 app.use(require("morgan")("dev"))
-app.engine("jade", require("jade").__express)
+app.engine("pug", require("pug").__express)
 app.set("views", path.join(__dirname + "/views"))
-app.set("view engine", "jade")
+app.set("view engine", "pug")
 app.use(express.static(path.join(__dirname + "/public")))
 app.use(require("./controllers"))
 app.locals.character = {}
@@ -38,5 +42,4 @@ if(process.env.NODE_ENV !== "dev") {
   })
 }
 
-https.createServer(credentials, app).listen(process.env.PORT)
-winston.info(`Listening on port ${process.env.PORT}`)
+module.exports = app

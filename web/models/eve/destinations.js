@@ -4,30 +4,48 @@
 
 "use strict"
 
+const { Model, DataTypes } = require("sequelize")
+const winston = require("winston")
+
+class EveDestinations extends Model {}
+
 module.exports = {
+  EveDestinations: EveDestinations,
   db: null,
-  
+
   async init(db) {
+    winston.info("Initializing destinations")
     this.db = db
-    await this.db.query(`CREATE TABLE IF NOT EXISTS eve_destinations (
-      name VARCHAR(32) NOT NULL PRIMARY KEY,
-      image TINYTEXT NOT NULL
-    )`)
+
+    EveDestinations.init({
+      name: {
+        type: DataTypes.STRING(32),
+        primaryKey: true
+      },
+      image: {
+        type: DataTypes.TEXT({
+          length: "tiny"
+        }),
+        allowNull: false
+      }
+    }, {
+      sequelize: this.db
+    })
   },
-  
+
   add(data) {
-    return this.db.query("INSERT INTO eve_destinations SET ?", [data])
+    return EveDestinations.build(data).save()
   },
-  
+
   get(name) {
-    return this.db.query("SELECT * FROM eve_destinations WHERE name = ? LIMIT 1", [name])
+    return EveDestinations.findOne({where: {name: name}})
   },
-  
+
   getAll() {
-    return this.db.query("SELECT * FROM eve_destinations")
+    return EveDestinations.findAll()
   },
-  
+
   remove(name) {
-    return this.db.query("DELETE FROM eve_destinations WHERE name = ?", [name])
+    return EveDestinations.findOne({name: name}).destroy()
   }
 }

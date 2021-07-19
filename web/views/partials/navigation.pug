@@ -13,22 +13,28 @@ nav.navbar.navbar-inverse.navbar-fixed-top
       a.navbar-brand(href="/") Mango Deliveries
     div#navbar.navbar-collapse.collapse
       ul.nav.navbar-nav.navbar-left
-        li(class="#{active === 'Home' ? 'active' : null}")
+        - const homeClass = active === 'Home' ? 'active' : null
+        li(class=homeClass)
           a(href="/") Home
           span.sr-only (current)
-        li(class="#{active === 'Contracts' ? 'active' : null}")
+        - const contractsActive = active === 'Contracts' ? 'active' : null
+        li(class=contractsActive)
           a(href="/contracts") Contracts
         if(character.director)
-          li(class="#{active === 'Director Panel' ? 'active' : null}")
+          - const directorPanelActive = active === 'Director Panel' ? 'active' : null
+          li(class=directorPanelActive)
             a(href="/director") Director Panel
       ul.nav.navbar-nav.navbar-right
         if(character.id)
           li
-            a(href="/login") #{character.character_name}
+            a(href="/login") #{character.characterName}
           li
-            img(src="#{character.character_portrait}" style="height: 50px;")
-            img(src="#{character.corporation_portrait}" style="height: 50px;")
-            img(src="#{character.alliance_portrait}" style="height: 50px;")
+            - const characterPortrait = character.characterPortrait
+            img(src=characterPortrait style="height: 50px;")
+            - const corporationPortrait = character.corporationPortrait
+            img(src=corporationPortrait style="height: 50px;")
+            - const alliancePortrait = character.alliancePortrait
+            img(src=alliancePortrait style="height: 50px;")
         else
           form.navbar-form.navbar-right
             div.form-group

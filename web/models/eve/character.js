@@ -4,68 +4,122 @@
 
 "use strict"
 
+const { Model, DataTypes } = require("sequelize")
+const winston = require("winston")
+
+class EveCharacters extends Model {}
+class EveBannedCharacters extends Model {}
+
 module.exports = {
   db: null,
 
   async init(db) {
+    winston.info("Initializing characters")
     this.db = db
-    await this.db.query(`CREATE TABLE IF NOT EXISTS eve_characters (
-      id BIGINT UNSIGNED NOT NULL PRIMARY KEY,
-      token TINYTEXT NOT NULL,
-      character_name TINYTEXT NOT NULL,
-      character_portrait TINYTEXT NOT NULL,
-      character_birthday TIMESTAMP NOT NULL,
-      corporation_id BIGINT UNSIGNED NOT NULL,
-      corporation_name TINYTEXT NOT NULL,
-      corporation_portrait TINYTEXT NOT NULL,
-      alliance_id BIGINT UNSIGNED NOT NULL,
-      alliance_name TINYTEXT NOT NULL,
-      alliance_portrait TINYTEXT NOT NULL,
-      freighter BOOLEAN NOT NULL DEFAULT 0,
-      director BOOLEAN NOT NULL DEFAULT 0
-    )`)
-    return this.db.query(`CREATE TABLE IF NOT EXISTS eve_banned_characters (
-      name VARCHAR(32) NOT NULL PRIMARY KEY
-    )`)
+
+    EveCharacters.init({
+      id: {
+        type: DataTypes.BIGINT.UNSIGNED,
+        primaryKey: true
+      },
+      token: {
+        type: DataTypes.TEXT("tiny"),
+        allowNull: false
+      },
+      characterName: {
+        type: DataTypes.TEXT("tiny"),
+        allowNull: false
+      },
+      characterPortrait: {
+        type: DataTypes.TEXT("tiny"),
+        allowNull: false
+      },
+      characterBirthday: {
+        type: DataTypes.DATE,
+        allowNull: false
+      },
+      corporationId: {
+        type: DataTypes.BIGINT.UNSIGNED,
+        allowNull: false
+      },
+      corporationName: {
+        type: DataTypes.TEXT("tiny"),
+        allowNull: false
+      },
+      corporationPortrait: {
+        type: DataTypes.TEXT("tiny"),
+        allowNull: false
+      },
+      allianceId: {
+        type: DataTypes.BIGINT.UNSIGNED
+      },
+      allianceName: {
+        type: DataTypes.TEXT("tiny")
+      },
+      alliancePortrait: {
+        type: DataTypes.TEXT("tiny")
+      },
+      freighter: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
+      },
+      director: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
+      },
+    }, {
+      sequelize: this.db
+    })
+
+    EveBannedCharacters.init({
+      name: {
+        type: DataTypes.STRING(32),
+        primaryKey: true
+      }
+    }, {
+      sequelize: this.db
+    })
   },
-  
+
   ban(name) {
-    return this.db.query("INSERT INTO eve_banned_characters SET ?", [name])
+    EveBannedCharacters.build({name: name}).save()
   },
 
   delete(id) {
-    return this.db.query("DELETE FROM eve_characters WHERE id = ?", [id])
+    EveCharacters.build({id: id}).destroy()
   },
 
   get(id) {
-    return this.db.query("SELECT * FROM eve_characters WHERE id = ? LIMIT 1", [id])
+    return EveCharacters.findByPk(id)
   },
-  
+
   getBanned() {
-    return this.db.query("SELECT * FROM eve_banned_characters")
+    return EveBannedCharacters.findAll()
   },
-  
+
   getByName(name) {
-    return this.db.query("SELECT * FROM eve_characters WHERE character_name = ? LIMIT 1", [name])
+    return EveCharacters.findOne({where: {name: name}})
   },
-  
+
   getByToken(token) {
-    return this.db.query("SELECT * FROM eve_characters WHERE token = ?", [token])
+    return EveCharacters.findAll({where: {token: token}})
   },
-  
+
   getFreighters() {
-    return this.db.query("SELECT * FROM eve_characters WHERE freighter='1'")
+    return EveCharacters.findAll({where: {freighter: true}})
   },
-  
-  isBanned(name) {
-    return this.db.query("SELECT * FROM eve_banned_characters WHERE name = ? LIMIT 1", [name])
+
+  async isBanned(name) { // TODO use id
+    return EveBannedCharacters.findByPk(name).then(c => c !== null)
   },
 
   async set(data) {
-    return this.db.query("INSERT INTO eve_characters SET ? ON DUPLICATE KEY UPDATE ?", [data, data])
+    await EveCharacters.upsert(data)
   },
-  
-  unban(name) {
-    return this.db.query("DELETE FROM eve_banned_characters WHERE name = ?", [name])
+
+  unban(name) { // TODO use id
+    return EveBannedCharacters.build({name: name}).destroy()
   }
 }

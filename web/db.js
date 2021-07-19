@@ -4,37 +4,43 @@
 
 "use strict"
 const _ = require("underscore")
-const MySQL = require("promise-mysql")
 const path = require("path")
 const models = require("require-all")({
   dirname: path.join(__dirname, "/models/eve")
 })
-const stripIndents = require("common-tags").stripIndents
 const winston = require("winston")
+const yargs = require("yargs")
+const { Sequelize } = require("sequelize")
 
-const pool = MySQL.createPool({
-  connectionLimit: process.env.MYSQL_CONNECTION_LIMIT,
+const argv = yargs
+  .command("import", "Whether or not to import EVE yaml files into the database")
+  .argv
+
+const sequelize = new Sequelize(process.env.MYSQL_DATABASE, process.env.MYSQL_USER, process.env.MYSQL_PASSWORD, {
   host: process.env.MYSQL_HOST,
-  localAddress: process.env.MYSQL_LOCAL_ADDRESS,
-  user: process.env.MYSQL_USER,
-  password: process.env.MYSQL_PASSWORD || "",
-  database: process.env.MYSQL_DATABASE,
   port: process.env.MYSQL_PORT,
-  socketPath: process.env.MYSQL_SOCKET_PATH
+  pool: {
+    max: parseInt(process.env.MYSQL_CONNECTION_LIMIT, 10)
+  },
+  dialect: "mysql"
 })
 
-pool.getConnection().then((connection) => {
-  pool.releaseConnection(connection)
-  _.forEach(models, (model) => {
-    model.init(pool)
+sequelize.authenticate().then(() => {
+  winston.info("Database connection established.")
+  sequelize.sync()
+
+  const doImport = true || argv._.includes("import") // TODO
+
+  _.forEach(models, async model => {
+    model.init(sequelize)
+
+    if (doImport && model.import !== undefined) { // TODO
+      // await model.import(sequelize)
+    }
   })
-}).catch((e) => {
-  winston.error(stripIndents`
-    Error connecting to MySQL database with credentials set in environment variables
-    MYSQL_DATABASE, MYSQL_HOST, MYSQL_PORT, MYSQL_USER, MYSQL_PASSWORD:
-    ${e.stack}
-  `)
+}).catch(e => {
+  winston.error(e)
   process.exit(1)
 })
 
-module.exports = pool
+module.exports = sequelize

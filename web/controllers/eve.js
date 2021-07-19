@@ -18,18 +18,23 @@ const moment = require("moment-timezone")
 const router = express.Router()
 const request = require("request-promise")
 const session = require("express-session")
-const MySQLStore = require("express-mysql-session")(session)
-const sessionStore = new MySQLStore({}, require("../db.js"))
+const SequelizeStore = require("connect-session-sequelize")(session.Store)
+const Store = new SequelizeStore({
+  db: require("../db")
+})
 const settings = require("../models/eve/settings")
+const winston = require("winston")
 
 router.use(session({
   name: "mango deliveries",
   secret: process.env.EVE_DELIVERIES_SESSION_SECRET,
-  store: sessionStore,
-  resave: true,
+  store: Store,
+  resave: false,
   saveUninitialized: true,
   cookie: { httpOnly: true, secure: true, maxAge: 1800000 }
 }))
+
+Store.sync()
 
 router.get("/login", function(req, res) {
   const state = require("crypto").randomBytes(64).toString("hex")
@@ -37,10 +42,14 @@ router.get("/login", function(req, res) {
   res.redirect(`https://login.eveonline.com/oauth/authorize/?response_type=code&redirect_uri=${process.env.EVE_CALLBACK}&client_id=${process.env.EVE_ID}&state=${state}`)
 })
 
-router.get("/oauth", function(req, res) {
+router.get("/callback", function(req, res) {
   const sessionState = req.session.state
   delete req.session.state
-  if(req.query.state !== sessionState) return res.sendStatus(403)
+
+  if(req.query.state !== sessionState) {
+    return res.sendStatus(403)
+  }
+
   var eveCharacter = {}
   request.post({
     headers: {
@@ -54,7 +63,7 @@ router.get("/oauth", function(req, res) {
   }).then((body) => {
     body = JSON.parse(body)
     eveCharacter.token = body.access_token
-    
+
     return request.get({
       headers: {
         "Authorization": `Bearer ${eveCharacter.token}`
@@ -64,51 +73,65 @@ router.get("/oauth", function(req, res) {
   }).then((body) => {
     body = JSON.parse(body)
     eveCharacter.id = body.CharacterID
-    
+
     return Promise.all([
-      request.get(`https://esi.tech.ccp.is/latest/characters/${body.CharacterID}/`),
-      request.get(`https://esi.tech.ccp.is/latest/characters/${body.CharacterID}/portrait/`)
+      request.get(`https://esi.evetech.net/latest/characters/${body.CharacterID}/`),
+      request.get(`https://esi.evetech.net/latest/characters/${body.CharacterID}/portrait/`)
     ])
   }).then((bodies) => {
     _.forEach(bodies, (body, index) => {
       bodies[index] = JSON.parse(body)
     })
-    eveCharacter.character_name = bodies[0].name
-    eveCharacter.character_portrait = bodies[1].px64x64.replace(/^http:\/\//i, "https://")
-    eveCharacter.character_birthday = moment(bodies[0].birthday).format("YYYY-MM-DD HH:mm:ss")
-    eveCharacter.alliance_id = bodies[0].alliance_id
-    eveCharacter.corporation_id = bodies[0].corporation_id
-    
-    return Promise.all([
-      request.get(`https://esi.tech.ccp.is/latest/alliances/${eveCharacter.alliance_id}/`),
-      request.get(`https://esi.tech.ccp.is/latest/alliances/${eveCharacter.alliance_id}/icons/`),
-      request.get(`https://esi.tech.ccp.is/latest/corporations/${eveCharacter.corporation_id}/`),
-      request.get(`https://esi.tech.ccp.is/latest/corporations/${eveCharacter.corporation_id}/icons/`)
-    ])
+    eveCharacter.characterName = bodies[0].name
+    eveCharacter.characterPortrait = bodies[1].px64x64.replace(/^http:\/\//i, "https://")
+    eveCharacter.characterBirthday = moment(bodies[0].birthday).format("YYYY-MM-DD HH:mm:ss")
+    eveCharacter.allianceId = bodies[0].alliance_id
+    eveCharacter.corporationId = bodies[0].corporation_id
+
+    if (eveCharacter.allianceId === undefined) {
+      return Promise.all([
+        request.get(`https://esi.evetech.net/latest/corporations/${eveCharacter.corporationId}/`),
+        request.get(`https://esi.evetech.net/latest/corporations/${eveCharacter.corporationId}/icons/`)
+      ])
+    } else {
+      return Promise.all([
+        request.get(`https://esi.evetech.net/latest/corporations/${eveCharacter.corporationId}/`),
+        request.get(`https://esi.evetech.net/latest/corporations/${eveCharacter.corporationId}/icons/`),
+        request.get(`https://esi.evetech.net/latest/alliances/${eveCharacter.allianceId}/`),
+        request.get(`https://esi.evetech.net/latest/alliances/${eveCharacter.allianceId}/icons/`)
+      ])
+    }
   }).then(async (bodies) => {
     _.forEach(bodies, (body, index) => {
       bodies[index] = JSON.parse(body)
     })
-    eveCharacter.alliance_name = bodies[0].alliance_name
-    eveCharacter.alliance_portrait = bodies[1].px64x64.replace(/^http:\/\//i, "https://")
-    eveCharacter.corporation_name = bodies[2].corporation_name
-    eveCharacter.corporation_portrait = bodies[3].px64x64.replace(/^http:\/\//i, "https://")
-    
-    character.set(eveCharacter)
+
+    eveCharacter.corporationName = bodies[0].name
+    eveCharacter.corporationPortrait = bodies[1].px64x64.replace(/^http:\/\//i, "https://")
+
+    if (bodies.length == 4) {
+      eveCharacter.allianceName = bodies[2].alliance_name
+      eveCharacter.alliancePortrait = bodies[3].px64x64.replace(/^http:\/\//i, "https://")
+    }
+
+    await character.set(eveCharacter)
     eveCharacter = await character.get(eveCharacter.id)
-    eveCharacter = eveCharacter[0]
-    
-    const userBanned = await character.isBanned(eveCharacter.character_name)
-    const allianceAllowed = await alliance.isAllowed(eveCharacter.alliance_name)
-    const corporationAllowed = await corporation.isAllowed(eveCharacter.corporation_name)
+
+    const userBanned = await character.isBanned(eveCharacter.characterName)
+    const allianceAllowed = eveCharacter.allianceName === undefined
+      ? true
+      : await alliance.isAllowed(eveCharacter.allianceName)
+    const corporationAllowed = await corporation.isAllowed(eveCharacter.corporationName)
     const isDirector = eveCharacter.director
     const isFreighter = eveCharacter.freighter
-    const isAllowed = !userBanned[0] && (allianceAllowed[0] || corporationAllowed[0] || isDirector || isFreighter)
-    if(!isAllowed) return res.render("pages/unauthorized")
-    
+    const isAllowed = !userBanned && (allianceAllowed[0] || corporationAllowed[0] || isDirector || isFreighter)
+
+    if (!isAllowed) return res.render("pages/unauthorized")
+
     req.session.character = eveCharacter
     res.redirect("/")
-  }).catch(() => {
+  }).catch(e => {
+    console.error(e)
     res.render("pages/404")
   })
 })
@@ -130,26 +153,26 @@ router.get("/query", async function(req, res) {
   if(!req.session.character) return res.status(403).json({
     alert: "You need to login before submitting contracts."
   })
-  
+
   const eveCharacter = req.session.character
-  
+
   const userBanned = await character.isBanned(eveCharacter.character_name)
   const allianceAllowed = await alliance.isAllowed(eveCharacter.alliance_name)
   const corporationAllowed = await corporation.isAllowed(eveCharacter.corporation_name)
   const isDirector = eveCharacter.director
   const isFreighter = eveCharacter.freighter
   const isAllowed = !userBanned[0] && (allianceAllowed[0] || corporationAllowed[0] || isDirector || isFreighter)
-  
+
   if(!isAllowed) return res.status(403).json({
     alert: "You aren't allowed to submit contracts. Either you have been banned, or your corporation isn't whitelisted."
   })
-  
+
   const validate = await eveHelper.validateAppraisal(req.query)
   if(validate.invalid) return res.status(400).json(validate)
   const appraisal = validate
   const price = appraisal.totals.sell
   const multiplier = req.query.multiplier || 1
-  
+
   return res.status(200).json({
     jita: (price * multiplier).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","),
     jitaShort: eveHelper.nShortener(price * multiplier, 2),
@@ -166,20 +189,20 @@ router.post("/submit", async function(req, res) {
   if(!req.session.character) return res.status(403).json({
     alert: "You need to login before submitting contracts."
   })
-  
+
   const eveCharacter = req.session.character
-  
+
   const userBanned = await character.isBanned(eveCharacter.character_name)
   const allianceAllowed = await alliance.isAllowed(eveCharacter.alliance_name)
   const corporationAllowed = await corporation.isAllowed(eveCharacter.corporation_name)
   const isDirector = eveCharacter.director
   const isFreighter = eveCharacter.freighter
   const isAllowed = !userBanned[0] && (allianceAllowed[0] || corporationAllowed[0] || isDirector || isFreighter)
-  
+
   if(!isAllowed) return res.status(403).json({
     alert: "You aren't allowed to submit contracts. Either you have been banned, or your corporation isn't whitelisted."
   })
-  
+
   const validate = await eveHelper.validateAppraisal(req.body)
   if(validate.invalid) return res.status(400).json(validate)
   const appraisal = validate
@@ -188,7 +211,7 @@ router.post("/submit", async function(req, res) {
   const price = appraisal.totals.sell
   const multiplier = req.body.multiplier || 1
   const volume = appraisal.totals.volume
-  
+
   contract.set({
     link: link,
     destination: destination,
@@ -209,7 +232,7 @@ router.post("/submit", async function(req, res) {
     submitted_formatted: moment().format("MMMM Do YYYY, HH:mm:ss"),
     status: "pending"
   })
-  
+
   return res.status(200).json({
     alert: "Contract submitted. Click here to see it."
   })
@@ -221,7 +244,7 @@ router.get("/contracts", eveAuth, function(req, res) {
   if(!freighter) {
     characterID = req.session.character.id
   }
-  
+
   Promise.all([
     contract.getAllPending(characterID),
     contract.getAllOngoing(characterID),
@@ -230,7 +253,7 @@ router.get("/contracts", eveAuth, function(req, res) {
     const pending = contracts[0]
     const ongoing = contracts[1]
     const finalized = contracts[2]
-    
+
     res.render("pages/contracts", {
       character: req.session.character || {},
       pendingContracts: pending,
@@ -249,7 +272,7 @@ router.post("/contracts/submit", eveAuth, function(req, res) {
   const freighter = req.session.character.freighter
   if(!(director || freighter)) return res.sendStatus(403)
   if(req.body.tax && !director) return res.sendStatus(403)
-  
+
   Promise.all([
     eveHelper.contracts.accept(req),
     eveHelper.contracts.flag(req),
@@ -266,7 +289,7 @@ router.post("/contracts/submit", eveAuth, function(req, res) {
 
 router.get("/director", eveAuth, async function(req, res) {
   if(!req.session.character.director) return res.redirect("/eve/eve")
-  
+
   const bannedUsers = await character.getBanned()
   const freighters = await character.getFreighters()
   const allowedAlliances = await alliance.getAllowed()
@@ -290,9 +313,8 @@ router.get("/director", eveAuth, async function(req, res) {
 
 router.post("/director/submit", eveAuth, async function(req, res) {
   if(!req.session.character.director) return res.sendStatus(403)
-  
+
   var action = req.body.action
-  var value = req.body.value
   var response
   if(req.body.user) response = await eveHelper.director.freighter(req.body.user, action)
   if(req.body.freighter) response = await eveHelper.director.freighter(req.body.freighter, action)
@@ -302,7 +324,7 @@ router.post("/director/submit", eveAuth, async function(req, res) {
   if(req.body.group) response = await eveHelper.director.marketGroup(req.body.group, action)
   if(req.body.object === "settings") response = await eveHelper.director.settings(req.body)
   if(req.body.object === "destination") response = await eveHelper.director.destination(req.body, action)
-  
+
   if(!response) return res.sendStatus(400)
   if(response.error) return res.status(404).json({ alert: response.alert })
   return res.status(200).json(response)
