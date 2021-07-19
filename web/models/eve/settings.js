@@ -4,24 +4,34 @@
 
 "use strict"
 
+const { Model, DataTypes } = require("sequelize")
+const winston = require("winston")
+
+class Settings extends Model {}
+
 module.exports = {
   db: null,
-  
+
   async init(db) {
+    winston.info("Initializing settings")
     this.db = db
-    await this.db.query(`CREATE TABLE IF NOT EXISTS settings (
-      maxVolume BIGINT NOT NULL DEFAULT 300000
-    )`)
-    const rows = await this.db.query("SELECT COUNT(1) FROM settings")
-    if(rows[0]["COUNT(1)"] === 0) return this.db.query("INSERT INTO settings VALUES ()")
-    return
+
+    Settings.init({
+      maxVolume: {
+        type: DataTypes.BIGINT.UNSIGNED,
+        allowNull: false,
+        defaultValue: 300000
+      }
+    }, {
+      sequelize: this.db
+    })
   },
-  
+
   get() {
-    return this.db.query("SELECT * FROM settings")
+    return Settings.findAll()
   },
-  
+
   set(data) {
-    return this.db.query("UPDATE settings SET ?", [data])
+    return Settings.upsert(Settings.build(data))
   }
 }

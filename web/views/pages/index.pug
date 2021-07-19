@@ -8,28 +8,28 @@ html(lang="en")
     include ../partials/header
   body
     include ../partials/navigation
-    
+
     div.jumbotron
       div.container
         h1 Mango Deliveries
         p Welcome to Horde's finest Delivery service. We buy and ship your stuff for you. Select an Image to choose your destination. We offer a 24-hour guarantee of delivery.
-    
+
     div.container.text-center
       div.col-md-6.col-md-offset-3
         div#submit-alert.alert(role="alert")
       form(method="post" action="/submit")
-          div#image_container
-            if(destinations)
-              - for(var i = 0; i < destinations.length; i++) {
-                - if(i % 3 === 0) {
-                  div.row
-                - }
-                    div(class=i % 3 === 0 ? "col-md-2 col-md-offset-3" : "col-md-2")
-                      div.panel.panel-default
-                        div.panel-heading=destinations[i].name
-                        div.panel-body(style="padding: 0px;")
-                          img(class="img-responsive center-block" src=destinations[i].image value=destinations[i].name width="100%")
+        div#image_container
+          if(destinations)
+            - for(var i = 0; i < destinations.length; i++) {
+              - if(i % 3 === 0) {
+                div.row
               - }
+                  div(class=i % 3 === 0 ? "col-md-2 col-md-offset-3" : "col-md-2")
+                    div.panel.panel-default
+                      div.panel-heading=destinations[i].name
+                      div.panel-body(style="padding: 0px;")
+                        img(class="img-responsive center-block" src=destinations[i].image value=destinations[i].name width="100%")
+            - }
         div.row
           div.col-md-6.col-md-offset-3
             div.form-group
@@ -67,7 +67,7 @@ html(lang="en")
                           div.input-group-addon ISK
                   div.form-group
                     button(type="submit" class="btn btn-primary") Create Contract
-    
+
     include ../partials/footer
     script.
       function query() {
@@ -110,7 +110,7 @@ html(lang="en")
           }
         }).done()
       }
-      
+
       var timer = 0
       $("input").on("input", function() {
         clearTimeout(timer)
@@ -118,7 +118,7 @@ html(lang="en")
           query()
         }, 500)
       })
-      
+
       $("form").submit(function(e) {
         $.ajax({
           type: $(this).attr("method"),
@@ -155,7 +155,7 @@ html(lang="en")
         }).done()
         return false
       })
-    
+
     script.
       $("div#image_container div div").click(function(e) {
         $("input#destination").val($("img", this).attr("value"))
@@ -165,7 +165,7 @@ html(lang="en")
         e.preventDefault()
         e.stopPropagation()
       })
-    
+
     script.
       $(document).ready(function() {
         $('[data-toggle="tooltip"]').tooltip()

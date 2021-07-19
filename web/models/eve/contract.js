@@ -4,66 +4,197 @@
 
 "use strict"
 
+const { Model, DataTypes, Sequelize } = require("sequelize")
+const winston = require("winston")
+
+class EveContracts extends Model {}
+
 module.exports = {
   db: null,
 
   init(db) {
+    winston.info("Initializing contracts")
     this.db = db
-    return this.db.query(`CREATE TABLE IF NOT EXISTS eve_contracts (
-      id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-      link TINYTEXT NOT NULL,
-      destination TINYTEXT NOT NULL,
-      value BIGINT UNSIGNED NOT NULL,
-      value_formatted TINYTEXT NOT NULL,
-      value_short TINYTEXT NOT NULL,
-      quote BIGINT UNSIGNED NOT NULL,
-      quote_formatted TINYTEXT NOT NULL,
-      quote_short TINYTEXT NOT NULL,
-      volume BIGINT UNSIGNED NOT NULL,
-      volume_formatted TINYTEXT NOT NULL,
-      value_volume_ratio INTEGER UNSIGNED NOT NULL,
-      value_volume_ratio_formatted TINYTEXT NOT NULL,
-      multiplier TINYINT UNSIGNED NOT NULL,
-      submitter_id INTEGER UNSIGNED NOT NULL,
-      submitter_name TINYTEXT NOT NULL,
-      submitted BIGINT NOT NULL,
-      submitted_formatted TINYTEXT NOT NULL,
-      status TINYTEXT NOT NULL,
-      freighter_id INTEGER UNSIGNED,
-      freighter_name TINYTEXT,
-      taxed BOOLEAN NOT NULL DEFAULT 0
-    )`)
+
+    EveContracts.init({
+      id: {
+        type: DataTypes.BIGINT.UNSIGNED,
+        autoIncrement: true,
+        primaryKey: true
+      },
+      link: {
+        type: DataTypes.TEXT("tiny"),
+        allowNull: false
+      },
+      destination: {
+        type: DataTypes.TEXT("tiny"),
+        allowNull: false
+      },
+      value: {
+        type: DataTypes.BIGINT.UNSIGNED,
+        allowNull: false
+      },
+      valueFormatted: {
+        type: DataTypes.TEXT("tiny"),
+        allowNull: false
+      },
+      valueShort: {
+        type: DataTypes.TEXT("tinby"),
+        allowNull: false
+      },
+      quote: {
+        type: DataTypes.BIGINT.UNSIGNED,
+        allowNull: false
+      },
+      quoteFormatted: {
+        type: DataTypes.TEXT("tiny"),
+        allowNull: false
+      },
+      quoteShort: {
+        type: DataTypes.TEXT("tiny"),
+        allowNull: false
+      },
+      volume: {
+        type: DataTypes.BIGINT.UNSIGNED,
+        allowNull: false
+      },
+      volumeFormatted: {
+        type: DataTypes.TEXT("tiny"),
+        allowNull: false
+      },
+      valueVolumeRatio: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        allowNull: false
+      },
+      valueVolumeRatioFormatted: {
+        type: DataTypes.TEXT("tiny"),
+        allowNull: false
+      },
+      multiplier: {
+        type: DataTypes.TINYINT.UNSIGNED,
+        allowNull: false
+      },
+      submitterId: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        allowNull: false
+      },
+      submitterName: {
+        type: DataTypes.TEXT("tiny"),
+        allowNull: false
+      },
+      submitted: {
+        type: DataTypes.BIGINT,
+        allowNull: false
+      },
+      submittedFormatted: {
+        type: DataTypes.TEXT("tiny"),
+        allowNull: false
+      },
+      status: {
+        type: DataTypes.TEXT("tiny"),
+        allowNull: false
+      },
+      freighterId: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        allowNull: false
+      },
+      freighterName: {
+        type: DataTypes.TEXT("tiny"),
+        allowNull: false
+      },
+      taxed: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
+      },
+    }, {
+      sequelize: this.db
+    })
   },
 
   delete(id) {
-    return this.db.query("DELETE FROM eve_contracts WHERE id=?", [id])
+    return EveContracts.build({id: id}).destroy()
   },
 
   get(id) {
-    return this.db.query("SELECT * FROM eve_contracts WHERE id=? LIMIT 1", [id])
+    return EveContracts.findByPk(id)
   },
-  
+
   getAllPending(characterID) {
-    if(characterID) return this.db.query("SELECT * FROM eve_contracts WHERE (status = 'pending' OR status = 'flagged') AND submitter_id = ? ORDER BY status desc, submitted", [characterID])
-    return this.db.query("SELECT * FROM eve_contracts WHERE status = 'pending' OR status = 'flagged' ORDER BY status desc, submitted")
+    if (characterID) {
+      return EveContracts.findAll({
+        where: Sequelize.and(
+          Sequelize.or(
+            {status: "pending"},
+            {status: "flagged"}
+          ),
+          {where: {submitterId: characterID}}
+        ),
+        order: [["status", "DESC"], "submitted"]
+      })
+    }
+
+    return EveContracts.findAll({
+      where: Sequelize.or(
+        {status: "pending"},
+        {status: "flagged"}
+      ),
+      order: [["status", "DESC"], "submitted"]
+    })
   },
-  
+
   getAllOngoing(characterID) {
-    if(characterID) return this.db.query("SELECT * FROM eve_contracts WHERE status = 'ongoing' AND submitter_id = ?", [characterID])
-    return this.db.query("SELECT * FROM eve_contracts WHERE status = 'ongoing'")
+    if (characterID) {
+      return EveContracts.findAll({
+        where: Sequelize.and(
+          {status: "ongoing"},
+          {submitterId: characterID}
+        )
+      })
+    }
+
+    return EveContracts.findAll({where: {status: "ongoing"}})
   },
-  
+
   getAllFinalized(characterID) {
-    if(characterID) return this.db.query("SELECT * FROM eve_contracts WHERE status = 'completed' AND submitter_id = ?", [characterID])
-    return this.db.query("SELECT * FROM eve_contracts WHERE status = 'completed'")
+    if (characterID) {
+      return EveContracts.findAll({
+        where: Sequelize.and(
+          {status: "completed"},
+          {submitterId: characterID}
+        )
+      })
+    }
+
+    return EveContracts.findAll({where:  {status: "completed"}})
   },
-  
+
   getAllUntaxed(characterID) {
-    if(characterID) return this.db.query("SELECT * FROM eve_contracts WHERE (status = 'completed' OR status = 'ongoing') AND taxed = '0' AND submitter_id = ?", [characterID])
-    return this.db.query("SELECT * FROM eve_contracts WHERE (status = 'completed' OR status = 'ongoing') AND taxed = '0'")
+    if (characterID) {
+      return EveContracts.findAll({
+        where: Sequelize.and(
+          Sequelize.or(
+            {status: "completed"},
+            {status: "ongoing"}
+          ),
+          {taxed: 0},
+          {submitterId: characterID}
+        )
+      })
+    }
+
+    return EveContracts.findAll({
+      where: Sequelize.and(
+        Sequelize.or(
+          {status: "completed"},
+          {status: "ongoing"}
+        ),
+        {taxed: 0},
+      )
+    })
   },
 
   set(data) {
-    return this.db.query("INSERT INTO eve_contracts SET ? ON DUPLICATE KEY UPDATE ?", [data, data])
+    return EveContracts.upsert(EveContracts.build(data))
   }
 }

@@ -66,7 +66,7 @@ module.exports = {
       }).then((promises) => {
         const bannedItemTypes = promises[0]
         const bannedMarketGroups = promises[1]
-        
+
         var string
         if(moment().diff(moment.unix(appraisal.created), "days") > 2) {
           string = "Appraisals can't be more than 2 days old."
@@ -83,7 +83,7 @@ module.exports = {
           response.invalid["#link"] = response.invalid["#link"] ?
             response.invalid["#link"].concat(string) : string
         }
-        
+
         if(bannedItemTypes && bannedItemTypes.length > 0) {
           string = "Your appraisal contains banned items:\n"
           _.forEach(bannedItemTypes, (item) => {
@@ -100,7 +100,7 @@ module.exports = {
           response.invalid["#link"] = response.invalid["#link"] ?
             response.invalid["#link"].concat(string) : string
         }
-        
+
         if(!_.isEmpty(response.invalid)) return resolve(response)
         return resolve(appraisal)
       }).catch(() => {
@@ -113,7 +113,7 @@ module.exports = {
     return new Promise(async (resolve) => {
       const bannedTypes = await invTypes.getBanned()
       const bannedTypeIDs = _.pluck(bannedTypes, "typeID")
-      
+
       async.filter(appraisal.items, async (item) => {
         item = await invTypes.get(item.typeID)
         item = item[0]
@@ -124,12 +124,12 @@ module.exports = {
       })
     })
   },
-  
+
   filterBannedMarketGroups(appraisal) {
     return new Promise(async (resolve) => {
       const bannedMarketGroups = await invMarketGroups.getBanned()
       const bannedMarketGroupIDs = _.pluck(bannedMarketGroups, "marketGroupID")
-      
+
       async.filter(appraisal.items, async (item) => {
         item = await invTypes.get(item.typeID)
         item = item[0]
@@ -148,7 +148,7 @@ module.exports = {
     return new Promise((resolve) => {
       async.eachOf(appraisal.items, async (item, key) => {
         const invVolumesItem = await invVolumes.get(item.typeID)
-        if(invVolumesItem.length < 1) return
+        if(invVolumesItem.length < 1 || invVolumesItem[0].volume === null) return
         appraisal.items[key].volume = invVolumesItem[0].volume
         appraisal.totals.volume += invVolumesItem[0].volume
         return
@@ -157,7 +157,7 @@ module.exports = {
       })
     })
   },
-  
+
   contracts: {
     accept(req) {
       return new Promise((resolve, reject) => {
@@ -176,7 +176,7 @@ module.exports = {
         })
       })
     },
-    
+
     flag(req) {
       return new Promise((resolve, reject) => {
         async.forEach(req.body.flag, async (id) => {
@@ -192,7 +192,7 @@ module.exports = {
         })
       })
     },
-    
+
     complete(req) {
       return new Promise((resolve, reject) => {
         async.forEach(req.body.complete, async (id) => {
@@ -208,7 +208,7 @@ module.exports = {
         })
       })
     },
-    
+
     tax(req) {
       return new Promise((resolve, reject) => {
         async.forEach(req.body.tax, async (id) => {
@@ -225,7 +225,7 @@ module.exports = {
       })
     }
   },
-  
+
   director: {
     async user(name, action) {
       const banned = await character.isBanned(name)
@@ -245,12 +245,12 @@ module.exports = {
         return false
       }
     },
-    
+
     async freighter(name, action) {
       var user = await character.getByName(name)
       user = user[0]
       if(!user) return { error: true, alert: `Character ${name} doesn't exist.` }
-      
+
       switch(action) {
       case "add":
         if(user.freighter) return { error: true, alert: `Character ${name} is already a freighter.` }
@@ -266,7 +266,7 @@ module.exports = {
         return false
       }
     },
-    
+
     async alliance(name, action) {
       const allowed = await alliance.isAllowed(name)
       switch(action) {
@@ -282,7 +282,7 @@ module.exports = {
         return false
       }
     },
-    
+
     async corporation(name, action) {
       const allowed = await corporation.isAllowed(name)
       switch(action) {
@@ -298,7 +298,7 @@ module.exports = {
         return false
       }
     },
-    
+
     async itemType(item, action) {
       var invItem
       if(+item) {
@@ -306,10 +306,10 @@ module.exports = {
       } else {
         invItem = await invTypes.getByName(item)
       }
-      
+
       invItem = invItem[0]
       if(!invItem) return { error: true, alert: `Item type ${item} doesn't exist.` }
-      
+
       const banned = await invTypes.isIDBanned(invItem.typeID)
       switch (action) {
       case "ban":
@@ -324,7 +324,7 @@ module.exports = {
         return false
       }
     },
-    
+
     async marketGroup(group, action) {
       var groups
       if(+group) {
@@ -332,7 +332,7 @@ module.exports = {
       } else {
         groups = await invMarketGroups.getByName(group)
       }
-      
+
       if(groups.length > 1) {
         var alert = "Multiple market groups exist with that name, please input an ID:\n"
         _.forEach(groups, (group) => {
@@ -340,10 +340,10 @@ module.exports = {
         })
         return { error: true, alert: alert }
       }
-      
+
       var invGroup = groups[0]
       if(!invGroup) return { error: true, alert: `Market group ${group} doesn't exist.` }
-      
+
       const banned = await invMarketGroups.isBanned(invGroup.marketGroupID)
       switch(action) {
       case "ban":
@@ -358,21 +358,21 @@ module.exports = {
         return false
       }
     },
-    
+
     async settings(body) {
       settings.set({ "maxVolume": body.maxVolume })
       return { alert: `Settings updated.` }
     },
-    
+
     async destination(body, action) {
-      const exists = await destination.get(body.name)
+      const exists = await destination.get(body.name) !== null
       switch(action) {
       case "add":
-        if(exists[0]) return { error: true, alert: `Destination ${body.name} is already in the list.` }
+        if(exists) return { error: true, alert: `Destination ${body.name} is already in the list.` }
         destination.add({ "name": body.name, "image": body.image }).catch((e) => winston.error(e))
         return { alert: `Added ${body.name} to the list of destinations with image ${body.image}.` }
       case "remove":
-        if(!exists[0]) return { error: true, alert: `Destination ${body.name} isn't on the list.` }
+        if(!exists) return { error: true, alert: `Destination ${body.name} isn't on the list.` }
         destination.remove(body.name)
         return { alert: `Removed ${body.name} from the list of destinations.` }
       default:

@@ -4,29 +4,41 @@
 
 "use strict"
 
+const { Model, DataTypes } = require("sequelize")
+const winston = require("winston")
+
+class AllowedAlliances extends Model {}
+
 module.exports = {
   db: null,
-  
+
   init(db) {
+    winston.info("Initializing alliances")
     this.db = db
-    return this.db.query(`CREATE TABLE IF NOT EXISTS allowed_alliances (
-      name VARCHAR(32) NOT NULL PRIMARY KEY
-    )`)
+
+    AllowedAlliances.init({
+      name: {
+        type: DataTypes.STRING(32),
+        primaryKey: true
+      }
+    }, {
+      sequelize: this.db
+    })
   },
-  
+
   allow(name) {
-    return this.db.query("INSERT INTO allowed_alliances VALUES(?)", [name])
+    AllowedAlliances.build({name: name}).save()
   },
-  
+
   disallow(name) {
-    return this.db.query("DELETE FROM allowed_alliances WHERE name = ?", [name])
+    AllowedAlliances.build({name: name}).destroy()
   },
-  
+
   getAllowed() {
-    return this.db.query("SELECT * FROM allowed_alliances")
+    return AllowedAlliances.findAll()
   },
-  
-  isAllowed(name) {
-    return this.db.query("SELECT * FROM allowed_alliances WHERE name = ? LIMIT 1", [name])
+
+  async isAllowed(name) {
+    return AllowedAlliances.findByPk(name).then(c => c !== null)
   }
 }
